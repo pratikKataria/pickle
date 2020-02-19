@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1">
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/activity_login_et_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/textBoxBackground"
@@ -64,7 +64,7 @@
             android:textCursorDrawable="@color/darkBlue" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/activity_login_et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -79,6 +79,7 @@
 
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/activity_login_mb_gen_otp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

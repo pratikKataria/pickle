@@ -8,7 +8,7 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_on_boarding.*
 
 class OnBoardingActivity : AppCompatActivity() {
 
@@ -17,9 +17,9 @@ class OnBoardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_on_boarding)
 
-        startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
+        startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
 
 
         val slidingAdapter = SliderAdapter(this)
