@@ -6,43 +6,90 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
-    <EditText
-        android:id="@+id/editText"
+    <ImageView
+        android:id="@+id/activity_otp_image"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_margin="@dimen/onBoardingImageDimen"
+        android:src="@drawable/ic_otp_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/textBoxBackground"
-        android:enabled="false"
-        android:inputType="number"
-        android:text="+91"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="207dp" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:background="@color/textBoxBackground"
-        android:hint="9826xxxxxx"
-        android:inputType="number"
-        android:maxLength="10"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Verify Your Number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_otp_image" />
+
+    <TextView
+        android:id="@+id/activity_login_textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="Please enter your Country Code and Phone number for Authetication"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/textBoxBackground"
+            android:enabled="false"
+            android:inputType="number"
+            android:padding="18dp"
+            android:text="+91"
+            android:textColor="@color/darkBlue"
+            android:textCursorDrawable="@color/darkBlue" />
+
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@color/textBoxBackground"
+            android:hint="9826xxxxxx"
+            android:inputType="number"
+            android:maxLength="10"
+            android:padding="18dp"
+            android:textColor="@color/darkBlue"
+            android:textCursorDrawable="@color/darkBlue" />
+    </LinearLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorPrimary"
         android:text="Generate OTP"
+        android:textColor="@color/darkBlue"
+        android:backgroundTint="@color/colorPrimary"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/editText2"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/editText"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
