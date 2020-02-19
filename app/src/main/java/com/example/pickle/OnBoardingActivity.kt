@@ -29,7 +29,10 @@ class OnBoardingActivity : AppCompatActivity() {
 
         ob_activity_mb_next.setOnClickListener {
             ob_activity_vp_page.currentItem = currentPage + 1
+//            startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
         }
+
+        ob_activity_mb_back.visibility= GONE
 
         ob_activity_mb_back.setOnClickListener {
             ob_activity_vp_page.currentItem = currentPage - 1
@@ -64,6 +67,8 @@ class OnBoardingActivity : AppCompatActivity() {
                         ob_activity_vp_page.currentItem = currentPage + 1
                     }
                 }
+                ob_activity_mb_next.text="finish"
+                ob_activity_mb_back.text="back"
             } else {
                 ob_activity_mb_next.isEnabled = true
                 ob_activity_mb_back.isEnabled = true
