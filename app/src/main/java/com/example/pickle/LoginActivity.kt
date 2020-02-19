@@ -94,7 +94,9 @@ class LoginActivity : AppCompatActivity() {
 //                storedVerificationId = verificationId
 //                resendToken = token
 
-//                startActivity(Intent(this@LoginActivity, ))
+                var otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
+                otpIntent.putExtra("AuthCredentials", verificationId)
+                startActivity(otpIntent)
                 Toast.makeText(this@LoginActivity, "code sent", Toast.LENGTH_SHORT).show()
             }
         }
