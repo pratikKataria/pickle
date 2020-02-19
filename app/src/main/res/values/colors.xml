@@ -2,12 +2,12 @@
 <resources>
     <color name="colorPrimary">#F9D915</color>
     <color name="colorPrimaryDark">#E1C414</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#F9D915</color>
 
     <color name="darkBlue">#3F3D56</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="colorBlackTransparent">#62908F8F</color>
 
     <color name="textBoxBackground">#F2F2F2</color>
-
+    <color name="disabledBtnColor">#999999</color>
 </resources>
