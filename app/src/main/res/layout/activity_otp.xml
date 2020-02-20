@@ -6,16 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".OtpActivity">
 
-    <EditText
-        android:id="@+id/activity_otp_et"
+    <ImageView
+        android:id="@+id/activity_otp_image"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_margin="@dimen/onBoardingImageDimen"
+        android:src="@drawable/ic_get_otp_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="316dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="enter otp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="99dp" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Enter OTP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_otp_image" />
+
+    <TextView
+        android:id="@+id/activity_login_textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:text="We have sent you an OTP for
+phone number verification"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <EditText
+        android:id="@+id/activity_otp_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/textBoxBackground"
+        android:hint="_\t\t\t_\t\t\t_\t\t\t_\t\t\t_\t\t\t_"
+        android:textAlignment="center"
+        android:inputType="number"
+        android:maxLength="10"
+        android:padding="18dp"
+        android:textColor="@color/darkBlue"
+        android:textCursorDrawable="@color/darkBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_otp_mb_login"
@@ -24,7 +68,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Button"
+        android:text="Verify"
+        android:textAllCaps="false"
+        android:textColor="@color/darkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_otp_et" />
