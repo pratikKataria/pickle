@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">pickle</string>
+    <string name="sharedPreferences">permissions</string>
 </resources>
