@@ -51,18 +51,7 @@ class LoginActivity : AppCompatActivity() {
                 mCallBacks
             )
 
-            val timer = object : CountDownTimer(60000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    if (millisUntilFinished == 0L) {
-                        activity_login_tv_count_down_time.text = ""
-                        activity_login_mb_gen_otp.isEnabled = true
-                    }
-                    activity_login_tv_count_down_time.text = "" + millisUntilFinished / 1000
-                }
-
-                override fun onFinish() {}
-            }
-            timer.start()
+            timeCounter()
         }
 
 
@@ -125,4 +114,19 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun timeCounter() {
+        val timer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                activity_login_tv_count_down_time.text = "" + millisUntilFinished / 1000
+            }
+
+            override fun onFinish() {
+                activity_login_tv_count_down_time.text = ""
+                activity_login_mb_gen_otp.isEnabled = true
+            }
+        }
+        timer.start()
+    }
+
 }
