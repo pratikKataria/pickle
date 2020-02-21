@@ -32,7 +32,7 @@
         android:id="@+id/activity_login_textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Please enter your Country Code and Phone number for Authetication"
         android:textAlignment="center"
@@ -44,34 +44,31 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1">
 
         <EditText
             android:id="@+id/activity_login_et_country_code"
+            style="@style/loginEditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/textBoxBackground"
             android:enabled="false"
             android:inputType="number"
-            android:text="+91"
-            style="@style/loginEditTextStyle"/>
+            android:text="+91" />
 
         <EditText
             android:id="@+id/activity_login_et_phone_number"
+            style="@style/loginEditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:hint="Your Phone Number"
             android:inputType="number"
-            android:maxLength="10"
-            style="@style/loginEditTextStyle"/>
+            android:maxLength="10" />
     </LinearLayout>
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_login_mb_gen_otp"
@@ -88,10 +85,22 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
+    <TextView
+        android:id="@+id/activity_login_tv_count_down_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="60"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_login_pb"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_pb"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_pb"
+        app:layout_constraintTop_toTopOf="@+id/activity_login_pb"
+        app:layout_constraintVertical_bias="0.39" />
+
     <ProgressBar
         android:id="@+id/activity_login_pb"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
@@ -100,6 +109,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.409" />
+        app:layout_constraintVertical_bias="0.272" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

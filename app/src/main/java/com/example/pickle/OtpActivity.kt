@@ -52,12 +52,11 @@ class OtpActivity : AppCompatActivity() {
             }
     }
 
-    public fun sendUserToHome() {
-        var homeIntent = Intent(this@OtpActivity, MainActivity::class.java)
+    private fun sendUserToHome() {
+        val homeIntent = Intent(this@OtpActivity, MainActivity::class.java)
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(homeIntent)
         finish()
     }
-
 }

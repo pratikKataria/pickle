@@ -2,6 +2,8 @@ package com.example.pickle
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.os.Handler
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var mCallBacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private lateinit var mCallBacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             activity_login_pb.visibility = VISIBLE
-            activity_login_mb_gen_otp.isEnabled = false
+            activity_login_tv_count_down_time.visibility = VISIBLE
+
 
             val comp_phn_number = activity_login_et_country_code.text.toString() + activity_login_et_phone_number.text.toString()
 
@@ -47,7 +50,21 @@ class LoginActivity : AppCompatActivity() {
                 this,
                 mCallBacks
             )
+
+            val timer = object : CountDownTimer(60000, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    if (millisUntilFinished == 0L) {
+                        activity_login_tv_count_down_time.text = ""
+                        activity_login_mb_gen_otp.isEnabled = true
+                    }
+                    activity_login_tv_count_down_time.text = "" + millisUntilFinished / 1000
+                }
+
+                override fun onFinish() {}
+            }
+            timer.start()
         }
+
 
 
         mCallBacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -94,13 +111,18 @@ class LoginActivity : AppCompatActivity() {
 //                storedVerificationId = verificationId
 //                resendToken = token
 
-                var otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
-                otpIntent.putExtra("AuthCredentials", verificationId)
-                startActivity(otpIntent)
+                activity_login_mb_gen_otp.isEnabled = false
+                Handler().postDelayed(
+                    {
+                        val otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
+                        otpIntent.putExtra("AuthCredentials", verificationId)
+                        startActivity(otpIntent)
+
+                    }, 3000
+                )
+
                 Toast.makeText(this@LoginActivity, "code sent", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 }
