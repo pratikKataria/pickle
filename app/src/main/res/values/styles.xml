@@ -9,4 +9,16 @@
         <item name="android:textColor">@color/darkBlue</item>
     </style>
 
+    <style name="editTextStyle">
+        <item name="android:textColor">@color/darkBlue</item>
+        <item name="android:textCursorDrawable">@color/darkBlue</item>
+        <item name="android:padding">18dp</item>
+        <item name="android:background">@color/textBoxBackground</item>
+    </style>
+
+
+    <style name="loginEditTextStyle" parent="editTextStyle">
+        <item name="android:inputType">number</item>
+    </style>
+
 </resources>

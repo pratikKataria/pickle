@@ -58,27 +58,22 @@
             android:background="@color/textBoxBackground"
             android:enabled="false"
             android:inputType="number"
-            android:padding="18dp"
             android:text="+91"
-            android:textColor="@color/darkBlue"
-            android:textCursorDrawable="@color/darkBlue" />
+            style="@style/loginEditTextStyle"/>
 
         <EditText
             android:id="@+id/activity_login_et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@color/textBoxBackground"
             android:hint="Your Phone Number"
             android:inputType="number"
             android:maxLength="10"
-            android:padding="18dp"
-            android:textColor="@color/darkBlue"
-            android:textCursorDrawable="@color/darkBlue" />
+            style="@style/loginEditTextStyle"/>
     </LinearLayout>
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_login_mb_gen_otp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

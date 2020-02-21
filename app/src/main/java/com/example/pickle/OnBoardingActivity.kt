@@ -19,7 +19,7 @@ class OnBoardingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_on_boarding)
 
-        startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
+//      startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
 
 
         val slidingAdapter = SliderAdapter(this)
