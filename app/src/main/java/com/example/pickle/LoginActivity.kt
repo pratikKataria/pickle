@@ -4,47 +4,67 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
-import kotlinx.android.synthetic.main.activity_login.*
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mCallBacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
+    private lateinit var phoneNumber : EditText
+    private lateinit var countryCode : EditText
+    private lateinit var progressBar: ProgressBar
+    private lateinit var countDownTimer: TextView
+    private lateinit var sendOtpButton : MaterialButton
+    
+    private fun initFields() {
+        progressBar = findViewById(R.id.activity_login_pb)
+        countryCode = findViewById(R.id.activity_login_et_country_code)
+        sendOtpButton = findViewById(R.id.activity_login_mb_gen_otp)
+        phoneNumber = findViewById(R.id.activity_login_et_phone_number)
+        countDownTimer = findViewById(R.id.activity_login_tv_count_down_time)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        activity_login_mb_gen_otp.setOnClickListener {
+        initFields()
 
-            if (activity_login_et_phone_number.text.isEmpty()) {
-                activity_login_et_phone_number.error = "should not be empty"
-                activity_login_et_phone_number.requestFocus()
+        sendOtpButton.setOnClickListener {
+
+            if (phoneNumber.text.isEmpty()) {
+                phoneNumber.error = "should not be empty"
+                phoneNumber.requestFocus()
                 return@setOnClickListener
             }
 
-            if (activity_login_et_phone_number.text.length < 10) {
-                activity_login_et_phone_number.error = "invalid number"
-                activity_login_et_phone_number.requestFocus()
+            if (phoneNumber.text.length < 10) {
+                phoneNumber.error = "invalid number"
+                phoneNumber.requestFocus()
                 return@setOnClickListener
             }
 
-            activity_login_pb.visibility = VISIBLE
-            activity_login_tv_count_down_time.visibility = VISIBLE
+            progressBar.visibility = VISIBLE
+            countDownTimer.visibility = VISIBLE
 
 
-            val comp_phn_number = activity_login_et_country_code.text.toString() + activity_login_et_phone_number.text.toString()
+            val completePhoneNumber = countryCode.text.toString() + phoneNumber.text.toString()
 
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                comp_phn_number,
+                completePhoneNumber,
                 60,
                 TimeUnit.SECONDS,
                 this,
@@ -100,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
 //                storedVerificationId = verificationId
 //                resendToken = token
 
-                activity_login_mb_gen_otp.isEnabled = false
+                sendOtpButton.isEnabled = false
                 Handler().postDelayed(
                     {
                         val otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
@@ -110,7 +130,7 @@ class LoginActivity : AppCompatActivity() {
                     }, 3000
                 )
 
-                Toast.makeText(this@LoginActivity, "code sent", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, "otp sent", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -118,12 +138,13 @@ class LoginActivity : AppCompatActivity() {
     private fun timeCounter() {
         val timer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                activity_login_tv_count_down_time.text = "" + millisUntilFinished / 1000
+                countDownTimer.text = "" + millisUntilFinished / 1000
             }
 
             override fun onFinish() {
-                activity_login_tv_count_down_time.text = ""
-                activity_login_mb_gen_otp.isEnabled = true
+                countDownTimer.text = ""
+                progressBar.visibility = GONE
+                sendOtpButton.isEnabled = true
             }
         }
         timer.start()
