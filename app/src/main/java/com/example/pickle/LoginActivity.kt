@@ -30,9 +30,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var sendOtpButton : MaterialButton
     
     private fun initFields() {
-        progressBar = findViewById(R.id.activity_login_pb)
+        progressBar = findViewById(R.id.activity_login_pb_counter)
         countryCode = findViewById(R.id.activity_login_et_country_code)
-        sendOtpButton = findViewById(R.id.activity_login_mb_gen_otp)
+        sendOtpButton = findViewById(R.id.activity_login_mb_send_otp)
         phoneNumber = findViewById(R.id.activity_login_et_phone_number)
         countDownTimer = findViewById(R.id.activity_login_tv_count_down_time)
     }
