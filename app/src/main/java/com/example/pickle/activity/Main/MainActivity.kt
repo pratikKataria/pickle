@@ -1,10 +1,11 @@
-package com.example.pickle
+package com.example.pickle.activity.Main
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pickle.R
+import com.example.pickle.activity.Login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity() {
 

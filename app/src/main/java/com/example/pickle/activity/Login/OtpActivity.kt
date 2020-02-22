@@ -1,8 +1,10 @@
-package com.example.pickle
+package com.example.pickle.activity.Login
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import com.example.pickle.R
+import com.example.pickle.activity.Main.MainActivity
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_otp.*
 

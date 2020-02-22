@@ -1,4 +1,4 @@
-package com.example.pickle
+package com.example.pickle.activity.Splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
+import com.example.pickle.R
+import com.example.pickle.SliderAdapter
+import com.example.pickle.activity.Login.LoginActivity
 import kotlinx.android.synthetic.main.activity_on_boarding.*
 
 class OnBoardingActivity : AppCompatActivity() {
