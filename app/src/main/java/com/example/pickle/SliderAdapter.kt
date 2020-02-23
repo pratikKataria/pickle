@@ -26,17 +26,17 @@ class SliderAdapter : PagerAdapter {
         )
 
     private val textHeading = arrayOf(
-        "heading 1",
-        "heading 2",
-        "heading 3",
-        "heading 4"
+        "Fruits, Vegetables, Beverages ",
+        "Exact Delivery Location",
+        "Cash On Delivery",
+        "Faster Delivery"
     )
 
     private val description = arrayOf(
-        "desc 1",
-        "desc 2",
-        "desc 3",
-        "desc 4"
+        "Fresh Vegetables, fruits and Beverages available at your Door with quality products",
+        "Delivery with fine and exact location all over indore",
+        "No need to pay before, Pay When you get it, COD available at indore",
+        "Delivery within 30 min of order, with no extra coast"
     )
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
@@ -54,7 +54,7 @@ class SliderAdapter : PagerAdapter {
 
         view.ob_activity_iv_image.setImageDrawable(view.resources.getDrawable(drawable[position]))
         view.ob_activity_tv_heading.text = textHeading[position]
-        view.ob_activity_tv_description.text = textHeading[position]
+        view.ob_activity_tv_description.text = description[position]
 
         container.addView(view)
 

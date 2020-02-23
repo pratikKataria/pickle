@@ -20,7 +20,6 @@ class OnBoardingActivity : AppCompatActivity() {
 
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
-    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,14 +107,14 @@ class OnBoardingActivity : AppCompatActivity() {
         for (x in dotes.indices) {
             dotes[x] = TextView(this)
             dotes[x]!!.text = Html.fromHtml("&#8226;")
-            dotes[x]!!.textSize = 35F
+            dotes[x]!!.textSize = 24F
             dotes[x]!!.setTextColor(resources.getColor(R.color.colorBlackTransparent))
 
             ob_activity_ll.addView(dotes[x])
         }
 
         if (dotes.size > 0) {
-            dotes[position]!!.setTextColor(resources.getColor(R.color.colorPrimary))
+            dotes[position]!!.setTextColor(resources.getColor(R.color.darkBlue))
         }
     }
 
