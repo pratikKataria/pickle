@@ -1,6 +1,7 @@
 package com.example.pickle.activity.Splash
 
 import android.Manifest
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,7 +10,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,61 +22,95 @@ import com.example.pickle.utils.PermissionUtils
 
 class SplashActivity : AppCompatActivity() {
 
-    private val SEND_SMS_PERMISSION_REQUEST_CODE = "10000"
+    private val SEND_LOCATION_PERMISSION_REQUEST_CODE = 10000
     private val TAG = "TEST"
+    private val PERMISSION_ALL = 1
+    private val permission = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.SEND_SMS,
+        Manifest.permission.READ_SMS,
+        Manifest.permission.INTERNET,
+        Manifest.permission.CAMERA,
+        Manifest.permission.READ_CONTACTS
+    )
+
+    private val required_permission = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.SEND_SMS,
+        Manifest.permission.READ_SMS
+    )
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        val PERMISSION_ALL = 1
 
-        var permission = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.INTERNET,
-            Manifest.permission.READ_CONTACTS
-        )
+
 
         if (!hasPermissions(this, permission)) {
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-            return
         }
-
-        startNextActivity()
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
-            if (PermissionUtils().neverAskAgainSelected(this, Manifest.permission.SEND_SMS)) {
-//                displayNeverAskAgainDialog();
-            } else {
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CONTACTS))
+    override fun onStart() {
+        super.onStart()
+        if (hasPermissions(this, permission)) {
+            startNextActivity()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        //permission_granted = 0 // permission_denied = -1
+        if (PERMISSION_ALL == requestCode) {
+//            for (index in permissions.indices) {
+//                if (grantResults.isNotEmpty() && grantResults[index] == PackageManager.PERMISSION_DENIED ) {
+//                    displayNeverAskAgainDialog()
+//                    Log.e(TAG, "<|> if block <|>  + grantResults  ${grantResults[index]} + permissions +  ${permissions[index]} +  requestCode  + $requestCode")
+//                }
+//            }
+            var isAllPermitted = true
+            for (index in permissions.indices) {
+                for (reqIndex in required_permission.indices) {
+                    if (grantResults.isNotEmpty() && permissions[index] == required_permission[reqIndex] && grantResults[index] == PackageManager.PERMISSION_DENIED) {
+                        isAllPermitted = false
+                    }
+                }
             }
+            if (isAllPermitted) startNextActivity()
+            else displayNeverAskAgainDialog()
+
+//            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show()
+//                Log.e(TAG, "if block <|> Permission : <|> + grantResults  $grantResults + permissions +  $permissions +  requestCode  + $requestCode")
+//            } else {
+//                PermissionUtils().setShouldShowStatus(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                Log.e(TAG, "else block <|> Permission : <|> + grantResults  $grantResults + permissions +  $permissions +  requestCode  + $requestCode")
+//            }
         }
     }
 
-    fun displayNeverAskAgainDialog() {
-        var build : AlertDialog.Builder = AlertDialog.Builder(this)
-        build.setMessage("we need to send SMS for performing necessary task. Please permit the permission through" +
-        "Setting screen. \n\n Select Permission -> Enable permission");
+    private fun displayNeverAskAgainDialog() {
+        val build: AlertDialog.Builder = AlertDialog.Builder(this)
+        build.setMessage(
+            "we need to send SMS for performing necessary task. Please permit the permission through " +
+                    "Setting screen. \n\n Select Permission -> Enable permission"
+        )
         build.setCancelable(false)
-        build.setPositiveButton("Permit Manually") { dialogInterface: DialogInterface, i: Int ->
-            var intent = Intent()
-            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            var uri = Uri.fromParts("package", packageName, null)
-            intent.setData(uri)
+        build.setPositiveButton("Permit Manually") { _: DialogInterface, _: Int ->
+            val intent = Intent()
+            intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
             startActivity(intent)
         }
-
-        build.setNegativeButton("Cancel", null);
         build.show()
 
-    }
-
-    override fun shouldShowRequestPermissionRationale(permission: String): Boolean {
-        return super.shouldShowRequestPermissionRationale(permission)
     }
 
     fun startNextActivity() {
@@ -93,6 +128,10 @@ class SplashActivity : AppCompatActivity() {
             }
 
         }, 2000)
+    }
+
+    override fun shouldShowRequestPermissionRationale(permission: String): Boolean {
+        return super.shouldShowRequestPermissionRationale(permission)
     }
 
     fun hasPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
