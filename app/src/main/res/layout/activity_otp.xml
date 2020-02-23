@@ -43,7 +43,7 @@ phone number verification"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
-        android:id="@+id/activity_otp_et"
+        android:id="@+id/activity_otp_et_enter_otp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,12 +65,12 @@ phone number verification"
         android:layout_marginEnd="8dp"
         android:visibility="gone"
         android:indeterminateTint="@color/darkBlue"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_otp_et"
-        app:layout_constraintEnd_toEndOf="@+id/activity_otp_et"
-        app:layout_constraintTop_toTopOf="@+id/activity_otp_et" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_otp_et_enter_otp"
+        app:layout_constraintEnd_toEndOf="@+id/activity_otp_et_enter_otp"
+        app:layout_constraintTop_toTopOf="@+id/activity_otp_et_enter_otp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/activity_otp_mb_login"
+        android:id="@+id/activity_otp_mb_submit_otp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -81,5 +81,5 @@ phone number verification"
         android:textColor="@color/darkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_otp_et" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_otp_et_enter_otp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,39 +6,49 @@ import android.content.Intent
 import android.os.Handler
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.EditText
 import android.widget.Toast
 import com.example.pickle.R
 import com.example.pickle.activity.Main.MainActivity
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_otp.*
 
 class OtpActivity : AppCompatActivity() {
 
     var mAuth = FirebaseAuth.getInstance()
+    private lateinit var editTextOtp: EditText
+    private lateinit var verifyBtn: MaterialButton
 
     private var doubleBackToExitPressedOnce = false
 
+    private fun init_fields() {
+        editTextOtp = findViewById(R.id.activity_otp_et_enter_otp)
+        verifyBtn = findViewById(R.id.activity_otp_mb_submit_otp)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
 
+        init_fields()
+
         val AuthCredential : String = intent.getStringExtra("AuthCredentials")
 
-        activity_otp_mb_login.setOnClickListener {
-            if (activity_otp_et.text.isEmpty()) {
-                activity_otp_et.error = "should not be empty"
-                activity_otp_et.requestFocus()
+        activity_otp_mb_submit_otp.setOnClickListener {
+            if (editTextOtp.text.isEmpty()) {
+                editTextOtp.error = "should not be empty"
+                editTextOtp.requestFocus()
                 return@setOnClickListener
             }
 
-            if (activity_otp_et.text.length < 6) {
-                activity_otp_et.error = "invalid"
-                activity_otp_et.requestFocus()
+            if (editTextOtp.text.length < 6) {
+                editTextOtp.error = "invalid"
+                editTextOtp.requestFocus()
                 return@setOnClickListener
             }
 
-            val credential  = PhoneAuthProvider.getCredential(AuthCredential, activity_otp_et.text.toString())
+            val credential  = PhoneAuthProvider.getCredential(AuthCredential, editTextOtp.text.toString())
             activity_otp_progress.visibility = VISIBLE
             signInWithPhoneAuthCredential(credential)
         }
