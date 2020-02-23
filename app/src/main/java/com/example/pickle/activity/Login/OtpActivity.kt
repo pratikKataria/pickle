@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Handler
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import com.example.pickle.R
 import com.example.pickle.activity.Main.MainActivity
@@ -37,6 +39,7 @@ class OtpActivity : AppCompatActivity() {
             }
 
             var credential  = PhoneAuthProvider.getCredential(AuthCredential, activity_otp_et.text.toString())
+            activity_otp_progress.visibility = VISIBLE
             signInWithPhoneAuthCredential(credential)
         }
     }
@@ -45,6 +48,7 @@ class OtpActivity : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    activity_otp_progress.visibility = GONE
                     // Sign in success, update UI with the signed-in user's information
                     sendUserToHome()
                     val user = task.result?.user

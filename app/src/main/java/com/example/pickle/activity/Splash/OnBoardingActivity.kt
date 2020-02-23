@@ -6,6 +6,7 @@ import android.os.Handler
 import android.text.Html
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
