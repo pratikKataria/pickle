@@ -2,10 +2,12 @@ package com.example.pickle.activity.Splash
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.text.Html
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.pickle.R
@@ -17,6 +19,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,4 +117,6 @@ class OnBoardingActivity : AppCompatActivity() {
             dotes[position]!!.setTextColor(resources.getColor(R.color.colorPrimary))
         }
     }
+
+
 }

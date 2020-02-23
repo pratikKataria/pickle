@@ -21,6 +21,7 @@ class SplashActivity : AppCompatActivity() {
 
     private val TAG = "TEST"
     private val PERMISSION_ALL = 1
+
     private val permission = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.SEND_SMS,
@@ -51,11 +52,7 @@ class SplashActivity : AppCompatActivity() {
             startNextActivity()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //permission_granted = 0 // permission_denied = -1
         if (PERMISSION_ALL == requestCode) {
 

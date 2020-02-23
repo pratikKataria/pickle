@@ -3,6 +3,8 @@ package com.example.pickle.activity.Login
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.os.Handler
+import android.widget.Toast
 import com.example.pickle.R
 import com.example.pickle.activity.Main.MainActivity
 import com.google.firebase.auth.*
@@ -11,6 +13,9 @@ import kotlinx.android.synthetic.main.activity_otp.*
 class OtpActivity : AppCompatActivity() {
 
     var mAuth = FirebaseAuth.getInstance()
+
+    private var doubleBackToExitPressedOnce = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,5 +65,18 @@ class OtpActivity : AppCompatActivity() {
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(homeIntent)
         finish()
+    }
+
+    override fun onBackPressed() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "double tap back to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed({doubleBackToExitPressedOnce = false}, 2000)
     }
 }
