@@ -38,7 +38,7 @@ class OtpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            var credential  = PhoneAuthProvider.getCredential(AuthCredential, activity_otp_et.text.toString())
+            val credential  = PhoneAuthProvider.getCredential(AuthCredential, activity_otp_et.text.toString())
             activity_otp_progress.visibility = VISIBLE
             signInWithPhoneAuthCredential(credential)
         }
