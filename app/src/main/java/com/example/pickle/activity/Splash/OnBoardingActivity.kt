@@ -1,11 +1,11 @@
 package com.example.pickle.activity.Splash
 
 import android.animation.ObjectAnimator
-import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -20,12 +20,14 @@ class OnBoardingActivity : AppCompatActivity() {
 
     private lateinit var getStartedBtn : MaterialButton
     private lateinit var viewPager: ViewPager
+    private lateinit var dotLayout : LinearLayout
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
 
     private fun init_fields() {
         getStartedBtn = findViewById(R.id.ob_activity_mb_get_started)
         viewPager = findViewById(R.id.ob_activity_vp_page)
+        dotLayout = findViewById(R.id.ob_activity_ll)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +64,7 @@ class OnBoardingActivity : AppCompatActivity() {
                 dotIndicator(position)
 
                 if (position == 0) {
-
+                    getStartedBtn.visibility = GONE
                 } else if (position == dotes.size - 1) {
 
 
@@ -78,7 +80,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
 
                 } else {
-
+                    getStartedBtn.visibility = GONE
                 }
             }
 
@@ -87,14 +89,14 @@ class OnBoardingActivity : AppCompatActivity() {
         }
 
     fun dotIndicator(position: Int) {
-        ob_activity_ll.removeAllViews()
+        dotLayout.removeAllViews()
         for (x in dotes.indices) {
             dotes[x] = TextView(this)
             dotes[x]!!.text = Html.fromHtml("&#8226;")
             dotes[x]!!.textSize = 24F
             dotes[x]!!.setTextColor(resources.getColor(R.color.colorBlackTransparent))
 
-            ob_activity_ll.addView(dotes[x])
+            dotLayout.addView(dotes[x])
         }
 
         if (dotes.size > 0) {
