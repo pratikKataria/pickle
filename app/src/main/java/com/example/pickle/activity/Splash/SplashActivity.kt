@@ -49,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
         if (!hasPermissions(this, permission))
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-            else
+        else
             startNextActivity()
     }
 
