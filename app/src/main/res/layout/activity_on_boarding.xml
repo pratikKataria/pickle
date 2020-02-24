@@ -50,7 +50,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/ob_activity_vp_page_mb_get_started"
+        android:id="@+id/ob_activity_mb_get_started"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

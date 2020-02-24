@@ -1,7 +1,5 @@
 package com.example.pickle.activity.Splash
 
-import android.R.attr.endX
-import android.R.attr.startX
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
@@ -14,48 +12,37 @@ import androidx.viewpager.widget.ViewPager
 import com.example.pickle.HorizontalFlipTransformation
 import com.example.pickle.R
 import com.example.pickle.SliderAdapter
-import com.example.pickle.activity.Login.LoginActivity
+import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.activity_on_boarding.*
 
 
 class OnBoardingActivity : AppCompatActivity() {
 
+    private lateinit var getStartedBtn : MaterialButton
+    private lateinit var viewPager: ViewPager
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
+
+    private fun init_fields() {
+        getStartedBtn = findViewById(R.id.ob_activity_mb_get_started)
+        viewPager = findViewById(R.id.ob_activity_vp_page)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_on_boarding)
 
-//      startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
-
+        init_fields()
 
         val slidingAdapter = SliderAdapter(this)
 
-        ob_activity_vp_page.adapter = slidingAdapter
-
-//        if (ob_activity_vp_page.childCount == 3)
-//        ob_activity_vp_page_mb_get_started
-
+        viewPager.adapter = slidingAdapter
 
         dotIndicator(0)
 
-        ob_activity_vp_page.addOnPageChangeListener(viewPagerPageChangeListener)
+        viewPager.addOnPageChangeListener(viewPagerPageChangeListener)
 
-        ob_activity_mb_next.setOnClickListener {
-            ob_activity_vp_page.currentItem = currentPage + 1
-//            startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
-        }
-
-        ob_activity_mb_back.visibility = GONE
-
-        ob_activity_vp_page.setPageTransformer(true,HorizontalFlipTransformation() )
-
-        ob_activity_mb_back.setOnClickListener {
-            ob_activity_vp_page.currentItem = currentPage - 1
-        }
-
-
+        viewPager.setPageTransformer(true,HorizontalFlipTransformation() )
 
     }
 
@@ -73,29 +60,15 @@ class OnBoardingActivity : AppCompatActivity() {
 
             override fun onPageSelected(position: Int) {
                 dotIndicator(position)
-                currentPage = position
 
                 if (position == 0) {
-                    ob_activity_mb_next.isEnabled = true
-                    ob_activity_mb_back.isEnabled = false
-                    ob_activity_mb_back.visibility = GONE
-                    ob_activity_vp_page_mb_get_started.visibility = GONE
 
-
-                    ob_activity_mb_next.text = "next"
-                    ob_activity_mb_back.text = ""
                 } else if (position == dotes.size - 1) {
-                    ob_activity_mb_back.isEnabled = true
-                    ob_activity_mb_back.visibility = VISIBLE
 
-//                    var anim : Animation = AnimationUtils.loadAnimation(this@OnBoardingActivity, R.anim.move_up)
-//                    anim.duration = 1000
-//                    anim.interpolator =  LinearInterpolator()
-//                    anim.start()
 
-                    ob_activity_vp_page_mb_get_started.visibility = VISIBLE
+                    getStartedBtn.visibility = VISIBLE
                     val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
-                        ob_activity_vp_page_mb_get_started,
+                        getStartedBtn,
                         "translationY",
                         0F,
                         -100F
@@ -103,32 +76,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     objectAnimator.duration = 1000
                     objectAnimator.start()
 
-//                    ob_activity_vp_page_mb_get_started.animation = anim
 
-
-                    ob_activity_mb_next.setOnClickListener {
-                        if (ob_activity_mb_next.text == "finish") {
-                            startActivity(
-                                Intent(
-                                    this@OnBoardingActivity,
-                                    LoginActivity::class.java
-                                )
-                            )
-                            finish()
-                        } else {
-                            ob_activity_vp_page.currentItem = currentPage + 1
-                        }
-                    }
-                    ob_activity_mb_next.text = "finish"
-                    ob_activity_mb_back.text = "back"
                 } else {
-                    ob_activity_mb_next.isEnabled = true
-                    ob_activity_mb_back.isEnabled = true
-                    ob_activity_mb_back.visibility = VISIBLE
-                    ob_activity_vp_page_mb_get_started.visibility = GONE
-
-                    ob_activity_mb_back.text = "back"
-                    ob_activity_mb_next.text = "next"
 
                 }
             }
