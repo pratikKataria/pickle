@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Html
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ class OnBoardingActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var dotLayout : LinearLayout
     private lateinit var getStartedBtn : MaterialButton
+    private lateinit var skipBtn : ImageButton
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
 
@@ -30,6 +32,7 @@ class OnBoardingActivity : AppCompatActivity() {
         getStartedBtn = findViewById(R.id.ob_activity_mb_get_started)
         viewPager = findViewById(R.id.ob_activity_vp_page)
         dotLayout = findViewById(R.id.ob_activity_ll)
+        skipBtn = findViewById(R.id.ob_activity_mb_skip)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
         viewPager.setPageTransformer(true,HorizontalFlipTransformation() )
 
+        skipBtn.setOnClickListener { startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java)) }
     }
 
 

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
+import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.MainActivity
 
 
@@ -46,6 +47,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
         if (!hasPermissions(this, permission))
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         else
