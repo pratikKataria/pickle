@@ -1,6 +1,7 @@
 package com.example.pickle.activity.Splash
 
 import android.animation.ObjectAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.text.Html
 import android.view.View.GONE
@@ -12,15 +13,16 @@ import androidx.viewpager.widget.ViewPager
 import com.example.pickle.HorizontalFlipTransformation
 import com.example.pickle.R
 import com.example.pickle.SliderAdapter
+import com.example.pickle.activity.Login.LoginActivity
 import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.activity_on_boarding.*
 
 
 class OnBoardingActivity : AppCompatActivity() {
 
-    private lateinit var getStartedBtn : MaterialButton
     private lateinit var viewPager: ViewPager
     private lateinit var dotLayout : LinearLayout
+    private lateinit var getStartedBtn : MaterialButton
     private var dotes = arrayOfNulls<TextView>(4)
     private var currentPage = 0
 
@@ -67,7 +69,6 @@ class OnBoardingActivity : AppCompatActivity() {
                     getStartedBtn.visibility = GONE
                 } else if (position == dotes.size - 1) {
 
-
                     getStartedBtn.visibility = VISIBLE
                     val objectAnimator: ObjectAnimator = ObjectAnimator.ofFloat(
                         getStartedBtn,
@@ -78,6 +79,9 @@ class OnBoardingActivity : AppCompatActivity() {
                     objectAnimator.duration = 1000
                     objectAnimator.start()
 
+                    getStartedBtn.setOnClickListener {
+                        startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
+                    }
 
                 } else {
                     getStartedBtn.visibility = GONE
