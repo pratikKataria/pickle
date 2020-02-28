@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group_1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_menu_about"
+            android:title="About"/>
+    </group>
+
+    <item
+        android:id="@+id/navigation_menu_feedback"
+        android:title="Others">
+        <menu>
+            <item
+                android:id="@+id/nav_menu_sub_orders"
+                android:title="Your Orders"/>
+
+            <item
+                android:id="@+id/nav_menu_sub_address_book"
+                android:title="Address Manager"/>
+
+            <item
+                android:id="@+id/nav_menu_sub_help"
+                android:title="Help"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/navigation_menu_rate_us"
+        android:title="Rate us on Play Store"/>
+
+    <group
+        android:id="@+id/group_2"
+        android:checkableBehavior="single"
+        android:menuCategory="alternative">
+        <item
+            android:id="@+id/navigation_menu_layout"
+            android:title="Logout" />
+    </group>
+</menu>

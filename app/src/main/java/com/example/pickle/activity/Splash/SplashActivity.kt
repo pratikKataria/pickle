@@ -1,6 +1,7 @@
 package com.example.pickle.activity.Splash
 
 import android.Manifest
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +10,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -47,7 +49,6 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
         if (!hasPermissions(this, permission))
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         else

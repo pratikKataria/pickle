@@ -1,5 +1,6 @@
 package com.example.pickle
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -55,6 +56,8 @@ class SliderAdapter : PagerAdapter {
         view.ob_activity_iv_image.setImageDrawable(view.resources.getDrawable(drawable[position]))
         view.ob_activity_tv_heading.text = textHeading[position]
         view.ob_activity_tv_description.text = description[position]
+
+
 
         container.addView(view)
 
