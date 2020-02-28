@@ -2,7 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bottom_nav_orders"
-        android:title="Orders"/>
+        android:title="Orders"
+        android:icon="@drawable/ic_apple"/>
 
     <item android:id="@+id/bottom_nav_explore"
         android:title="Explore"/>
