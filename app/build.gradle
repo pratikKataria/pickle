@@ -35,6 +35,8 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:3.2.2'
 
+    implementation  'com.fxn769:bubbletabbar:1.0.3'
+
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Main.MainActivity">\
-
+    tools:context=".activity.Main.MainActivity">
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/activity_main_nv_side_navigation"
