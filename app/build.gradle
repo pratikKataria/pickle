@@ -35,7 +35,7 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:3.2.2'
 
-
+    implementation 'com.ismaeldivita.chipnavigation:chip-navigation-bar:1.2.0'
 
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     testImplementation 'junit:junit:4.12'
