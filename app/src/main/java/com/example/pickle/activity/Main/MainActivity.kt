@@ -24,7 +24,10 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
 
+        bottomNavigationView.setItemSelected(R.id.bottom_nav_orders)
+
         val fragmentx = OrderFragment()
+
         supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragmentx).commit()
 
         bottomNavigationView.setOnItemSelectedListener {
