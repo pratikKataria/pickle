@@ -9,6 +9,7 @@
     <color name="colorBlackTransparent">#62908F8F</color>
 
     <color name="white">#ffffff</color>
+    <color name="bottomNavigation">#F4F4F4</color>
     <color name="textBoxBackground">#F2F2F2</color>
     <color name="disabledBtnColor">#999999</color>
 </resources>

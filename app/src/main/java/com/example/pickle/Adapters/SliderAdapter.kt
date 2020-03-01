@@ -1,13 +1,12 @@
-package com.example.pickle
+package com.example.pickle.Adapters
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
+import com.example.pickle.R
 import kotlinx.android.synthetic.main.sliding_layout.view.*
 
 class SliderAdapter : PagerAdapter {
