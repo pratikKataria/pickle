@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationView.setItemSelected(R.id.bottom_nav_orders)
 
-        val fragmentx = OrderFragment()
+        val currentFragment = OrderFragment()
 
-        supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragmentx).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, currentFragment).commit()
 
         bottomNavigationView.setOnItemSelectedListener {
             lateinit var fragment : Fragment
