@@ -20,11 +20,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
 import java.io.Serializable;
 
@@ -37,6 +40,14 @@ public class OrderFragment extends Fragment {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private CarouselView carouselView;
+
+    private int [] sampleImages = {
+            R.drawable.sale_one,
+            R.drawable.sale_two,
+            R.drawable.sale_three,
+            R.drawable.seal_four
+    };
 
     public OrderFragment() {
         // Required empty public constructor
@@ -44,7 +55,7 @@ public class OrderFragment extends Fragment {
 
     private void init_fields(View v) {
         toolbar = v.findViewById(R.id.fragment_order_toolbar);
-
+        carouselView = v.findViewById(R.id.fragment_order_cv_offers_viewer);
     }
 
     @Override
@@ -68,6 +79,12 @@ public class OrderFragment extends Fragment {
         init_fields(view);
 
         setToolbar();
+
+        carouselView.setPageCount(sampleImages.length);
+
+        carouselView.setImageListener((position, imageView) -> {
+            imageView.setImageResource(sampleImages[position]);
+        });
 
         return view;
     }

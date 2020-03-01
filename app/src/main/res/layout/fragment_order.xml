@@ -14,11 +14,17 @@
         android:background="@color/bottomNavigation"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <com.synnapps.carouselview.CarouselView
+        android:id="@+id/fragment_order_cv_offers_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginTop="12dp"
+        app:fillColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar"
+        app:pageColor="@color/darkBlue"
+        app:radius="4dp"
+        app:slideInterval="3000"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello order fragment"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

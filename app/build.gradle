@@ -41,6 +41,8 @@ dependencies {
 
     implementation 'com.ismaeldivita.chipnavigation:chip-navigation-bar:1.2.0'
 
+    implementation 'com.synnapps:carouselview:0.1.4'
+
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
