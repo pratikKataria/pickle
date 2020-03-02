@@ -19,7 +19,7 @@
             android:background="@color/bottomNavigation"
             android:fitsSystemWindows="true"
             app:expandedTitleGravity="end"
-            app:expandedTitleMarginBottom="350dp"
+            app:expandedTitleMarginBottom="280dp"
             app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -91,6 +91,7 @@
                         android:textSize="19dp" />
 
                     <ImageButton
+                        android:id="@+id/fragment_order_ib_hide_grid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"

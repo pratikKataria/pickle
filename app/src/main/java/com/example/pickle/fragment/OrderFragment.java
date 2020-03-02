@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,13 +44,16 @@ public class OrderFragment extends Fragment {
 
 
     private Toolbar toolbar;
+    private GridView gridView;
+    private ImageButton hideGrideButton;
     private DrawerLayout drawerLayout;
     private CarouselView carouselView;
     private AppBarLayout appBarLayout;
     private LinearLayout linearLayout;
-    private GridView gridView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+
+    private boolean isExpanded = true;
 
     private int [] sampleImages = {
             R.drawable.sale_one,
@@ -68,6 +72,8 @@ public class OrderFragment extends Fragment {
         appBarLayout = v.findViewById(R.id.fragment_order_app_bar_layout);
         collapsingToolbarLayout = v.findViewById(R.id.fragment_order_ctb);
         linearLayout = v.findViewById(R.id.fragment_order_ll_category);
+
+        hideGrideButton = v.findViewById(R.id.fragment_order_ib_hide_grid);
 
         gridView = v.findViewById(R.id.fragment_order_gv_category_images);
 
@@ -121,6 +127,18 @@ public class OrderFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+            }
+        });
+
+        hideGrideButton.setOnClickListener(v -> {
+            if (isExpanded) {
+                gridView.setVisibility(View.GONE);
+                hideGrideButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_down));
+                isExpanded = false;
+            } else {
+                gridView.setVisibility(View.VISIBLE);
+                hideGrideButton.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.ic_up));
+                isExpanded = true;
             }
         });
 
