@@ -69,59 +69,50 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/fragment_order_ll_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:animateLayoutChanges="true"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="16dp">
+                tools:layout_editor_absoluteX="16dp"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_demi_bold"
-                    android:text="category"
-                    android:textAllCaps="true"
-                    android:textSize="19dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenir_next_demi_bold"
+                        android:text="category"
+                        android:textAllCaps="true"
+                        android:textSize="19dp" />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_up" />
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_up" />
+                </LinearLayout>
+
+                <GridView
+                    android:id="@+id/fragment_order_gv_category_images"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:numColumns="auto_fit"
+                    android:columnWidth="90dp"
+                    android:verticalSpacing="60dip"
+                    android:horizontalSpacing="10dip"
+                    android:stretchMode="columnWidth">
+                </GridView>
+
             </LinearLayout>
 
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="108dp"
-                android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="category"
-                android:textAllCaps="true"
-                android:textSize="19dp"
-                app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="43dp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/pacifico_regular"
-                android:text="category"
-                android:textAllCaps="true"
-                android:textSize="19dp"
-                android:layout_marginTop="250dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3"
-                app:layout_constraintVertical_bias="0.0"
-                tools:layout_editor_absoluteX="100dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

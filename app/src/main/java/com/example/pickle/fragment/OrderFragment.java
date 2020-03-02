@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,6 +29,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.pickle.Adapters.ImageAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
 import com.google.android.material.appbar.AppBarLayout;
@@ -44,7 +47,7 @@ public class OrderFragment extends Fragment {
     private CarouselView carouselView;
     private AppBarLayout appBarLayout;
     private LinearLayout linearLayout;
-    private TextView textView;
+    private GridView gridView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -64,9 +67,9 @@ public class OrderFragment extends Fragment {
         carouselView = v.findViewById(R.id.fragment_order_cv_offers_viewer);
         appBarLayout = v.findViewById(R.id.fragment_order_app_bar_layout);
         collapsingToolbarLayout = v.findViewById(R.id.fragment_order_ctb);
-        linearLayout = v.findViewById(R.id.linearLayout2);
+        linearLayout = v.findViewById(R.id.fragment_order_ll_category);
 
-        textView = v.findViewById(R.id.textView3);
+        gridView = v.findViewById(R.id.fragment_order_gv_category_images);
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
@@ -111,6 +114,16 @@ public class OrderFragment extends Fragment {
                 }
             }
         });
+
+        gridView.setAdapter(new ImageAdapter(getContext()));
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+
 
         return view;
     }
