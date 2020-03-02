@@ -88,12 +88,12 @@
                         android:fontFamily="@font/avenir_next_demi_bold"
                         android:text="category"
                         android:textAllCaps="true"
-                        android:textSize="19dp" />
+                        android:textColor="@color/disabledBtnColor"/>
 
                     <ImageButton
                         android:id="@+id/fragment_order_ib_hide_grid"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginStart="8dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:scaleType="center"
