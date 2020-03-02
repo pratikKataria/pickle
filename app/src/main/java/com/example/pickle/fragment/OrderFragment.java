@@ -146,19 +146,6 @@ public class OrderFragment extends Fragment {
         return view;
     }
 
-    int getScreenHeight() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        return displaymetrics.heightPixels;
-    }
-
-    public void animateOnScreen(View view) {
-        final int screenHeight = getScreenHeight();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "y", screenHeight, (screenHeight * 0.8F));
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.start();
-    }
-
     private void setToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Pickle India");
