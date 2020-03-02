@@ -1,6 +1,7 @@
 package com.example.pickle.fragment;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
@@ -41,6 +44,7 @@ public class OrderFragment extends Fragment {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CarouselView carouselView;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private int [] sampleImages = {
             R.drawable.sale_one,
@@ -56,6 +60,11 @@ public class OrderFragment extends Fragment {
     private void init_fields(View v) {
         toolbar = v.findViewById(R.id.fragment_order_toolbar);
         carouselView = v.findViewById(R.id.fragment_order_cv_offers_viewer);
+        collapsingToolbarLayout = v.findViewById(R.id.fragment_order_ctb);
+
+        final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
+        collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
+        collapsingToolbarLayout.setExpandedTitleTypeface(tf);
     }
 
     @Override
@@ -91,7 +100,7 @@ public class OrderFragment extends Fragment {
 
     private void setToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("fuck off");
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Pickle India");
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
     }

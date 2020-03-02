@@ -22,4 +22,10 @@
         <item name="android:inputType">number</item>
     </style>
 
+    <style name="ToolbarTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fontFamily">@font/pacifico_regular</item>
+    </style>
+
+
+
 </resources>
