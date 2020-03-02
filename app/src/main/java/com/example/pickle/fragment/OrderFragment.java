@@ -1,12 +1,25 @@
 package com.example.pickle.fragment;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,26 +27,11 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.synnapps.carouselview.CarouselView;
-import com.synnapps.carouselview.ImageListener;
-
-import java.io.Serializable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +43,8 @@ public class OrderFragment extends Fragment {
     private DrawerLayout drawerLayout;
     private CarouselView carouselView;
     private AppBarLayout appBarLayout;
+    private LinearLayout linearLayout;
+    private TextView textView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
@@ -64,6 +64,9 @@ public class OrderFragment extends Fragment {
         carouselView = v.findViewById(R.id.fragment_order_cv_offers_viewer);
         appBarLayout = v.findViewById(R.id.fragment_order_app_bar_layout);
         collapsingToolbarLayout = v.findViewById(R.id.fragment_order_ctb);
+        linearLayout = v.findViewById(R.id.linearLayout2);
+
+        textView = v.findViewById(R.id.textView3);
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
@@ -101,11 +104,28 @@ public class OrderFragment extends Fragment {
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                Log.e("SATE _ ORDER FRAG", state.name());
+                if (state == State.EXPANDED) {
+                    linearLayout.setVisibility(View.GONE);
+                } else if (state == State.COLLAPSED) {
+                    linearLayout.setVisibility(View.VISIBLE);
+                }
             }
         });
 
         return view;
+    }
+
+    int getScreenHeight() {
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        return displaymetrics.heightPixels;
+    }
+
+    public void animateOnScreen(View view) {
+        final int screenHeight = getScreenHeight();
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "y", screenHeight, (screenHeight * 0.8F));
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
     }
 
     private void setToolbar() {
