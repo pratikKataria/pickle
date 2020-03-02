@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -42,8 +43,9 @@ public class OrderFragment extends Fragment {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
     private CarouselView carouselView;
+    private AppBarLayout appBarLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     private CollapsingToolbarLayout collapsingToolbarLayout;
 
     private int [] sampleImages = {
@@ -60,6 +62,7 @@ public class OrderFragment extends Fragment {
     private void init_fields(View v) {
         toolbar = v.findViewById(R.id.fragment_order_toolbar);
         carouselView = v.findViewById(R.id.fragment_order_cv_offers_viewer);
+        appBarLayout = v.findViewById(R.id.fragment_order_app_bar_layout);
         collapsingToolbarLayout = v.findViewById(R.id.fragment_order_ctb);
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
@@ -95,6 +98,13 @@ public class OrderFragment extends Fragment {
             imageView.setImageResource(sampleImages[position]);
         });
 
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                Log.e("SATE _ ORDER FRAG", state.name());
+            }
+        });
+
         return view;
     }
 
@@ -112,4 +122,38 @@ public class OrderFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+}
+
+abstract class AppBarStateChangeListener implements AppBarLayout.OnOffsetChangedListener {
+
+    public enum State {
+        EXPANDED,
+        COLLAPSED,
+        IDLE
+    }
+
+    private State mCurrentState = State.IDLE;
+
+
+    public abstract void onStateChanged(AppBarLayout appBarLayout, State state);
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        if (i == 0) {
+            if (mCurrentState != State.EXPANDED)
+                onStateChanged(appBarLayout, State.EXPANDED);
+            mCurrentState = State.EXPANDED;
+        } else if (Math.abs(i) >= appBarLayout.getTotalScrollRange()) {
+            if (mCurrentState != State.COLLAPSED) {
+                onStateChanged(appBarLayout, State.COLLAPSED);
+            }
+            mCurrentState = State.COLLAPSED;
+        } else {
+            if (mCurrentState != State.IDLE) {
+                onStateChanged(appBarLayout, State.IDLE);
+            }
+            mCurrentState = State.IDLE;
+        }
+    }
+
 }
