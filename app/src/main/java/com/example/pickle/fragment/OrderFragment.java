@@ -18,13 +18,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.GridRecyclerViewAdapter;
+import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
 import com.example.pickle.R;
+import com.example.pickle.SpacesItemDecoration;
 import com.example.pickle.Utility;
 import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.data.GridItem;
+import com.example.pickle.data.Product;
 import com.google.android.material.appbar.AppBarLayout;
 import com.synnapps.carouselview.CarouselView;
 import android.content.Context;
@@ -40,6 +44,9 @@ public class OrderFragment extends Fragment {
     private Toolbar toolbar;
     RecyclerView recyclerView;
     List<GridItem> list;
+
+    RecyclerView recyclerViewProduct;
+    List<Product> productsList;
 
 
     private boolean isExpanded = true;
@@ -63,9 +70,12 @@ public class OrderFragment extends Fragment {
         recyclerView = v.findViewById(R.id.recyclerView);
 
         list = new ArrayList<>();
+        productsList = new ArrayList<>();
 
 
         carouselView = v.findViewById(R.id.carouselView);
+
+        recyclerViewProduct = v.findViewById(R.id.recyclerView1);
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
@@ -103,31 +113,39 @@ public class OrderFragment extends Fragment {
 
         populateList();
 
-        int mNoOfColumns = Utility.calculateNoOfColumns(getContext(), 130 );
+        int mNoOfColumns = Utility.calculateNoOfColumns(getContext(), 120 );
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         recyclerView.setLayoutManager(gridLayoutManager);
         GridRecyclerViewAdapter gridRecyclerViewAdapter = new GridRecyclerViewAdapter(getActivity(), list);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(5));
         recyclerView.setAdapter(gridRecyclerViewAdapter);
 
-//        gridView.setAdapter(new ImageAdapter(getContext()));
-//
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//            }
-//        });
+
+        ProductsRecyclerViewAdapter adapter = new ProductsRecyclerViewAdapter(getContext(), productsList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+        recyclerViewProduct.setLayoutManager(layoutManager);
+        recyclerViewProduct.addItemDecoration(new SpacesItemDecoration(16, 9));
+        recyclerViewProduct.setAdapter(adapter);
 
         return view;
     }
 
     private void populateList() {
 
-        list.add(new GridItem("fruits", R.drawable.ic_fruit));
-        list.add(new GridItem("vegetables", R.drawable.ic_vegetables));
-        list.add(new GridItem("beverages", R.drawable.ic_beverages));
-        list.add(new GridItem("dairy", R.drawable.ic_dairy));
-        list.add(new GridItem("dairy", R.drawable.ic_dairy));
+        list.add(new GridItem("Fruits", R.drawable.ic_fruit));
+        list.add(new GridItem("Vegetables", R.drawable.ic_vegetables));
+        list.add(new GridItem("Beverages", R.drawable.ic_beverages));
+        list.add(new GridItem("Dairy", R.drawable.ic_dairy));
+        list.add(new GridItem("Dairy", R.drawable.ic_dairy));
+
+
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
+        productsList.add(new Product("item1", 2110));
 
     }
 
