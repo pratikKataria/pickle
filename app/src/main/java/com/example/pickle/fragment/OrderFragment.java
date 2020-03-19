@@ -3,6 +3,7 @@ package com.example.pickle.fragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,10 +17,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.R;
+import com.example.pickle.Utility;
 import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.data.GridItem;
 import com.google.android.material.appbar.AppBarLayout;
 import com.synnapps.carouselview.CarouselView;
+import android.content.Context;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +38,8 @@ public class OrderFragment extends Fragment {
 
 
     private Toolbar toolbar;
+    RecyclerView recyclerView;
+    List<GridItem> list;
 
 
     private boolean isExpanded = true;
@@ -47,6 +59,11 @@ public class OrderFragment extends Fragment {
 
     private void init_fields(View v) {
         toolbar = v.findViewById(R.id.fragment_order_toolbar);
+
+        recyclerView = v.findViewById(R.id.recyclerView);
+
+        list = new ArrayList<>();
+
 
         carouselView = v.findViewById(R.id.carouselView);
 
@@ -84,6 +101,13 @@ public class OrderFragment extends Fragment {
             imageView.setImageResource(sampleImages[position]);
         });
 
+        populateList();
+
+        int mNoOfColumns = Utility.calculateNoOfColumns(getContext(), 130 );
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        GridRecyclerViewAdapter gridRecyclerViewAdapter = new GridRecyclerViewAdapter(getActivity(), list);
+        recyclerView.setAdapter(gridRecyclerViewAdapter);
 
 //        gridView.setAdapter(new ImageAdapter(getContext()));
 //
@@ -95,6 +119,16 @@ public class OrderFragment extends Fragment {
 //        });
 
         return view;
+    }
+
+    private void populateList() {
+
+        list.add(new GridItem("fruits", R.drawable.ic_fruit));
+        list.add(new GridItem("vegetables", R.drawable.ic_vegetables));
+        list.add(new GridItem("beverages", R.drawable.ic_beverages));
+        list.add(new GridItem("dairy", R.drawable.ic_dairy));
+        list.add(new GridItem("dairy", R.drawable.ic_dairy));
+
     }
 
     private void setToolbar() {
@@ -114,6 +148,8 @@ public class OrderFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 
 //abstract class AppBarStateChangeListener implements AppBarLayout.OnOffsetChangedListener {
