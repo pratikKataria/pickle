@@ -49,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+//        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         if (!hasPermissions(this, permission))
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         else
