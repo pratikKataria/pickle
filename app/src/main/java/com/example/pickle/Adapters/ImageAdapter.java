@@ -51,9 +51,9 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public Integer [] imageThumbs = {
-            R.drawable.image_one,
-            R.drawable.image_two,
-            R.drawable.image_three,
-            R.drawable.image_four
+            R.drawable.ic_beverages,
+            R.drawable.ic_fruit,
+            R.drawable.ic_dairy,
+            R.drawable.ic_vegetables
     };
 }
