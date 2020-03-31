@@ -1,5 +1,4 @@
-package com.example.pickle.activity.Main.NavigationFragment;
-
+package com.example.pickle.activity.Main.ProductsFragment;
 
 import android.os.Bundle;
 
@@ -14,9 +13,9 @@ import com.example.pickle.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OfferFragment extends Fragment {
+public class VegetableFragment extends Fragment {
 
-    public OfferFragment() {
+    public VegetableFragment() {
         // Required empty public constructor
     }
 
@@ -25,9 +24,6 @@ public class OfferFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_offer, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_vegetable, container, false);
     }
-
 }
