@@ -12,4 +12,43 @@
     <color name="bottomNavigation">#F4F4F4</color>
     <color name="textBoxBackground">#F2F2F2</color>
     <color name="disabledBtnColor">#999999</color>
+
+    <color name="black">#000000</color>
+    <color name="grey">#7E7E7E</color>
+    <color name="darkGrey">#1E1E1E</color>
+
+    <color name="Denim">#157EBF</color>
+    <color name="AliceBlue">#B4DDF6</color>
+    <color name="CreamBrulee">#FFE9A7</color>
+    <color name="CeriseRed">#DE2869</color>
+
+    <color name="mainTitle">#00E5FF</color>
+    <color name="subTitle">#1DE9B6</color>
+    <color name="otherText">#69F0AE</color>
+
+    <color name="chipCorrectColor">#E7F3EF</color>
+    <color name="chipCorrectText">#296052</color>
+    <color name="chipWrongColor">#FFD8D8</color>
+    <color name="chipWrongText">#C8235E</color>
+
+    <color name="orange">#E97939</color>
+    <color name="green">#607F55</color>
+    <color name="darkBrown">#3C3B1D</color>
+    <color name="skin">#F8C9B5</color>
+    <color name="lightGrey">#596164</color>
+    <color name="blue">#79CBE8</color>
+    <color name="greyMaterial">#838294</color>
+    <color name="darkMaterial">#252831</color>
+    <color name="lightGreen">#736E4E</color>
+    <color name="dullSkin">#D1A38B</color>
+    <color name="lightGreenMaterial">#BDD8AF</color>
+    <color name="mudBrown">#976F39</color>
+
+    <color name="chartEmptyBar">#CFD8DC</color>
+    <color name="chartIdealBar">#448AFF</color>
+    <color name="chartSelectedBar">#8988B0</color>
+
+    <color name="questionRemaining">#024065</color>
+
+    <color name="notesBg">#303030</color>
 </resources>

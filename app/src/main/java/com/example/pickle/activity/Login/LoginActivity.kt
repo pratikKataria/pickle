@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import kotlinx.android.synthetic.main.activity_login.*
 import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var countDownTimer: TextView
     private lateinit var sendOtpButton : MaterialButton
+    private lateinit var timer : CountDownTimer
     
     private fun initFields() {
         progressBar = findViewById(R.id.activity_login_pb_counter)
@@ -45,6 +47,18 @@ class LoginActivity : AppCompatActivity() {
 
         initFields()
 
+            timer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                countDownTimer.text = "" + millisUntilFinished / 1000
+            }
+
+            override fun onFinish() {
+                countDownTimer.text = ""
+                progressBar.visibility = GONE
+                sendOtpButton.isEnabled = true
+            }
+        }
+
         sendOtpButton.setOnClickListener {
 
             if (phoneNumber.text.isEmpty()) {
@@ -58,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
                 phoneNumber.requestFocus()
                 return@setOnClickListener
             }
+
+            timer.cancel()
 
             progressBar.visibility = VISIBLE
             countDownTimer.visibility = VISIBLE
@@ -73,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 mCallBacks
             )
 
-            timeCounter()
+            timer.start()
         }
 
 
@@ -87,9 +103,6 @@ class LoginActivity : AppCompatActivity() {
                 // 2 - Auto-retrieval. On some devices Google Play services can automatically
                 //     detect the incoming verification SMS and perform verification without
                 //     user action.
-
-
-//                signInWithPhoneAuthCredential(credential)
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
@@ -97,16 +110,24 @@ class LoginActivity : AppCompatActivity() {
                 // for instance if the the phone number format is not valid.
 //                Log.w(TAG, "onVerificationFailed", e)
 
+                progressBar.visibility = VISIBLE
+                countDownTimer.visibility = VISIBLE
+
                 if (e is FirebaseAuthInvalidCredentialsException) {
-                    // Invalid request
-                    // ...
+                    activity_login_tv_error.visibility = VISIBLE
+                    activity_login_tv_error.text = e.message
                 } else if (e is FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
-                    // ...
+                    activity_login_tv_error.visibility = VISIBLE
+                    activity_login_tv_error.text = e.message
+                } else {
+                    activity_login_tv_error.visibility = VISIBLE
+                    activity_login_tv_error.text = e.message
                 }
 
-                // Show a message and update the UI
-                // ...
+                Handler().postDelayed({
+                    activity_login_tv_error.visibility = GONE
+                    activity_login_tv_error.text = ""
+                }, 10000)
             }
 
             override fun onCodeSent(
@@ -129,27 +150,11 @@ class LoginActivity : AppCompatActivity() {
                         otpIntent.putExtra("AuthCredentials", verificationId)
                         startActivity(otpIntent)
 
-                    }, 3000
+                    }, 1500
                 )
 
                 Toast.makeText(this@LoginActivity, "otp sent", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
-    private fun timeCounter() {
-        val timer = object : CountDownTimer(60000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                countDownTimer.text = "" + millisUntilFinished / 1000
-            }
-
-            override fun onFinish() {
-                countDownTimer.text = ""
-                progressBar.visibility = GONE
-                sendOtpButton.isEnabled = true
-            }
-        }
-        timer.start()
-    }
-
 }
