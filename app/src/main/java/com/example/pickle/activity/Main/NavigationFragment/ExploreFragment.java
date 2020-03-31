@@ -1,4 +1,4 @@
-package com.example.pickle.fragment;
+package com.example.pickle.activity.Main.NavigationFragment;
 
 
 import android.os.Bundle;

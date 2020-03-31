@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bottomNavigation"
-    tools:context=".fragment.OrderFragment">
+    tools:context=".activity.Main.NavigationFragment.OrderFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

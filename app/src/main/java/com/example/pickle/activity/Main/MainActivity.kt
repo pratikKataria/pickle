@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.content.Intent
-import android.view.Gravity.START
 import android.view.MenuItem
 import android.widget.Toast
 import android.widget.Toolbar
@@ -17,14 +16,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
-import com.example.pickle.fragment.ExploreFragment
-import com.example.pickle.fragment.OfferFragment
-import com.example.pickle.fragment.OrderFragment
+import com.example.pickle.activity.Main.NavigationFragment.ExploreFragment
+import com.example.pickle.activity.Main.NavigationFragment.OfferFragment
+import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,7 +63,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView.setNavigationItemSelectedListener(this)
 
 
-        val currentFragment = OrderFragment()
+        val currentFragment =
+            OrderFragment()
 
         Log.e("MainACTIVITY ", "fragment3")
         supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, currentFragment).commit()
@@ -76,17 +74,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             when(bottomNavigationView.getSelectedItemId()) {
                     R.id.bottom_nav_orders -> {
 
-                        fragment = OrderFragment()
+                        fragment =
+                            OrderFragment()
                         loadFragment(fragment)
                         return@setOnItemSelectedListener
                     }
                     R.id.bottom_nav_offers -> {
-                        fragment = OfferFragment()
+                        fragment =
+                            OfferFragment()
                         loadFragment(fragment)
                         return@setOnItemSelectedListener
                     }
                     R.id.bottom_nav_explore -> {
-                        fragment = ExploreFragment()
+                        fragment =
+                            ExploreFragment()
                         loadFragment(fragment)
                         return@setOnItemSelectedListener
                     }

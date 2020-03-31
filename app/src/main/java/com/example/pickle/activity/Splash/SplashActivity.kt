@@ -1,7 +1,7 @@
 package com.example.pickle.activity.Splash
 
 import android.Manifest
-import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,14 +10,19 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.view.View
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
+import com.example.pickle.activity.Login.CustomerDetailActivity
 import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.MainActivity
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 class SplashActivity : AppCompatActivity() {
@@ -45,15 +50,55 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+        if (hasPermissions(this, permission)) {
+            if (checkAuth())
+                checkDoc()
+            else {
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+        }
+
     }
 
-    override fun onStart() {
-        super.onStart()
-//        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        if (!hasPermissions(this, permission))
-            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-        else
-            startNextActivity()
+    private fun checkAuth(): Boolean {
+        return FirebaseAuth.getInstance().uid != null
+    }
+
+    private fun checkDoc() {
+        Log.e("check doc ", " chek doc")
+        var reference = FirebaseDatabase.getInstance().getReference("Customers")
+            .child(FirebaseAuth.getInstance().uid!! + "/c_uid")
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Get Post object and use the values to update the UI
+                if (dataSnapshot.exists()) {
+                    Log.e("check doc ", " chek doc $dataSnapshot")
+                    startMain()
+                } else {
+                    Log.e("check doc ", " chek doc $dataSnapshot" + " null")
+                    Handler().postDelayed( {
+                        startActivity(Intent(this@SplashActivity, CustomerDetailActivity::class.java))
+                    }, 1200)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+                // ...
+            }
+        })
+    }
+
+    private fun firstRun(): Boolean {
+        var pref : SharedPreferences = getSharedPreferences("permissions", 0)
+        if (pref.getBoolean("FIRST_RUN", true)) {
+            pref.edit().putBoolean("FIRST_RUN", false).apply();
+            return true
+        } else
+            return false
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -68,7 +113,7 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
-            if (isAllPermitted) startNextActivity()
+            if (isAllPermitted) checkDoc()
             else displayNeverAskAgainDialog()
 
         }
@@ -92,20 +137,9 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun startNextActivity() {
+    private fun startMain() {
         Handler().postDelayed({
-
-            val sharedPref: SharedPreferences = getSharedPreferences("permissions", 0)
-
-            if (sharedPref.getBoolean("firstRun", true)) {
-                startActivity(Intent(this@SplashActivity, OnBoardingActivity::class.java))
-                sharedPref.edit().putBoolean("firstRun", false).apply()
-                finish()
-            } else {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
-            }
-
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         }, 2000)
     }
 
