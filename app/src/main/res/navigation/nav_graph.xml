@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/orderFragment">
+
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.example.pickle.activity.Main.NavigationFragment.OrderFragment"
+        android:label="fragment_order"
+        tools:layout="@layout/fragment_order" >
+        <action
+            android:id="@+id/action_orderFragment_to_fruitsFragment"
+            app:destination="@id/fruitsFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_vegetableFragment"
+            app:destination="@id/vegetableFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_beveragesFragment"
+            app:destination="@id/beveragesFragment" />
+        <action
+            android:id="@+id/action_orderFragment_to_dairyFragment"
+            app:destination="@id/dairyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fruitsFragment"
+        android:name="com.example.pickle.activity.Main.ProductsFragment.FruitsFragment"
+        android:label="fragment_fruits"
+        tools:layout="@layout/fragment_fruits" >
+        <action
+            android:id="@+id/action_fruitsFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/vegetableFragment"
+        android:name="com.example.pickle.activity.Main.ProductsFragment.VegetableFragment"
+        android:label="fragment_vegetable"
+        tools:layout="@layout/fragment_vegetable" >
+        <action
+            android:id="@+id/action_vegetableFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/beveragesFragment"
+        android:name="com.example.pickle.activity.Main.ProductsFragment.BeveragesFragment"
+        android:label="fragment_beverages"
+        tools:layout="@layout/fragment_beverages" >
+        <action
+            android:id="@+id/action_beveragesFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dairyFragment"
+        android:name="com.example.pickle.activity.Main.ProductsFragment.DairyFragment"
+        android:label="fragment_dairy"
+        tools:layout="@layout/fragment_dairy" >
+        <action
+            android:id="@+id/action_dairyFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.pickle.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_orderFragment"
+            app:destination="@id/orderFragment" />
+    </fragment>
+</navigation>
