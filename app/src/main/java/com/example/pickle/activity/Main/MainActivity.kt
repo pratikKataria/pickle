@@ -22,6 +22,7 @@ import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -59,6 +60,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         bottomNavigationView.setItemSelected(R.id.bottom_nav_orders)
 
+
+        activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
 
         navigationView.setNavigationItemSelectedListener(this)
 

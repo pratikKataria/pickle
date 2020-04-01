@@ -1,9 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.Main.AddNewItemActivity">
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.Main.AddNewItemActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="product name"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/add_new_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="name"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="product description"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/add_new_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="description"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="category"/>
+
+        <Spinner
+            android:id="@+id/add_new_item_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="max qty per user can have"/>
+
+        <EditText
+            android:id="@+id/add_new_item_max_per_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="max qty per user"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="product under any offer"/>
+
+        <EditText
+            android:id="@+id/add_new_item_offers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="offers"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="orignal price"/>
+
+        <EditText
+            android:id="@+id/add_new_item_base_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="base price"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="sell price if any"/>
+
+        <EditText
+            android:id="@+id/add_new_item_sell_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="sell price"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="product type "/>
+
+        <Spinner
+            android:id="@+id/add_new_item_qty_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="quntity type"/>
+
+        <Spinner
+            android:id="@+id/add_new_item_type_solid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"/>
+
+        <Spinner
+            android:id="@+id/add_new_item_type_liquid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="product quantity"/>
+
+        <EditText
+            android:id="@+id/add_new_item_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="500 ml, kg , g, l"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:layout_marginTop="8dp"
+            android:text="no of pices if any"/>
+
+        <EditText
+            android:id="@+id/add_new_item_units"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="1 pcs, 2 pcs"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="select product image"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:id="@+id/add_new_item_image"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:src="@drawable/bg_image_upload_file"/>
+
+        <ProgressBar
+            android:id="@+id/add_new_item_progress_bar"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:indeterminateTint="@color/black"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_new_item_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:layout_gravity="center"
+            android:text="save"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</ScrollView>
