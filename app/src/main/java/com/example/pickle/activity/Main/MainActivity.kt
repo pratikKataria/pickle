@@ -14,11 +14,15 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.NavigationFragment.ExploreFragment
 import com.example.pickle.activity.Main.NavigationFragment.OfferFragment
 import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.ismaeldivita.chipnavigation.ChipNavigationBar
@@ -35,6 +39,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     public lateinit var drawerLayout: DrawerLayout
 
+    lateinit var _navController : NavController;
+
     private val sampleImages = intArrayOf(
         R.drawable.sale_one,
         R.drawable.sale_two,
@@ -42,7 +48,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         R.drawable.seal_four
     )
 
-    lateinit var bottomNavigationView: ChipNavigationBar
+    lateinit var bottomNavigationView: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +64,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navigationView = findViewById(R.id.activity_main_nv_side_navigation);
 
-        bottomNavigationView.setItemSelected(R.id.bottom_nav_orders)
+//        bottomNavigationView.setItemSelected(R.id.bottom_nav_orders);
 
 
         activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
@@ -69,45 +75,53 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val currentFragment =
             OrderFragment()
 
-        Log.e("MainACTIVITY ", "fragment3")
-        supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, currentFragment).commit()
-
-        bottomNavigationView.setOnItemSelectedListener {
-            lateinit var fragment : Fragment
-            when(bottomNavigationView.getSelectedItemId()) {
-                    R.id.bottom_nav_orders -> {
-
-                        fragment =
-                            OrderFragment()
-                        loadFragment(fragment)
-                        return@setOnItemSelectedListener
-                    }
-                    R.id.bottom_nav_offers -> {
-                        fragment =
-                            OfferFragment()
-                        loadFragment(fragment)
-                        return@setOnItemSelectedListener
-                    }
-                    R.id.bottom_nav_explore -> {
-                        fragment =
-                            ExploreFragment()
-                        loadFragment(fragment)
-                        return@setOnItemSelectedListener
-                    }
-                }
+        var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
+        if (navHostFragment != null) {
+            _navController = navHostFragment.navController
+            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController);
         }
 
 
+
+//        Log.e("MainACTIVITY ", "fragment3")
+//        supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, currentFragment).commit()
+//
+//        bottomNavigationView.setOnItemSelectedListener {
+//            lateinit var fragment : Fragment
+//            when(bottomNavigationView.getSelectedItemId()) {
+//                    R.id.bottom_nav_orders -> {
+//
+//                        fragment =
+//                            OrderFragment()
+//                        loadFragment(fragment)
+//                        return@setOnItemSelectedListener
+//                    }
+//                    R.id.bottom_nav_offers -> {
+//                        fragment =
+//                            OfferFragment()
+//                        loadFragment(fragment)
+//                        return@setOnItemSelectedListener
+//                    }
+//                    R.id.bottom_nav_explore -> {
+//                        fragment =
+//                            ExploreFragment()
+//                        loadFragment(fragment)
+//                        return@setOnItemSelectedListener
+//                    }
+//                }
+//        }
+
+
     }
-
-    private fun loadFragment(fragment: Fragment) {
-        Log.e("MainACTIVITY ", "load frag4")
-
-        var fragmentManager : FragmentManager = supportFragmentManager
-        Log.e("MainACTIVITY ", "support frag")
-
-        fragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragment).addToBackStack(null).commit()
-    }
+//
+//    private fun loadFragment(fragment: Fragment) {
+//        Log.e("MainACTIVITY ", "load frag4")
+//
+//        var fragmentManager : FragmentManager = supportFragmentManager
+//        Log.e("MainACTIVITY ", "support frag")
+//
+//        fragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragment).addToBackStack(null).commit()
+//    }
 
     @SuppressLint("WrongConstant")
     public fun openDrawer() {

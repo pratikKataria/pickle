@@ -68,4 +68,14 @@
             android:id="@+id/action_checkoutFragment_to_orderFragment"
             app:destination="@id/orderFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/exploreFragment"
+        android:name="com.example.pickle.activity.Main.NavigationFragment.ExploreFragment"
+        android:label="fragment_explore"
+        tools:layout="@layout/fragment_explore" />
+    <fragment
+        android:id="@+id/offerFragment"
+        android:name="com.example.pickle.activity.Main.NavigationFragment.OfferFragment"
+        android:label="fragment_offer"
+        tools:layout="@layout/fragment_offer" />
 </navigation>

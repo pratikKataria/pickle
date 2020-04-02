@@ -12,13 +12,19 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/activity_main_fl_fragment_loader"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/carouselView" />
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <fragment
+                android:id="@+id/activity_main_nav_host"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph" />
+
+        </FrameLayout>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,7 +38,7 @@
             app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/activity_main_cnb_bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -40,7 +46,7 @@
             android:elevation="8dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            app:cnb_menuResource="@menu/bottom_navigation_menu"
+            app:menu="@menu/bottom_navigation_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
