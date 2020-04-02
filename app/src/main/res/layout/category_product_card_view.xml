@@ -4,6 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        
+        <import type="android.view.View"/>
 
         <variable
             name="product"
@@ -56,7 +58,7 @@
                     android:id="@+id/card_view_ll_inc_dec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible">
+                    android:visibility="@{product.showAddButton()? View.VISIBLE : View.GONE}">
 
                     <Button
                         android:id="@+id/decreaseCartItem"
@@ -86,7 +88,8 @@
                 <LinearLayout
                     android:id="@+id/card_view_ll_add_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="@{product.showAddButton()? View.GONE : View.VISIBLE}">
 
                     <TextView
                         android:layout_width="wrap_content"

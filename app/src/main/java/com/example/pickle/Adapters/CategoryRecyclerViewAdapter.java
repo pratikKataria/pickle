@@ -72,16 +72,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         v.bind(model);
 
 
-
-
-        if (model.getQuantityCounter() != 0) {
-            ((ProductCardViewHolder) holder).addLinearLayout.setVisibility(View.GONE);
-            ((ProductCardViewHolder) holder).incDecLinearLayout.setVisibility(View.VISIBLE);
-        }
-
         ((ProductCardViewHolder) holder).addToCartButton.setOnClickListener(view -> {
-            ((ProductCardViewHolder) holder).addLinearLayout.setVisibility(View.GONE);
-            ((ProductCardViewHolder) holder).incDecLinearLayout.setVisibility(View.VISIBLE);
             if (cartList != null) {
                 if (cartList.contains(model)) {
                     cartList.remove(model);
@@ -140,8 +131,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
             if (Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString()) <= 1) {
                 Log.e("Category Reycler view Adapter", "minus product: if  " + ((ProductCardViewHolder) holder).qtyCounter.getText().toString());
-                ((ProductCardViewHolder) holder).addLinearLayout.setVisibility(View.VISIBLE);
-                ((ProductCardViewHolder) holder).incDecLinearLayout.setVisibility(View.GONE);
                 int a = Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString());
                 a--;
                 model.setQuantityCounter(a);
@@ -179,8 +168,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         private Button increaseCart;
         private Button decreaseCart;
         private Button addToCartButton;
-        private LinearLayout addLinearLayout;
-        private LinearLayout incDecLinearLayout;
+
         private TextView qtyCounter;
 
         public ProductCardViewHolder(@NonNull CategoryProductCardViewBinding binding) {
@@ -190,8 +178,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             increaseCart = binding.increaseCartItem;
             decreaseCart = binding.decreaseCartItem;
             addToCartButton = binding.addToCartButton;
-            addLinearLayout = binding.cardViewLlAddBtn;
-            incDecLinearLayout = binding.cardViewLlIncDec;
             qtyCounter = binding.qtyCounter;
         }
 

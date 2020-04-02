@@ -46,6 +46,10 @@ public class ProductModel {
         this.itemThumbImage = itemThumbImage;
     }
 
+    public boolean showAddButton() {
+        return quantityCounter > 0;
+    }
+
     public String getItemName() {
         return itemName;
     }
