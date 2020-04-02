@@ -42,7 +42,7 @@ public class CartFragment extends Fragment {
     private void init_recyclerView(View view) {
         fruitsRecyclerView = view.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), cartList);
+        adapter = new CategoryRecyclerViewAdapter(getActivity(), cartList, "Fruits");
         fruitsRecyclerView.setLayoutManager(linearLayoutManager);
         fruitsRecyclerView.setAdapter(adapter);
 //        adapter.setOnItemClickListener(position -> {

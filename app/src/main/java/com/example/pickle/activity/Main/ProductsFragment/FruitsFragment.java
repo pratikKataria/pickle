@@ -70,7 +70,7 @@ public class FruitsFragment extends Fragment {
     private void init_recyclerView() {
         fruitsRecyclerView = fruitsBinding.fruitsRecyclerView;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), fruitList);
+        adapter = new CategoryRecyclerViewAdapter(getActivity(), fruitList, "Fruits");
         fruitsRecyclerView.setLayoutManager(linearLayoutManager);
         fruitsRecyclerView.setAdapter(adapter);
 //        adapter.setOnItemClickListener(position -> {

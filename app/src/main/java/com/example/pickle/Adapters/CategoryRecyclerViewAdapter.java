@@ -27,13 +27,12 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     ArrayList<ProductModel> productModelsList;
     public ArrayList<ProductModel> cartList = null;
 
-    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductModel> productModelList) {
+    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductModel> productModelList, String category) {
         this.context = context;
         this.productModelsList = productModelList;
 
-        String cartProducts = SharedPrefsUtils.getStringPreference(context, "cart", 0);
+        String cartProducts = SharedPrefsUtils.getStringPreference(context, category, 0);
         ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-        Log.e("Category Reycler view Adapter", "car product: " + cartProducts);
 
 
         if (cartList != null) {
