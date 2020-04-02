@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,13 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
 
     private Context context;
     private List<GridItem> gridItemList;
+    OnItemClickListener mListener;
+
+    public interface  OnItemClickListener {
+        public void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) { mListener = listener;}
 
     public GridRecyclerViewAdapter(Context context, List<GridItem> gridItemList) {
         this.context = context;
@@ -32,7 +40,7 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
     public GridViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_card_view_layout, parent, false);
-        return new GridViewHolder(view);
+        return new GridViewHolder(view, mListener);
     }
 
     @Override
@@ -51,7 +59,7 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
         ImageView imageView;
         CardView cardView;
 
-        public GridViewHolder(@NonNull View itemView) {
+        public GridViewHolder(@NonNull View itemView, OnItemClickListener Listener) {
             super(itemView);
 
             textViewTitle = itemView.findViewById(R.id.grid_view_tv_text);
@@ -59,6 +67,15 @@ public class GridRecyclerViewAdapter extends RecyclerView.Adapter<GridRecyclerVi
             cardView = itemView.findViewById(R.id.cardView);
 
             cardView.setElevation(0);
+
+            itemView.setOnClickListener(v -> {
+                if (Listener != null) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Listener.onItemClick(position);
+                    }
+                }
+            });
 
         }
 

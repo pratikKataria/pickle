@@ -3,7 +3,6 @@ package com.example.pickle.activity.Main.NavigationFragment;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,9 +29,9 @@ import com.example.pickle.Utility;
 import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.data.GridItem;
 import com.example.pickle.data.Product;
-import com.google.android.material.appbar.AppBarLayout;
+import com.example.pickle.data.ProductModel;
 import com.synnapps.carouselview.CarouselView;
-import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class OrderFragment extends Fragment {
 
 
     private Toolbar toolbar;
-    RecyclerView recyclerView;
+    RecyclerView _gridViewRecyclerView;
     List<GridItem> list;
 
     RecyclerView recyclerViewProduct;
@@ -67,7 +67,7 @@ public class OrderFragment extends Fragment {
     private void init_fields(View v) {
         toolbar = v.findViewById(R.id.fragment_order_toolbar);
 
-        recyclerView = v.findViewById(R.id.recyclerView);
+        _gridViewRecyclerView = v.findViewById(R.id.recyclerView);
 
         list = new ArrayList<>();
         productsList = new ArrayList<>();
@@ -103,6 +103,7 @@ public class OrderFragment extends Fragment {
 
         init_fields(view);
 
+
         setToolbar();
 
         carouselView.setPageCount(sampleImages.length);
@@ -115,10 +116,16 @@ public class OrderFragment extends Fragment {
 
         int mNoOfColumns = Utility.calculateNoOfColumns(getContext(), 120 );
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        _gridViewRecyclerView.setLayoutManager(gridLayoutManager);
         GridRecyclerViewAdapter gridRecyclerViewAdapter = new GridRecyclerViewAdapter(getActivity(), list);
-        recyclerView.addItemDecoration(new SpacesItemDecoration(5));
-        recyclerView.setAdapter(gridRecyclerViewAdapter);
+        _gridViewRecyclerView.addItemDecoration(new SpacesItemDecoration(5));
+        _gridViewRecyclerView.setAdapter(gridRecyclerViewAdapter);
+        _gridViewRecyclerView.setOnClickListener(new GridRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+
+            }
+        });
 
 
         ProductsRecyclerViewAdapter adapter = new ProductsRecyclerViewAdapter(getContext(), productsList);
@@ -149,7 +156,7 @@ public class OrderFragment extends Fragment {
 
     }
 
-    private void setToolbar() {
+    private void setToolbar() {zzzzzzzzzzz
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Pickle India");
