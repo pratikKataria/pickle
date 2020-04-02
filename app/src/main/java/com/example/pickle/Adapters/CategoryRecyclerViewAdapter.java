@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.R;
 import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.databinding.CategoryProductCardViewBinding;
 
 import java.util.ArrayList;
 
@@ -29,16 +30,18 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         RecyclerView.ViewHolder holder;
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_product_card_view, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        CategoryProductCardViewBinding view = CategoryProductCardViewBinding.inflate(layoutInflater, parent, false);
 
         holder = new ProductCardViewHolder(view);
 
-        return null;
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        ProductModel model = productModelsList.get(position);
+        ((ProductCardViewHolder) holder).bind(model);
     }
 
     @Override
@@ -49,8 +52,16 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class ProductCardViewHolder extends RecyclerView.ViewHolder {
 
-        public ProductCardViewHolder(@NonNull View itemView) {
-            super(itemView);
+        private CategoryProductCardViewBinding binding;
+
+        public ProductCardViewHolder(@NonNull CategoryProductCardViewBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void bind(ProductModel model) {
+            binding.setProduct(model);
+            binding.executePendingBindings();
         }
 
     }

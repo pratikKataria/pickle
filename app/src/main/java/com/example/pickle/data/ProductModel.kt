@@ -1,7 +1,9 @@
 package com.example.pickle.data
 
-import android.accessibilityservice.GestureDescription
+import java.io.Serializable
+import java.lang.Double.NaN
 import java.util.*
+import kotlin.math.roundToInt
 
 data class ProductModel(
 
@@ -25,4 +27,20 @@ data class ProductModel(
     var itemImageUrl: String,
     var itemThumbImage: String
 
-)
+) : Serializable {
+
+    constructor() : this(
+        "",
+        "",
+        -9999999,
+        -9999999,
+        -9999999,
+        "",
+        -9999999,
+        "",
+        "",
+        "",
+        "",-9999999, Date(), true, "", ""
+
+    )
+}

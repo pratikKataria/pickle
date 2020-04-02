@@ -10,6 +10,12 @@
         <item name="android:fontFamily">@font/avenir_next_medium</item>
     </style>
 
+    <style name="elegentButton" >
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
+    </style>
+
     <style name="editTextStyle">
         <item name="android:textColor">@color/darkBlue</item>
         <item name="android:textCursorDrawable">@color/darkBlue</item>
