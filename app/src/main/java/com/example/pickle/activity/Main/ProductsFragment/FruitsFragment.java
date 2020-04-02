@@ -1,6 +1,10 @@
 package com.example.pickle.activity.Main.ProductsFragment;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -8,22 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.data.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -77,6 +79,16 @@ public class FruitsFragment extends Fragment {
     }
 
     private void populateList() {
+
+        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "cart", 0);
+        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
+        ArrayList<ProductModel> cartList;
+        if (productModels != null) {
+            cartList = new ArrayList<>(Arrays.asList(productModels));
+        } else {
+            cartList = new ArrayList<>();
+        }
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/Fruits");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +97,15 @@ public class FruitsFragment extends Fragment {
                     if (m.exists()) {
                         Log.e("Fruit recycler view ", m +" ");
                         ProductModel model = m.getValue(ProductModel.class);
+
+                        if (cartList != null) {
+                            for (ProductModel pm : cartList) {
+                                if (model.getItemId().equals(pm.getItemId())) {
+                                    model.setQuantityCounter(pm.getQuantityCounter());
+                                }
+                            }
+                        }
+
                         fruitList.add(model);
                         adapter.notifyDataSetChanged();
                     }
@@ -97,6 +118,8 @@ public class FruitsFragment extends Fragment {
 
             }
         });
+
+
     }
 
 }

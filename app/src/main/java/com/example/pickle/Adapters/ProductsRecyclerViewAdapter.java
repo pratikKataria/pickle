@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.R;
 import com.example.pickle.data.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsRecyclerViewAdapter extends RecyclerView.Adapter<ProductsRecyclerViewAdapter.ProductViewHolder> {

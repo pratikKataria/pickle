@@ -46,10 +46,64 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="91dp"
                 android:layout_height="wrap_content"
-                app:backGroundColor="@color/black" />
+                android:layout_marginEnd="8dp"
+                android:layout_gravity="end">
+
+                <LinearLayout
+                    android:id="@+id/card_view_ll_inc_dec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
+
+                    <Button
+                        android:id="@+id/decreaseCartItem"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/qtyCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@{String.valueOf(product.quantityCounter)}" />
+
+                    <Button
+                        android:id="@+id/increaseCartItem"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/card_view_ll_add_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Add" />
+                    <Button
+                        android:id="@+id/add_to_cart_button"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
 

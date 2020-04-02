@@ -16,7 +16,7 @@
         <item>liters</item>
         <item>ml</item>
     </string-array>
-    
+
     <string-array name="solid">
         <item>kg</item>
         <item>g</item>
