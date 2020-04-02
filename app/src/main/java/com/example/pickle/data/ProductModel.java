@@ -185,4 +185,27 @@ public class ProductModel {
     public void setQuantityCounter(int quantityCounter) {
         this.quantityCounter = quantityCounter;
     }
+
+    @Override
+    public String toString() {
+        return "ProductModel{" +
+                "itemName='" + itemName + '\'' +
+                ", itemDesc='" + itemDesc + '\'' +
+                ", itemBasePrice=" + itemBasePrice +
+                ", itemSellPrice=" + itemSellPrice +
+                ", itemMaxQtyPerUser=" + itemMaxQtyPerUser +
+                ", itemOffers='" + itemOffers + '\'' +
+                ", itemQty=" + itemQty +
+                ", qtyType='" + qtyType + '\'' +
+                ", itemType='" + itemType + '\'' +
+                ", itemCategory='" + itemCategory + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", itemUnits=" + itemUnits +
+                ", date=" + date +
+                ", itemAvailability=" + itemAvailability +
+                ", itemImageUrl='" + itemImageUrl + '\'' +
+                ", itemThumbImage='" + itemThumbImage + '\'' +
+                ", quantityCounter=" + quantityCounter +
+                '}';
+    }
 }

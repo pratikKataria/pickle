@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
+import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.data.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
@@ -38,6 +39,7 @@ public class FruitsFragment extends Fragment {
 
     RecyclerView fruitsRecyclerView;
     ArrayList<ProductModel> fruitList;
+    ArrayList<ProductModel> cartList;
     CategoryRecyclerViewAdapter adapter;
 
     FragmentFruitsBinding fruitsBinding;
@@ -80,9 +82,9 @@ public class FruitsFragment extends Fragment {
 
     private void populateList() {
 
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "cart", 0);
+        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Fruits", 0);
         ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-        ArrayList<ProductModel> cartList;
+
         if (productModels != null) {
             cartList = new ArrayList<>(Arrays.asList(productModels));
         } else {
