@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.data.SharedPrefsUtils;
 import com.example.pickle.databinding.CategoryProductCardViewBinding;
@@ -71,7 +72,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         currCardViewHolder._addToCartButton.setOnClickListener(view -> {
             if (cartList != null) {
                 if (cartList.contains(model)) {
-                    cartList.remove(model);
+                    removeItem(model);
                     model.setQuantityCounter(1);
                     cartList.add(model);
                     SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
@@ -86,7 +87,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 }
             } else {
                 cartList = new ArrayList<>(Arrays.asList(model));
-                cartList.remove(model);
+                removeItem(model);
                 model.setQuantityCounter(1);
                 cartList.add(model);
                 SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
@@ -103,7 +104,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 currCardViewHolder._qtyCounter.setText(Integer.toString(a));
                 if (cartList != null) {
                     if (cartList.contains(model)) {
-                        cartList.remove(model);
+                        removeItem(model);
                         model.setQuantityCounter(a);
                         cartList.add(model);
                         SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
@@ -145,7 +146,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 int a = model.getQuantityCounter();
                 a--;
                 currCardViewHolder._qtyCounter.setText(Integer.toString(a));
-                cartList.remove(model);
+                removeItem(model);
                 model.setQuantityCounter(a);
                 cartList.add(model);
                 SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
@@ -154,6 +155,18 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
+    }
+
+
+    public void removeItem(ProductModel model) {
+        Iterator<ProductModel> itr  = cartList.iterator();
+        while (itr.hasNext()) {
+            ProductModel mdl = itr.next();
+            if (model.getItemId().equals(mdl.getItemId())) {
+                itr.remove();
+                notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

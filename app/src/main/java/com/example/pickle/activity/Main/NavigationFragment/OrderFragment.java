@@ -2,15 +2,19 @@ package com.example.pickle.activity.Main.NavigationFragment;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +42,7 @@ import com.synnapps.carouselview.CarouselView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -101,14 +106,20 @@ public class OrderFragment extends Fragment{
         LayerDrawable icon = (LayerDrawable) item.getIcon();
 
         String list = SharedPrefsUtils.getStringPreference(getContext(), "Fruits", 0);
-        if (list != null) {
-            ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-            int count = models.length;
-            if (count > 0) {
-                setBadgeCount(getActivity(), icon, count);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        if (preferences != null) {
+            Map<String, ?> allEntries = preferences.getAll();
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+            }
+            if (list != null) {
+                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
+                int count = models.length;
+                if (count > 0) {
+                    setBadgeCount(getActivity(), icon, count);
+                }
             }
         }
-
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -196,77 +207,18 @@ public class OrderFragment extends Fragment{
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
-
-
     }
 
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == android.R.id.home) {
-//            ((MainActivity)(getActivity())).openDrawer();
-//        }
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-//                LayerDrawable icon = (LayerDrawable) item.getIcon();
-//
-//                CountDrawable badge;
-//
-//                // Reuse drawable if possible
-//                Drawable reuse = icon.findDrawableByLayerId(R.id.ic_group_count);
-//                if (reuse != null && reuse instanceof CountDrawable) {
-//                    badge = (CountDrawable) reuse;
-//                } else {
-//                    badge = new CountDrawable(getActivity());
-//                }
-//
-//                badge.setCount(Integer.toString(12));
-//                badge.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-//                icon.mutate();
-//                icon.setDrawableByLayerId(R.id.ic_group_count, badge);
-//                break;
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
-
-//abstract class AppBarStateChangeListener implements AppBarLayout.OnOffsetChangedListener {
-//
-//    public enum State {
-//        EXPANDED,
-//        COLLAPSED,
-//        IDLE
-//    }
-//
-//    private State mCurrentState = State.IDLE;
-//
-//
-//    public abstract void onStateChanged(AppBarLayout appBarLayout, State state);
-//
-//    @Override
-//    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-//        if (i == 0) {
-//            if (mCurrentState != State.EXPANDED)
-//                onStateChanged(appBarLayout, State.EXPANDED);
-//            mCurrentState = State.EXPANDED;
-//        } else if (Math.abs(i) >= appBarLayout.getTotalScrollRange()) {
-//            if (mCurrentState != State.COLLAPSED) {
-//                onStateChanged(appBarLayout, State.COLLAPSED);
-//            }
-//            mCurrentState = State.COLLAPSED;
-//        } else {
-//            if (mCurrentState != State.IDLE) {
-//                onStateChanged(appBarLayout, State.IDLE);
-//            }
-//            mCurrentState = State.IDLE;
-//        }
-//    }
-//
-//}
