@@ -41,6 +41,7 @@ import com.google.gson.Gson;
 import com.synnapps.carouselview.CarouselView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,7 +69,8 @@ public class OrderFragment extends Fragment{
             R.drawable.seal_four
     };
 
-    private boolean isExpanded = true;
+    private final static HashMap<Integer, Integer> navigationMap = new HashMap<>();
+
 
     public OrderFragment() {
         // Required empty public constructor
@@ -84,6 +86,12 @@ public class OrderFragment extends Fragment{
         productsList = new ArrayList<>();
 
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
+
+        navigationMap.put(0, R.id.action_orderFragment_to_fruitsFragment);
+        navigationMap.put(1, R.id.action_orderFragment_to_vegetableFragment);
+        navigationMap.put(2, R.id.action_orderFragment_to_beveragesFragment);
+        navigationMap.put(3, R.id.action_orderFragment_to_dairyFragment);
+
     }
 
     @Override
@@ -105,19 +113,24 @@ public class OrderFragment extends Fragment{
         MenuItem item = menu.findItem(R.id.menu_main_cart_btn);
         LayerDrawable icon = (LayerDrawable) item.getIcon();
 
-        String list = SharedPrefsUtils.getStringPreference(getContext(), "Fruits", 0);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (preferences != null) {
             Map<String, ?> allEntries = preferences.getAll();
+            int count = 0;
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
-            }
-            if (list != null) {
+
+                String list = SharedPrefsUtils.getStringPreference(getContext(), entry.getKey(), 0);
                 ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-                int count = models.length;
-                if (count > 0) {
-                    setBadgeCount(getActivity(), icon, count);
+
+                if (list != null && models != null) {
+                    count += models.length;
                 }
+
+                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+
+            }
+            if (count > 0) {
+                    setBadgeCount(getActivity(), icon, count);
             }
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -176,7 +189,9 @@ public class OrderFragment extends Fragment{
         _gridViewRecyclerView.addItemDecoration(new SpacesItemDecoration(5));
         _gridViewRecyclerView.setAdapter(gridRecyclerViewAdapter);
         gridRecyclerViewAdapter.setOnItemClickListener(position -> {
-            _navController.navigate(R.id.action_orderFragment_to_fruitsFragment);
+            if (navigationMap.containsKey(position)) {
+                _navController.navigate(navigationMap.get(position));
+            }
         });
     }
 
