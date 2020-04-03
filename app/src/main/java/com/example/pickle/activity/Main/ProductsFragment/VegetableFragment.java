@@ -31,10 +31,9 @@ import java.util.Arrays;
  */
 public class VegetableFragment extends Fragment {
 
-    RecyclerView fruitsRecyclerView;
-    ArrayList<ProductModel> fruitList;
-    ArrayList<ProductModel> cartList;
-    CategoryRecyclerViewAdapter adapter;
+    private ArrayList<ProductModel> _productList;
+    private ArrayList<ProductModel> _cartList;
+    private CategoryRecyclerViewAdapter adapter;
 
     public VegetableFragment() {
         // Required empty public constructor
@@ -47,7 +46,7 @@ public class VegetableFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_vegetable, container, false);
 
-        fruitList = new ArrayList<>();
+        _productList = new ArrayList<>();
 
         init_recyclerView(view);
         populateList();
@@ -58,16 +57,11 @@ public class VegetableFragment extends Fragment {
 
 
     private void init_recyclerView(View view) {
-        fruitsRecyclerView = view.findViewById(R.id.fruits_recycler_view);
+        RecyclerView _vegetableRecyclerView = view.findViewById(R.id.vegetable_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), fruitList, "Vegetables");
-        fruitsRecyclerView.setLayoutManager(linearLayoutManager);
-        fruitsRecyclerView.setAdapter(adapter);
-//        adapter.setOnItemClickListener(position -> {
-//            EachItemDataModel eidm = fruitList.get(position);
-//            startActivity(new Intent(FootwearActivity.this, PlaceItemOrderActivity.class).putExtra("DATA_MODEL", (Serializable) eidm));
-//            Toast.makeText(FootwearActivity.this, "posittion" + position, Toast.LENGTH_SHORT).show();
-//        });
+        adapter = new CategoryRecyclerViewAdapter(getActivity(), _productList, "Vegetables");
+        _vegetableRecyclerView.setLayoutManager(linearLayoutManager);
+        _vegetableRecyclerView.setAdapter(adapter);
     }
 
     private void populateList() {
@@ -76,9 +70,9 @@ public class VegetableFragment extends Fragment {
         ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
 
         if (productModels != null) {
-            cartList = new ArrayList<>(Arrays.asList(productModels));
+            _cartList = new ArrayList<>(Arrays.asList(productModels));
         } else {
-            cartList = new ArrayList<>();
+            _cartList = new ArrayList<>();
         }
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/Vegetables");
@@ -90,15 +84,15 @@ public class VegetableFragment extends Fragment {
                         Log.e("Fruit recycler view ", m +" ");
                         ProductModel model = m.getValue(ProductModel.class);
 
-                        if (cartList != null) {
-                            for (ProductModel pm : cartList) {
+                        if (_cartList != null) {
+                            for (ProductModel pm : _cartList) {
                                 if (model.getItemId().equals(pm.getItemId())) {
                                     model.setQuantityCounter(pm.getQuantityCounter());
                                 }
                             }
                         }
 
-                        fruitList.add(model);
+                        _productList.add(model);
                         adapter.notifyDataSetChanged();
                     }
                 }

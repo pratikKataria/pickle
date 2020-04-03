@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.databinding.CardViewCartBinding;
 import com.example.pickle.databinding.CategoryProductCardViewBinding;
 import com.google.gson.Gson;
 
@@ -20,31 +22,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
-    ArrayList<ProductModel> productModelsList;
-    public ArrayList<ProductModel> cartList = null;
+    private ArrayList<ProductModel> cartList;
 
-    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductModel> productModelList, String category) {
+    public CartRecyclerViewAdapter(Context context, ArrayList<ProductModel> cartList) {
         this.context = context;
-        this.productModelsList = productModelList;
-
-        String cartProducts = SharedPrefsUtils.getStringPreference(context, category, 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-
-        if (cartList != null) {
-            cartList = (ArrayList<ProductModel>) Arrays.asList(productModels);
-        } else {
-            if (productModels != null) {
-                cartList = new ArrayList<>();
-                for (ProductModel d : productModels) {
-                    cartList.add(d);
-                }
-            }
-        }
-
+        this.cartList = cartList;
     }
 
     @NonNull
@@ -53,7 +38,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         RecyclerView.ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        CategoryProductCardViewBinding view = CategoryProductCardViewBinding.inflate(layoutInflater, parent, false);
+        CardViewCartBinding view = CardViewCartBinding.inflate(layoutInflater, parent, false);
 
         holder = new ProductCardViewHolder(view);
 
@@ -62,7 +47,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ProductModel model = productModelsList.get(position);
+        ProductModel model = cartList.get(position);
 
 
         ProductCardViewHolder currCardViewHolder = (ProductCardViewHolder) holder;
@@ -154,6 +139,11 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             }
         });
 
+        currCardViewHolder._deleteFromCart.setOnClickListener(view -> {
+           removeItem(model);
+           SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
+        });
+
     }
 
 
@@ -170,20 +160,21 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        return productModelsList.size();
+        return cartList.size();
     }
 
 
     class ProductCardViewHolder extends RecyclerView.ViewHolder {
 
-        private CategoryProductCardViewBinding binding;
+        private CardViewCartBinding binding;
         private Button _increaseCart;
         private Button _decreaseCart;
         private Button _addToCartButton;
+        private ImageButton _deleteFromCart;
 
         private TextView _qtyCounter;
 
-        public ProductCardViewHolder(@NonNull CategoryProductCardViewBinding binding) {
+        public ProductCardViewHolder(@NonNull CardViewCartBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
@@ -191,6 +182,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             _decreaseCart = binding.decreaseCartItem;
             _addToCartButton = binding.addToCartButton;
             _qtyCounter = binding.qtyCounter;
+            _deleteFromCart = binding.imageButtonDelete;
         }
 
         public void bind(ProductModel model) {

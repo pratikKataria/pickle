@@ -233,6 +233,8 @@ public class OrderFragment extends Fragment{
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
+                _navController.navigate(R.id.action_orderFragment_to_cartFragment);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
