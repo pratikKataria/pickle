@@ -85,7 +85,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     notifyDataSetChanged();
                 }
             } else {
-                cartList = new ArrayList<ProductModel>(Arrays.asList(model));
+                cartList = new ArrayList<>(Arrays.asList(model));
                 cartList.remove(model);
                 model.setQuantityCounter(1);
                 cartList.add(model);
@@ -97,11 +97,10 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         currCardViewHolder._increaseCart.setOnClickListener(view -> {
             Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-            if (Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString()) >= 1) {
-                int a = Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString());
+            if (model.getQuantityCounter() >= 1) {
+                int a = model.getQuantityCounter();
                 a++;
-                Toast.makeText(context, "incremeneted " + a, Toast.LENGTH_SHORT).show();
-                ((ProductCardViewHolder) holder).qtyCounter.setText(Integer.toString(a));
+                currCardViewHolder._qtyCounter.setText(Integer.toString(a));
                 if (cartList != null) {
                     if (cartList.contains(model)) {
                         cartList.remove(model);
@@ -119,13 +118,14 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                     }
                 }
+//                Toast.makeText(context, "clicked  ---  " + currCardViewHolder._qtyCounter.getText().toString() + " === " + model.getQuantityCounter(), Toast.LENGTH_SHORT).show();
             }
         });
 
         currCardViewHolder._decreaseCart.setOnClickListener(view -> {
 
-            if (Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString()) <= 1) {
-                int a = Integer.parseInt(currCardViewHolder.qtyCounter.getText().toString());
+            if (model.getQuantityCounter() <= 1) {
+                int a = model.getQuantityCounter();
                 a--;
 
                 Iterator<ProductModel> itr  = cartList.iterator();
@@ -142,9 +142,9 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 ((Activity) context).invalidateOptionsMenu();
 
             } else {
-                int a = Integer.parseInt(((ProductCardViewHolder) holder).qtyCounter.getText().toString());
+                int a = model.getQuantityCounter();
                 a--;
-                ((ProductCardViewHolder) holder).qtyCounter.setText(Integer.toString(a));
+                currCardViewHolder._qtyCounter.setText(Integer.toString(a));
                 cartList.remove(model);
                 model.setQuantityCounter(a);
                 cartList.add(model);
@@ -169,7 +169,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         private Button _decreaseCart;
         private Button _addToCartButton;
 
-        private TextView qtyCounter;
+        private TextView _qtyCounter;
 
         public ProductCardViewHolder(@NonNull CategoryProductCardViewBinding binding) {
             super(binding.getRoot());
@@ -178,7 +178,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             _increaseCart = binding.increaseCartItem;
             _decreaseCart = binding.decreaseCartItem;
             _addToCartButton = binding.addToCartButton;
-            qtyCounter = binding.qtyCounter;
+            _qtyCounter = binding.qtyCounter;
         }
 
         public void bind(ProductModel model) {
