@@ -1,10 +1,12 @@
 package com.example.pickle.activity.Main
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.content.Intent
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import android.widget.Toolbar
@@ -12,8 +14,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -25,7 +25,6 @@ import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.ismaeldivita.chipnavigation.ChipNavigationBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -122,6 +121,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //
 //        fragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragment).addToBackStack(null).commit()
 //    }
+
+
 
     @SuppressLint("WrongConstant")
     public fun openDrawer() {

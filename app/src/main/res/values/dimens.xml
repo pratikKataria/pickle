@@ -3,4 +3,6 @@
     <dimen name="onBoardingImageDimen">42dp</dimen>
     <dimen name="icUpDown">25dp</dimen>
     <dimen name="headingTextSize"></dimen>
+    <dimen name="badge_count_textsize">24dp</dimen>
+    <dimen name="badge_text_size">12dp</dimen>
 </resources>

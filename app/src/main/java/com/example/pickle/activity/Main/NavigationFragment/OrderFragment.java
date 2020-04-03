@@ -1,6 +1,9 @@
 package com.example.pickle.activity.Main.NavigationFragment;
 
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,8 +28,12 @@ import com.example.pickle.R;
 import com.example.pickle.SpacesItemDecoration;
 import com.example.pickle.Utility;
 import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.data.BadgeDrawable;
 import com.example.pickle.data.GridItem;
 import com.example.pickle.data.Product;
+import com.example.pickle.data.ProductModel;
+import com.example.pickle.data.SharedPrefsUtils;
+import com.google.gson.Gson;
 import com.synnapps.carouselview.CarouselView;
 
 import java.util.ArrayList;
@@ -90,8 +97,35 @@ public class OrderFragment extends Fragment{
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
 
+        MenuItem item = menu.findItem(R.id.menu_main_cart_btn);
+        LayerDrawable icon = (LayerDrawable) item.getIcon();
+
+        String list = SharedPrefsUtils.getStringPreference(getContext(), "Fruits", 0);
+        if (list != null) {
+            ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
+            int count = models.length;
+            if (count > 0) {
+                setBadgeCount(getActivity(), icon, count);
+            }
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    public static void setBadgeCount(Context context, LayerDrawable icon, int count) {
+        BadgeDrawable badge ;
+        Drawable reuse = icon.findDrawableByLayerId(R.id.ic_count);
+        if (reuse != null && reuse instanceof BadgeDrawable) {
+            badge = (BadgeDrawable) reuse;
+        } else {
+            badge = new BadgeDrawable(context);
+        }
+
+        badge.setCount(String.valueOf(count));
+        icon.mutate();
+        icon.setDrawableByLayerId(R.id.ic_count, badge);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -162,12 +196,40 @@ public class OrderFragment extends Fragment{
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            ((MainActivity)(getActivity())).openDrawer();
+//        if (item.getItemId() == android.R.id.home) {
+//            ((MainActivity)(getActivity())).openDrawer();
+//        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                ((MainActivity)(getActivity())).openDrawer();
+                break;
+            case R.id.menu_main_cart_btn:
+//                LayerDrawable icon = (LayerDrawable) item.getIcon();
+//
+//                CountDrawable badge;
+//
+//                // Reuse drawable if possible
+//                Drawable reuse = icon.findDrawableByLayerId(R.id.ic_group_count);
+//                if (reuse != null && reuse instanceof CountDrawable) {
+//                    badge = (CountDrawable) reuse;
+//                } else {
+//                    badge = new CountDrawable(getActivity());
+//                }
+//
+//                badge.setCount(Integer.toString(12));
+//                badge.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+//                icon.mutate();
+//                icon.setDrawableByLayerId(R.id.ic_group_count, badge);
+//                break;
         }
         return super.onOptionsItemSelected(item);
     }
