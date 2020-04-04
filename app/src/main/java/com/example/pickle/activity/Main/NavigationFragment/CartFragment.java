@@ -3,28 +3,19 @@ package com.example.pickle.activity.Main.NavigationFragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
-import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.data.SharedPrefsUtils;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -33,9 +24,7 @@ import java.util.Map;
 
 public class CartFragment extends Fragment {
 
-    RecyclerView fruitsRecyclerView;
-    ArrayList<ProductModel> cartList;
-    CartRecyclerViewAdapter adapter;
+    private ArrayList<ProductModel> cartList;
 
     public CartFragment() {
         // Required empty public constructor
@@ -55,11 +44,11 @@ public class CartFragment extends Fragment {
     }
 
     private void init_recyclerView(View view) {
-        fruitsRecyclerView = view.findViewById(R.id.cartRecyclerView);
+        RecyclerView _cartRecyclerView = view.findViewById(R.id.cartRecyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CartRecyclerViewAdapter(getActivity(), cartList);
-        fruitsRecyclerView.setLayoutManager(linearLayoutManager);
-        fruitsRecyclerView.setAdapter(adapter);
+        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(getActivity(), cartList);
+        _cartRecyclerView.setLayoutManager(linearLayoutManager);
+        _cartRecyclerView.setAdapter(adapter);
     }
 
     private void populateList() {
@@ -73,9 +62,7 @@ public class CartFragment extends Fragment {
                 ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
 
                 if (list != null && models != null) {
-                    Toast.makeText(getContext(), " not emtpy" , Toast.LENGTH_SHORT).show();
                     cartList.addAll(Arrays.asList(models));
-                    Toast.makeText(getContext(), " not emtpy" + cartList.size() , Toast.LENGTH_SHORT).show();
                 }
             }
 
