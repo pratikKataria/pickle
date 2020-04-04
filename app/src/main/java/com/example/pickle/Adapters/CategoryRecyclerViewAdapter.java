@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -178,7 +179,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     class ProductCardViewHolder extends RecyclerView.ViewHolder{
 
         private CategoryProductCardViewBinding binding;
-        private Button _increaseCart;
+        private ImageButton _increaseCart;
         private Button _decreaseCart;
         private Button _addToCartButton;
 
