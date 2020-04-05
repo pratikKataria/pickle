@@ -2,6 +2,7 @@ package com.example.pickle.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,10 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.data.SharedPrefsUtils;
 import com.example.pickle.databinding.CardViewCartBinding;
-import com.example.pickle.databinding.CategoryProductCardViewBinding;
+import com.google.android.gms.common.util.SharedPreferencesUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -53,99 +55,137 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         ProductCardViewHolder currCardViewHolder = (ProductCardViewHolder) holder;
         currCardViewHolder.bind(model);
 
-        currCardViewHolder._addToCartButton.setOnClickListener(view -> {
-            if (cartList != null) {
-                if (cartList.contains(model)) {
-                    removeItem(model);
-                    model.setQuantityCounter(1);
-                    cartList.add(model);
-                    SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                    ((Activity) context).invalidateOptionsMenu();
-                    notifyDataSetChanged();
-                } else {
-                    model.setQuantityCounter(1);
-                    cartList.add(model);
-                    SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                    ((Activity) context).invalidateOptionsMenu();
-                    notifyDataSetChanged();
-                }
-            } else {
-                cartList = new ArrayList<>(Arrays.asList(model));
-                removeItem(model);
-                model.setQuantityCounter(1);
-                cartList.add(model);
-                SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                notifyDataSetChanged();
-                ((Activity) context).invalidateOptionsMenu();
-            }
-        });
-
         currCardViewHolder._increaseCart.setOnClickListener(view -> {
             Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
             if (model.getQuantityCounter() >= 1) {
                 int a = model.getQuantityCounter();
                 a++;
-                currCardViewHolder._qtyCounter.setText(Integer.toString(a));
+
                 if (cartList != null) {
-                    if (cartList.contains(model)) {
-                        removeItem(model);
-                        model.setQuantityCounter(a);
-                        cartList.add(model);
-                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                        notifyDataSetChanged();
 
-
-                    } else {
-                        model.setQuantityCounter(a);
-                        cartList.add(model);
-                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                        notifyDataSetChanged();
-
+                    ArrayList<ProductModel> currListOfProductInCurrCategory = null;
+                    String currCategoryJson = SharedPrefsUtils.getStringPreference(context, model.getItemCategory(), 0);
+                    ProductModel [] arrayOfProductsInCurrCategory = new Gson().fromJson(currCategoryJson, ProductModel[].class);
+                    if (arrayOfProductsInCurrCategory != null) {
+                        currListOfProductInCurrCategory = new ArrayList<>(Arrays.asList(arrayOfProductsInCurrCategory));
                     }
+
+                    if (currListOfProductInCurrCategory != null) {
+
+                        Iterator<ProductModel> itr  = currListOfProductInCurrCategory.iterator();
+                        while (itr.hasNext()) {
+                            ProductModel mdl = itr.next();
+                            if (model.getItemId().equals(mdl.getItemId())) {
+                                itr.remove();
+                            }
+                        }
+                        removeItem(model);
+                        currCardViewHolder._qtyCounter.setText(Integer.toString(a));
+                        model.setQuantityCounter(a);
+                        cartList.add(position, model);
+                        currListOfProductInCurrCategory.add(model);
+                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
+                        notifyDataSetChanged();
+                    }
+
                 }
-//                Toast.makeText(context, "clicked  ---  " + currCardViewHolder._qtyCounter.getText().toString() + " === " + model.getQuantityCounter(), Toast.LENGTH_SHORT).show();
             }
         });
 
         currCardViewHolder._decreaseCart.setOnClickListener(view -> {
-
             if (model.getQuantityCounter() <= 1) {
                 int a = model.getQuantityCounter();
                 a--;
 
-                Iterator<ProductModel> itr  = cartList.iterator();
-                while (itr.hasNext()) {
-                    ProductModel mdl = itr.next();
-                    if (model.getItemId().equals(mdl.getItemId())) {
-                        itr.remove();
-                        model.setQuantityCounter(a);
-                        notifyDataSetChanged();
-                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                    }
+                ArrayList<ProductModel> currListOfProductInCurrCategory = null;
+                String currCategoryJson = SharedPrefsUtils.getStringPreference(context, model.getItemCategory(), 0);
+                ProductModel [] arrayOfProductsInCurrCategory = new Gson().fromJson(currCategoryJson, ProductModel[].class);
+                if (arrayOfProductsInCurrCategory != null) {
+                    currListOfProductInCurrCategory = new ArrayList<>(Arrays.asList(arrayOfProductsInCurrCategory));
                 }
+
+                if (currListOfProductInCurrCategory != null) {
+
+                    Iterator<ProductModel> itr = currListOfProductInCurrCategory.iterator();
+                    while (itr.hasNext()) {
+                        ProductModel mdl = itr.next();
+                        if (model.getItemId().equals(mdl.getItemId())) {
+                            itr.remove();
+                        }
+                    }
+
+                    removeItem(model);
+                    model.setQuantityCounter(a);
+                    currListOfProductInCurrCategory.remove(model);
+                    SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
+                }
+//                Iterator<ProductModel> itr  = cartList.iterator();
+//                while (itr.hasNext()) {
+//                    ProductModel mdl = itr.next();
+//                    if (model.getItemId().equals(mdl.getItemId())) {
+//                        itr.remove();
+//                        model.setQuantityCounter(a);
+//                        notifyDataSetChanged();
+//                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
+//                    }
+//                }
 
                 ((Activity) context).invalidateOptionsMenu();
 
             } else {
                 int a = model.getQuantityCounter();
                 a--;
-                currCardViewHolder._qtyCounter.setText(Integer.toString(a));
-                removeItem(model);
-                model.setQuantityCounter(a);
-                cartList.add(model);
-                SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-                ((Activity) context).invalidateOptionsMenu();
-                notifyDataSetChanged();
+
+                ArrayList<ProductModel> currListOfProductInCurrCategory = null;
+                String currCategoryJson = SharedPrefsUtils.getStringPreference(context, model.getItemCategory(), 0);
+                ProductModel [] arrayOfProductsInCurrCategory = new Gson().fromJson(currCategoryJson, ProductModel[].class);
+                if (arrayOfProductsInCurrCategory != null) {
+                    currListOfProductInCurrCategory = new ArrayList<>(Arrays.asList(arrayOfProductsInCurrCategory));
+                }
+
+                if (currListOfProductInCurrCategory != null) {
+
+                    Iterator<ProductModel> itr  = currListOfProductInCurrCategory.iterator();
+                    while (itr.hasNext()) {
+                        ProductModel mdl = itr.next();
+                        if (model.getItemId().equals(mdl.getItemId())) {
+                            itr.remove();
+                        }
+                    }
+                    removeItem(model);
+                    currCardViewHolder._qtyCounter.setText(Integer.toString(a));
+                    model.setQuantityCounter(a);
+                    cartList.add(position, model);
+                    currListOfProductInCurrCategory.add(model);
+                    SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
+                    notifyDataSetChanged();
+                }
+
+//                currCardViewHolder._qtyCounter.setText(Integer.toString(a));
+//                removeItem(model);
+//                model.setQuantityCounter(a);
+//                cartList.add(model);
+//                SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
+//                ((Activity) context).invalidateOptionsMenu();
+//                notifyDataSetChanged();
             }
         });
 
         currCardViewHolder._deleteFromCart.setOnClickListener(view -> {
-           removeItem(model);
-           SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
+            removeItem(model);
+            SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
         });
 
     }
 
+    public boolean isItemPresentInList(ProductModel model) {
+        for (ProductModel m : cartList) {
+            if (model.getItemId().equals(m.getItemId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void removeItem(ProductModel model) {
         Iterator<ProductModel> itr  = cartList.iterator();
@@ -153,6 +193,9 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             ProductModel mdl = itr.next();
             if (model.getItemId().equals(mdl.getItemId())) {
                 itr.remove();
+                ArrayList<ProductModel> putEmptyList = new ArrayList<>();
+                SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(putEmptyList));
+
                 notifyDataSetChanged();
             }
         }
@@ -167,9 +210,9 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     class ProductCardViewHolder extends RecyclerView.ViewHolder {
 
         private CardViewCartBinding binding;
-        private Button _increaseCart;
+        private ImageButton _increaseCart;
         private Button _decreaseCart;
-        private Button _addToCartButton;
+        private ImageButton _addToCartButton;
         private ImageButton _deleteFromCart;
 
         private TextView _qtyCounter;

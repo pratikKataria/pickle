@@ -1,13 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.Main.NavigationFragment.CartFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="10">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cartRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="8" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_weight = "1.8"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginRight="10dp">
+
+     <com.google.android.material.bottomappbar.BottomAppBar
+         android:id="@+id/bottomAppBar"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         app:navigationIcon="@drawable/ic_cart"/>
+
+        <include layout="@layout/bottom_sheet"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

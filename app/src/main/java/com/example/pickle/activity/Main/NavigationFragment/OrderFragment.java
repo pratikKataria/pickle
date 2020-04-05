@@ -2,6 +2,7 @@ package com.example.pickle.activity.Main.NavigationFragment;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
+import com.example.pickle.CartTestView;
 import com.example.pickle.R;
 import com.example.pickle.SpacesItemDecoration;
 import com.example.pickle.Utility;
@@ -127,7 +129,7 @@ public class OrderFragment extends Fragment{
                 }
 
                 Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
-
+                Log.e("map values", " ------------------------  " );
             }
             if (count > 0) {
                     setBadgeCount(getActivity(), icon, count);
@@ -233,7 +235,7 @@ public class OrderFragment extends Fragment{
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-                _navController.navigate(R.id.action_orderFragment_to_cartFragment);
+                startActivity(new Intent(getActivity(), CartTestView.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

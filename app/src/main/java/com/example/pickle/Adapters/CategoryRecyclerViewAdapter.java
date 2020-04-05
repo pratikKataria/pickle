@@ -72,7 +72,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         currCardViewHolder._addToCartButton.setOnClickListener(view -> {
             if (cartList != null) {
-                if (cartList.contains(model)) {
+                if (isItemPresentInList(model)) {
                     removeItem(model);
                     model.setQuantityCounter(1);
                     cartList.add(model);
@@ -104,7 +104,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                 a++;
                 currCardViewHolder._qtyCounter.setText(Integer.toString(a));
                 if (cartList != null) {
-                    if (cartList.contains(model)) {
+                    if (isItemPresentInList(model)) {
                         removeItem(model);
                         model.setQuantityCounter(a);
                         cartList.add(model);
@@ -158,6 +158,14 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     }
 
+    public boolean isItemPresentInList(ProductModel model) {
+        for (ProductModel m : cartList) {
+            if (model.getItemId().equals(m.getItemId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void removeItem(ProductModel model) {
         Iterator<ProductModel> itr  = cartList.iterator();
