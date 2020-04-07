@@ -30,7 +30,9 @@ public class CartTestView extends AppCompatActivity {
     ActivityCartTestViewBinding _activityCartTestViewBinding;
     CartCalculator _cartCalculator;
 
-    TextView cartAmount;
+    TextView _cartAmount;
+    TextView _amountToBePaid;
+    TextView _deliveryPrice;
     public final int[] anIntCartAmount = new int[1];
 
     @Override
@@ -42,8 +44,10 @@ public class CartTestView extends AppCompatActivity {
         cartList = new ArrayList<>();
 
         _cartRecyclerView = _activityCartTestViewBinding.cartRecyclerView;
+        _amountToBePaid = _activityCartTestViewBinding.amountToBePaid;
+        _deliveryPrice = _activityCartTestViewBinding.deliveryPrice;
 
-        cartAmount = _activityCartTestViewBinding.cartAmountTextView;
+        _cartAmount = _activityCartTestViewBinding.cartAmountTextView;
 
         populateList();
         init_recyclerView();
@@ -52,8 +56,8 @@ public class CartTestView extends AppCompatActivity {
         _cartCalculator.cartAmount(cartList);
         int amount = _cartCalculator.getCartAmount();
 
-        cartAmount.setText(amount+"");
-        Log.e("price increase listerner" , "cart amount:  "+cartAmount.getText().toString());
+        _cartAmount.setText(amount + "");
+        Log.e("price increase listerner", "cart amount:  " + _cartAmount.getText().toString());
     }
 
     private void init_recyclerView() {
@@ -62,23 +66,25 @@ public class CartTestView extends AppCompatActivity {
         adapter.setOnPriceChangeListener(new CartRecyclerViewAdapter.PriceChangeListener() {
             @Override
             public void onPriceIncreaseListener(int price) {
-                int currPrice  = Integer.parseInt(cartAmount.getText().toString()) > 0 ?  Integer.parseInt(cartAmount.getText().toString()): 0;
-                Log.e("price increase listerner" , "cart amount:  "+currPrice + " price form listner " + price);
-                cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(price+currPrice));
+                Log.e("price increase listerner" , "cart amount:  " + _cartAmount.getText().toString());
+                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ? PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
+                Log.e("price increase listerner" , "cart amount:  "+PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) + " price form listner " + price);
+                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(price + currPrice));
+                _amountToBePaid.setText(PriceFormatUtils.getStringFormattedPrice(price + PriceFormatUtils.getIntFormattedPrice(_deliveryPrice.getText().toString())));
             }
 
             @Override
             public void onPriceDecreaseListener(int price) {
-                int currPrice  = Integer.parseInt(cartAmount.getText().toString()) > 0 ?  Integer.parseInt(cartAmount.getText().toString()): 0;
+                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ?  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
 
-                cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price-currPrice))));
+                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
                 Log.e("price increase listerner" , "cart amount:  "+currPrice + " price form listner " + price);
             }
 
             @Override
             public void onItemRemovedPriceListener(int price) {
-                int currPrice  = Integer.parseInt(cartAmount.getText().toString()) > 0 ?  Integer.parseInt(cartAmount.getText().toString()): 0;
-                cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price-currPrice))));
+                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ?  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
+                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
             }
         });
         _cartRecyclerView.setLayoutManager(linearLayoutManager);
