@@ -23,8 +23,23 @@ import java.util.Iterator;
 
 public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    Context context;
+    private Context context;
     private ArrayList<ProductModel> cartList;
+    public PriceChangeListener priceChangeListener;
+
+
+    public interface PriceChangeListener {
+        void onPriceIncreaseListener(int price);
+
+        void onPriceDecreaseListener(int price);
+
+        void onItemRemovedPriceListener(int price);
+    }
+
+
+    public void setOnPriceChangeListener(PriceChangeListener listener) {
+        priceChangeListener = listener;
+    }
 
     public CartRecyclerViewAdapter(Context context, ArrayList<ProductModel> cartList) {
         this.context = context;
@@ -38,6 +53,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         RecyclerView.ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         CardViewCartBinding view = CardViewCartBinding.inflate(layoutInflater, parent, false);
+
 
         holder = new ProductCardViewHolder(view);
 
@@ -82,6 +98,9 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                         cartList.add(position, model);
                         currListOfProductInCurrCategory.add(model);
                         SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
+
+                        priceChangeListener.onPriceIncreaseListener(model.getItemBasePrice());
+
                         notifyDataSetChanged();
                     }
 
@@ -114,6 +133,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     removeItem(model);
                     model.setQuantityCounter(a);
                     currListOfProductInCurrCategory.remove(model);
+                    priceChangeListener.onPriceDecreaseListener(model.getItemBasePrice());
                     SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
                 }
                 ((Activity) context).invalidateOptionsMenu();
@@ -143,6 +163,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                     model.setQuantityCounter(a);
                     cartList.add(position, model);
                     currListOfProductInCurrCategory.add(model);
+                    priceChangeListener.onPriceDecreaseListener(model.getItemBasePrice());
                     SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(currListOfProductInCurrCategory));
                     notifyDataSetChanged();
                 }
@@ -151,18 +172,11 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         currCardViewHolder._deleteFromCart.setOnClickListener(view -> {
             removeItem(model);
+            priceChangeListener.onItemRemovedPriceListener(model.getItemBasePrice() * model.getQuantityCounter());
         });
 
     }
 
-    public boolean isItemPresentInList(ProductModel model) {
-        for (ProductModel m : cartList) {
-            if (model.getItemId().equals(m.getItemId())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void removeItem(ProductModel model) {
         ArrayList<ProductModel> currListOfProductInCurrCategory = null;
@@ -199,7 +213,6 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         private CardViewCartBinding binding;
         private ImageButton _increaseCart;
         private Button _decreaseCart;
-        private ImageButton _addToCartButton;
         private ImageButton _deleteFromCart;
 
         private TextView _qtyCounter;
@@ -210,7 +223,6 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             _increaseCart = binding.increaseCartItem;
             _decreaseCart = binding.decreaseCartItem;
-            _addToCartButton = binding.addToCartButton;
             _qtyCounter = binding.qtyCounter;
             _deleteFromCart = binding.imageButtonDelete;
         }
@@ -221,5 +233,4 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
     }
-
 }
