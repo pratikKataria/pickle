@@ -3,31 +3,33 @@ package com.example.pickle.data;
 import java.text.SimpleDateFormat;
 
 public class PlaceOrderModel {
+    private final int itemQty;
     private int itemBasePrice;
     private String orderStatus;
     private String itemCategory;
     private String address;
     private String userId;
+    private String itemId;
     private String date;
-    private ProductModel pm;
 
-    public PlaceOrderModel(ProductModel pm, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date) {
+    public PlaceOrderModel(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date) {
+        this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
         this.orderStatus = orderStatus;
         this.itemCategory = itemCategory;
         this.address = address;
         this.userId = userId;
+        this.itemId = itemId;
         this.date = date;
-        this.pm = pm;
-
     }
 
-    public ProductModel getPm() {
-        return pm;
+
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setPm(ProductModel pm) {
-        this.pm = pm;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public int getItemBasePrice() {
@@ -76,5 +78,9 @@ public class PlaceOrderModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getItemQty() {
+        return itemQty;
     }
 }

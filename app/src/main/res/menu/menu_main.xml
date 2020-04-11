@@ -13,5 +13,11 @@
         android:title="cart"
         android:icon="@drawable/action_bar_group_icon"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menu_orders"
+        android:title="orders"
+        android:icon="@drawable/ic_shoping_bag"
+        app:showAsAction="always"/>
     <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
 </menu>

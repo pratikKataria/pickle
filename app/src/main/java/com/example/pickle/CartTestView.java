@@ -70,8 +70,11 @@ public class CartTestView extends AppCompatActivity {
         _cartAmount.setText(amount + "");
         Log.e("price increase listerner", "cart amount:  " + _cartAmount.getText().toString());
         _placeOrderBtn.setOnClickListener(n -> {
-            for (ProductModel pm : cartList)
-                placeOrder(pm);
+            for (ProductModel pm : cartList) {
+                if (pm != null) {
+                    placeOrder(pm);
+                }
+            }
         });
     }
 
@@ -110,7 +113,8 @@ public class CartTestView extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child(FirebaseAuth.getInstance().getUid());
 
         PlaceOrderModel placeOrderModel = new PlaceOrderModel(
-                pm,
+                pm.getQuantityCounter(),
+                pm.getItemId(),
                 pm.getItemBasePrice(),
                 "ordered",
                 pm.getItemCategory(),
