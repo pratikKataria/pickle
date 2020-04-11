@@ -1,9 +1,7 @@
 package com.example.pickle.data;
 
-import java.text.SimpleDateFormat;
-
 public class PlaceOrderModel {
-    private final int itemQty;
+    private int itemQty;
     private int itemBasePrice;
     private String orderStatus;
     private String itemCategory;
@@ -23,6 +21,8 @@ public class PlaceOrderModel {
         this.date = date;
     }
 
+    public PlaceOrderModel() {
+    }
 
     public String getItemId() {
         return itemId;

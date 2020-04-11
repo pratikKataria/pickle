@@ -237,6 +237,9 @@ public class OrderFragment extends Fragment{
             case R.id.menu_main_cart_btn:
                 startActivity(new Intent(getActivity(), CartTestView.class));
                 break;
+            case R.id.menu_orders:
+                _navController.navigate(R.id.action_orderFragment_to_ordersPlacedFragment);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
