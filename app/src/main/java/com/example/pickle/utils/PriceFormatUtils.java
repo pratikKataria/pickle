@@ -1,4 +1,4 @@
-package com.example.pickle.data;
+package com.example.pickle.utils;
 
 import android.util.Log;
 

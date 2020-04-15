@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
-import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

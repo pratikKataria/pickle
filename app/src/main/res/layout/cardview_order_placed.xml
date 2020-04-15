@@ -8,7 +8,7 @@
 
         <variable
             name="orderPlaced"
-            type="com.example.pickle.data.PlaceOrderModel" />
+            type="com.example.pickle.data.CustomerOrdersData" />
 
         <variable
             name="productDetail"

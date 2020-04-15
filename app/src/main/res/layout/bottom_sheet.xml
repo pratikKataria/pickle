@@ -4,10 +4,177 @@
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/ic_round_rect"
+    android:clickable="true"
     android:orientation="vertical"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="69dp"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="34dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+    <View
+        android:layout_width="45dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:background="@color/greyMaterial" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:text="Select Delivery Time"/>
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:singleSelection="true"
+        app:chipSpacing="16dp">
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7:00 AM"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:chipBackgroundColor="@color/bg_chip_state"
+            app:checkedIcon="@drawable/ic_clock"
+            app:checkedIconEnabled="true"
+            android:textColor="@color/chip_text_color_state"/>
+
+
+        <com.google.android.material.chip.Chip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5:00 PM"
+            app:iconStartPadding="8dp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:chipBackgroundColor="@color/bg_chip_state"
+            app:checkedIcon="@drawable/ic_clock"
+            app:checkedIconEnabled="true"
+            android:textColor="@color/chip_text_color_state"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:text="Select Delivery Address"/>
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarSize="0dp">
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Our custom radios here. One for male one for female -->
+
+            <com.example.pickle.ui.MyRadioButton
+                android:id="@+id/address_slot_1"
+                style="@style/MyCustomRadioButton"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:layout_marginEnd="12dp"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="current Address"
+                android:textAlignment="viewStart"
+                android:textColor="@color/chip_text_color_state" />
+
+            <com.example.pickle.ui.MyRadioButton
+                android:id="@+id/address_slot_2"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                style="@style/MyCustomRadioButtonAddNew"
+                android:textAlignment="viewStart"
+                android:textColor="@color/chip_text_color_state"
+                android:layout_marginEnd="12dp"
+                android:text="Add New Address"
+                />
+
+            <com.example.pickle.ui.MyRadioButton
+                android:id="@+id/address_slot_2"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                style="@style/MyCustomRadioButtonAddNew"
+                android:textAlignment="viewStart"
+                android:textColor="@color/chip_text_color_state"
+                android:layout_marginEnd="12dp"
+                android:text="Add New Address"
+                />
+
+            <com.example.pickle.ui.MyRadioButton
+                android:id="@+id/address_slot_2"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                style="@style/MyCustomRadioButtonAddNew"
+                android:textAlignment="viewStart"
+                android:textColor="@color/chip_text_color_state"
+                android:layout_marginEnd="12dp"
+                android:text="Add New Address"
+                />
+
+            <com.example.pickle.ui.MyRadioButton
+                android:id="@+id/address_slot_2"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
+                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                style="@style/MyCustomRadioButtonAddNew"
+                android:textAlignment="viewStart"
+                android:textColor="@color/chip_text_color_state"
+                android:layout_marginEnd="12dp"
+                android:text="Add New Address"
+                />
+
+
+
+        </RadioGroup>
+
+
+    </HorizontalScrollView>
+
+
+
+
+
+
+    <!--        <androidx.appcompat.widget.AppCompatRadioButton-->
+    <!--            android:id="@+id/radio"-->
+    <!--            android:layout_width="175dp"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_marginStart="16dp"-->
+    <!--            android:layout_marginEnd="8dp"-->
+    <!--            android:layout_gravity="center"-->
+    <!--            android:padding="16dp"-->
+    <!--            android:button="@android:color/transparent"-->
+    <!--            android:checked="true"-->
+    <!--            android:text="JANE L MILLER-->
+    <!--MILLER ASSOCIATES-->
+    <!--1960 W CHELSEA AVE STE 2006R-->
+    <!--ALLENTOWN PA 18104"-->
+    <!--            android:textColor="@color/black" />-->
 
 </LinearLayout>

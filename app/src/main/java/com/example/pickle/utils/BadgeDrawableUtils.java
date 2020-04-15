@@ -1,4 +1,4 @@
-package com.example.pickle.data;
+package com.example.pickle.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.pickle.R;
 
-public class BadgeDrawable extends Drawable {
+public class BadgeDrawableUtils extends Drawable {
 
     private Paint mBadgePaint;
     private Paint mBadgePaint1;
@@ -26,7 +26,7 @@ public class BadgeDrawable extends Drawable {
     private String mCount = "";
     private boolean mWillDraw;
 
-    public BadgeDrawable(Context context) {
+    public BadgeDrawableUtils(Context context) {
         float mTextSize = context.getResources().getDimension(R.dimen.badge_text_size);
 
         mBadgePaint = new Paint();

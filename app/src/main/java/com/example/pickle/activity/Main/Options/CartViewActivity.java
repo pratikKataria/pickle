@@ -1,23 +1,30 @@
-package com.example.pickle;
+package com.example.pickle.activity.Main.Options;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
+import com.example.pickle.R;
 import com.example.pickle.data.CartCalculator;
-import com.example.pickle.data.PlaceOrderModel;
-import com.example.pickle.data.PriceFormatUtils;
+import com.example.pickle.data.CustomerOrdersData;
+import com.example.pickle.ui.CustomRadioButton;
+import com.example.pickle.ui.MyRadioButton;
+import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,18 +39,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class CartTestView extends AppCompatActivity {
+public class CartViewActivity extends AppCompatActivity {
 
-    RecyclerView _cartRecyclerView;
+    private RecyclerView _cartRecyclerView;
     private List<ProductModel> cartList;
-    ActivityCartTestViewBinding _activityCartTestViewBinding;
-    CartCalculator _cartCalculator;
+    private ActivityCartTestViewBinding _activityCartTestViewBinding;
+    private CartCalculator _cartCalculator;
 
     private TextView _cartAmount;
     private TextView _amountToBePaid;
     private TextView _deliveryPrice;
     private MaterialButton _placeOrderBtn;
     public final int[] anIntCartAmount = new int[1];
+
+    private CustomRadioButton customRadioButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +68,23 @@ public class CartTestView extends AppCompatActivity {
         _placeOrderBtn = _activityCartTestViewBinding.placeOrderBtn;
 
         _cartAmount = _activityCartTestViewBinding.cartAmountTextView;
+
+        View _view  = _activityCartTestViewBinding.includeLayout;
+        RadioGroup radioGroup = _view.findViewById(R.id.radioGroup);
+
+        RadioButton address1 = _view.findViewById(R.id.address_slot_1);
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Toast.makeText(CartViewActivity.this, "radio group"+ checkedId, Toast.LENGTH_SHORT).show();
+                switch (checkedId) {
+                    case R.id.address_slot_1:
+                        Toast.makeText(CartViewActivity.this, "radio group"+ address1.getText(), Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
 
         populateList();
         init_recyclerView();
@@ -112,7 +138,7 @@ public class CartTestView extends AppCompatActivity {
     private void placeOrder(ProductModel pm) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child(FirebaseAuth.getInstance().getUid());
 
-        PlaceOrderModel placeOrderModel = new PlaceOrderModel(
+        CustomerOrdersData customerOrdersData = new CustomerOrdersData(
                 pm.getQuantityCounter(),
                 pm.getItemId(),
                 pm.getItemBasePrice(),
@@ -122,7 +148,7 @@ public class CartTestView extends AppCompatActivity {
                 FirebaseAuth.getInstance().getUid(),
                 new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()));
 
-        ref.child(pm.getItemId()).setValue(placeOrderModel).addOnSuccessListener(aVoid -> {
+        ref.child(pm.getItemId()).setValue(customerOrdersData).addOnSuccessListener(aVoid -> {
             Toast.makeText(this, "item ordered", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();

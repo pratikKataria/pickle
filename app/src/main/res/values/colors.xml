@@ -4,9 +4,16 @@
     <color name="colorPrimaryDark">#E1C414</color>
     <color name="colorAccent">#F9D915</color>
 
+
+    <color name="chipColorStateSelect">#6600EB</color>
+    <color name="chipColorSateUnselected">#E4D2FC</color>
+
+
     <color name="darkBlue">#3F3D56</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="colorBlackTransparent">#62908F8F</color>
+
+    <color name="bg">#E6E6E6</color>
 
     <color name="white">#FFFFFF</color>
     <color name="bottomNavigation">#F4F4F4</color>

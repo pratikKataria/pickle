@@ -1,4 +1,4 @@
-package com.example.pickle;
+package com.example.pickle.utils;
 
 import android.graphics.Rect;
 import android.view.View;

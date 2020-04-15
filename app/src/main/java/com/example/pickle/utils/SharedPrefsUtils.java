@@ -1,5 +1,5 @@
 
-package com.example.pickle.data;
+package com.example.pickle.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

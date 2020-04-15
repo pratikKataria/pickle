@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,17 +12,16 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
-import com.example.pickle.data.Product;
+import com.example.pickle.data.ProductModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductsRecyclerViewAdapter extends RecyclerView.Adapter<ProductsRecyclerViewAdapter.ProductViewHolder> {
 
     private Context context;
-    private List<Product> gridItemList;
+    private List<ProductModel> gridItemList;
 
-    public ProductsRecyclerViewAdapter(Context context, List<Product> gridItemList) {
+    public ProductsRecyclerViewAdapter(Context context, List<ProductModel> gridItemList) {
         this.context = context;
         this.gridItemList = gridItemList;
     }
@@ -38,7 +36,7 @@ public class ProductsRecyclerViewAdapter extends RecyclerView.Adapter<ProductsRe
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        holder.setData(gridItemList.get(position).getProductName(), gridItemList.get(position).getProductPrice());
+        holder.setData(gridItemList.get(position).getItemName(), gridItemList.get(position).getItemBasePrice());
     }
 
     @Override

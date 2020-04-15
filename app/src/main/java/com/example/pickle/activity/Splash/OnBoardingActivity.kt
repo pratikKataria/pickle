@@ -11,7 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.example.pickle.HorizontalFlipTransformation
+import com.example.pickle.utils.HorizontalFlipTransformation
 import com.example.pickle.R
 import com.example.pickle.Adapters.SliderAdapter
 import com.example.pickle.activity.Login.LoginActivity
@@ -48,7 +48,9 @@ class OnBoardingActivity : AppCompatActivity() {
 
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener)
 
-        viewPager.setPageTransformer(true,HorizontalFlipTransformation() )
+        viewPager.setPageTransformer(true,
+            HorizontalFlipTransformation()
+        )
 
         skipBtn.setOnClickListener { startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java)) }
     }

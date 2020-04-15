@@ -1,9 +1,5 @@
 package com.example.pickle.data;
 
-import android.util.Log;
-
-import com.airbnb.lottie.L;
-
 import java.util.ArrayList;
 
 public class CartCalculator{

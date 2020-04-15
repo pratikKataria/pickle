@@ -1,10 +1,12 @@
-package com.example.pickle;
+package com.example.pickle.utils;
 
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.viewpager.widget.ViewPager;
+
+import com.example.pickle.R;
 
 public class HorizontalFlipTransformation implements ViewPager.PageTransformer {
 //    @Override

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.CardViewCartBinding;
 import com.google.gson.Gson;
 

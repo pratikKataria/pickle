@@ -1,12 +1,10 @@
 package com.example.pickle.activity.Main
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import android.widget.Toolbar
@@ -22,6 +20,7 @@ import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.NavigationFragment.ExploreFragment
 import com.example.pickle.activity.Main.NavigationFragment.OfferFragment
 import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
+import com.example.pickle.activity.Main.Options.AddNewItemActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth

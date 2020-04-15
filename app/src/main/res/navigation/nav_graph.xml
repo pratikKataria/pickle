@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/ordersPlacedFragment"
-        android:name="com.example.pickle.OrdersPlacedFragment"
+        android:name="com.example.pickle.activity.Main.Options.OrdersPlacedFragment"
         android:label="fragment_orders_placed"
         tools:layout="@layout/fragment_orders_placed" />
 </navigation>

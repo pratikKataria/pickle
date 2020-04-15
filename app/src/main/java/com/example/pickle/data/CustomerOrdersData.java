@@ -1,6 +1,6 @@
 package com.example.pickle.data;
 
-public class PlaceOrderModel {
+public class CustomerOrdersData {
     private int itemQty;
     private int itemBasePrice;
     private String orderStatus;
@@ -10,7 +10,7 @@ public class PlaceOrderModel {
     private String itemId;
     private String date;
 
-    public PlaceOrderModel(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date) {
+    public CustomerOrdersData(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date) {
         this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
         this.orderStatus = orderStatus;
@@ -21,7 +21,7 @@ public class PlaceOrderModel {
         this.date = date;
     }
 
-    public PlaceOrderModel() {
+    public CustomerOrdersData() {
     }
 
     public String getItemId() {

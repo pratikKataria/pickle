@@ -18,13 +18,10 @@ import android.widget.TextView;
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.api.Distribution;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;

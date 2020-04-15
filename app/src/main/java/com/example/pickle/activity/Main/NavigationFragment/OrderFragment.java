@@ -29,16 +29,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
-import com.example.pickle.CartTestView;
+import com.example.pickle.activity.Main.Options.CartViewActivity;
 import com.example.pickle.R;
-import com.example.pickle.SpacesItemDecoration;
-import com.example.pickle.Utility;
+import com.example.pickle.utils.SpacesItemDecoration;
+import com.example.pickle.utils.RecyclerViewUtils;
 import com.example.pickle.activity.Main.MainActivity;
-import com.example.pickle.data.BadgeDrawable;
+import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.data.GridItem;
-import com.example.pickle.data.Product;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.SharedPrefsUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.gson.Gson;
 import com.synnapps.carouselview.CarouselView;
 
@@ -59,7 +58,7 @@ public class OrderFragment extends Fragment{
     private List<GridItem> gridItemCategoryList;
 
     private RecyclerView recyclerViewProduct;
-    private List<Product> productsList;
+    private List<ProductModel> productsList;
 
     private NavController _navController;
 
@@ -139,12 +138,12 @@ public class OrderFragment extends Fragment{
     }
 
     public static void setBadgeCount(Context context, LayerDrawable icon, int count) {
-        BadgeDrawable badge ;
+        BadgeDrawableUtils badge ;
         Drawable reuse = icon.findDrawableByLayerId(R.id.ic_count);
-        if (reuse != null && reuse instanceof BadgeDrawable) {
-            badge = (BadgeDrawable) reuse;
+        if (reuse != null && reuse instanceof BadgeDrawableUtils) {
+            badge = (BadgeDrawableUtils) reuse;
         } else {
-            badge = new BadgeDrawable(context);
+            badge = new BadgeDrawableUtils(context);
         }
 
         badge.setCount(String.valueOf(count));
@@ -184,7 +183,7 @@ public class OrderFragment extends Fragment{
     }
 
     private void initGridRecyclerView() {
-        int mNoOfColumns = Utility.calculateNoOfColumns(getContext(), 120 );
+        int mNoOfColumns = RecyclerViewUtils.calculateNoOfColumns(getContext(), 120 );
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
         _gridViewRecyclerView.setLayoutManager(gridLayoutManager);
         GridRecyclerViewAdapter gridRecyclerViewAdapter = new GridRecyclerViewAdapter(getActivity(), gridItemCategoryList);
@@ -206,13 +205,13 @@ public class OrderFragment extends Fragment{
         gridItemCategoryList.add(new GridItem("Dairy", R.drawable.ic_dairy));
 
 
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
-        productsList.add(new Product("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
+        productsList.add(new ProductModel("item1", 2110));
 
     }
 
@@ -235,7 +234,7 @@ public class OrderFragment extends Fragment{
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-                startActivity(new Intent(getActivity(), CartTestView.class));
+                startActivity(new Intent(getActivity(), CartViewActivity.class));
                 break;
             case R.id.menu_orders:
                 _navController.navigate(R.id.action_orderFragment_to_ordersPlacedFragment);

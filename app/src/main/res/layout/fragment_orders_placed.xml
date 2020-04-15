@@ -7,7 +7,7 @@
 
         <variable
             name="orderPlaced"
-            type="com.example.pickle.data.PlaceOrderModel" />
+            type="com.example.pickle.data.CustomerOrdersData" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".OrdersPlacedFragment">
+        tools:context=".activity.Main.Options.OrdersPlacedFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

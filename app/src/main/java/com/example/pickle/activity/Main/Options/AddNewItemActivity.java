@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main;
+package com.example.pickle.activity.Main.Options;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,13 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DatabaseReference;

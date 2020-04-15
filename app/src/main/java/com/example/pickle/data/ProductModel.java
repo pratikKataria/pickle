@@ -28,6 +28,11 @@ public class ProductModel {
 
     public ProductModel() {}
 
+    public ProductModel(String itemName, int itemBasePrice) {
+        this.itemName = itemName;
+        this.itemBasePrice = itemBasePrice;
+    }
+
     public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, String itemOffers, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, Date date, boolean itemAvailability, String itemImageUrl, String itemThumbImage) {
         this.itemName = itemName;
         this.itemDesc = itemDesc;

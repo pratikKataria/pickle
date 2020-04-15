@@ -1,9 +1,9 @@
-package com.example.pickle;
+package com.example.pickle.utils;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-public class Utility {
+public class RecyclerViewUtils {
     public static int calculateNoOfColumns(Context context, float columnWidthDp) { // For example columnWidthdp=180
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         float screenWidthDp = displayMetrics.widthPixels / displayMetrics.density;
