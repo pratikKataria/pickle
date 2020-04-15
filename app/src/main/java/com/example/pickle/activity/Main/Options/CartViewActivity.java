@@ -10,8 +10,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +20,12 @@ import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.CartCalculator;
 import com.example.pickle.data.CustomerOrdersData;
-import com.example.pickle.ui.CustomRadioButton;
-import com.example.pickle.ui.MyRadioButton;
-import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
+import com.example.pickle.ui.CustomRadioButton;
+import com.example.pickle.utils.PriceFormatUtils;
+import com.example.pickle.utils.SharedPrefsUtils;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -39,52 +39,54 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import io.alterac.blurkit.BlurLayout;
+
+
 public class CartViewActivity extends AppCompatActivity {
 
     private RecyclerView _cartRecyclerView;
     private List<ProductModel> cartList;
     private ActivityCartTestViewBinding _activityCartTestViewBinding;
     private CartCalculator _cartCalculator;
+    private BottomSheetBehavior _bottomSheetBehavior;
 
     private TextView _cartAmount;
     private TextView _amountToBePaid;
     private TextView _deliveryPrice;
     private MaterialButton _placeOrderBtn;
-    public final int[] anIntCartAmount = new int[1];
-
+    private BlurLayout blurLayout;
     private CustomRadioButton customRadioButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public final int[] anIntCartAmount = new int[1];
+    private View _includeView;
+
+
+    private void initFields() {
 
         _activityCartTestViewBinding = DataBindingUtil.setContentView(this, R.layout.activity_cart_test_view);
 
-        cartList = new ArrayList<>();
 
         _cartRecyclerView = _activityCartTestViewBinding.cartRecyclerView;
         _amountToBePaid = _activityCartTestViewBinding.amountToBePaid;
         _deliveryPrice = _activityCartTestViewBinding.deliveryPrice;
         _placeOrderBtn = _activityCartTestViewBinding.placeOrderBtn;
+        blurLayout = _activityCartTestViewBinding.blurLayout;
 
+        _includeView = _activityCartTestViewBinding.includeLayout;
         _cartAmount = _activityCartTestViewBinding.cartAmountTextView;
 
-        View _view  = _activityCartTestViewBinding.includeLayout;
-        RadioGroup radioGroup = _view.findViewById(R.id.radioGroup);
+        blurLayout.setAlpha(0);
+        cartList = new ArrayList<>();
+    }
 
-        RadioButton address1 = _view.findViewById(R.id.address_slot_1);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Toast.makeText(CartViewActivity.this, "radio group"+ checkedId, Toast.LENGTH_SHORT).show();
-                switch (checkedId) {
-                    case R.id.address_slot_1:
-                        Toast.makeText(CartViewActivity.this, "radio group"+ address1.getText(), Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
+        initFields();
+
+        init_bottomSheet();
+        init_customRadioButton();
 
         populateList();
         init_recyclerView();
@@ -100,6 +102,43 @@ public class CartViewActivity extends AppCompatActivity {
                 if (pm != null) {
                     placeOrder(pm);
                 }
+            }
+        });
+    }
+
+
+    private void init_bottomSheet() {
+        _bottomSheetBehavior = BottomSheetBehavior.from(_includeView);
+        _bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    blurLayout.startBlur();
+                } else {
+                    blurLayout.pauseBlur();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                if (slideOffset > 0 && slideOffset < 0.85) {
+                    blurLayout.setAlpha(slideOffset);
+                    Log.e("blur cart View Activity", "count " + slideOffset);
+                }
+            }
+        });
+    }
+
+    private void init_customRadioButton() {
+        RadioGroup radioGroup = _includeView.findViewById(R.id.radioGroup);
+        RadioButton address1 = _includeView.findViewById(R.id.address_slot_1);
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            Toast.makeText(CartViewActivity.this, "radio group"+ checkedId, Toast.LENGTH_SHORT).show();
+            switch (checkedId) {
+                case R.id.address_slot_1:
+                    Toast.makeText(CartViewActivity.this, "radio group"+ address1.getText(), Toast.LENGTH_SHORT).show();
+                    break;
             }
         });
     }
@@ -173,4 +212,9 @@ public class CartViewActivity extends AppCompatActivity {
         }
 
     }
+
+    private void blurBackground() {
+
+    }
+
 }
