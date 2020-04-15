@@ -9,8 +9,9 @@ public class CustomerOrdersData {
     private String userId;
     private String itemId;
     private String date;
+    private String deliveryTime;
 
-    public CustomerOrdersData(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date) {
+    public CustomerOrdersData(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date, String deliveryTime) {
         this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
         this.orderStatus = orderStatus;
@@ -19,9 +20,18 @@ public class CustomerOrdersData {
         this.userId = userId;
         this.itemId = itemId;
         this.date = date;
+        this.deliveryTime = deliveryTime;
     }
 
     public CustomerOrdersData() {
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 
     public String getItemId() {
