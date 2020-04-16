@@ -321,8 +321,10 @@ public class CartViewActivity extends AppCompatActivity {
                 double latitude = locationTrack.getLatitude();
 
                 //open google map for longitude and latitude
-//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+ latitude +"," + longitude));
-//                intent.setPackage("com.google.android.apps.maps");
+
+                //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+ latitude +"," + longitude));
+                //intent.setPackage("com.google.android.apps.maps");
+
                 if (latitude > 0 && longitude> 0) {
                     deliveryAddress = latitude +","+longitude;
                 }

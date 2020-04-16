@@ -55,6 +55,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         Log.e("MainACTIVITY ", "invocation2")
 
+//        startActivity(Intent(this, Webview::class.java))
+
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
 

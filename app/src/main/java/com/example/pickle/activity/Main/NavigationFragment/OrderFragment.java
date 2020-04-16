@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,20 +34,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
-import com.example.pickle.activity.Main.Options.CartViewActivity;
 import com.example.pickle.R;
-import com.example.pickle.utils.SpacesItemDecoration;
-import com.example.pickle.utils.RecyclerViewUtils;
+import com.example.pickle.activity.carousel.CarouselAdapter;
+import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.activity.Main.MainActivity;
-import com.example.pickle.utils.BadgeDrawableUtils;
+import com.example.pickle.activity.Main.Options.CartViewActivity;
 import com.example.pickle.data.GridItem;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.utils.BadgeDrawableUtils;
+import com.example.pickle.utils.RecyclerViewUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.example.pickle.utils.SpacesItemDecoration;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-import com.synnapps.carouselview.CarouselView;
+import com.yarolegovich.discretescrollview.DSVOrientation;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,14 +67,18 @@ import java.util.Map;
  */
 public class OrderFragment extends Fragment{
 
-    private CarouselView _carouselView;
-
     private Toolbar _toolbar;
     private RecyclerView _gridViewRecyclerView;
     private List<GridItem> gridItemCategoryList;
 
     private RecyclerView recyclerViewProduct;
     private List<ProductModel> productsList;
+
+    private List<CarouselImage> imageList;
+    private DiscreteScrollView carouselScrollView;
+    private InfiniteScrollAdapter infiniteAdapter;
+    private Handler handler;
+    private Runnable scrolling_runnable;
 
     private NavController _navController;
 
@@ -78,7 +98,6 @@ public class OrderFragment extends Fragment{
     }
 
     private void init_fields(View v) {
-        _carouselView = v.findViewById(R.id.carouselView);
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
         _gridViewRecyclerView = v.findViewById(R.id.recyclerView);
         recyclerViewProduct = v.findViewById(R.id.recyclerView1);
@@ -93,6 +112,31 @@ public class OrderFragment extends Fragment{
         navigationMap.put(2, R.id.action_orderFragment_to_beveragesFragment);
         navigationMap.put(3, R.id.action_orderFragment_to_dairyFragment);
 
+    }
+
+    private void init_carousel(View v) {
+        imageList = new ArrayList<>();
+        carouselScrollView = v.findViewById(R.id.discreteScrollView);
+
+        carouselScrollView.setOrientation(DSVOrientation.HORIZONTAL);
+//        carouselAdapter.addOnItemChangedListner(this);
+        infiniteAdapter = InfiniteScrollAdapter.wrap(new CarouselAdapter(imageList));
+
+        final int duration = 5000;
+        final int pixelsToMove = 800;
+        handler = new Handler(Looper.getMainLooper()) ;
+        scrolling_runnable = (Runnable) () -> {
+            carouselScrollView.smoothScrollBy(pixelsToMove, 0 , new LinearInterpolator());
+            handler.postDelayed(scrolling_runnable, duration);
+        };
+
+        handler.postDelayed(scrolling_runnable, duration);
+
+        carouselScrollView.setAdapter(infiniteAdapter);
+        carouselScrollView.setItemTransitionTimeMillis(150);
+        carouselScrollView.setItemTransformer(new ScaleTransformer.Builder()
+        .setMinScale(0.8F)
+        .build());
     }
 
     @Override
@@ -162,11 +206,8 @@ public class OrderFragment extends Fragment{
 
         setUpToolbar();
 
-        _carouselView.setPageCount(sampleImages.length);
-
-        _carouselView.setImageListener((position, imageView) -> {
-            imageView.setImageResource(sampleImages[position]);
-        });
+        getImageList();
+        init_carousel(view);
 
         populateList();
 
@@ -192,6 +233,45 @@ public class OrderFragment extends Fragment{
         gridRecyclerViewAdapter.setOnItemClickListener(position -> {
             if (navigationMap.containsKey(position)) {
                 _navController.navigate(navigationMap.get(position));
+            }
+        });
+    }
+
+    private void getImageList() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("CarouselImages");
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot != null) {
+                    imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                    infiniteAdapter.notifyDataSetChanged();
+                }
+                Log.e("orderFragment" , " images url " + dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                if (dataSnapshot != null) {
+                    imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                    infiniteAdapter.notifyDataSetChanged();
+                }
+                Log.e("orderFragment" , " images url " + dataSnapshot.getValue(String.class));
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

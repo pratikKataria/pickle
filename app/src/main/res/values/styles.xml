@@ -8,6 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/darkBlue</item>
         <item name="android:fontFamily">@font/avenir_next_medium</item>
+
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+
     </style>
 
     <style name="elegentButton" >

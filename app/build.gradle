@@ -58,6 +58,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.4.2'
 
     implementation 'io.alterac.blurkit:blurkit:1.1.0'
+
+    implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
+
+    implementation 'com.algolia:algoliasearch-android:3.27.0'
+    // This will automatically update to the latest v3 release when you build your project
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="imageView"
+            type="com.example.pickle.activity.carousel.CarouselImage" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="310dp"
+        android:layout_height="164dp"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:background="@color/black"
+        android:clipToPadding="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:imageResourceAdapter="@{imageView.imageUrl}" />
+
+    </androidx.cardview.widget.CardView>
+</layout>
+
