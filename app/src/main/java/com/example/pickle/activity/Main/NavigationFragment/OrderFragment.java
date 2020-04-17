@@ -17,8 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
@@ -35,10 +33,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
 import com.example.pickle.R;
-import com.example.pickle.activity.carousel.CarouselAdapter;
-import com.example.pickle.activity.carousel.CarouselImage;
+import com.example.pickle.activity.Main.FirebaseSearchActivity;
 import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.activity.Main.Options.CartViewActivity;
+import com.example.pickle.activity.carousel.CarouselAdapter;
+import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.data.GridItem;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.utils.BadgeDrawableUtils;
@@ -58,7 +57,6 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -318,6 +316,10 @@ public class OrderFragment extends Fragment{
                 break;
             case R.id.menu_orders:
                 _navController.navigate(R.id.action_orderFragment_to_ordersPlacedFragment);
+                break;
+
+            case R.id.menu_main_search_btn:
+                startActivity(new Intent(getActivity(), FirebaseSearchActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
