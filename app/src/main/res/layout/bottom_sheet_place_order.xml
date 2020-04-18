@@ -130,7 +130,7 @@
                 />
 
             <com.example.pickle.ui.MyRadioButton
-                android:id="@+id/address_slot_2"
+                android:id="@+id/address_slot_3"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 android:padding="16dp"
@@ -144,7 +144,7 @@
                 />
 
             <com.example.pickle.ui.MyRadioButton
-                android:id="@+id/address_slot_2"
+                android:id="@+id/address_slot_4"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 android:padding="16dp"
@@ -158,7 +158,7 @@
                 />
 
             <com.example.pickle.ui.MyRadioButton
-                android:id="@+id/address_slot_2"
+                android:id="@+id/address_slot_5"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
                 android:padding="16dp"

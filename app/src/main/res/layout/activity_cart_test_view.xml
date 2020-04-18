@@ -190,7 +190,7 @@
 
         <include
             android:id="@+id/includeLayout"
-            layout="@layout/bottom_sheet" />
+            layout="@layout/bottom_sheet_place_order" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

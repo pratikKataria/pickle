@@ -14,6 +14,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
@@ -21,69 +22,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:layout_margin="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="@{product.showAddButton()? View.VISIBLE : View.GONE}">
-
-                    <Button
-                        android:id="@+id/decreaseCartItem"
-                        android:layout_width="35dp"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:id="@+id/qtyCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_gravity="center"
-                        android:text="@{String.valueOf(product.quantityCounter)}" />
-
-                    <ImageButton
-                        android:id="@+id/increaseCartItem"
-                        android:layout_width="42dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_add_black_24dp"
-                        android:backgroundTint="@color/black"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                   android:visibility="@{product.showAddButton() ? View.GONE : View.VISIBLE}">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center"
-                        android:text="Add" />
-
-                    <Button
-                        android:id="@+id/add_to_cart_button"
-                        android:layout_width="45dp"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:textColor="@color/black" />
-
-                </LinearLayout>
-
-            </FrameLayout>
 
             <ImageView
                 android:id="@+id/card_view_iv_product_image"

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="vegetables">
+        <item>artichoke</item>
+        <item>aubergine (eggplant)</item>
+        <item>asparagus</item>
+        <item>legumes</item>
+        <item>alfalfa sprouts</item>
+        <item>azuki beans (or adzuki)</item>
+        <item>bean sprouts</item>
+        <item>black beans</item>
+        <item>black-eyed peas</item>
+        <item>borlotti bean</item>
+        <item>broad beans</item>
+        <item>chickpeas, garbanzos, or ceci beans</item>
+        <item>green beans</item>
+        <item>kidney beans</item>
+        <item>lentils</item>
+        <item>lima beans or butter bean</item>
+        <item>mung beans</item>
+        <item>navy beans</item>
+        <item>peanuts</item>
+        <item>pinto beans</item>
+        <item>runner beans</item>
+        <item>split peas</item>
+        <item>soy beans</item>
+        <item>peas</item>
+        <item>mangetout or snap peas</item>
+        <item>broccoflower (a hybrid)</item>
+        <item>broccoli (calabrese)</item>
+        <item>brussels sprouts</item>
+        <item>cabbage</item>
+        <item>kohlrabi</item>
+        <item>Savoy cabbage</item>
+        <item>red cabbage</item>
+        <item>cauliflower</item>
+        <item>celery</item>
+        <item>endive</item>
+        <item>fiddleheads</item>
+        <item>frisee</item>
+        <item>fennel</item>
+        <item>greens</item>
+        <item>bok choy</item>
+        <item>chard (beet greens)</item>
+        <item>collard greens</item>
+        <item>kale</item>
+        <item>mustard greens</item>
+        <item>spinach</item>
+        <item>herbs and spices</item>
+        <item>anise</item>
+        <item>basil</item>
+        <item>caraway</item>
+        <item>coriander</item>
+        <item>chamomile</item>
+        <item>daikon</item>
+        <item>fennel</item>
+        <item>lavender</item>
+        <item>cymbopogon (also known as lemongrass)</item>
+        <item>marjoram</item>
+        <item>oregano</item>
+        <item>parsley</item>
+        <item>rosemary</item>
+        <item>sage</item>
+        <item>thyme</item>
+        <item>lettuce</item>
+        <item>arugula</item>
+        <item>mushrooms (actually a fungus, not a plant)</item>
+        <item>nettles</item>
+        <item>New Zealand spinach</item>
+        <item>okra</item>
+        <item>onions</item>
+        <item>chives</item>
+        <item>garlic</item>
+        <item>leek</item>
+        <item>onion</item>
+        <item>shallot</item>
+        <item>scallion (spring onion UK, green onion US)</item>
+        <item>peppers (biologically fruits, but taxed as vegetables)</item>
+        <item>bell pepper</item>
+        <item>chili pepper</item>
+        <item>jalapeño</item>
+        <item>habanero</item>
+        <item>paprika</item>
+        <item>tabasco pepper</item>
+        <item>cayenne pepper</item>
+        <item>radicchio</item>
+        <item>rhubarb</item>
+        <item>root vegetables</item>
+        <item>beetroot (UK) beet (US)</item>
+        <item>mangel-wurzel: a variety of beet used mostly as cattlefeed</item>
+        <item>carrot</item>
+        <item>celeriac</item>
+        <item>corms</item>
+        <item>eddoe</item>
+        <item>konjac</item>
+        <item>taro</item>
+        <item>water chestnut</item>
+        <item>ginger</item>
+        <item>bhindi</item>
+        <item>parsnip</item>
+        <item>आलू</item>
+        <item>AlooPotato</item>
+        <item>मटर </item>
+        <item>Matar Peas</item>
+        <item>टमाटर </item>
+        <item>Tamatar Tomato</item>
+        <item>बैगन </item>
+        <item>Baingan Brinjal</item>
+        <item>फूल गोभी </item>
+        <item>phool Gobhi</item>
+        <item>Cauliflower</item>
+        <item>पत्ता गोभी </item>
+        <item>Patta Gobhi Cabbage</item>
+        <item>भिन्डी </item>
+        <item>Bhindi Lady Finger</item>
+        <item>मूली </item>
+        <item>Muli Radish</item>
+        <item>प्याज </item>
+        <item>Pyaaj</item>
+        <item>Onion</item>
+        <item>लहसुन </item>
+        <item>Lahsun Garlic</item>
+        <item>लौकी</item>
+        <item>घीया </item>
+        <item>Lauki</item>
+        <item>Bottle Gourd</item>
+        <item>तुरई</item>
+        <item>तोरू</item>
+        <item>Turai</item>
+        <item>Toru</item>
+        <item>Ridged</item>
+        <item>Gourd</item>
+        <item>काशीफल</item>
+        <item>कद्दू </item>
+        <item>Kashifal</item>
+        <item>Kaddu</item>
+        <item>Pumpkin</item>
+        <item>गाजर</item>
+        <item>Gajar Carrot</item>
+        <item>नीबू </item>
+        <item>Neebu Lemon</item>
+        <item>अदरक </item>
+        <item>Adrak</item>
+        <item>Ginger</item>
+        <item>मिर्च </item>
+        <item>Mirch	Chilli</item>
+        <item>हरी मिर्च </item>
+        <item>Hari Mirch Green pepper</item>
+        <item>शिमला मिर्च </item>
+        <item>Shimla Mirch</item>
+        <item>Capsicum</item>
+        <item>पालक </item>
+        <item>Palak	Spinach</item>
+        <item>हरी मैथी </item>
+        <item>Hari Maithee</item>
+        <item>Fenugreek Leaf</item>
+        <item>बथुआ </item>
+        <item>Bathua White Goosefoot</item>
+        <item>हरा घनिया </item>
+        <item>Hara Dhaniya</item>
+        <item>Coriander Leaf</item>
+        <item>टिंडा</item>
+        <item>Tinda Tinda</item>
+        <item>कमरक </item>
+        <item>Kamarak Starfruit</item>
+        <item>करोंदा </item>
+        <item>Karonda Natal Plum</item>
+        <item>खीरा </item>
+        <item>Kheera Cucumber</item>
+        <item>ककड़ी </item>
+        <item>Kakdee Cucumber </item>
+        <item>मक्का </item>
+        <item>Makka Corn</item>
+        <item>Maize</item>
+        <item>ग्वार की फली </item>
+        <item>Gwar Ki Fali </item>
+        <item>Guar</item>
+        <item>Cluster Bean</item>
+        <item>मीठा नीम</item>
+        <item> कढ़ी पत्ता </item>
+        <item>Kadhi Patta</item>
+        <item>Curry Leaf</item>
+        <item>कटहल </item>
+        <item>Kathal Jackfruit</item>
+        <item>शलजम </item>
+        <item>Shaljam Turnip</item>
+        <item>कुकुरमुत्ता </item>
+        <item>Kukurmutta</item>
+        <item>Mushroom</item>
+        <item>पुदीना </item>
+        <item>Pudina tem>शकरगंद </item>
+        <item>Shakargand Sweet Potato</item>
+        <item>जिमीकंद </item>
+        <item>Jimikand Taro</item>
+        <item>Yam</item>
+        <item>कच्चा केला </item>
+        <item>Kachcha Kela</item>
+        <item>Cooking Plantain</item>
+        <item>चुकंदर </item>
+        <item>Chukundar	 Beetroot</item>
+        <item>करेला </item>
+        <item>Karela Bitter Gourd</item>
+        <item>अरवी </item>
+        <item>Arbi Colcassia</item>
+        <item>सेम फली </item>
+        <item>Sem Fali Bean Pod</item>
+        <item>कमल ककड़ी </item>
+        <item>Kamal Kakadi</item>
+        <item>Lotus Stem</item>
+        <item>अमिया </item>
+        <item>Amiya</item>
+        <item>Carry </item>
+        <item>रतालू </item>
+        <item>Ratalu Potato Palm</item>
+        <item>चौलाई </item>
+        <item>Chaulai Amaranth</item>
+        <item>पत्तों वाले प्याज </item>
+        <item>Patto Wale Pyaaj</item>
+        <item>Spring Onion</item>
+        <item>सरसों पत्ता </item>
+        <item>Sarso Patta</item>
+        <item>Mustard Greens</item>
+        <item>परवल</item>
+        <item>Parval Striped Pear Gourds</item>
+    </string-array>
+
+</resources>

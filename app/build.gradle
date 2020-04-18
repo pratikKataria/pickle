@@ -65,6 +65,8 @@ dependencies {
 
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
+   implementation 'org.apache.commons:commons-lang3:3.10'
+
     // This will automatically update to the latest v3 release when you build your project
 
     testImplementation 'junit:junit:4.12'

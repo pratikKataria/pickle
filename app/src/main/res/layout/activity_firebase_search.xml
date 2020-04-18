@@ -3,21 +3,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.Main.FirebaseSearchActivity"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit_query"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:hint="search here" />
+        android:layout_height="66dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp">
 
-    <Button
-        android:id="@+id/search_button"
+        <AutoCompleteTextView
+            android:id="@+id/edit_query"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="12dp"
+            android:background="@color/transparent"
+            android:completionThreshold="1"
+            android:dropDownAnchor="@id/space"
+            android:elevation="5dp"
+            android:paddingStart="32dp"
+            android:focusable="true"
+            android:hint="search here"
+            android:inputType="textAutoComplete|textAutoCorrect"
+            android:popupBackground="@drawable/ic_round_rect_white"
+            android:scrollIndicators="none"
+            android:textCursorDrawable="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_search_bar" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="28dp"
+            android:background="@drawable/ic_search"
+            android:backgroundTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.38" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="search" />
+        android:text="select choice, faster searching"
+        android:layout_gravity="end"
+        android:layout_marginEnd="18dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_marginEnd="18dp">
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:singleSelection="true"
+            app:chipSpacing="16dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterVegetable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegitables"
+                app:chipCornerRadius="4dp"
+                app:rippleColor="@color/chipColorSearchFilterUnselected"
+                app:chipBackgroundColor="@color/bg_color_search_filter"
+                android:textColor="@color/black"
+                app:chipStrokeWidth="1dp"
+                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterFruits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fruits"
+                app:chipCornerRadius="4dp"
+                app:rippleColor="@color/chipColorSearchFilterUnselected"
+                app:chipBackgroundColor="@color/bg_color_search_filter"
+                android:textColor="@color/black"
+                app:chipStrokeWidth="1dp"
+                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterDiary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diary"
+                app:chipCornerRadius="4dp"
+                app:rippleColor="@color/chipColorSearchFilterUnselected"
+                app:chipBackgroundColor="@color/bg_color_search_filter"
+                android:textColor="@color/black"
+                app:chipStrokeWidth="1dp"
+                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterBeverages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Beverages"
+                app:chipCornerRadius="4dp"
+                app:rippleColor="@color/chipColorSearchFilterUnselected"
+                app:chipBackgroundColor="@color/bg_color_search_filter"
+                android:textColor="@color/black"
+                app:chipStrokeWidth="1dp"
+                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+        </com.google.android.material.chip.ChipGroup>
+
+
+    </LinearLayout>
+
+
+
+    <androidx.legacy.widget.Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultView"

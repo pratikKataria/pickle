@@ -13,8 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.databinding.CardViewCategoryProductBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
-import com.example.pickle.databinding.CategoryProductCardViewBinding;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
         RecyclerView.ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        CategoryProductCardViewBinding view = CategoryProductCardViewBinding.inflate(layoutInflater, parent, false);
+        CardViewCategoryProductBinding view = CardViewCategoryProductBinding.inflate(layoutInflater, parent, false);
 
         holder = new ProductCardViewHolder(view);
 
@@ -185,14 +185,14 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class ProductCardViewHolder extends RecyclerView.ViewHolder{
 
-        private CategoryProductCardViewBinding binding;
+        private CardViewCategoryProductBinding binding;
         private ImageButton _increaseCart;
         private Button _decreaseCart;
         private Button _addToCartButton;
 
         private TextView _qtyCounter;
 
-        public ProductCardViewHolder(@NonNull CategoryProductCardViewBinding binding) {
+        public ProductCardViewHolder(@NonNull CardViewCategoryProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

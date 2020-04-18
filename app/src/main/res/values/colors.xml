@@ -2,11 +2,14 @@
 <resources>
     <color name="colorPrimary">#F9D915</color>
     <color name="colorPrimaryDark">#E1C414</color>
-    <color name="colorAccent">#F9D915</color>
+    <color name="colorAccent">#FFDB00</color>
 
 
     <color name="chipColorStateSelect">#6600EB</color>
     <color name="chipColorSateUnselected">#E4D2FC</color>
+
+    <color name="chipColorSearchFilterSelected">#FFDB00</color>
+    <color name="chipColorSearchFilterUnselected">#FAEDA1</color>
 
 
     <color name="darkBlue">#3F3D56</color>

@@ -1,7 +1,6 @@
 package com.example.pickle.activity.Splash
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
 import com.example.pickle.activity.Login.CustomerDetailActivity
-import com.example.pickle.activity.Login.LoginActivity
+import com.example.pickle.activity.Main.FirebaseSearchActivity
 import com.example.pickle.activity.Main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -50,15 +49,19 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (hasPermissions(this, permission)) {
-            if (checkAuth())
-                checkDoc()
-            else {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-            }
-        } else {
-            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-        }
+        //todo remove this in splash activity
+        startActivity(Intent(this, FirebaseSearchActivity::class.java))
+
+
+//        if (hasPermissions(this, permission)) {
+//            if (checkAuth())
+//                checkDoc()
+//            else {
+//                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+//            }
+//        } else {
+//            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+//        }
 
     }
 
