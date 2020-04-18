@@ -1,26 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="android.view.View"/>
+
         <variable
-            name="productModel"
+            name="product"
             type="com.example.pickle.data.ProductModel" />
 
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/ic_round_rect">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{productModel.itemName}"/>
+            android:orientation="vertical"
+            android:background="@drawable/ic_round_rect">
+
+            <View
+                android:layout_width="45dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:background="@drawable/bottom_sheet_handel" />
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_margin="12dp"
+                android:layout_gravity="center"
+                app:imageResourceAdapter="@{product.itemThumbImage}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{product.itemName}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemBasePrice)}"/>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{product.showAddButton()? View.VISIBLE : View.GONE}">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/decreaseCartItem"
+                        android:layout_width="35dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/qtyCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_gravity="center"
+                        android:text="@{String.valueOf(product.quantityCounter)}" />
+
+                    <ImageButton
+                        android:id="@+id/increaseCartItem"
+                        android:layout_width="42dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add_black_24dp"
+                        android:backgroundTint="@color/black"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{product.showAddButton() ? View.GONE : View.VISIBLE}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center"
+                        android:text="Add" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/add_to_cart_button"
+                        android:layout_width="45dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
 
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to cart"
+                android:textAllCaps="false"
+                android:textColor="@color/chipColorStateSelect"
+                app:strokeColor="@color/chipColorSateUnselected"
+                app:icon="@drawable/ic_cart"
+                app:iconTint="@color/chipColorStateSelect"
+                android:layout_gravity="center"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        </LinearLayout>
+
 </layout>

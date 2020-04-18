@@ -10,7 +10,8 @@
 
     <color name="chipColorSearchFilterSelected">#FFDB00</color>
     <color name="chipColorSearchFilterUnselected">#FAEDA1</color>
-
+    
+    <color name="semiTransparent">#31000000</color>
 
     <color name="darkBlue">#3F3D56</color>
     <color name="transparent">#00FFFFFF</color>

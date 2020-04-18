@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.pickle.Adapters.AutoCompleteAdapter;
 import com.example.pickle.R;
@@ -51,11 +52,13 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_search);
 
+        showBottomSheet(new ProductModel());
+
 
         init_fields();
         popupLayoutDecoration();
 
-        _searchRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        _searchRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
         _searchRecyclerView.setHasFixedSize(true);
 
         ref = FirebaseDatabase.getInstance().getReference("Products/Vegetables");
@@ -93,7 +96,7 @@ public class FirebaseSearchActivity extends AppCompatActivity {
 
     private void firebaseUserSearch(String queryString) {
 
-        Query query = ref.orderByChild("itemName").startAt(queryString).endAt(queryString + "\uf8ff");
+        Query query = ref.orderByChild("itemName");
 
         FirebaseRecyclerOptions<ProductModel> options =
                 new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query, ProductModel.class).build();
@@ -129,6 +132,7 @@ public class FirebaseSearchActivity extends AppCompatActivity {
     public class FirebaseSearchViewHolder extends RecyclerView.ViewHolder {
 
         private CardViewSearchItemBinding itemView;
+        private ProductModel model;
 
         public FirebaseSearchViewHolder(@NonNull CardViewSearchItemBinding itemView) {
             super(itemView.getRoot());
@@ -137,11 +141,13 @@ public class FirebaseSearchActivity extends AppCompatActivity {
             CardView cardView = itemView.cardView;
 
             cardView.setOnClickListener(n -> {
-                showBottomSheet();
+                if (model != null) {
+                }
             });
         }
 
         void setBinding(ProductModel productModel) {
+            model = productModel;
             itemView.setProduct(productModel);
         }
 
@@ -158,8 +164,8 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         _autoCompleteTextView.setDropDownWidth(width - 150);
     }
 
-    private void showBottomSheet() {
-        SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog();
+    private void showBottomSheet(ProductModel productModel) {
+        SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog(productModel);
         bottomSheetDialog.show(getSupportFragmentManager(), "searchViewBottomSheet");
     }
 
