@@ -71,8 +71,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_search);
 
-        showBottomSheet(new ProductModel());
-
         init_fields();
         init_cartMap();
         init_recyclerview();
@@ -88,24 +86,18 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         _autoCompleteTextView.setAdapter(adapter);
         _autoCompleteTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.e("beforeTextChanged", " " + s);
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 3) {
                 }
-                Log.e("onTextChanged", " " + s);
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                Log.e("afterTextChanged", " " + s);
-            }
+            public void afterTextChanged(Editable s) { }
         });
 
-        Log.e("Firebasesearch count ", searchRecyclerAdapter.getItemCount() + " ");
     }
 
     private void init_recyclerview() {
@@ -114,7 +106,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         _searchRecyclerView.setHasFixedSize(true);
 
         Query query = ref.orderByChild("itemName");
-
 
         FirebaseRecyclerOptions<ProductModel> options =
                 new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query, snapshot -> {
@@ -146,7 +137,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
 
                 if (list != null && models != null) {
                     for (ProductModel productModel : models) {
-                        Log.e("FirebaseSearch", productModel.getItemId());
                         cartMap.put(productModel.getItemId(), productModel);
                     }
                 }
@@ -157,16 +147,10 @@ public class FirebaseSearchActivity extends AppCompatActivity {
     private void popupLayoutDecoration() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
 
         _autoCompleteTextView.setDropDownHorizontalOffset(110);
         _autoCompleteTextView.setDropDownWidth(width - 150);
-    }
-
-    private void showBottomSheet(ProductModel productModel) {
-        SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog(productModel);
-        bottomSheetDialog.show(getSupportFragmentManager(), "searchViewBottomSheet");
     }
 
     @Override
