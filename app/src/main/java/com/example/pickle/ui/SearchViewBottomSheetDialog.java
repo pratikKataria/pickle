@@ -1,10 +1,13 @@
 package com.example.pickle.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.BottomSheetSearchViewBinding;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
@@ -37,8 +41,6 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
         decreaseQtyBtn = searchViewBinding.decreaseCartItem;
         increaseQtyBtn = searchViewBinding.increaseCartItem;
         addToCartBtn = searchViewBinding.addToCartButton;
-
-        setStyle(STYLE_NO_TITLE, R.style.MyDialog);
     }
 
     @Nullable
@@ -55,6 +57,14 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
 
 
         searchViewBinding.setProduct(productModel);
+
+        getDialog().setOnShowListener(dialog -> {
+            BottomSheetDialog d = (BottomSheetDialog) dialog;
+            FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet == null)
+                return;
+            bottomSheet.setBackground(null);
+        });
 
         return searchViewBinding.getRoot();
     }

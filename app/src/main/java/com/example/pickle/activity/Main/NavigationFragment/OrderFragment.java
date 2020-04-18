@@ -80,7 +80,7 @@ public class OrderFragment extends Fragment{
 
     private NavController _navController;
 
-
+    //todo remove this
     private int [] sampleImages = {
             R.drawable.sale_one,
             R.drawable.sale_two,
