@@ -40,71 +40,30 @@
                 android:layout_gravity="center"
                 android:text="@{product.itemName}"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemBasePrice)}"/>
+                android:layout_gravity="center">
 
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/card_view_iv_base_price"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="@{product.showAddButton()? View.VISIBLE : View.GONE}">
+                    android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemBasePrice)}"
+                    app:strikeThrough="@{product.itemSellPrice>0? true : false}" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/decreaseCartItem"
-                        android:layout_width="35dp"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:textColor="@color/black" />
+                <androidx.legacy.widget.Space
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent"/>
 
-                    <TextView
-                        android:id="@+id/qtyCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:layout_gravity="center"
-                        android:text="@{String.valueOf(product.quantityCounter)}" />
-
-                    <ImageButton
-                        android:id="@+id/increaseCartItem"
-                        android:layout_width="42dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_add_black_24dp"
-                        android:backgroundTint="@color/black"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/card_view_iv_sell_price"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="@{product.showAddButton() ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
+                    android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemSellPrice)}" />
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center"
-                        android:text="Add" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/add_to_cart_button"
-                        android:layout_width="45dp"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:textColor="@color/white" />
-
-                </LinearLayout>
-
-            </FrameLayout>
+            </LinearLayout>
 
 
             <com.google.android.material.button.MaterialButton
@@ -114,6 +73,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/chipColorStateSelect"
                 app:strokeColor="@color/chipColorSateUnselected"
+                app:rippleColor="@color/chipColorSateUnselected"
                 app:icon="@drawable/ic_cart"
                 app:iconTint="@color/chipColorStateSelect"
                 android:layout_gravity="center"

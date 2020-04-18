@@ -37,12 +37,6 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
         this.productModel = productModel;
     }
 
-    private void init_fields() {
-        decreaseQtyBtn = searchViewBinding.decreaseCartItem;
-        increaseQtyBtn = searchViewBinding.increaseCartItem;
-        addToCartBtn = searchViewBinding.addToCartButton;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,8 +46,6 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
                 container,
                 false
         );
-
-        init_fields();
 
 
         searchViewBinding.setProduct(productModel);
