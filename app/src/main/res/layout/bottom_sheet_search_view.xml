@@ -33,12 +33,18 @@
                 android:layout_margin="12dp"
                 android:layout_gravity="center"
                 app:imageResourceAdapter="@{product.itemThumbImage}"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@{product.itemName}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:text="@{product.itemDesc}"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

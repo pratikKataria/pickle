@@ -1,66 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="-25dp"
+    android:orientation="vertical"
+    android:background="@color/lightWeightGrey"
     tools:context=".activity.Login.CustomerDetailActivity">
 
-    <EditText
-        android:id="@+id/cd_et_userName"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:hint="username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="250dp"
+        android:src="@drawable/pablo_delivery"
+        android:scaleType="fitXY" />
 
-    <EditText
-        android:id="@+id/cd_et_email"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cd_et_userName" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:cardCornerRadius="32dp"
+        android:layout_marginTop="-25dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="8dp">
 
-    <EditText
-        android:id="@+id/cd_et_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="address"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cd_et_email" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="25dp"
+                android:padding="16dp"
+                android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/black"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/cd_mb_save"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="@+id/cd_mb_save"
-        app:layout_constraintTop_toBottomOf="@+id/cd_et_address"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/customer_details_note" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/cd_mb_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="save"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <RadioGroup
+                    android:id="@+id/radioGroup_outer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.example.pickle.ui.MyRadioButton
+                    android:id="@+id/apartment"
+                    style="@style/CustomerDetailRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:layout_marginTop="8dp"
+                    android:tag="0"
+                    android:checked="true"
+                    android:drawableStart="@drawable/ic_apartment"
+                    android:drawablePadding="8dp"
+                    android:text="Appartment or Gated Society" />
+
+                    <com.example.pickle.ui.MyRadioButton
+                        android:id="@+id/blank"
+                        style="@style/CustomerDetailRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:tag="9999"/>
+                </RadioGroup>
+                <RadioGroup
+                    android:id="@+id/radioGroup_inner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.example.pickle.ui.MyRadioButton
+                        android:id="@+id/individualHouse"
+                        style="@style/CustomerDetailRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="14dp"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:tag="1"
+                        android:drawableStart="@drawable/ic_individual_house"
+                        android:drawablePadding="8dp"
+                        android:text="Individual House" />
+
+                    <com.example.pickle.ui.MyRadioButton
+                        android:id="@+id/currentAddress"
+                        style="@style/CustomerDetailRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:padding="14dp"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:tag="2"
+                        android:singleLine="true"
+                        android:layout_marginStart="8dp"
+                        android:text="Current Location"
+                        android:drawableStart="@drawable/ic_gps"
+                        android:drawablePadding="8dp"/>
+
+                </RadioGroup>
+
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

@@ -69,34 +69,23 @@ class OtpActivity : AppCompatActivity() {
                     // Sign in failed, display a message and update the UI
 //                    Log.w(TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(
-                            this@OtpActivity,
-                            "error: ${(task.exception as FirebaseAuthInvalidCredentialsException).message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(
-                            this@OtpActivity,
-                            "error: ${(task.exception as FirebaseException).message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                        Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseAuthInvalidCredentialsException).message}", Toast.LENGTH_SHORT).show()
+                    } else
+                        Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseException).message}",Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     private fun checkDoc() {
-        Log.e("check doc ", " chek doc")
-        var reference = FirebaseDatabase.getInstance().getReference("Customers")
+        val reference = FirebaseDatabase.getInstance().getReference("Customers")
             .child(FirebaseAuth.getInstance().uid!! + "/c_uid")
-        reference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            reference.keepSynced(true)
+            reference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if (dataSnapshot.exists()) {
-                    Log.e("check doc ", " chek doc $dataSnapshot")
                     checkDeviceToken("Customers", FirebaseAuth.getInstance().uid!!)
                 } else {
-                    Log.e("check doc ", " chek doc $dataSnapshot" + " null")
                     Handler().postDelayed( {
                         startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java))
                     }, 1200)
@@ -113,37 +102,25 @@ class OtpActivity : AppCompatActivity() {
     private fun checkDeviceToken(path: String, id: String) {
         if (FirebaseAuth.getInstance().uid != null) {
             val ref = FirebaseDatabase.getInstance().getReference(path)
-            ref.child("$id/d_token").addValueEventListener(object : ValueEventListener {
+            ref.keepSynced(true)
+            ref.child("$id/d_token").addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot != null && dataSnapshot.exists()) {
-                        val token =
-                            dataSnapshot.getValue(String::class.java)
+                        val token = dataSnapshot.getValue(String::class.java)
                         if (token != null && token == FirebaseInstanceId.getInstance().token) {
-
-                            Toast.makeText(this@OtpActivity, "Token Verified", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(this@OtpActivity, "Token Verified", Toast.LENGTH_SHORT).show()
                             sendUserToHome()
                         } else {
-                            ref.child("$id/d_token")
-                                .setValue(
-                                    FirebaseInstanceId.getInstance().token
-                                ) { databaseError: DatabaseError?, databaseReference: DatabaseReference? ->
-                                    Toast.makeText(
-                                        this@OtpActivity,
-                                        "Token Changed",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                            ref.child("$id/d_token").setValue(FirebaseInstanceId.getInstance().token) {
+                                    databaseError: DatabaseError?, databaseReference: DatabaseReference? ->
+                                    Toast.makeText(this@OtpActivity, "Token Changed", Toast.LENGTH_SHORT).show()
                                 }
                         }
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
-                    Toast.makeText(
-                        this@OtpActivity,
-                        "error ${databaseError.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@OtpActivity, "error ${databaseError.message}", Toast.LENGTH_SHORT).show()
                 }
             })
         }

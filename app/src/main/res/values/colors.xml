@@ -10,8 +10,13 @@
 
     <color name="chipColorSearchFilterSelected">#FFDB00</color>
     <color name="chipColorSearchFilterUnselected">#FAEDA1</color>
+
+    <color name="customerDetailRadioSelected">#F36B7F</color>
+    <color name="customerDetailRadioUnSelected">#FDE1E5</color>
     
     <color name="semiTransparent">#31000000</color>
+
+    <color name="lightWeightGrey">#F8F7F7</color>
 
     <color name="darkBlue">#3F3D56</color>
     <color name="transparent">#00FFFFFF</color>

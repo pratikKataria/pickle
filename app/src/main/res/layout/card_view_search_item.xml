@@ -95,6 +95,14 @@
                         android:text="-"
                         android:textColor="@color/black" />
 
+                    <TextView
+                        android:id="@+id/qtyCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="8dp"
+                        android:text="@{String.valueOf(product.quantityCounter)}" />
+
                     <ImageButton
                         android:id="@+id/increaseCartItem"
                         android:layout_width="42dp"
@@ -103,13 +111,6 @@
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_add_black_24dp" />
 
-                    <TextView
-                        android:id="@+id/qtyCounter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:text="@{String.valueOf(product.quantityCounter)}" />
                 </LinearLayout>
 
                 <LinearLayout
