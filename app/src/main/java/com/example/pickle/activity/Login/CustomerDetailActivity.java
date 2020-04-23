@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pickle.R;
+import com.example.pickle.ui.ZoomOutPageTransformer;
 import com.example.pickle.viewpager.ViewPagerAdapter;
+import com.google.firebase.database.core.ZombieEventManager;
 
 public class CustomerDetailActivity extends AppCompatActivity {
 
@@ -34,6 +36,7 @@ public class CustomerDetailActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager2);
         viewPager.setAdapter(createAdapter());
         viewPager.setUserInputEnabled(false);
+        viewPager.setPageTransformer(new ZoomOutPageTransformer());
 
         _radioGroupOuter = findViewById(R.id.radioGroup_outer);
         _radioGroupInner = findViewById(R.id.radioGroup_inner);
@@ -62,7 +65,6 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
     private ViewPagerAdapter createAdapter() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
-        viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
         return adapter;
     }
 }
