@@ -12,9 +12,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
@@ -152,9 +152,10 @@ public class LocationTracker extends Service implements LocationListener {
         return this.canGetLocation;
     }
 
-    public void showSettingsAlert() {
+    public boolean showSettingsAlert() {
+        Log.e("invoked gps ", "alert dialog ");
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-
+        final boolean[] isNoButtonPressed = {false};
 
         alertDialog.setTitle("GPS is not Enabled!");
 
@@ -172,11 +173,12 @@ public class LocationTracker extends Service implements LocationListener {
         alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+                isNoButtonPressed[0] = true;
             }
         });
 
-
         alertDialog.show();
+        return   isNoButtonPressed[0];
     }
 
 

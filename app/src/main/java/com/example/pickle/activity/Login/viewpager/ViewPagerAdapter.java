@@ -1,15 +1,10 @@
-package com.example.pickle.viewpager;
-
-import android.util.Log;
+package com.example.pickle.activity.Login.viewpager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import java.util.ArrayList;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 
@@ -29,7 +24,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 fragment = ApartmentFragment.newInstance(1);
                 return fragment;
             case 1:
-                fragment = new IndividualHouse();
+                fragment = new IndividualHouseFragment();
                 return fragment;
             case 2:
                 fragment = new CurrentLocationFragment();

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".viewpager.CurrentLocationFragment">
+    tools:context=".activity.Login.viewpager.CurrentLocationFragment">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_current_location"
@@ -39,6 +39,25 @@
             android:text="Location Found"/>
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/cd_et_userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_border"
+        android:hint="username"
+        android:padding="14dp"
+        android:singleLine="true" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/black"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/updateBtn"

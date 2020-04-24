@@ -1,69 +1,129 @@
 package com.example.pickle.data;
 
 public class Address {
-    private String city;
-    private String nearLandmark;
-    private String streetName;
-    private long areaCode;
-    private String state = "MadhyaPradesh";
+    private String apartmentSociety;
+    private String areaPin;
+    private String flatHouseNo;
+    private String address;
+    private String landmark;
 
-    public Address() {
+    private String houseNoPlotno;
+    private String floors;
+
+    private String gpsLocation;
+
+    public Address() {}
+
+    //generic
+    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark, String houseNoPlotno, String floors) {
+        this.apartmentSociety = apartmentSociety;
+        this.areaPin = areaPin;
+        this.flatHouseNo = flatHouseNo;
+        this.address = address;
+        this.landmark = landmark;
+        this.houseNoPlotno = houseNoPlotno;
+        this.floors = floors;
     }
 
-    public Address(String city, String nearLandmark, String streetName, long areaCode, String state) {
-        this.city = city;
-        this.nearLandmark = nearLandmark;
-        this.streetName = streetName;
-        this.areaCode = areaCode;
-        this.state = state;
+    //Address apartment
+    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark) {
+        this.apartmentSociety = apartmentSociety;
+        this.areaPin = areaPin;
+        this.flatHouseNo = flatHouseNo;
+        this.address = address;
+        this.landmark = landmark;
     }
 
-    public String getCity() {
-        return city;
+    //Address individual
+    public Address(String areaPin, String address, String landmark, String floors) {
+        this.areaPin = areaPin;
+        this.address = address;
+        this.landmark = landmark;
+        this.floors = floors;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    //address current;
+
+
+    public Address(String gpsLocation) {
+        this.gpsLocation = gpsLocation;
     }
 
-    public String getNearLandmark() {
-        return nearLandmark;
+    public String getApartmentSociety() {
+        return apartmentSociety;
     }
 
-    public void setNearLandmark(String nearLandmark) {
-        this.nearLandmark = nearLandmark;
+    public void setApartmentSociety(String apartmentSociety) {
+        this.apartmentSociety = apartmentSociety;
     }
 
-    public String getStreetName() {
-        return streetName;
+    public String getAreaPin() {
+        return areaPin;
     }
 
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public void setAreaPin(String areaPin) {
+        this.areaPin = areaPin;
     }
 
-    public long getAreaCode() {
-        return areaCode;
+    public String getFlatHouseNo() {
+        return flatHouseNo;
     }
 
-    public void setAreaCode(long areaCode) {
-        this.areaCode = areaCode;
+    public void setFlatHouseNo(String flatHouseNo) {
+        this.flatHouseNo = flatHouseNo;
     }
 
-    public String getState() {
-        return state;
+    public String getAddress() {
+        return address;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setAddress(String address) {
+        this.address = address;
     }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getHouseNoPlotno() {
+        return houseNoPlotno;
+    }
+
+    public void setHouseNoPlotno(String houseNoPlotno) {
+        this.houseNoPlotno = houseNoPlotno;
+    }
+
+    public String getFloors() {
+        return floors;
+    }
+
+    public void setFloors(String floors) {
+        this.floors = floors;
+    }
+
+    public String getGpsLocation() {
+        return gpsLocation;
+    }
+
+    public void setGpsLocation(String gpsLocation) {
+        this.gpsLocation = gpsLocation;
+    }
+
 
     @Override
     public String toString() {
-        return city +" \n"+
-                nearLandmark +" \n"+
-                streetName +" \n"+
-                areaCode +" \n"+
-                state;
+        return "Address{" +
+                "apartmentSociety='" + apartmentSociety + '\'' +
+                ", areaPin='" + areaPin + '\'' +
+                ", flatHouseNo='" + flatHouseNo + '\'' +
+                ", address='" + address + '\'' +
+                ", landmark='" + landmark + '\'' +
+                ", houseNoPlotno='" + houseNoPlotno + '\'' +
+                ", floors='" + floors + '\'' +
+                '}';
     }
 }

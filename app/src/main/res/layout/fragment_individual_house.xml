@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".viewpager.ApartmentFragment">
+        tools:context=".activity.Login.viewpager.ApartmentFragment">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,10 +21,10 @@
             android:id="@+id/cd_et_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="14dp"
+            android:background="@drawable/bg_border"
             android:hint="username"
-            android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:padding="14dp"
+            android:singleLine="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,14 +42,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/darker_gray"
-                    android:text="House no. / Plot no*" />
+                    android:text="Area code / Pin code*" />
 
                 <EditText
-                    android:id="@+id/cd_et_tower_block"
+                    android:id="@+id/cd_et_pin_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="14dp"
-                    android:hint="e.g. 260/3"
+                    android:hint="e.g. 451115"
+                    android:maxLength="6"
+                    android:inputType="number"
                     android:singleLine="true"
                     android:background="@drawable/bg_border" />
             </LinearLayout>
@@ -119,6 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_gravity="center"
             android:indeterminate="true"
             android:indeterminateTint="@color/black"
             android:visibility="gone"/>
@@ -128,6 +131,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
             android:layout_gravity="center"
             android:text="Save"
             android:textAllCaps="false"

@@ -11,8 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pickle.R;
 import com.example.pickle.ui.ZoomOutPageTransformer;
-import com.example.pickle.viewpager.ViewPagerAdapter;
-import com.google.firebase.database.core.ZombieEventManager;
+import com.example.pickle.activity.Login.viewpager.ViewPagerAdapter;
 
 public class CustomerDetailActivity extends AppCompatActivity {
 
