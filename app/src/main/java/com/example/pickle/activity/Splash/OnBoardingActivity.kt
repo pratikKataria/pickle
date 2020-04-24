@@ -84,7 +84,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     objectAnimator.start()
 
                     getStartedBtn.setOnClickListener {
-                        startActivity(Intent(this@OnBoardingActivity, LoginActivity::class.java))
+                        startActivity(Intent(this@OnBoardingActivity, SplashActivity::class.java))
+                        finish()
                     }
 
                 } else {

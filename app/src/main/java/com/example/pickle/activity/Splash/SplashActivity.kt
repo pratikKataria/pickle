@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
 import com.example.pickle.activity.Login.CustomerDetailActivity
-import com.example.pickle.activity.Main.FirebaseSearchActivity
+import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -40,6 +39,7 @@ class SplashActivity : AppCompatActivity() {
 
     private val required_permission = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.SEND_SMS,
         Manifest.permission.READ_SMS
     )
@@ -50,18 +50,19 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         //todo remove this in splash activity
-        startActivity(Intent(this, FirebaseSearchActivity::class.java))
+//        startActivity(Intent(this, FirebaseSearchActivity::class.java))
 
 
-//        if (hasPermissions(this, permission)) {
-//            if (checkAuth())
-//                checkDoc()
-//            else {
-//                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-//            }
-//        } else {
-//            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-//        }
+        if (hasPermissions(this, permission)) {
+            if (checkAuth())
+                checkDoc()
+            else {
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                finish()
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+        }
 
     }
 
@@ -72,8 +73,11 @@ class SplashActivity : AppCompatActivity() {
     private fun checkDoc() {
         Log.e("check doc ", " chek doc")
         var reference = FirebaseDatabase.getInstance().getReference("Customers")
-            .child(FirebaseAuth.getInstance().uid!! + "/c_uid")
-        reference.addValueEventListener(object : ValueEventListener {
+            .child(FirebaseAuth.getInstance().uid!!)
+            .child("personalInformation")
+            .child("username")
+        reference.keepSynced(true)
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if (dataSnapshot.exists()) {
@@ -83,6 +87,7 @@ class SplashActivity : AppCompatActivity() {
                     Log.e("check doc ", " chek doc $dataSnapshot" + " null")
                     Handler().postDelayed( {
                         startActivity(Intent(this@SplashActivity, CustomerDetailActivity::class.java))
+                        finish()
                     }, 1200)
                 }
             }
@@ -95,29 +100,26 @@ class SplashActivity : AppCompatActivity() {
         })
     }
 
-    private fun firstRun(): Boolean {
-        var pref : SharedPreferences = getSharedPreferences("permissions", 0)
-        if (pref.getBoolean("FIRST_RUN", true)) {
-            pref.edit().putBoolean("FIRST_RUN", false).apply();
-            return true
-        } else
-            return false
-    }
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //permission_granted = 0 // permission_denied = -1
         if (PERMISSION_ALL == requestCode) {
 
-            var isAllPermitted = true
+            var allImportantPermissionGranted = true
             for (index in permissions.indices) {
                 for (reqIndex in required_permission.indices) {
                     if (grantResults.isNotEmpty() && permissions[index] == required_permission[reqIndex] && grantResults[index] == PackageManager.PERMISSION_DENIED) {
-                        isAllPermitted = false
+                        allImportantPermissionGranted = false
                     }
                 }
             }
-            if (isAllPermitted) checkDoc()
-            else displayNeverAskAgainDialog()
+            if (allImportantPermissionGranted) {
+                if (checkAuth()) {
+                    checkDoc()
+                } else {
+                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                    finish();
+                }
+            }else displayNeverAskAgainDialog()
 
         }
     }
@@ -143,6 +145,7 @@ class SplashActivity : AppCompatActivity() {
     private fun startMain() {
         Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish();
         }, 2000)
     }
 

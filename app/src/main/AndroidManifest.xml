@@ -33,18 +33,20 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.Login.CustomerDetailActivity">
+
+        </activity>
+        <activity android:name=".activity.Splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Splash.SplashActivity">
+        <activity android:name=".activity.Login.OtpActivity" >
 
         </activity>
-        <activity android:name=".activity.Login.OtpActivity" />
         <activity android:name=".activity.Main.MainActivity" />
-        <activity android:name=".activity.Login.LoginActivity" />
+        <activity android:name=".activity.Login.LoginActivity"/>
         <activity android:name=".activity.Splash.OnBoardingActivity" />
     </application>
     <uses-permission android:name="android.permission.READ_CONTACTS" />

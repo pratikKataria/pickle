@@ -115,7 +115,11 @@ public class ApartmentFragment extends Fragment {
             Customer customer = new Customer(
 
                     new PersonalInformation(
-                            etName.getText().toString()
+                            etName.getText().toString(),
+                            FirebaseAuth.getInstance().getUid(),
+                            FirebaseInstanceId.getInstance().getToken(),
+                            new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
+                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
                     )
             );
 
@@ -154,7 +158,8 @@ public class ApartmentFragment extends Fragment {
         ref.child(FirebaseAuth.getInstance().getUid()).child("slot1").setValue(apartmentDataModel).addOnSuccessListener(task -> {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-//            startActivity(new Intent(getActivity(), MainActivity.class));
+
+            startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

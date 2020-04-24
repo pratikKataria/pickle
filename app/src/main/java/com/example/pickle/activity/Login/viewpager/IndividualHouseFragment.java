@@ -1,5 +1,6 @@
 package com.example.pickle.activity.Login.viewpager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
+import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.IndividualHouseDataModel;
 import com.example.pickle.data.PersonalInformation;
@@ -18,6 +20,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,7 +88,11 @@ public class IndividualHouseFragment extends Fragment {
             Customer customer = new Customer(
 
                     new PersonalInformation(
-                            etName.getText().toString()
+                            etName.getText().toString(),
+                            FirebaseAuth.getInstance().getUid(),
+                            FirebaseInstanceId.getInstance().getToken(),
+                            new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
+                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
                     )
 
             );
@@ -122,7 +132,7 @@ public class IndividualHouseFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
 
-//            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -53,7 +53,6 @@ class OtpActivity : AppCompatActivity() {
             }
 
             val credential  = PhoneAuthProvider.getCredential(AuthCredential, editTextOtp.text.toString())
-            activity_otp_progress.visibility = VISIBLE
             signInWithPhoneAuthCredential(credential)
         }
     }
@@ -62,32 +61,41 @@ class OtpActivity : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    activity_otp_progress.visibility = GONE
                     // Sign in success, update UI with the signed-in user's information
                     checkDoc()
                 } else {
                     // Sign in failed, display a message and update the UI
 //                    Log.w(TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        activity_otp_progress.visibility = GONE
                         Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseAuthInvalidCredentialsException).message}", Toast.LENGTH_SHORT).show()
-                    } else
+                    } else {
+                        activity_otp_progress.visibility = GONE
                         Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseException).message}",Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
     }
 
     private fun checkDoc() {
         val reference = FirebaseDatabase.getInstance().getReference("Customers")
-            .child(FirebaseAuth.getInstance().uid!! + "/c_uid")
+            .child(FirebaseAuth.getInstance().uid!!)
+            .child("personalInformation")
+            .child("username/")
             reference.keepSynced(true)
             reference.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if (dataSnapshot.exists()) {
-                    checkDeviceToken("Customers", FirebaseAuth.getInstance().uid!!)
+                    val data = dataSnapshot.value as String
+                    Log.e("otp activity ", data)
+                    Log.e("otp activity ", "$dataSnapshot")
+                    checkDeviceToken()
                 } else {
                     Handler().postDelayed( {
+                        activity_otp_progress.visibility = GONE
                         startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java))
+                        finish()
                     }, 1200)
                 }
             }
@@ -99,22 +107,26 @@ class OtpActivity : AppCompatActivity() {
         })
     }
 
-    private fun checkDeviceToken(path: String, id: String) {
+    private fun checkDeviceToken() {
         if (FirebaseAuth.getInstance().uid != null) {
-            val ref = FirebaseDatabase.getInstance().getReference(path)
+            val ref = FirebaseDatabase.getInstance().getReference("Customers")
+                .child(FirebaseAuth.getInstance().uid!!)
+                .child("personalInformation")
+                .child("deviceToken")
             ref.keepSynced(true)
-            ref.child("$id/d_token").addListenerForSingleValueEvent(object : ValueEventListener {
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (dataSnapshot != null && dataSnapshot.exists()) {
-                        val token = dataSnapshot.getValue(String::class.java)
+                        Log.e("Opt activity ", " curr ent token "+ dataSnapshot)
+                        val token = dataSnapshot.value
                         if (token != null && token == FirebaseInstanceId.getInstance().token) {
-                            Toast.makeText(this@OtpActivity, "Token Verified", Toast.LENGTH_SHORT).show()
+                            activity_otp_progress.visibility = GONE
                             sendUserToHome()
+                            Log.e("Opt activity ", " curr ent token "+ token)
                         } else {
-                            ref.child("$id/d_token").setValue(FirebaseInstanceId.getInstance().token) {
-                                    databaseError: DatabaseError?, databaseReference: DatabaseReference? ->
-                                    Toast.makeText(this@OtpActivity, "Token Changed", Toast.LENGTH_SHORT).show()
-                                }
+                            ref.setValue(FirebaseInstanceId.getInstance().token) { _: DatabaseError?, _: DatabaseReference? ->
+                                    Toast.makeText(this@OtpActivity, "Token Updated", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
                 }

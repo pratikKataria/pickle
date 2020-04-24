@@ -5,6 +5,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
+import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.data.CurrentAddress;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.PersonalInformation;
@@ -34,6 +36,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -145,7 +151,11 @@ public class CurrentLocationFragment extends Fragment implements LocationListene
 
         Customer customer = new Customer(
                 new PersonalInformation(
-                        username.getText().toString()
+                        username.getText().toString(),
+                        FirebaseAuth.getInstance().getUid(),
+                        FirebaseInstanceId.getInstance().getToken(),
+                        new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
+                        FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
                 )
         );
 
@@ -168,8 +178,8 @@ public class CurrentLocationFragment extends Fragment implements LocationListene
             updateBtn.setText("update");
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
 
-//            startActivity(new Intent(getActivity(), MainActivity.class));
-//            getActivity().finish();
+            startActivity(new Intent(getActivity(), MainActivity.class));
+            getActivity().finish();
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
