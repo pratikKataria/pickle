@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -186,9 +187,9 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
     class ProductCardViewHolder extends RecyclerView.ViewHolder{
 
         private CardViewCategoryProductBinding binding;
-        private ImageButton _increaseCart;
-        private Button _decreaseCart;
-        private Button _addToCartButton;
+        private MaterialButton _increaseCart;
+        private MaterialButton _decreaseCart;
+        private MaterialButton _addToCartButton;
 
         private TextView _qtyCounter;
 
