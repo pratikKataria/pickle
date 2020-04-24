@@ -28,23 +28,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    lateinit var orderFragment: OrderFragment
-    lateinit var exploreFragment: ExploreFragment
-    lateinit var offerFragment: OfferFragment
-
-    lateinit var toolbar: Toolbar
     lateinit var navigationView: NavigationView
-    lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
-    public lateinit var drawerLayout: DrawerLayout
+    private lateinit var drawerLayout: DrawerLayout
 
     lateinit var _navController : NavController;
 
-    private val sampleImages = intArrayOf(
-        R.drawable.sale_one,
-        R.drawable.sale_two,
-        R.drawable.sale_three,
-        R.drawable.seal_four
-    )
 
     lateinit var bottomNavigationView: BottomNavigationView
 
@@ -53,10 +41,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.e("MainACTIVITY ", "invocation2")
-
-//        startActivity(Intent(this, FirebaseSearchActivity::class.java))
-
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
 
@@ -64,16 +48,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navigationView = findViewById(R.id.activity_main_nv_side_navigation);
 
-//        bottomNavigationView.setItemSelected(R.id.bottom_nav_orders);
-
-
         activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
 
         navigationView.setNavigationItemSelectedListener(this)
-
-
-        val currentFragment =
-            OrderFragment()
 
         var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
         if (navHostFragment != null) {
@@ -81,49 +58,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController);
         }
 
-
-
-//        Log.e("MainACTIVITY ", "fragment3")
-//        supportFragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, currentFragment).commit()
-//
-//        bottomNavigationView.setOnItemSelectedListener {
-//            lateinit var fragment : Fragment
-//            when(bottomNavigationView.getSelectedItemId()) {
-//                    R.id.bottom_nav_orders -> {
-//
-//                        fragment =
-//                            OrderFragment()
-//                        loadFragment(fragment)
-//                        return@setOnItemSelectedListener
-//                    }
-//                    R.id.bottom_nav_offers -> {
-//                        fragment =
-//                            OfferFragment()
-//                        loadFragment(fragment)
-//                        return@setOnItemSelectedListener
-//                    }
-//                    R.id.bottom_nav_explore -> {
-//                        fragment =
-//                            ExploreFragment()
-//                        loadFragment(fragment)
-//                        return@setOnItemSelectedListener
-//                    }
-//                }
-//        }
-
-
     }
-//
-//    private fun loadFragment(fragment: Fragment) {
-//        Log.e("MainACTIVITY ", "load frag4")
-//
-//        var fragmentManager : FragmentManager = supportFragmentManager
-//        Log.e("MainACTIVITY ", "support frag")
-//
-//        fragmentManager.beginTransaction().replace(R.id.activity_main_fl_fragment_loader, fragment).addToBackStack(null).commit()
-//    }
-
-
 
     @SuppressLint("WrongConstant")
     public fun openDrawer() {
