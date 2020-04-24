@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,20 +18,26 @@ import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FruitsFragment extends Fragment {
+
+    private DatabaseReference reference;
+    private ChildEventListener childEventListener;
 
     public FruitsFragment() {
         // Required empty public constructor
@@ -90,14 +97,17 @@ public class FruitsFragment extends Fragment {
             cartList = new ArrayList<>();
         }
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/Fruits");
-        reference.addValueEventListener(new ValueEventListener() {
+        //online database
+        reference = FirebaseDatabase.getInstance().getReference("Products/Fruits");
+
+        Query query = reference.orderByChild("itemName").limitToLast(15);
+
+        childEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot m : dataSnapshot.getChildren()) {
-                    if (m.exists()) {
-                        Log.e("Fruit recycler view ", m +" ");
-                        ProductModel model = m.getValue(ProductModel.class);
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if (dataSnapshot.exists()) {
+                        Log.e("Fruit recycler view ", dataSnapshot +" ");
+                        ProductModel model = dataSnapshot.getValue(ProductModel.class);
 
                         if (cartList != null) {
                             for (ProductModel pm : cartList) {
@@ -110,8 +120,49 @@ public class FruitsFragment extends Fragment {
                         fruitList.add(model);
                         adapter.notifyDataSetChanged();
                     }
-                }
                 adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                int position = 0;
+                Log.e("onChildChanged", "key s "+ s + " datasnaphot"+ dataSnapshot);
+                Iterator<ProductModel> iterator = fruitList.iterator();
+                while (iterator.hasNext()) {
+                    position++;
+                    ProductModel product = iterator.next();
+                    ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
+                    if (newProduct != null && product.getItemId().equals(newProduct.getItemId())) {
+                        iterator.remove();
+                        break;
+                    }
+                }
+
+                ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
+                if (newProduct != null) {
+                    for (ProductModel product :cartList) {
+                        if (product.getItemId().equals(newProduct.getItemId())) {
+                            newProduct.setQuantityCounter(product.getQuantityCounter());
+                        }
+                    }
+                    if ((position-1) <= fruitList.size()) {
+                        fruitList.add(position-1, newProduct);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        fruitList.add(newProduct);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -123,4 +174,11 @@ public class FruitsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (childEventListener != null) {
+            reference.removeEventListener(childEventListener);
+        }
+    }
 }
