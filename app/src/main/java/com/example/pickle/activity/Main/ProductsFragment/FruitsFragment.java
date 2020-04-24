@@ -113,6 +113,7 @@ public class FruitsFragment extends Fragment {
                             for (ProductModel pm : cartList) {
                                 if (model.getItemId().equals(pm.getItemId())) {
                                     model.setQuantityCounter(pm.getQuantityCounter());
+                                    break;
                                 }
                             }
                         }

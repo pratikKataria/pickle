@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,21 +16,28 @@ import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class DairyFragment extends Fragment {
 
     private ArrayList<ProductModel> _productList;
     private ArrayList<ProductModel> _cartList;
     private CategoryRecyclerViewAdapter adapter;
+    private DatabaseReference reference;
+    private ChildEventListener childEventListener;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,28 +72,73 @@ public class DairyFragment extends Fragment {
             _cartList = new ArrayList<>();
         }
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/Dairy");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot m : dataSnapshot.getChildren()) {
-                    if (m.exists()) {
-                        Log.e("Fruit recycler view ", m + " ");
-                        ProductModel model = m.getValue(ProductModel.class);
+        reference = FirebaseDatabase.getInstance().getReference("Products/Dairy");
 
-                        if (_cartList != null) {
-                            for (ProductModel pm : _cartList) {
-                                if (model.getItemId().equals(pm.getItemId())) {
-                                    model.setQuantityCounter(pm.getQuantityCounter());
-                                }
+
+        Query query = reference.orderByChild("itemName").limitToFirst(15);
+
+        childEventListener = query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()) {
+                    Log.e("Fruit recycler view ", dataSnapshot + " ");
+                    ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
+                    if (_cartList != null) {
+                        for (ProductModel pm : _cartList) {
+                            if (newProduct.getItemId().equals(pm.getItemId())) {
+                                newProduct.setQuantityCounter(pm.getQuantityCounter());
                             }
                         }
+                    }
 
-                        _productList.add(model);
+                    _productList.add(newProduct);
+                    adapter.notifyDataSetChanged();
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                int position = 0;
+                Log.e("onChildChanged", "key s " + s + " datasnaphot" + dataSnapshot);
+                Iterator<ProductModel> iterator = _productList.iterator();
+                while (iterator.hasNext()) {
+                    position++;
+                    ProductModel product = iterator.next();
+                    ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
+                    if (newProduct != null && product.getItemId().equals(newProduct.getItemId())) {
+                        iterator.remove();
+                        break;
+                    }
+                }
+
+                //set stored cart quantity
+                ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
+                if (newProduct != null) {
+                    for (ProductModel product : _cartList) {
+                        if (product.getItemId().equals(newProduct.getItemId())) {
+                            newProduct.setQuantityCounter(product.getQuantityCounter());
+                            break;
+                        }
+                    }
+                    if ((position - 1) <= _productList.size()) {
+                        _productList.add(position - 1, newProduct);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        _productList.add(newProduct);
                         adapter.notifyDataSetChanged();
                     }
                 }
-                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -93,8 +146,14 @@ public class DairyFragment extends Fragment {
 
             }
         });
+    }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (childEventListener != null) {
+            reference.removeEventListener(childEventListener);
+        }
     }
 
 }
