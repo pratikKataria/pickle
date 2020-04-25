@@ -31,6 +31,7 @@ import com.example.pickle.data.CartCalculator;
 import com.example.pickle.data.CustomerOrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
+import com.example.pickle.databinding.ActivityEmptyCartBinding;
 import com.example.pickle.ui.CustomRadioButton;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -112,50 +113,52 @@ public class CartViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initFields();
+        ActivityEmptyCartBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_empty_cart);
 
-        init_bottomSheet();
-        init_customRadioButton();
-        init_loadAddress();
-
-        populateList();
-        init_recyclerView();
-
-        location_setup();
-
-        _cartCalculator = new CartCalculator();
-        _cartCalculator.cartAmount((ArrayList<ProductModel>) cartList);
-        int amount = _cartCalculator.getCartAmount();
-
-        _cartAmount.setText(amount + "");
-        _placeOrderBtn.setOnClickListener(n -> {
-            for (ProductModel pm : cartList) {
-
-                if (deliveryTime.isEmpty()) {
-                    Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
-                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    return;
-                }
-
-                if (deliveryAddress.isEmpty()) {
-                    Toast.makeText(this, "select delivery address", Toast.LENGTH_SHORT).show();
-                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    return;
-                }
-
-                if (pm != null) {
-                    placeOrder(pm);
-                }
-            }
-        });
-
-        _childDeliveryTime1.setOnClickListener(n -> {
-            deliveryTime = _childDeliveryTime1.getText().toString();
-        });
-
-        _childDeliveryTime2.setOnClickListener(n -> {
-            deliveryTime = _childDeliveryTime2.getText().toString();
-        });
+//        initFields();
+//
+//        init_bottomSheet();
+//        init_customRadioButton();
+//        init_loadAddress();
+//
+//        populateList();
+//        init_recyclerView();
+//
+//        location_setup();
+//
+//        _cartCalculator = new CartCalculator();
+//        _cartCalculator.cartAmount((ArrayList<ProductModel>) cartList);
+//        int amount = _cartCalculator.getCartAmount();
+//
+//        _cartAmount.setText(amount + "");
+//        _placeOrderBtn.setOnClickListener(n -> {
+//            for (ProductModel pm : cartList) {
+//
+//                if (deliveryTime.isEmpty()) {
+//                    Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
+//                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                    return;
+//                }
+//
+//                if (deliveryAddress.isEmpty()) {
+//                    Toast.makeText(this, "select delivery address", Toast.LENGTH_SHORT).show();
+//                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                    return;
+//                }
+//
+//                if (pm != null) {
+//                    placeOrder(pm);
+//                }
+//            }
+//        });
+//
+//        _childDeliveryTime1.setOnClickListener(n -> {
+//            deliveryTime = _childDeliveryTime1.getText().toString();
+//        });
+//
+//        _childDeliveryTime2.setOnClickListener(n -> {
+//            deliveryTime = _childDeliveryTime2.getText().toString();
+//        });
     }
 
 
@@ -412,7 +415,9 @@ public class CartViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationTrack.stopListener();
+        if (locationTrack != null) {
+            locationTrack.stopListener();
+        }
     }
 
 }

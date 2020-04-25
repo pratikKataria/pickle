@@ -170,33 +170,6 @@
                 android:layout_marginEnd="12dp"
                 android:text="Add New Address"
                 />
-
-
-
         </RadioGroup>
-
-
     </HorizontalScrollView>
-
-
-
-
-
-
-    <!--        <androidx.appcompat.widget.AppCompatRadioButton-->
-    <!--            android:id="@+id/radio"-->
-    <!--            android:layout_width="175dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="16dp"-->
-    <!--            android:layout_marginEnd="8dp"-->
-    <!--            android:layout_gravity="center"-->
-    <!--            android:padding="16dp"-->
-    <!--            android:button="@android:color/transparent"-->
-    <!--            android:checked="true"-->
-    <!--            android:text="JANE L MILLER-->
-    <!--MILLER ASSOCIATES-->
-    <!--1960 W CHELSEA AVE STE 2006R-->
-    <!--ALLENTOWN PA 18104"-->
-    <!--            android:textColor="@color/black" />-->
-
 </LinearLayout>
