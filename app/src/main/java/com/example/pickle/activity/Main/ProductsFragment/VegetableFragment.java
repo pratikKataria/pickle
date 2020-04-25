@@ -1,6 +1,7 @@
 package com.example.pickle.activity.Main.ProductsFragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,10 +53,7 @@ public class VegetableFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_vegetable, container, false);
 
         _productList = new ArrayList<>();
-
         init_recyclerView(view);
-        populateList();
-
 
         return view;
     }
@@ -152,6 +150,12 @@ public class VegetableFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new Handler().postDelayed(this::populateList,1200);
     }
 
     @Override

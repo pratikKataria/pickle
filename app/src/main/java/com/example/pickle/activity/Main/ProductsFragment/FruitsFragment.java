@@ -76,7 +76,7 @@ public class FruitsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        new Handler().postDelayed(this::populateList,1500);
+        new Handler().postDelayed(this::populateList,1200);
     }
 
     private void init_recyclerView() {
