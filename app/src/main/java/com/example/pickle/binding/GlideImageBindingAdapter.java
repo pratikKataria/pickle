@@ -15,8 +15,8 @@ public class GlideImageBindingAdapter {
         Context context = _imageView.getContext();
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background);
+                .placeholder(R.drawable.img_loading)
+                .error(R.drawable.img_loading);
 
         Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
@@ -30,8 +30,8 @@ public class GlideImageBindingAdapter {
         Context context = _imageView.getContext();
 
         RequestOptions requestOptions = new RequestOptions()
-                .placeholder(R.drawable.ic_launcher_background)
-                .error(R.drawable.ic_launcher_background);
+                .placeholder(R.drawable.img_loading)
+                .error(R.drawable.img_loading);
 
         Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
