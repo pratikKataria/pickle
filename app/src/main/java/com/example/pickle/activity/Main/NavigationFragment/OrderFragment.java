@@ -117,7 +117,6 @@ public class OrderFragment extends Fragment{
         carouselScrollView = v.findViewById(R.id.discreteScrollView);
 
         carouselScrollView.setOrientation(DSVOrientation.HORIZONTAL);
-//        carouselAdapter.addOnItemChangedListner(this);
         infiniteAdapter = InfiniteScrollAdapter.wrap(new CarouselAdapter(imageList));
 
         final int duration = 5000;
@@ -204,8 +203,8 @@ public class OrderFragment extends Fragment{
 
         setUpToolbar();
 
-        getImageList();
-        init_carousel(view);
+//        getImageList();
+//        init_carousel(view);
 
         populateList();
 
@@ -240,21 +239,14 @@ public class OrderFragment extends Fragment{
         reference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot != null) {
                     imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
                     infiniteAdapter.notifyDataSetChanged();
-                }
-                Log.e("orderFragment" , " images url " + dataSnapshot.getValue(String.class));
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                if (dataSnapshot != null) {
                     imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
                     infiniteAdapter.notifyDataSetChanged();
-                }
-                Log.e("orderFragment" , " images url " + dataSnapshot.getValue(String.class));
             }
 
             @Override

@@ -12,22 +12,41 @@
         tools:layout="@layout/fragment_order" >
         <action
             android:id="@+id/action_orderFragment_to_fruitsFragment"
-            app:destination="@id/fruitsFragment" />
+            app:destination="@id/fruitsFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_orderFragment_to_vegetableFragment"
-            app:destination="@id/vegetableFragment" />
+            app:destination="@id/vegetableFragment" app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_orderFragment_to_beveragesFragment"
-            app:destination="@id/beveragesFragment" />
+            app:destination="@id/beveragesFragment" app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_orderFragment_to_dairyFragment"
-            app:destination="@id/dairyFragment" />
+            app:destination="@id/dairyFragment"  app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
         <action
             android:id="@+id/action_orderFragment_to_cartFragment"
-            app:destination="@id/cartFragment" />
+            app:destination="@id/cartFragment" app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_orderFragment_to_ordersPlacedFragment"
-            app:destination="@id/ordersPlacedFragment" />
+            app:destination="@id/ordersPlacedFragment" app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/fruitsFragment"

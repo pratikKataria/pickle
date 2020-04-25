@@ -1,6 +1,7 @@
 package com.example.pickle.activity.Main.ProductsFragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +52,7 @@ public class FruitsFragment extends Fragment {
 
     FragmentFruitsBinding fruitsBinding;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,13 +67,16 @@ public class FruitsFragment extends Fragment {
         );
 
         View view = fruitsBinding.getRoot();
-
         fruitList = new ArrayList<>();
-
         init_recyclerView();
-        populateList();
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        new Handler().postDelayed(this::populateList,1500);
     }
 
     private void init_recyclerView() {
@@ -121,7 +127,6 @@ public class FruitsFragment extends Fragment {
                         fruitList.add(model);
                         adapter.notifyDataSetChanged();
                     }
-                adapter.notifyDataSetChanged();
             }
 
             @Override

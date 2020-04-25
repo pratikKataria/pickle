@@ -81,7 +81,7 @@ public class DairyFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
-                    Log.e("Fruit recycler view ", dataSnapshot + " ");
+                    Log.e("Dairy", dataSnapshot + " ");
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                     if (_cartList != null) {
                         for (ProductModel pm : _cartList) {
