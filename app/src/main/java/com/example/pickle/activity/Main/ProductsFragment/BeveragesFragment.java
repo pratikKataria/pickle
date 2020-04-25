@@ -52,6 +52,7 @@ public class BeveragesFragment extends Fragment {
 
         _productList = new ArrayList<>();
         init_recyclerView(view);
+        new Handler().postDelayed(this::populateList,1200);
 
         return view;
     }
@@ -150,12 +151,6 @@ public class BeveragesFragment extends Fragment {
         });
 
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        new Handler().postDelayed(this::populateList,1200);
     }
 
     @Override

@@ -54,10 +54,11 @@ public class FruitsFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        View view = inflater.inflate(R.layout.fragment_fruits, container, false);
+
+        Log.e("onCreateView", "fruit fragment");
 
         fruitsBinding = DataBindingUtil.inflate(
                 inflater,
@@ -69,15 +70,11 @@ public class FruitsFragment extends Fragment {
         View view = fruitsBinding.getRoot();
         fruitList = new ArrayList<>();
         init_recyclerView();
+        new Handler().postDelayed(this::populateList,1200);
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        new Handler().postDelayed(this::populateList,1200);
-    }
 
     private void init_recyclerView() {
         fruitsRecyclerView = fruitsBinding.fruitsRecyclerView;

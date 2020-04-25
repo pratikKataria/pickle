@@ -54,6 +54,7 @@ public class VegetableFragment extends Fragment {
 
         _productList = new ArrayList<>();
         init_recyclerView(view);
+        new Handler().postDelayed(this::populateList,1500);
 
         return view;
     }
@@ -150,12 +151,6 @@ public class VegetableFragment extends Fragment {
             }
         });
 
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        new Handler().postDelayed(this::populateList,1200);
     }
 
     @Override
