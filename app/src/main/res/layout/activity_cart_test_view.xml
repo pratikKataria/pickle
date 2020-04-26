@@ -340,11 +340,6 @@
 
             </androidx.core.widget.NestedScrollView>
 
-            <io.alterac.blurkit.BlurLayout
-                android:id="@+id/blurLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
             <include
                 android:id="@+id/includeLayout"
                 layout="@layout/bottom_sheet_place_order" />

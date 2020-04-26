@@ -19,7 +19,6 @@ import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

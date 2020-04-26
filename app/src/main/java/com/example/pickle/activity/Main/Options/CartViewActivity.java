@@ -54,7 +54,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import io.alterac.blurkit.BlurLayout;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -72,7 +71,6 @@ public class CartViewActivity extends AppCompatActivity {
     private TextView _amountToBePaid;
     private TextView _deliveryPrice;
     private MaterialButton _placeOrderBtn;
-    private BlurLayout blurLayout;
     private CustomRadioButton customRadioButton;
 
     public final int[] anIntCartAmount = new int[1];
@@ -96,8 +94,6 @@ public class CartViewActivity extends AppCompatActivity {
         _amountToBePaid = _activityCartTestViewBinding.amountToBePaid;
         _deliveryPrice = _activityCartTestViewBinding.deliveryPrice;
         _placeOrderBtn = _activityCartTestViewBinding.placeOrderBtn;
-        blurLayout = _activityCartTestViewBinding.blurLayout;
-
         _bottomSheet = _activityCartTestViewBinding.includeLayout;
         _cartAmount = _activityCartTestViewBinding.cartAmountTextView;
 
@@ -106,7 +102,6 @@ public class CartViewActivity extends AppCompatActivity {
 
         _currentLocationBtn = _bottomSheet.findViewById(R.id.btm_sheet_cip_current_location);
 
-        blurLayout.setAlpha(0);
         cartList = new ArrayList<>();
     }
 
@@ -214,16 +209,15 @@ public class CartViewActivity extends AppCompatActivity {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    blurLayout.startBlur();
+                //todo do amination here
                 } else {
-                    blurLayout.pauseBlur();
+                    //todo do animation here
                 }
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 if (slideOffset > 0 && slideOffset < 0.85) {
-                    blurLayout.setAlpha(slideOffset);
                     Log.e("blur cart View Activity", "count " + slideOffset);
                 }
             }
