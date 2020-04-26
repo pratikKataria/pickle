@@ -20,6 +20,10 @@
         <variable
             name="cartCalculator"
             type="CartCalculator" />
+
+        <variable
+            name="activity"
+            type="android.app.Activity" />
     </data>
 
 
@@ -29,21 +33,28 @@
         android:background="@color/bg"
         android:orientation="vertical">
 
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/cartView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:layout_height="match_parent"
+            android:background="@color/bg"
             android:orientation="vertical"
-            tools:context=".activity.Main.Options.CartViewActivity">
+            android:visibility="visible">
 
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:orientation="vertical"
+                tools:context=".activity.Main.Options.CartViewActivity">
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/cartRecyclerView"
@@ -53,144 +64,293 @@
                         android:layout_marginEnd="8dp"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="18dp"
-                    android:orientation="vertical">
-
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp">
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="18dp"
+                        android:orientation="vertical">
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Cart amount" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
 
-                        <TextView
-                            android:id="@+id/cartAmountTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Cart amount" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp">
+                            <TextView
+                                android:id="@+id/cartAmountTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0" />
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Delivery fee" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
 
-                        <TextView
-                            android:id="@+id/deliveryPrice"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u20b90" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Delivery fee" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp">
+                            <TextView
+                                android:id="@+id/deliveryPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20b90" />
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="Amount to pay" />
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp">
 
-                        <TextView
-                            android:id="@+id/amountToBePaid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u20b90" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="Amount to pay" />
+
+                            <TextView
+                                android:id="@+id/amountToBePaid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20b90" />
+                        </LinearLayout>
 
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp">
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="wallet balance available" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="\u20b9123" />
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="wallet balance available" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20b9123" />
+                        </LinearLayout>
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="amount to add" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:text="amount to add" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="\u20b9123" />
+                        </LinearLayout>
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height=".5dp"
+                            android:background="@color/grey" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/grey" />
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/placeOrderBtn"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="\u20b9123" />
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="69dp"
+                            android:backgroundTint="@color/black"
+                            android:text="place order"
+                            android:textColor="@color/white" />
+
                     </LinearLayout>
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height=".5dp"
-                        android:background="@color/grey" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/grey" />
-
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/placeOrderBtn"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="69dp"
-                        android:backgroundTint="@color/black"
-                        android:text="place order"
-                        android:textColor="@color/white" />
-
                 </LinearLayout>
-            </LinearLayout>
 
 
-        </androidx.core.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
 
-        <io.alterac.blurkit.BlurLayout
-            android:id="@+id/blurLayout"
+            <io.alterac.blurkit.BlurLayout
+                android:id="@+id/blurLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+            <include
+                android:id="@+id/includeLayout"
+                layout="@layout/bottom_sheet_place_order" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/emptyCart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-        <include
-            android:id="@+id/includeLayout"
-            layout="@layout/bottom_sheet_place_order" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="16:9"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/empty_cart_img" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_round_rect"
+                android:layout_marginTop="195dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView4">
+
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/empty_cart_btn"
+                    app:layout_constraintEnd_toEndOf="@+id/textView6"
+                    app:layout_constraintStart_toStartOf="@+id/textView6"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Looks like you haven't made your choice yet"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="@+id/textView5"
+                    app:layout_constraintHorizontal_bias="0.503"
+                    app:layout_constraintStart_toStartOf="@+id/textView5"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:text="Your Cart is Empty"
+                    android:textSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.503"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:onClick="@{() -> activity.onBackPressed()}"
+                    android:text="GO HOME"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+                    app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+                    app:layout_constraintStart_toStartOf="@+id/imageButton2"
+                    app:layout_constraintTop_toTopOf="@+id/imageButton2"
+                    app:layout_constraintVertical_bias="0.3" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chipGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    app:chipSpacing="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.511"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterVegetable"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Vegitables"
+                        android:textColor="@color/black"
+                        app:chipBackgroundColor="@color/bg_color_search_filter"
+                        app:chipCornerRadius="4dp"
+                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                        app:chipStrokeWidth="1dp"
+                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterFruits"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Fruits"
+                        android:textColor="@color/black"
+                        app:chipBackgroundColor="@color/bg_color_search_filter"
+                        app:chipCornerRadius="4dp"
+                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                        app:chipStrokeWidth="1dp"
+                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterDiary"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Diary"
+                        android:textColor="@color/black"
+                        app:chipBackgroundColor="@color/bg_color_search_filter"
+                        app:chipCornerRadius="4dp"
+                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                        app:chipStrokeWidth="1dp"
+                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chipFilterBeverages"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Beverages"
+                        android:textColor="@color/black"
+                        app:chipBackgroundColor="@color/bg_color_search_filter"
+                        app:chipCornerRadius="4dp"
+                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                        app:chipStrokeWidth="1dp"
+                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                </com.google.android.material.chip.ChipGroup>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

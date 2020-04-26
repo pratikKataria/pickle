@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
+import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.data.Address;
 import com.example.pickle.data.CartCalculator;
 import com.example.pickle.data.CustomerOrdersData;
@@ -38,6 +39,7 @@ import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -113,52 +115,80 @@ public class CartViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityEmptyCartBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_empty_cart);
 
-//        initFields();
-//
-//        init_bottomSheet();
-//        init_customRadioButton();
-//        init_loadAddress();
-//
-//        populateList();
-//        init_recyclerView();
-//
-//        location_setup();
-//
-//        _cartCalculator = new CartCalculator();
-//        _cartCalculator.cartAmount((ArrayList<ProductModel>) cartList);
-//        int amount = _cartCalculator.getCartAmount();
-//
-//        _cartAmount.setText(amount + "");
-//        _placeOrderBtn.setOnClickListener(n -> {
-//            for (ProductModel pm : cartList) {
-//
-//                if (deliveryTime.isEmpty()) {
-//                    Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
-//                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                    return;
-//                }
-//
-//                if (deliveryAddress.isEmpty()) {
-//                    Toast.makeText(this, "select delivery address", Toast.LENGTH_SHORT).show();
-//                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-//                    return;
-//                }
-//
-//                if (pm != null) {
-//                    placeOrder(pm);
-//                }
-//            }
-//        });
-//
-//        _childDeliveryTime1.setOnClickListener(n -> {
-//            deliveryTime = _childDeliveryTime1.getText().toString();
-//        });
-//
-//        _childDeliveryTime2.setOnClickListener(n -> {
-//            deliveryTime = _childDeliveryTime2.getText().toString();
-//        });
+        initFields();
+        emptyCart();
+
+        init_bottomSheet();
+        init_customRadioButton();
+        init_loadAddress();
+
+        populateList();
+        init_recyclerView();
+
+        location_setup();
+
+        _cartCalculator = new CartCalculator();
+        _cartCalculator.cartAmount((ArrayList<ProductModel>) cartList);
+        int amount = _cartCalculator.getCartAmount();
+
+        _cartAmount.setText(amount + "");
+        _placeOrderBtn.setOnClickListener(n -> {
+            for (ProductModel pm : cartList) {
+
+                if (deliveryTime.isEmpty()) {
+                    Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
+                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    return;
+                }
+
+                if (deliveryAddress.isEmpty()) {
+                    Toast.makeText(this, "select delivery address", Toast.LENGTH_SHORT).show();
+                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    return;
+                }
+
+                if (pm != null) {
+                    placeOrder(pm);
+                }
+            }
+        });
+
+        _childDeliveryTime1.setOnClickListener(n -> {
+            deliveryTime = _childDeliveryTime1.getText().toString();
+        });
+
+        _childDeliveryTime2.setOnClickListener(n -> {
+            deliveryTime = _childDeliveryTime2.getText().toString();
+        });
+    }
+
+    private void emptyCart() {
+        _activityCartTestViewBinding.setActivity(this);
+        ChipGroup group = _activityCartTestViewBinding.chipGroup;
+        group.setOnCheckedChangeListener((group1, checkedId) -> {
+            Chip chipSelected = findViewById(group1.getCheckedChipId());
+            Log.e("CartViewActivity", chipSelected.getText().toString());
+            switch (chipSelected.getText().toString()) {
+                case "Vegitables":
+                    navigateTo(R.id.action_orderFragment_to_vegetableFragment);
+                    break;
+                case "Fruits":
+                    navigateTo(R.id.action_orderFragment_to_fruitsFragment);
+                    break;
+                case "Diary":
+                    navigateTo(R.id.action_orderFragment_to_dairyFragment);
+                    break;
+                case "Beverages":
+                    navigateTo(R.id.action_orderFragment_to_beveragesFragment);
+                    break;
+            }
+        });
+    }
+
+    private void navigateTo(int navigationId) {
+        startActivity(new Intent(CartViewActivity.this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
+        finish();
     }
 
 
@@ -244,6 +274,11 @@ public class CartViewActivity extends AppCompatActivity {
         });
         _cartRecyclerView.setLayoutManager(linearLayoutManager);
         _cartRecyclerView.setAdapter(adapter);
+        Log.e("cart items", " " + adapter.getItemCount());
+        if (adapter.getItemCount() == 0) {
+            _activityCartTestViewBinding.cartView.setVisibility(View.GONE);
+            _activityCartTestViewBinding.emptyCart.setVisibility(View.VISIBLE);
+        }
     }
 
     private void placeOrder(ProductModel pm) {

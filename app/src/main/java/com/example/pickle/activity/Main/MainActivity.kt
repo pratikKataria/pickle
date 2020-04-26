@@ -3,12 +3,9 @@ package com.example.pickle.activity.Main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
-import android.widget.Toolbar
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,9 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
-import com.example.pickle.activity.Main.NavigationFragment.ExploreFragment
-import com.example.pickle.activity.Main.NavigationFragment.OfferFragment
-import com.example.pickle.activity.Main.NavigationFragment.OrderFragment
 import com.example.pickle.activity.Main.Options.AddNewItemActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -55,7 +49,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
         if (navHostFragment != null) {
             _navController = navHostFragment.navController
-            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController);
+            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+
+            val navigationId: Int = intent.extras!!.getInt("NAVIGATION_ID", R.id.action_orderFragment_to_fruitsFragment)
+            _navController.navigate(navigationId)
         }
 
     }
