@@ -67,6 +67,16 @@ public class FruitsFragment extends Fragment {
                 false
         );
 
+        //offline carted products list
+        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Fruits", 0);
+        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
+
+        if (productModels != null) {
+            cartList = new ArrayList<>(Arrays.asList(productModels));
+        } else {
+            cartList = new ArrayList<>();
+        }
+
         View view = fruitsBinding.getRoot();
         fruitList = new ArrayList<>();
         init_recyclerView();
@@ -90,16 +100,6 @@ public class FruitsFragment extends Fragment {
     }
 
     private void populateList() {
-
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Fruits", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            cartList = new ArrayList<>();
-        }
-
         //online database
         reference = FirebaseDatabase.getInstance().getReference("Products/Fruits");
 

@@ -50,6 +50,16 @@ public class BeveragesFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_beverages, container, false);
 
+        //offline carted product list
+        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Beverages", 0);
+        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
+
+        if (productModels != null) {
+            _cartList = new ArrayList<>(Arrays.asList(productModels));
+        } else {
+            _cartList = new ArrayList<>();
+        }
+
         _productList = new ArrayList<>();
         init_recyclerView(view);
         new Handler().postDelayed(this::populateList,1200);
@@ -66,16 +76,6 @@ public class BeveragesFragment extends Fragment {
     }
 
     private void populateList() {
-
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Beverages", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            _cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            _cartList = new ArrayList<>();
-        }
-
         reference = FirebaseDatabase.getInstance().getReference("Products/Beverages");
 
         Query query = reference.orderByChild("itemName").limitToFirst(15);

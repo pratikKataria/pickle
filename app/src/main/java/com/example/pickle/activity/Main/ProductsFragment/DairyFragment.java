@@ -45,6 +45,16 @@ public class DairyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dairy, container, false);
 
+        //offline carted product list
+        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Dairy", 0);
+        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
+
+        if (productModels != null) {
+            _cartList = new ArrayList<>(Arrays.asList(productModels));
+        } else {
+            _cartList = new ArrayList<>();
+        }
+
         _productList = new ArrayList<>();
         init_recyclerView(view);
         new Handler().postDelayed(this::populateList,1200);
@@ -62,16 +72,6 @@ public class DairyFragment extends Fragment {
     }
 
     private void populateList() {
-
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Dairy", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            _cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            _cartList = new ArrayList<>();
-        }
-
         reference = FirebaseDatabase.getInstance().getReference("Products/Dairy");
 
 
