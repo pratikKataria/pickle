@@ -256,6 +256,7 @@ public class CartViewActivity extends AppCompatActivity {
                 Log.e("price increase listerner" , "cart amount:  "+PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) + " price form listner " + price);
                 _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(price + currPrice));
                 _amountToBePaid.setText(PriceFormatUtils.getStringFormattedPrice(price + PriceFormatUtils.getIntFormattedPrice(_deliveryPrice.getText().toString())));
+                showEmptyCart(adapter.getItemCount());
             }
 
             @Override
@@ -264,20 +265,27 @@ public class CartViewActivity extends AppCompatActivity {
 
                 _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
                 Log.e("price increase listerner" , "cart amount:  "+currPrice + " price form listner " + price);
+                showEmptyCart(adapter.getItemCount());
             }
 
             @Override
             public void onItemRemovedPriceListener(int price) {
                 int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ?  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
                 _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
+                showEmptyCart(adapter.getItemCount());
             }
         });
         _cartRecyclerView.setLayoutManager(linearLayoutManager);
         _cartRecyclerView.setAdapter(adapter);
         Log.e("cart items", " " + adapter.getItemCount());
-        if (adapter.getItemCount() == 0) {
+        showEmptyCart(adapter.getItemCount());
+    }
+
+    private void showEmptyCart(int count) {
+        if (count == 0) {
+            _activityCartTestViewBinding.cartView.animate().alpha(0f).setDuration(400).start();
+            _activityCartTestViewBinding.emptyCart.animate().alpha(1f).setDuration(400).start();
             _activityCartTestViewBinding.cartView.setVisibility(View.GONE);
-            _activityCartTestViewBinding.emptyCart.setVisibility(View.VISIBLE);
         }
     }
 
