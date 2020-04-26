@@ -26,11 +26,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".activity.Main.Options.CartViewActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.Main.Options.AddNewItemActivity" />
         <activity
@@ -40,7 +36,11 @@
         <activity android:name=".activity.Splash.SplashActivity"></activity>
         <activity android:name=".activity.Login.OtpActivity"></activity>
         <activity android:name=".activity.Main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.Login.LoginActivity" />
         <activity android:name=".activity.Splash.OnBoardingActivity" />

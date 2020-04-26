@@ -50,9 +50,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (navHostFragment != null) {
             _navController = navHostFragment.navController
             NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
-
-            val navigationId: Int = intent.extras!!.getInt("NAVIGATION_ID", R.id.action_orderFragment_to_fruitsFragment)
-            _navController.navigate(navigationId)
+            val navigationId: Int? = intent.extras?.getInt("NAVIGATION_ID");
+            if (navigationId != null)
+                _navController.navigate(navigationId)
         }
 
     }

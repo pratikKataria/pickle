@@ -106,7 +106,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="8dp"
-                        android:text="@{String.valueOf(product.quantityCounter)}" />
+                        app:setQuantity="@{product.quantityCounter}"
+                        app:maxQuantity="@{product.itemMaxQtyPerUser}"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/increaseCartItem"

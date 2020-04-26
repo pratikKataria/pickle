@@ -32,7 +32,6 @@ import com.example.pickle.data.CartCalculator;
 import com.example.pickle.data.CustomerOrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
-import com.example.pickle.databinding.ActivityEmptyCartBinding;
 import com.example.pickle.ui.CustomRadioButton;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;

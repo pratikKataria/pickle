@@ -112,8 +112,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             });
 
             currCardViewHolder._increaseCart.setOnClickListener(view -> {
-                Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show();
-                if (model.getQuantityCounter() >= 1) {
+                if (model.getQuantityCounter() >= 1 && model.getQuantityCounter() < model.getItemMaxQtyPerUser()) {
                     int a = model.getQuantityCounter();
                     a++;
                     currCardViewHolder._qtyCounter.setText(Integer.toString(a));
@@ -134,7 +133,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
                         }
                     }
-//                Toast.makeText(context, "clicked  ---  " + currCardViewHolder._qtyCounter.getText().toString() + " === " + model.getQuantityCounter(), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context, "can't add more items", Toast.LENGTH_SHORT).show();
                 }
             });
 
