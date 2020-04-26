@@ -46,12 +46,12 @@ class OtpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (editTextOtp.text.length < 6) {
+            if (!(editTextOtp.text.length == 6)) {
                 editTextOtp.error = "invalid"
                 editTextOtp.requestFocus()
                 return@setOnClickListener
             }
-
+            activity_otp_progress.visibility = VISIBLE
             val credential  = PhoneAuthProvider.getCredential(AuthCredential, editTextOtp.text.toString())
             signInWithPhoneAuthCredential(credential)
         }
@@ -125,13 +125,16 @@ class OtpActivity : AppCompatActivity() {
                             Log.e("Opt activity ", " curr ent token "+ token)
                         } else {
                             ref.setValue(FirebaseInstanceId.getInstance().token) { _: DatabaseError?, _: DatabaseReference? ->
-                                    Toast.makeText(this@OtpActivity, "Token Updated", Toast.LENGTH_SHORT).show()
+                                activity_otp_progress.visibility = GONE
+                                Toast.makeText(this@OtpActivity, "Token Updated", Toast.LENGTH_SHORT).show()
+                                sendUserToHome()
                             }
                         }
                     }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
+                    activity_otp_progress.visibility = GONE
                     Toast.makeText(this@OtpActivity, "error ${databaseError.message}", Toast.LENGTH_SHORT).show()
                 }
             })

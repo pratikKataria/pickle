@@ -13,18 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.Main.EmptyActivity"></activity>
-        <activity android:name=".activity.Main.FirebaseSearchActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
+        <activity android:name=".activity.Main.FirebaseSearchActivity"/>
         <activity android:name=".activity.Main.Options.CartViewActivity" >
 
         </activity>
