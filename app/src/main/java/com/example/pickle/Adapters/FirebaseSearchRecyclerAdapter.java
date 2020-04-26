@@ -17,6 +17,7 @@ import com.example.pickle.utils.SharedPrefsUtils;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class FirebaseSearchRecyclerAdapter extends FirebaseRecyclerAdapter<Produ
         private CardViewSearchItemBinding itemView;
         private ProductModel product;
         private MaterialButton decreaseQtyBtn;
-        private ImageView increaseQtyBtn;
+        private MaterialButton increaseQtyBtn;
         private MaterialButton addToCartBtn;
         private Context context;
 

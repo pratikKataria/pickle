@@ -50,7 +50,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
 
         init_fields();
         init_recyclerview();
-        popupLayoutDecoration();
 
         AutoCompleteAdapter adapter = new AutoCompleteAdapter(
                 this,
@@ -102,15 +101,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
             searchRecyclerAdapter = new FirebaseSearchRecyclerAdapter(options, this);
         }
         _searchRecyclerView.setAdapter(searchRecyclerAdapter);
-    }
-
-    private void popupLayoutDecoration() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-
-        _autoCompleteTextView.setDropDownHorizontalOffset(110);
-        _autoCompleteTextView.setDropDownWidth(width - 150);
     }
 
     @Override
