@@ -1,180 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.Main.FirebaseSearchActivity">
 
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="end"
-        android:text="select choice, faster searching"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+<layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="0dp"
-        android:layout_height="62dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <AutoCompleteTextView
-            android:id="@+id/edit_query"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:completionThreshold="1"
-            android:dropDownAnchor="@id/chipGroup3"
-            android:elevation="5dp"
-            android:focusable="true"
-            android:hint="search here"
-            android:layout_marginBottom="8dp"
-            android:inputType="textAutoComplete|textAutoCorrect"
-            android:paddingStart="32dp"
-            android:popupBackground="@drawable/ic_round_rect_white"
-            android:scrollIndicators="none"
-            android:textCursorDrawable="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        <import type="com.example.pickle.data.ProductModel"/>
+        <import type="java.util.List"/>
+        <import type="com.example.pickle.Adapters.AutoCompleteAdapter"/>
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg_search_bar"
-            app:layout_constraintBottom_toBottomOf="@+id/edit_query"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <variable
+            name="productModelList"
+            type="List&lt;ProductModel>" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="28dp"
-            android:background="@drawable/ic_search"
-            android:backgroundTint="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38" />
+        <variable
+            name="autoCompleteList"
+            type="List&lt;String>" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </data>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.Main.FirebaseSearchActivity">
 
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchResultView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layoutAnimation="@anim/layout_animation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/textView9">
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup3"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
             android:gravity="end"
-            app:chipSpacing="16dp"
+            android:text="select choice, faster searching"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"
-            app:singleSelection="true">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterVegetable"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="0dp"
+            android:layout_height="62dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/edit_query"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:completionThreshold="1"
+                android:dropDownAnchor="@id/chipGroup3"
+                android:elevation="5dp"
+                android:focusable="true"
+                android:hint="search here"
+                android:layout_marginBottom="8dp"
+                android:inputType="textAutoComplete|textAutoCorrect"
+                android:paddingStart="32dp"
+                android:popupBackground="@drawable/ic_round_rect_white"
+                android:scrollIndicators="none"
+                android:textCursorDrawable="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg_search_bar"
+                app:layout_constraintBottom_toBottomOf="@+id/edit_query"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="28dp"
+                android:background="@drawable/ic_search"
+                android:backgroundTint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.38" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layoutAnimation="@anim/layout_animation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/textView9">
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Vegitables"
-                app:chipCornerRadius="4dp"
-                app:chipStrokeWidth="1dp"
-                android:textColor="@color/black"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                app:chipBackgroundColor="@color/bg_color_search_filter"
-                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="end"
+                app:chipSpacing="16dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:singleSelection="true">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterFruits"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Fruits"
-                android:textColor="@color/black"
-                app:chipBackgroundColor="@color/bg_color_search_filter"
-                app:chipCornerRadius="4dp"
-                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                app:chipStrokeWidth="1dp"
-                app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterVegetable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegitables"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeWidth="1dp"
+                    android:textColor="@color/black"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterDiary"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Diary"
-                android:textColor="@color/black"
-                app:chipBackgroundColor="@color/bg_color_search_filter"
-                app:chipCornerRadius="4dp"
-                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                app:chipStrokeWidth="1dp"
-                app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterFruits"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fruits"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFilterBeverages"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Beverages"
-                android:textColor="@color/black"
-                app:chipBackgroundColor="@color/bg_color_search_filter"
-                app:chipCornerRadius="4dp"
-                app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                app:chipStrokeWidth="1dp"
-                app:rippleColor="@color/chipColorSearchFilterUnselected" />
-        </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterDiary"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Diary"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-    </LinearLayout>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterBeverages"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beverages"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
+            </com.google.android.material.chip.ChipGroup>
+
+        </LinearLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
