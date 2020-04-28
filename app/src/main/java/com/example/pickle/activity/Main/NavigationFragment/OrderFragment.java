@@ -7,8 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +15,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -40,6 +38,7 @@ import com.example.pickle.activity.carousel.CarouselAdapter;
 import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.data.GridItem;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.RecyclerViewUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -66,29 +65,15 @@ import java.util.Map;
 public class OrderFragment extends Fragment{
 
     private Toolbar _toolbar;
-    private RecyclerView _gridViewRecyclerView;
-    private List<GridItem> gridItemCategoryList;
-
     private RecyclerView recyclerViewProduct;
     private List<ProductModel> productsList;
 
     private List<CarouselImage> imageList;
     private DiscreteScrollView carouselScrollView;
     private InfiniteScrollAdapter infiniteAdapter;
-    private Handler handler;
-    private Runnable scrolling_runnable;
-
     private NavController _navController;
 
-    //todo remove this
-    private int [] sampleImages = {
-            R.drawable.sale_one,
-            R.drawable.sale_two,
-            R.drawable.sale_three,
-            R.drawable.seal_four
-    };
-
-    private final static HashMap<Integer, Integer> navigationMap = new HashMap<>();
+    private FragmentOrderBinding binding;
 
 
     public OrderFragment() {
@@ -97,38 +82,17 @@ public class OrderFragment extends Fragment{
 
     private void init_fields(View v) {
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
-        _gridViewRecyclerView = v.findViewById(R.id.recyclerView);
         recyclerViewProduct = v.findViewById(R.id.recyclerView1);
-
-        gridItemCategoryList = new ArrayList<>();
         productsList = new ArrayList<>();
 
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
-
-        navigationMap.put(0, R.id.action_orderFragment_to_fruitsFragment);
-        navigationMap.put(1, R.id.action_orderFragment_to_vegetableFragment);
-        navigationMap.put(2, R.id.action_orderFragment_to_beveragesFragment);
-        navigationMap.put(3, R.id.action_orderFragment_to_dairyFragment);
-
     }
 
     private void init_carousel(View v) {
         imageList = new ArrayList<>();
         carouselScrollView = v.findViewById(R.id.discreteScrollView);
-
         carouselScrollView.setOrientation(DSVOrientation.HORIZONTAL);
         infiniteAdapter = InfiniteScrollAdapter.wrap(new CarouselAdapter(imageList));
-
-        final int duration = 5000;
-        final int pixelsToMove = 800;
-        handler = new Handler(Looper.getMainLooper()) ;
-        scrolling_runnable = (Runnable) () -> {
-            carouselScrollView.smoothScrollBy(pixelsToMove, 0 , new LinearInterpolator());
-            handler.postDelayed(scrolling_runnable, duration);
-        };
-
-        handler.postDelayed(scrolling_runnable, duration);
-
         carouselScrollView.setAdapter(infiniteAdapter);
         carouselScrollView.setItemTransitionTimeMillis(150);
         carouselScrollView.setItemTransformer(new ScaleTransformer.Builder()
@@ -197,18 +161,24 @@ public class OrderFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_order, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_order,
+                container,
+                false
+        );
 
-        init_fields(view);
+        init_fields(binding.getRoot());
 
         setUpToolbar();
 
-//        getImageList();
-//        init_carousel(view);
+        getImageList();
+        init_carousel(binding.getRoot());
 
-        populateList();
-
-        initGridRecyclerView();
+        binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
+        binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
+        binding.cardViewBeverages.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_beveragesFragment));
+        binding.cardViewDairy.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_dairyFragment));
 
 
         ProductsRecyclerViewAdapter adapter = new ProductsRecyclerViewAdapter(getContext(), productsList);
@@ -217,24 +187,12 @@ public class OrderFragment extends Fragment{
         recyclerViewProduct.addItemDecoration(new SpacesItemDecoration(16, 9));
         recyclerViewProduct.setAdapter(adapter);
 
-        return view;
+        return binding.getRoot();
     }
 
-    private void initGridRecyclerView() {
-        int mNoOfColumns = RecyclerViewUtils.calculateNoOfColumns(getContext(), 120 );
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), mNoOfColumns);
-        _gridViewRecyclerView.setLayoutManager(gridLayoutManager);
-        GridRecyclerViewAdapter gridRecyclerViewAdapter = new GridRecyclerViewAdapter(getActivity(), gridItemCategoryList);
-        _gridViewRecyclerView.addItemDecoration(new SpacesItemDecoration(5));
-        _gridViewRecyclerView.setAdapter(gridRecyclerViewAdapter);
-        gridRecyclerViewAdapter.setOnItemClickListener(position -> {
-            if (navigationMap.containsKey(position)) {
-                _navController.navigate(navigationMap.get(position));
-            }
-        });
-    }
 
     private void getImageList() {
+        //todo remove listener
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("CarouselImages");
         reference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -266,24 +224,6 @@ public class OrderFragment extends Fragment{
         });
     }
 
-    private void populateList() {
-
-        gridItemCategoryList.add(new GridItem("Fruits", R.drawable.ic_fruit));
-        gridItemCategoryList.add(new GridItem("Vegetables", R.drawable.ic_vegetables));
-        gridItemCategoryList.add(new GridItem("Beverages", R.drawable.ic_beverages));
-        gridItemCategoryList.add(new GridItem("Dairy", R.drawable.ic_dairy));
-        gridItemCategoryList.add(new GridItem("Dairy", R.drawable.ic_dairy));
-
-
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-        productsList.add(new ProductModel("item1", 2110));
-
-    }
 
     private void setUpToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(_toolbar);

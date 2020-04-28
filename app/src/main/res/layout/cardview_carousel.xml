@@ -12,7 +12,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="310dp"
+        android:layout_width="280dp"
         android:layout_height="164dp"
         android:layout_gravity="center"
         android:layout_margin="4dp"

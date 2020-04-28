@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
             val navigationId: Int? = intent.extras?.getInt("NAVIGATION_ID");
             if (navigationId != null)
+                //todo fix bug here
                 _navController.navigate(navigationId)
         }
 
