@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.Main.EmptyActivity"></activity>
-        <activity android:name=".activity.Main.FirebaseSearchActivity">
+        <activity android:name=".activity.Main.FirebaseSearchActivity"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

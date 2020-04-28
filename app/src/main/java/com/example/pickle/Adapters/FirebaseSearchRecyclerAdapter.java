@@ -1,88 +1,71 @@
 package com.example.pickle.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
 import com.example.pickle.ui.SearchViewBottomSheetDialog;
-import com.example.pickle.utils.CartHandler;
-import com.example.pickle.utils.SharedPrefsUtils;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class FirebaseSearchRecyclerAdapter extends FirebaseRecyclerAdapter<ProductModel, FirebaseSearchRecyclerAdapter.FirebaseSearchViewHolder> {
+public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<FirebaseSearchRecyclerAdapter.ProductsViewHolder> {
 
     Context context;
-    private CartHandler cartHandler;
+    ArrayList<ProductModel> productModelArrayList;
 
-
-    public FirebaseSearchRecyclerAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, Context context) {
-        super(options);
+    public FirebaseSearchRecyclerAdapter(Context context , ArrayList<ProductModel> productModelArrayList) {
         this.context = context;
-        cartHandler = new CartHandler(context);
+        this.productModelArrayList = productModelArrayList;
     }
 
-    public FirebaseSearchRecyclerAdapter(@NonNull FirebaseRecyclerOptions<ProductModel> options, Context context, Map<String, ProductModel> cartMap) {
-        super(options);
-        this.context = context;
-        cartHandler = new CartHandler(context, cartMap);
+
+    @NonNull
+    @Override
+    public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CardViewSearchItemBinding cardViewBinding = CardViewSearchItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+
+        return new ProductsViewHolder(cardViewBinding, context);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull FirebaseSearchViewHolder holder, int position, @NonNull ProductModel product) {
-
+    public void onBindViewHolder(@NonNull ProductsViewHolder holder, int position) {
+        ProductModel product = productModelArrayList.get(position);
         holder.setBinding(product);
 
         holder.addToCartBtn.setOnClickListener(view -> {
-            int qty = cartHandler.add(product);
-            product.setQuantityCounter(qty);
+//            int qty = cartHandler.add(product);
+//            product.setQuantityCounter(qty);
             notifyDataSetChanged();
         });
 
 
         holder.increaseQtyBtn.setOnClickListener(view -> {
-            int qty = cartHandler.increaseQty(product.getItemId());
-            product.setQuantityCounter(qty);
+//            int qty = cartHandler.increaseQty(product.getItemId());
+//            product.setQuantityCounter(qty);
             notifyDataSetChanged();
         });
 
         holder.decreaseQtyBtn.setOnClickListener(view -> {
-            int qty = cartHandler.decreaseQty(product.getItemId());
-            product.setQuantityCounter(qty);
+//            int qty = cartHandler.decreaseQty(product.getItemId());
+//            product.setQuantityCounter(qty);
             notifyDataSetChanged();
         });
     }
 
     @Override
     public int getItemCount() {
-        return super.getItemCount();
+        return productModelArrayList.size();
     }
 
-    @NonNull
-    @Override
-    public FirebaseSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        CardViewSearchItemBinding cardViewBinding = CardViewSearchItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
-        return new FirebaseSearchViewHolder(cardViewBinding, context);
-    }
-
-    public static class FirebaseSearchViewHolder extends RecyclerView.ViewHolder {
-
+    static class ProductsViewHolder extends  RecyclerView.ViewHolder {
         private CardViewSearchItemBinding itemView;
         private ProductModel product;
         private MaterialButton decreaseQtyBtn;
@@ -90,7 +73,7 @@ public class FirebaseSearchRecyclerAdapter extends FirebaseRecyclerAdapter<Produ
         private MaterialButton addToCartBtn;
         private Context context;
 
-        public FirebaseSearchViewHolder(@NonNull CardViewSearchItemBinding itemView, Context context) {
+        public ProductsViewHolder(@NonNull CardViewSearchItemBinding itemView, Context context) {
             super(itemView.getRoot());
             this.itemView = itemView;
 
@@ -117,7 +100,6 @@ public class FirebaseSearchRecyclerAdapter extends FirebaseRecyclerAdapter<Produ
             SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog(productModel);
             bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
-
     }
 
 }
