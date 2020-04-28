@@ -11,8 +11,8 @@
     <color name="chipColorSearchFilterSelected">#FFDB00</color>
     <color name="chipColorSearchFilterUnselected">#FAEDA1</color>
 
-    <color name="customerDetailRadioSelected">#F36B7F</color>
-    <color name="customerDetailRadioUnSelected">#FDE1E5</color>
+    <color name="secondaryColorDark">#F36B7F</color>
+    <color name="secondaryColorLight">#FDE1E5</color>
     
     <color name="semiTransparent">#31000000</color>
 

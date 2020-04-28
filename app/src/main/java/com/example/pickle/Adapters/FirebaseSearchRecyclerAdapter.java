@@ -116,7 +116,6 @@ public class FirebaseSearchRecyclerAdapter extends FirebaseRecyclerAdapter<Produ
         private void showBottomSheet(ProductModel productModel) {
             SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog(productModel);
             bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "searchViewBottomSheet");
-
         }
 
     }

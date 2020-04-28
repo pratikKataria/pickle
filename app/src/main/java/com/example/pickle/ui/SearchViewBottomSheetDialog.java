@@ -1,6 +1,7 @@
 package com.example.pickle.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
+import com.example.pickle.activity.Main.Options.CartViewActivity;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.BottomSheetSearchViewBinding;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -49,6 +51,13 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
 
 
         searchViewBinding.setProduct(productModel);
+
+     searchViewBinding.goToCartBtn.setOnClickListener(n -> {
+         if (getActivity() != null) {
+             startActivity(new Intent(getActivity(), CartViewActivity.class));
+             getActivity().finish();
+         }
+     });
 
         getDialog().setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;

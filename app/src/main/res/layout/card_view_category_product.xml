@@ -96,8 +96,8 @@
                         android:textColor="@color/black"
                         app:rippleColor="@color/white"
                         app:cornerRadius="4dp"
-                        android:backgroundTint="@color/customerDetailRadioUnSelected"
-                        app:iconTint="@color/customerDetailRadioSelected"
+                        android:backgroundTint="@color/secondaryColorLight"
+                        app:iconTint="@color/secondaryColorDark"
                         app:strokeColor="@color/white"/>
 
                     <TextView
@@ -114,7 +114,7 @@
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="32dp"
                         android:layout_height="44dp"
-                        android:backgroundTint="@color/customerDetailRadioSelected"
+                        android:backgroundTint="@color/secondaryColorDark"
                         app:strokeColor="@color/white"
                         app:cornerRadius="4dp"
                         app:iconSize="12dp"
@@ -131,13 +131,13 @@
                     android:layout_height="44dp"
                     android:paddingEnd="4dp"
                     android:text="Add"
-                    android:textColor="@color/customerDetailRadioSelected"
-                    app:backgroundTint="@color/customerDetailRadioUnSelected"
+                    android:textColor="@color/secondaryColorDark"
+                    app:backgroundTint="@color/secondaryColorLight"
                     app:icon="@drawable/ic_add_black_24dp"
                     app:iconGravity="end"
                     app:iconPadding="12dp"
                     app:rippleColor="@color/white"
-                    app:iconTint="@color/customerDetailRadioSelected"
+                    app:iconTint="@color/secondaryColorDark"
                     app:strokeColor="@color/white"
                     android:visibility="@{product.showAddButton() ? View.GONE : View.VISIBLE}"/>
             </FrameLayout>

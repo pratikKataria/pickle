@@ -73,15 +73,18 @@
 
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/goToCartBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Go to cart"
                 android:textAllCaps="false"
-                android:textColor="@color/chipColorStateSelect"
-                app:strokeColor="@color/chipColorSateUnselected"
-                app:rippleColor="@color/chipColorSateUnselected"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="32dp"
+                android:textColor="@color/secondaryColorDark"
+                app:strokeColor="@color/secondaryColorLight"
+                app:rippleColor="@color/secondaryColorLight"
                 app:icon="@drawable/ic_cart"
-                app:iconTint="@color/chipColorStateSelect"
+                app:iconTint="@color/secondaryColorDark"
                 android:layout_gravity="center"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 

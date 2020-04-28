@@ -75,7 +75,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
                         try {
 
                             FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query, snapshot -> {
-                                Log.e("firbase query", snapshot + "");
                                 ProductModel productModel = snapshot.getValue(ProductModel.class);
                                 if (productModel != null) {
                                     if (cartMap.containsKey(productModel.getItemId())) {
@@ -93,25 +92,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
                                 searchRecyclerAdapter.startListening();
                             }
                             _searchRecyclerView.setAdapter(searchRecyclerAdapter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         } catch (NullPointerException npe) {
                             Log.e("data found ", npe.getMessage());
