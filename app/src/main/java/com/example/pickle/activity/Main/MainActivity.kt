@@ -15,12 +15,17 @@ import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.Main.Options.AddNewItemActivity
+import com.example.pickle.binding.IMainActivity
+import com.example.pickle.data.ProductModel
+import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    IMainActivity {
 
     lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
@@ -64,14 +69,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.openDrawer(Gravity.START)
     }
 
-    override fun onStart() {
-        super.onStart()
-        val mFirebaseUser = FirebaseAuth.getInstance()
-        if (mFirebaseUser.currentUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        val mFirebaseUser = FirebaseAuth.getInstance()
+//        if (mFirebaseUser.currentUser == null) {
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
+//        }
+//    }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when(p0.itemId) {
@@ -86,4 +91,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun updateQuantity(productModel: ProductModel?, quantity: Int) {
+        val savedProductJson = SharedPrefsUtils.getStringPreference(this, productModel!!.itemId, 0);
+        productModel.quantityCounter = quantity;
+        SharedPrefsUtils.setStringPreference(this, productModel.itemId, Gson().toJson(productModel))
+    }
 }

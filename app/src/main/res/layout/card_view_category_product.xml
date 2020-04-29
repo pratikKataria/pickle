@@ -10,8 +10,12 @@
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
 
         <variable
-            name="product"
-            type="com.example.pickle.data.ProductModel" />
+            name="productViewModel"
+            type="com.example.pickle.data.ProductViewModel" />
+
+        <variable
+            name="iMainActivity"
+            type="com.example.pickle.binding.IMainActivity" />
         
     </data>
 
@@ -31,7 +35,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="8dp"
-                app:imageResourceAdapter="@{product.itemThumbImage}"
+                app:imageResourceAdapter="@{productViewModel.product.itemThumbImage}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/card_view_tv_name" />
 
@@ -45,7 +49,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
                 android:padding="4dp"
-                android:text="@{product.itemName}"
+                android:text="@{productViewModel.product.itemName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_product_image"
@@ -56,18 +60,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemBasePrice)}"
+                android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
                 app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
-                app:strikeThrough="@{product.itemSellPrice > 0}" />
+                app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}" />
 
             <TextView
                 android:id="@+id/card_view_iv_sell_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:visibility="@{product.itemSellPrice>0? View.VISIBLE : View.GONE}"
-                android:text="@{PriceFormatUtils.getStringFormattedPrice(product.itemSellPrice)}"
+                android:visibility="@{productViewModel.product.itemSellPrice>0? View.VISIBLE : View.GONE}"
+                android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemSellPrice)}"
                 app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_iv_base_price" />
 
@@ -83,7 +87,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="@{product.showAddButton()? View.VISIBLE : View.GONE}">
+                    android:visibility="@{productViewModel.product.showAddButton()? View.VISIBLE : View.GONE}">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/decreaseCartItem"
@@ -92,6 +96,7 @@
                         android:layout_height="44dp"
                         app:icon="@drawable/ic_remove"
                         app:iconSize="12dp"
+                        android:onClick="@{() -> productViewModel.decreaseQuantity(context)}"
                         android:paddingStart="10dp"
                         android:textColor="@color/black"
                         app:rippleColor="@color/white"
@@ -106,14 +111,15 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="8dp"
-                        app:setQuantity="@{product.quantityCounter}"
-                        app:maxQuantity="@{product.itemMaxQtyPerUser}"/>
+                        app:setQuantity="@{productViewModel.product.quantityCounter}"
+                        app:maxQuantity="@{productViewModel.product.itemMaxQtyPerUser}"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/increaseCartItem"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="32dp"
                         android:layout_height="44dp"
+                        android:onClick="@{() -> productViewModel.increaseQuantity(context)}"
                         android:backgroundTint="@color/secondaryColorDark"
                         app:strokeColor="@color/white"
                         app:cornerRadius="4dp"
@@ -131,6 +137,7 @@
                     android:layout_height="44dp"
                     android:paddingEnd="4dp"
                     android:text="Add"
+                    android:onClick="@{() -> productViewModel.addToCart(context)}"
                     android:textColor="@color/secondaryColorDark"
                     app:backgroundTint="@color/secondaryColorLight"
                     app:icon="@drawable/ic_add_black_24dp"
@@ -139,7 +146,7 @@
                     app:rippleColor="@color/white"
                     app:iconTint="@color/secondaryColorDark"
                     app:strokeColor="@color/white"
-                    android:visibility="@{product.showAddButton() ? View.GONE : View.VISIBLE}"/>
+                    android:visibility="@{productViewModel.product.showAddButton() ? View.GONE : View.VISIBLE}"/>
             </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

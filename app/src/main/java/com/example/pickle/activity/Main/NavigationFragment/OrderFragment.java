@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,25 +121,25 @@ public class OrderFragment extends Fragment{
         LayerDrawable icon = (LayerDrawable) item.getIcon();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (preferences != null) {
-            Map<String, ?> allEntries = preferences.getAll();
-            int count = 0;
-            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-
-                String list = SharedPrefsUtils.getStringPreference(getContext(), entry.getKey(), 0);
-                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-
-                if (list != null && models != null) {
-                    count += models.length;
-                }
-
-                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
-                Log.e("map values", " ------------------------  " );
-            }
-            if (count > 0) {
-                    setBadgeCount(getActivity(), icon, count);
-            }
-        }
+//        if (preferences != null) {
+//            Map<String, ?> allEntries = preferences.getAll();
+//            int count = 0;
+//            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+//
+//                String list = SharedPrefsUtils.getStringPreference(getContext(), entry.getKey(), 0);
+//                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
+//
+//                if (list != null && models != null) {
+//                    count += models.length;
+//                }
+//
+//                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+//                Log.e("map values", " ------------------------  " );
+//            }
+//            if (count > 0) {
+//                    setBadgeCount(getActivity(), icon, count);
+//            }
+//        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -168,15 +169,13 @@ public class OrderFragment extends Fragment{
                 false
         );
 
-        Log.e("OrderFragment ", "onCreate``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````");
-
-
         init_fields(binding.getRoot());
         binding.setProductList(productModelArrayList);
         setUpToolbar();
         getImageList();
         init_carousel(binding.getRoot());
-        addProduct();
+
+        new Handler().postDelayed(this::addProduct, 2000);
 
         binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
         binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
