@@ -45,6 +45,13 @@ public class ProductViewHolder extends  RecyclerView.ViewHolder {
         super(suggestionBinding.getRoot());
         this.suggestionBinding = suggestionBinding;
         this.context = context;
+
+        CardView cardView = suggestionBinding.cardView;
+        cardView.setOnClickListener(n -> {
+            if (product != null) {
+                showBottomSheet(product);
+            }
+        });
     }
 
     public void setBinding(ProductModel productModel) {

@@ -75,6 +75,8 @@ public class OrderFragment extends Fragment{
     private ArrayList<ProductModel> productModelArrayList;
 
     private Map<String, String> lastElemId;
+    private int adapterPos;
+
     public OrderFragment() {
         // Required empty public constructor
     }
@@ -187,10 +189,10 @@ public class OrderFragment extends Fragment{
                 FirebaseSearchRecyclerAdapter firebaseSearchRecyclerAdapter = (FirebaseSearchRecyclerAdapter) binding.recomRecyclerView.getAdapter();
                 if (layoutManager != null && firebaseSearchRecyclerAdapter != null) {
                     int id = layoutManager.findFirstCompletelyVisibleItemPosition();
-                    int adapterListSize = firebaseSearchRecyclerAdapter.getItemCount();
+                    adapterPos = firebaseSearchRecyclerAdapter.getItemCount();
 //                    Log.e("OrderFragment ", adapterListSize + " adapter List Size ");
 //                    Log.e("Order Fragment ", id + " adapter id size ");
-                    if (id >= adapterListSize - 1) {
+                    if (id >= adapterPos - 1) {
                         Log.e("OrderFragment ", " add new item ");
                         addNewProduct();
                     }
@@ -263,9 +265,9 @@ public class OrderFragment extends Fragment{
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 lastProduct = snapshot.getValue(ProductModel.class);
                                 productModelArrayList.add(snapshot.getValue(ProductModel.class));
-//                                Collections.shuffle(productModelArrayList);
-                                if (binding.recomRecyclerView.getAdapter() != null)
-                                    binding.recomRecyclerView.getAdapter().notifyDataSetChanged();
+                                Collections.shuffle(productModelArrayList);
+                                if (binding.recomRecyclerView.getAdapter() != null && adapterPos > 2)
+                                    binding.recomRecyclerView.getAdapter().notifyItemRangeChanged(adapterPos-2, adapterPos);
                             }
                             if (lastProduct != null) {
                                 lastElemId.put(lastProduct.getItemCategory(), lastProduct.getItemId());
