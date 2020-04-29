@@ -50,6 +50,7 @@
                 android:id="@+id/edit_query"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:autoCompleteList="@{autoCompleteList}"
                 android:background="@color/transparent"
                 android:completionThreshold="1"
                 android:dropDownAnchor="@id/chipGroup3"
@@ -111,11 +112,14 @@
             android:id="@+id/searchRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layoutAnimation="@anim/layout_animation"
+            app:list="@{productModelList}"
+            app:viewType="@{0}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="0.0" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"

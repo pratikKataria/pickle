@@ -264,7 +264,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recomRecyclerView"
-                list="@{productList}"
+                app:list="@{productList}"
+                app:viewType="@{1}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
