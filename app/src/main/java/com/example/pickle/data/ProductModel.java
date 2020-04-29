@@ -1,5 +1,7 @@
 package com.example.pickle.data;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
@@ -197,6 +199,7 @@ public class ProductModel {
     @Override
     public boolean equals(@Nullable Object obj) {
         ProductModel productModel = (ProductModel) obj;
+        Log.e("Product Model ", "on equals invoked ");
         return itemId.matches(productModel.getItemId());
     }
 

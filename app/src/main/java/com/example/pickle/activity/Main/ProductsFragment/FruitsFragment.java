@@ -11,21 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.databinding.FragmentFruitsBinding;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -40,25 +36,18 @@ public class FruitsFragment extends Fragment {
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
 
+    ArrayList<ProductModel> fruitList;
+    ArrayList<ProductModel> cartList;
+
+    FragmentFruitsBinding fruitsBinding;
+
     public FruitsFragment() {
         // Required empty public constructor
     }
 
-    RecyclerView fruitsRecyclerView;
-    ArrayList<ProductModel> fruitList;
-    ArrayList<ProductModel> cartList;
-    CategoryRecyclerViewAdapter adapter;
-
-    FragmentFruitsBinding fruitsBinding;
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_fruits, container, false);
-
-        Log.e("onCreateView", "fruit fragment");
-
         fruitsBinding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_fruits,
@@ -76,26 +65,12 @@ public class FruitsFragment extends Fragment {
             cartList = new ArrayList<>();
         }
 
-        View view = fruitsBinding.getRoot();
         fruitList = new ArrayList<>();
-        init_recyclerView();
+
+        fruitsBinding.setProductList(fruitList);
         new Handler().postDelayed(this::populateList,1200);
 
-        return view;
-    }
-
-
-    private void init_recyclerView() {
-        fruitsRecyclerView = fruitsBinding.fruitsRecyclerView;
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), fruitList, "Fruits");
-        fruitsRecyclerView.setLayoutManager(linearLayoutManager);
-        fruitsRecyclerView.setAdapter(adapter);
-//        adapter.setOnItemClickListener(position -> {
-//            EachItemDataModel eidm = fruitList.get(position);
-//            startActivity(new Intent(FootwearActivity.this, PlaceItemOrderActivity.class).putExtra("DATA_MODEL", (Serializable) eidm));
-//            Toast.makeText(FootwearActivity.this, "posittion" + position, Toast.LENGTH_SHORT).show();
-//        });
+        return fruitsBinding.getRoot();
     }
 
     private void populateList() {
@@ -109,19 +84,20 @@ public class FruitsFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if (dataSnapshot.exists()) {
                         Log.e("Fruit recycler view ", dataSnapshot +" ");
-                        ProductModel model = dataSnapshot.getValue(ProductModel.class);
+                        ProductModel product = dataSnapshot.getValue(ProductModel.class);
 
                         if (cartList != null) {
-                            for (ProductModel pm : cartList) {
-                                if (model.getItemId().equals(pm.getItemId())) {
-                                    model.setQuantityCounter(pm.getQuantityCounter());
+                            for (ProductModel cartProduct : cartList) {
+                                if (product != null && product.equals(cartProduct)) {
+                                    product.setQuantityCounter(cartProduct.getQuantityCounter());
                                     break;
                                 }
                             }
                         }
 
-                        fruitList.add(model);
-                        adapter.notifyDataSetChanged();
+                        fruitList.add(product);
+                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
+                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
                     }
             }
 
@@ -134,7 +110,7 @@ public class FruitsFragment extends Fragment {
                     position++;
                     ProductModel product = iterator.next();
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (newProduct != null && product.getItemId().equals(newProduct.getItemId())) {
+                    if (product != null && product.equals(newProduct)) {
                         iterator.remove();
                         break;
                     }
@@ -142,17 +118,20 @@ public class FruitsFragment extends Fragment {
 
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                 if (newProduct != null) {
-                    for (ProductModel product :cartList) {
-                        if (product.getItemId().equals(newProduct.getItemId())) {
-                            newProduct.setQuantityCounter(product.getQuantityCounter());
+                    for (ProductModel cartProduct : cartList) {
+                        if (cartProduct.equals(newProduct)) {
+                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
                         }
                     }
+
                     if ((position-1) <= fruitList.size()) {
                         fruitList.add(position-1, newProduct);
-                        adapter.notifyDataSetChanged();
+                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
+                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
                     } else {
                         fruitList.add(newProduct);
-                        adapter.notifyDataSetChanged();
+                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
+                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
             }

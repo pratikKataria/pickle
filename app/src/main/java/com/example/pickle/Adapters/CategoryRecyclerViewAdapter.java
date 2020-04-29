@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ import com.example.pickle.activity.Main.EmptyActivity;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityEmptyBinding;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
+import com.example.pickle.ui.SearchViewBottomSheetDialog;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
@@ -169,6 +171,10 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
                     notifyDataSetChanged();
                 }
             });
+
+            ((ProductCardViewHolder) holder).binding.cardView.setOnClickListener(
+                    n -> ((ProductCardViewHolder) holder).showDialog(productModelsList.get(position))
+            );
         } else {
             //empty view
             EmptyView emptyView = (EmptyView) holder;
@@ -224,7 +230,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
 
     class ProductCardViewHolder extends RecyclerView.ViewHolder{
 
-        private CardViewCategoryProductBinding binding;
+        CardViewCategoryProductBinding binding;
         private MaterialButton _increaseCart;
         private MaterialButton _decreaseCart;
         private MaterialButton _addToCartButton;
@@ -244,6 +250,11 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         public void bind(ProductModel model) {
             binding.setProduct(model);
             binding.executePendingBindings();
+        }
+
+        private void showDialog(ProductModel product) {
+            SearchViewBottomSheetDialog searchViewBottomSheetDialog = new SearchViewBottomSheetDialog(product);
+            searchViewBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
 
     }
