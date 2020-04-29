@@ -100,6 +100,7 @@ public class DairyFragment extends Fragment {
                 if (newProduct != null) {
 
                     //on item changed get default saved product and set saved quantity counted to the new product
+                    //produces null context error due to back pressed and listener is still attached
                     String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
                     ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
 

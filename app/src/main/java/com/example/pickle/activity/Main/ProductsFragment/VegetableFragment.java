@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentVegetableBinding;
@@ -28,7 +25,6 @@ import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -37,7 +33,6 @@ import java.util.Iterator;
 public class VegetableFragment extends Fragment {
 
     private ArrayList<ProductModel> _productList;
-    private ArrayList<ProductModel> _cartList;
     private ChildEventListener childEventListener;
     private DatabaseReference reference;
     private FragmentVegetableBinding binding;
@@ -59,17 +54,6 @@ public class VegetableFragment extends Fragment {
                 false
         );
 
-
-        //offline carted product list
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Vegetables", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            _cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            _cartList = new ArrayList<>();
-        }
-
         _productList = new ArrayList<>();
         binding.setProductList(_productList);
         new Handler().postDelayed(this::populateList,1500);
@@ -85,32 +69,28 @@ public class VegetableFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
-                    Log.e("Fruit recycler view ", dataSnapshot + " ");
-                    ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (_cartList != null) {
-                        for (ProductModel cartProduct : _cartList) {
-                            if (cartProduct.equals(newProduct)) {
-                                newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
-                            }
-                        }
-                    }
+                    ProductModel product = dataSnapshot.getValue(ProductModel.class);
 
-                    _productList.add(newProduct);
-                    if (binding.vegetableRecyclerView.getAdapter() != null)
-                        binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
+                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+                    if (product.equals(cartProduct))
+                        product.setQuantityCounter(cartProduct.getQuantityCounter());
+
+                    _productList.add(product);
+                    notifyChanges();
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 int position = 0;
-                Log.e("onChildChanged", "key s " + s + " datasnaphot" + dataSnapshot);
                 Iterator<ProductModel> iterator = _productList.iterator();
                 while (iterator.hasNext()) {
                     position++;
                     ProductModel product = iterator.next();
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (newProduct != null && product.getItemId().equals(newProduct.getItemId())) {
+                    if (product.equals(newProduct)) {
                         iterator.remove();
                         break;
                     }
@@ -119,19 +99,22 @@ public class VegetableFragment extends Fragment {
                 //set stored cart quantity
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                 if (newProduct != null) {
-                    for (ProductModel cartProduct : _cartList) {
-                        if (cartProduct.equals(newProduct)) {
-                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
-                        }
-                    }
+
+                    //on item changed get default saved product and set saved quantity counted to the new product
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
+                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+                    if (newProduct.equals(cartProduct))
+                        newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+                    //closed
+
                     if ((position - 1) <= _productList.size()) {
                         _productList.add(position - 1, newProduct);
                         if (binding.vegetableRecyclerView.getAdapter() != null)
-                            binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
+                            notifyChanges();
                     } else {
                         _productList.add(newProduct);
-                        if (binding.vegetableRecyclerView.getAdapter() != null)
-                            binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
+                        notifyChanges();
                     }
                 }
             }
@@ -152,6 +135,14 @@ public class VegetableFragment extends Fragment {
             }
         });
 
+    }
+
+    private void notifyChanges() {
+        try {
+            binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
+        } catch (NullPointerException npe) {
+            Log.e("FruitFragment", "npe exception " + npe.getMessage());
+        }
     }
 
     @Override

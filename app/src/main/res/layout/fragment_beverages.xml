@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activity.Main.ProductsFragment.BeveragesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/beverages_recycler_view"
+    <data>
+        <import type="java.util.List"/>
+        <import type="com.example.pickle.data.ProductModel"/>
+
+        <variable
+            name="productList"
+            type="List&lt;ProductModel>" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:context=".activity.Main.ProductsFragment.BeveragesFragment">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/beverages_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:productList="@{productList}"
+            app:category="`Beverages`"/>
+
+    </FrameLayout>
+</layout>
