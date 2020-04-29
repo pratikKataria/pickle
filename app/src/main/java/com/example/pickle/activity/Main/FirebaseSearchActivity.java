@@ -67,13 +67,7 @@ public class FirebaseSearchActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 2) {
-                    firebaseSearch(s.toString().toLowerCase(), map -> {
-                        Log.e("map ", map+"");
-                        for (String key : map.keySet()) {
-                            testArrayList.add(map.get(key));
-                            recyclerAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    firebaseSearch(s.toString().toLowerCase());
                 }
             }
 
@@ -88,20 +82,15 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         _searchRecyclerView.setAdapter(recyclerAdapter);
     }
 
-    private void firebaseSearch(String search, DataChange dataChange) {
+    private void firebaseSearch(String search) {
         testArrayList.clear();
-        recyclerAdapter.notifyDataSetChanged();
         DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
         Query keyQuery = keysRef.orderByKey();
         keyQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                testArrayList.clear();
-                recyclerAdapter.notifyDataSetChanged();
 
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-                    testArrayList.clear();
-                    recyclerAdapter.notifyDataSetChanged();
 
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
                     Query query = reference.orderByChild("itemName").startAt(search).endAt(search + "\uf8ff").limitToFirst(15);
@@ -109,8 +98,13 @@ public class FirebaseSearchActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                testArrayList.add(snapshot.getValue(ProductModel.class));
-                                recyclerAdapter.notifyDataSetChanged();
+                                if (snapshot.exists()) {
+                                    ProductModel productModel = snapshot.getValue(ProductModel.class);
+                                    if (!testArrayList.contains(productModel)) {
+                                        testArrayList.add(snapshot.getValue(ProductModel.class));
+                                        recyclerAdapter.notifyDataSetChanged();
+                                    }
+                                }
                             }
 
                         }
@@ -135,10 +129,6 @@ public class FirebaseSearchActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-    }
-
-    interface  DataChange {
-        void onDataChangeListener(LinkedHashMap<String, ProductModel> map);
     }
 
 }
