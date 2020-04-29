@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.databinding.FragmentDairyBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +28,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -33,47 +37,31 @@ import java.util.Iterator;
 public class DairyFragment extends Fragment {
 
     private ArrayList<ProductModel> _productList;
-    private ArrayList<ProductModel> _cartList;
-    private CategoryRecyclerViewAdapter adapter;
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
-
+    private FragmentDairyBinding binding;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dairy, container, false);
 
-        //offline carted product list
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Dairy", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            _cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            _cartList = new ArrayList<>();
-        }
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_dairy,
+                container,
+                false
+        );
 
         _productList = new ArrayList<>();
-        init_recyclerView(view);
+        binding.setProductList(_productList);
         new Handler().postDelayed(this::populateList,1200);
 
-
-        return view;
-    }
-
-    private void init_recyclerView(View view) {
-        RecyclerView _vegetableRecyclerView = view.findViewById(R.id.dairy_recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), _productList, "Dairy");
-        _vegetableRecyclerView.setLayoutManager(linearLayoutManager);
-        _vegetableRecyclerView.setAdapter(adapter);
+        return binding.getRoot();
     }
 
     private void populateList() {
         reference = FirebaseDatabase.getInstance().getReference("Products/Dairy");
-
 
         Query query = reference.orderByChild("itemName").limitToFirst(15);
 
@@ -81,32 +69,27 @@ public class DairyFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
-                    Log.e("Dairy", dataSnapshot + " ");
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (_cartList != null) {
-                        for (ProductModel pm : _cartList) {
-                            if (newProduct.getItemId().equals(pm.getItemId())) {
-                                newProduct.setQuantityCounter(pm.getQuantityCounter());
-                            }
-                        }
-                    }
+
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
+                    ProductModel cartProduct  = new Gson().fromJson(cartProductJson, ProductModel.class);
+                    if (newProduct.equals(cartProduct))
+                        newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
 
                     _productList.add(newProduct);
-                    adapter.notifyDataSetChanged();
+                    notifyChanges();
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 int position = 0;
-                Log.e("onChildChanged", "key s " + s + " datasnaphot" + dataSnapshot);
                 Iterator<ProductModel> iterator = _productList.iterator();
                 while (iterator.hasNext()) {
                     position++;
                     ProductModel product = iterator.next();
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (newProduct != null && product.getItemId().equals(newProduct.getItemId())) {
+                    if (product.equals(newProduct)) {
                         iterator.remove();
                         break;
                     }
@@ -115,18 +98,21 @@ public class DairyFragment extends Fragment {
                 //set stored cart quantity
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                 if (newProduct != null) {
-                    for (ProductModel product : _cartList) {
-                        if (product.getItemId().equals(newProduct.getItemId())) {
-                            newProduct.setQuantityCounter(product.getQuantityCounter());
-                            break;
-                        }
-                    }
+
+                    //on item changed get default saved product and set saved quantity counted to the new product
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
+                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+                    if (newProduct.equals(cartProduct))
+                        newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+                    //closed
+
                     if ((position - 1) <= _productList.size()) {
                         _productList.add(position - 1, newProduct);
-                        adapter.notifyDataSetChanged();
+                        notifyChanges();
                     } else {
                         _productList.add(newProduct);
-                        adapter.notifyDataSetChanged();
+                        notifyChanges();
                     }
                 }
             }
@@ -148,7 +134,6 @@ public class DairyFragment extends Fragment {
         });
     }
 
-
     @Override
     public void onStop() {
         super.onStop();
@@ -157,4 +142,11 @@ public class DairyFragment extends Fragment {
         }
     }
 
+    private void notifyChanges() {
+        try {
+            binding.dairyRecyclerView.getAdapter().notifyDataSetChanged();
+        } catch (NullPointerException npe) {
+            Log.e("FruitFragment", "npe exception " + npe.getMessage());
+        }
+    }
 }
