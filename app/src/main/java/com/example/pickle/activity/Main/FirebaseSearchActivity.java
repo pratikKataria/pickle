@@ -33,11 +33,12 @@ public class FirebaseSearchActivity extends AppCompatActivity {
     private RecyclerView _searchRecyclerView;
     private AutoCompleteTextView _autoCompleteTextView;
     private ArrayList<String> searchArrayList;
-
+    private ValueEventListener valueEventListener;
 
     FirebaseSearchRecyclerAdapter recyclerAdapter;
     ArrayList<ProductModel> testArrayList;
     LinkedHashMap<String, ProductModel> productMap;
+    private DatabaseReference keysRef;
 
     private void init_fields() {
         _autoCompleteTextView = findViewById(R.id.edit_query);
@@ -84,9 +85,9 @@ public class FirebaseSearchActivity extends AppCompatActivity {
 
     private void firebaseSearch(String search) {
         testArrayList.clear();
-        DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
+        keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
         Query keyQuery = keysRef.orderByKey();
-        keyQuery.addValueEventListener(new ValueEventListener() {
+        valueEventListener = keyQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -111,7 +112,7 @@ public class FirebaseSearchActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            Toast.makeText(FirebaseSearchActivity.this, "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -129,6 +130,9 @@ public class FirebaseSearchActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (keysRef != null && valueEventListener != null) {
+            keysRef.removeEventListener(valueEventListener);
+        }
     }
 
 }
