@@ -198,9 +198,10 @@ public class ProductModel {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        ProductModel productModel = (ProductModel) obj;
-        Log.e("Product Model ", "on equals invoked ");
-        return itemId.matches(productModel.getItemId());
+        if (obj instanceof ProductModel) {
+            ProductModel productModel = (ProductModel) obj;
+            return itemId.matches(productModel.getItemId());
+        } else return false;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * A pack of helpful getter and setter methods for reading/writing to {@link SharedPreferences}.
@@ -22,10 +23,14 @@ final public class SharedPrefsUtils {
      */
     public static String getStringPreference(Context context, String key, int i) {
         String value = null;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences != null) {
-            value = preferences.getString(key, null);
-        }
+       try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (preferences != null) {
+                value = preferences.getString(key, null);
+            }
+        } catch (Exception xe) {
+           Log.e("SharedPrefsUtils", xe.getMessage());
+       }
         return value;
     }
 
@@ -185,5 +190,28 @@ final public class SharedPrefsUtils {
             return editor.commit();
         }
         return false;
+    }
+
+    /**
+     * Helper method to write a boolean value to {@link SharedPreferences}.
+     *
+     * @param context a {@link Context} object.
+     * @param key
+     * @return true if the new value was successfully written to persistent storage.
+     * @Auth pratik katariya
+     * @date 9/2019/03
+     */
+    public static void removeValuePreference(Context context, String key) {
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            if (sharedPreferences != null) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove(key);
+                editor.apply();
+            }
+        } catch (Exception xe) {
+            Log.e("SharedPrefUtils", xe.getMessage());
+        }
+
     }
 }

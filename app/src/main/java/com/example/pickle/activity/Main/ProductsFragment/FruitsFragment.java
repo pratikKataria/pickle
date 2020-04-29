@@ -25,7 +25,6 @@ import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -36,10 +35,8 @@ public class FruitsFragment extends Fragment {
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
 
-    ArrayList<ProductModel> fruitList;
-    ArrayList<ProductModel> cartList;
-
-    FragmentFruitsBinding fruitsBinding;
+    private ArrayList<ProductModel> fruitList;
+    private FragmentFruitsBinding fruitsBinding;
 
     public FruitsFragment() {
         // Required empty public constructor
@@ -55,18 +52,7 @@ public class FruitsFragment extends Fragment {
                 false
         );
 
-        //offline carted products list
-        String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Fruits", 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-        if (productModels != null) {
-            cartList = new ArrayList<>(Arrays.asList(productModels));
-        } else {
-            cartList = new ArrayList<>();
-        }
-
         fruitList = new ArrayList<>();
-
         fruitsBinding.setProductList(fruitList);
         new Handler().postDelayed(this::populateList,1200);
 
@@ -83,55 +69,51 @@ public class FruitsFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if (dataSnapshot.exists()) {
-                        Log.e("Fruit recycler view ", dataSnapshot +" ");
-                        ProductModel product = dataSnapshot.getValue(ProductModel.class);
 
-                        if (cartList != null) {
-                            for (ProductModel cartProduct : cartList) {
-                                if (product != null && product.equals(cartProduct)) {
-                                    product.setQuantityCounter(cartProduct.getQuantityCounter());
-                                    break;
-                                }
-                            }
-                        }
+                        ProductModel product = dataSnapshot.getValue(ProductModel.class);
+                        String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
+                        ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+                        if (product.equals(cartProduct))
+                            product.setQuantityCounter(cartProduct.getQuantityCounter());
 
                         fruitList.add(product);
-                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
-                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
+                        notifyChanges();
                     }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 int position = 0;
-                Log.e("onChildChanged", "key s "+ s + " datasnaphot"+ dataSnapshot);
                 Iterator<ProductModel> iterator = fruitList.iterator();
                 while (iterator.hasNext()) {
                     position++;
                     ProductModel product = iterator.next();
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (product != null && product.equals(newProduct)) {
+                    if (product.equals(newProduct)) {
                         iterator.remove();
                         break;
                     }
                 }
 
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                if (newProduct != null) {
-                    for (ProductModel cartProduct : cartList) {
-                        if (cartProduct.equals(newProduct)) {
-                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
-                        }
-                    }
 
-                    if ((position-1) <= fruitList.size()) {
-                        fruitList.add(position-1, newProduct);
-                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
-                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
+                if (newProduct != null) {
+
+                    //on item changed get default saved product and set saved quantity counted to the new product
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
+                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+                    if (newProduct.equals(cartProduct))
+                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+                    //closed
+
+                    if ((position - 1) <= fruitList.size()) {
+                        fruitList.add(position - 1, newProduct);
+                        notifyChanges();
                     } else {
                         fruitList.add(newProduct);
-                        if (fruitsBinding.fruitsRecyclerView.getAdapter() != null)
-                            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
+                        notifyChanges();
                     }
                 }
             }
@@ -151,8 +133,14 @@ public class FruitsFragment extends Fragment {
 
             }
         });
+    }
 
-
+    private void notifyChanges() {
+        try {
+            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
+        } catch (NullPointerException npe) {
+            Log.e("FruitFragment", "npe exception " + npe.getMessage());
+        }
     }
 
     @Override

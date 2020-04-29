@@ -92,8 +92,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun updateQuantity(productModel: ProductModel?, quantity: Int) {
-        val savedProductJson = SharedPrefsUtils.getStringPreference(this, productModel!!.itemId, 0);
-        productModel.quantityCounter = quantity;
-        SharedPrefsUtils.setStringPreference(this, productModel.itemId, Gson().toJson(productModel))
+        if (productModel != null) {
+            productModel.quantityCounter = quantity
+            SharedPrefsUtils.setStringPreference(this, productModel.itemId, Gson().toJson(productModel))
+        }
+    }
+
+    override fun removeProduct(productModel: ProductModel?) {
+        SharedPrefsUtils.removeValuePreference(this, productModel!!.itemId)
     }
 }

@@ -47,15 +47,21 @@ public class ProductViewModel extends BaseObservable {
 
     public void decreaseQuantity(Context context) {
         ProductModel newProduct = getProduct();
+        IMainActivity iMainActivity = (IMainActivity) context;
         int currentQuantity = newProduct.getQuantityCounter();
 
-        if (currentQuantity > 0) {
-            IMainActivity iMainActivity = (IMainActivity) context;
+        if (currentQuantity > 1) {
             iMainActivity.updateQuantity(newProduct, currentQuantity - 1);
-
             newProduct.setQuantityCounter(currentQuantity - 1);
             setProduct(newProduct);
         }
+
+        else if (currentQuantity == 1) {
+            newProduct.setQuantityCounter(newProduct.getQuantityCounter() - 1);
+            setProduct(newProduct);
+            iMainActivity.removeProduct(newProduct);
+        }
+
     }
 
 }
