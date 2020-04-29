@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#E1C414</color>
     <color name="colorAccent">#FFDB00</color>
 
+    <color name="mainActColor">#FEFEFE</color>
 
     <color name="chipColorStateSelect">#6600EB</color>
     <color name="chipColorSateUnselected">#E4D2FC</color>

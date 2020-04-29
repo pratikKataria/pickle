@@ -84,7 +84,7 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         _searchRecyclerView = findViewById(R.id.searchRecyclerView);
         _searchRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
         _searchRecyclerView.setHasFixedSize(true);
-        recyclerAdapter = new FirebaseSearchRecyclerAdapter(this, testArrayList);
+        recyclerAdapter = new FirebaseSearchRecyclerAdapter(this, testArrayList, 0);
         _searchRecyclerView.setAdapter(recyclerAdapter);
     }
 

@@ -51,7 +51,6 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
         searchViewBinding.goToCartBtn.setOnClickListener(n -> {
              if (getActivity() != null) {
                  startActivity(new Intent(getActivity(), CartViewActivity.class));
-                 getActivity().finish();
              }
          });
 

@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,11 +25,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.GridRecyclerViewAdapter;
 import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.FirebaseSearchActivity;
@@ -36,11 +35,9 @@ import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.activity.Main.Options.CartViewActivity;
 import com.example.pickle.activity.carousel.CarouselAdapter;
 import com.example.pickle.activity.carousel.CarouselImage;
-import com.example.pickle.data.GridItem;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
-import com.example.pickle.utils.RecyclerViewUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.utils.SpacesItemDecoration;
 import com.google.firebase.database.ChildEventListener;
@@ -48,6 +45,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DSVOrientation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -55,7 +54,8 @@ import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +65,6 @@ import java.util.Map;
 public class OrderFragment extends Fragment{
 
     private Toolbar _toolbar;
-    private RecyclerView recyclerViewProduct;
     private List<ProductModel> productsList;
 
     private List<CarouselImage> imageList;
@@ -74,7 +73,7 @@ public class OrderFragment extends Fragment{
     private NavController _navController;
 
     private FragmentOrderBinding binding;
-
+    private ArrayList<ProductModel> productModelArrayList;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -82,15 +81,14 @@ public class OrderFragment extends Fragment{
 
     private void init_fields(View v) {
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
-        recyclerViewProduct = v.findViewById(R.id.recyclerView1);
         productsList = new ArrayList<>();
-
+        productModelArrayList = new ArrayList<>();
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
 
     private void init_carousel(View v) {
         imageList = new ArrayList<>();
-        carouselScrollView = v.findViewById(R.id.discreteScrollView);
+        carouselScrollView = binding.rvScroll;
         carouselScrollView.setOrientation(DSVOrientation.HORIZONTAL);
         infiniteAdapter = InfiniteScrollAdapter.wrap(new CarouselAdapter(imageList));
         carouselScrollView.setAdapter(infiniteAdapter);
@@ -169,23 +167,16 @@ public class OrderFragment extends Fragment{
         );
 
         init_fields(binding.getRoot());
-
+        binding.setProductList(productModelArrayList);
         setUpToolbar();
-
         getImageList();
         init_carousel(binding.getRoot());
+        getProduct();
 
         binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
         binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
         binding.cardViewBeverages.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_beveragesFragment));
         binding.cardViewDairy.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_dairyFragment));
-
-
-        ProductsRecyclerViewAdapter adapter = new ProductsRecyclerViewAdapter(getContext(), productsList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
-        recyclerViewProduct.setLayoutManager(layoutManager);
-        recyclerViewProduct.addItemDecoration(new SpacesItemDecoration(16, 9));
-        recyclerViewProduct.setAdapter(adapter);
 
         return binding.getRoot();
     }
@@ -235,7 +226,44 @@ public class OrderFragment extends Fragment{
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
     }
 
+    private void getProduct() {
+        DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
+        Query keyQuery = keysRef.orderByKey();
+        keyQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
 
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
+                    Query query = reference.orderByChild("itemName").limitToFirst(2);
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Log.e("orderFragment", dataSnapshot + " ");
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                productModelArrayList.add(snapshot.getValue(ProductModel.class));
+                                Collections.shuffle(productModelArrayList);
+                                if (binding.recomRecyclerView.getAdapter() != null)
+                                    binding.recomRecyclerView.getAdapter().notifyDataSetChanged();
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
