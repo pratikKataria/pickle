@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.databinding.FragmentVegetableBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -36,9 +38,9 @@ public class VegetableFragment extends Fragment {
 
     private ArrayList<ProductModel> _productList;
     private ArrayList<ProductModel> _cartList;
-    private CategoryRecyclerViewAdapter adapter;
     private ChildEventListener childEventListener;
     private DatabaseReference reference;
+    private FragmentVegetableBinding binding;
 
 
     public VegetableFragment() {
@@ -50,7 +52,13 @@ public class VegetableFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_vegetable, container, false);
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_vegetable,
+                container,
+                false
+        );
+
 
         //offline carted product list
         String cartProducts = SharedPrefsUtils.getStringPreference(getActivity(), "Vegetables", 0);
@@ -63,19 +71,10 @@ public class VegetableFragment extends Fragment {
         }
 
         _productList = new ArrayList<>();
-        init_recyclerView(view);
+        binding.setProductList(_productList);
         new Handler().postDelayed(this::populateList,1500);
 
-        return view;
-    }
-
-
-    private void init_recyclerView(View view) {
-        RecyclerView _vegetableRecyclerView = view.findViewById(R.id.vegetable_recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
-        adapter = new CategoryRecyclerViewAdapter(getActivity(), _productList, "Vegetables");
-        _vegetableRecyclerView.setLayoutManager(linearLayoutManager);
-        _vegetableRecyclerView.setAdapter(adapter);
+        return binding.getRoot();
     }
 
     private void populateList() {
@@ -89,17 +88,17 @@ public class VegetableFragment extends Fragment {
                     Log.e("Fruit recycler view ", dataSnapshot + " ");
                     ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                     if (_cartList != null) {
-                        for (ProductModel pm : _cartList) {
-                            if (newProduct.getItemId().equals(pm.getItemId())) {
-                                newProduct.setQuantityCounter(pm.getQuantityCounter());
+                        for (ProductModel cartProduct : _cartList) {
+                            if (cartProduct.equals(newProduct)) {
+                                newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
                             }
                         }
                     }
 
                     _productList.add(newProduct);
-                    adapter.notifyDataSetChanged();
+                    if (binding.vegetableRecyclerView.getAdapter() != null)
+                        binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
                 }
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -120,17 +119,19 @@ public class VegetableFragment extends Fragment {
                 //set stored cart quantity
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
                 if (newProduct != null) {
-                    for (ProductModel product : _cartList) {
-                        if (product.getItemId().equals(newProduct.getItemId())) {
-                            newProduct.setQuantityCounter(product.getQuantityCounter());
+                    for (ProductModel cartProduct : _cartList) {
+                        if (cartProduct.equals(newProduct)) {
+                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
                         }
                     }
                     if ((position - 1) <= _productList.size()) {
                         _productList.add(position - 1, newProduct);
-                        adapter.notifyDataSetChanged();
+                        if (binding.vegetableRecyclerView.getAdapter() != null)
+                            binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
                     } else {
                         _productList.add(newProduct);
-                        adapter.notifyDataSetChanged();
+                        if (binding.vegetableRecyclerView.getAdapter() != null)
+                            binding.vegetableRecyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
             }

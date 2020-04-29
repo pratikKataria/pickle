@@ -168,6 +168,9 @@ public class OrderFragment extends Fragment{
                 false
         );
 
+        Log.e("OrderFragment ", "onCreate``````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````````");
+
+
         init_fields(binding.getRoot());
         binding.setProductList(productModelArrayList);
         setUpToolbar();
