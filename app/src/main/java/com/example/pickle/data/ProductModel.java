@@ -1,5 +1,7 @@
 package com.example.pickle.data;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -190,6 +192,12 @@ public class ProductModel {
 
     public void setQuantityCounter(int quantityCounter) {
         this.quantityCounter = quantityCounter;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        ProductModel productModel = (ProductModel) obj;
+        return itemId.matches(productModel.getItemId());
     }
 
     @Override

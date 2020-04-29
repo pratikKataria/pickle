@@ -28,7 +28,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.ProductsRecyclerViewAdapter;
+import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.FirebaseSearchActivity;
 import com.example.pickle.activity.Main.MainActivity;
@@ -39,7 +39,6 @@ import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
-import com.example.pickle.utils.SpacesItemDecoration;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,8 +53,8 @@ import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +63,8 @@ import java.util.Map;
  */
 public class OrderFragment extends Fragment{
 
+    private static final int LIST_SIZE = 2;
     private Toolbar _toolbar;
-    private List<ProductModel> productsList;
 
     private List<CarouselImage> imageList;
     private DiscreteScrollView carouselScrollView;
@@ -75,14 +74,15 @@ public class OrderFragment extends Fragment{
     private FragmentOrderBinding binding;
     private ArrayList<ProductModel> productModelArrayList;
 
+    private Map<String, String> lastElemId;
     public OrderFragment() {
         // Required empty public constructor
     }
 
     private void init_fields(View v) {
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
-        productsList = new ArrayList<>();
         productModelArrayList = new ArrayList<>();
+        lastElemId = new HashMap<>();
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
 
@@ -171,12 +171,33 @@ public class OrderFragment extends Fragment{
         setUpToolbar();
         getImageList();
         init_carousel(binding.getRoot());
-        getProduct();
+        addProduct();
 
         binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
         binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
         binding.cardViewBeverages.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_beveragesFragment));
         binding.cardViewDairy.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_dairyFragment));
+
+        binding.recomRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recomRecyclerView.getLayoutManager();
+                FirebaseSearchRecyclerAdapter firebaseSearchRecyclerAdapter = (FirebaseSearchRecyclerAdapter) binding.recomRecyclerView.getAdapter();
+                if (layoutManager != null && firebaseSearchRecyclerAdapter != null) {
+                    int id = layoutManager.findFirstCompletelyVisibleItemPosition();
+                    int adapterListSize = firebaseSearchRecyclerAdapter.getItemCount();
+//                    Log.e("OrderFragment ", adapterListSize + " adapter List Size ");
+//                    Log.e("Order Fragment ", id + " adapter id size ");
+                    if (id >= adapterListSize - 1) {
+                        Log.e("OrderFragment ", " add new item ");
+                        addNewProduct();
+                    }
+                }
+
+            }
+        });
 
         return binding.getRoot();
     }
@@ -226,25 +247,80 @@ public class OrderFragment extends Fragment{
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
     }
 
-    private void getProduct() {
+    private void addProduct() {
         DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
         Query keyQuery = keysRef.orderByKey();
         keyQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
-                    Query query = reference.orderByChild("itemName").limitToFirst(2);
+                    Query query = reference.limitToFirst(LIST_SIZE);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            Log.e("orderFragment", dataSnapshot + " ");
+                            ProductModel lastProduct = null;
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                lastProduct = snapshot.getValue(ProductModel.class);
                                 productModelArrayList.add(snapshot.getValue(ProductModel.class));
-                                Collections.shuffle(productModelArrayList);
+//                                Collections.shuffle(productModelArrayList);
                                 if (binding.recomRecyclerView.getAdapter() != null)
                                     binding.recomRecyclerView.getAdapter().notifyDataSetChanged();
+                            }
+                            if (lastProduct != null) {
+                                lastElemId.put(lastProduct.getItemCategory(), lastProduct.getItemId());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addNewProduct() {
+        Log.e("Order Fragment ", " map values "+ lastElemId);
+        DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
+        Query keyQuery = keysRef.orderByKey();
+        //todo remove listener
+        keyQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
+
+                    String lastElem = lastElemId.containsKey(dataSnapshotChild.getValue(String.class)) ? lastElemId.get(dataSnapshotChild.getValue(String.class)) : "Vegetables";
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
+                    Query query = reference.orderByKey().startAt(lastElem).limitToFirst(LIST_SIZE);
+                    query.keepSynced(true);
+                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            ProductModel updateId = null;
+
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                ProductModel productModel = snapshot.getValue(ProductModel.class);
+                                Log.e("Order fragnment ",  " last element name " + productModel.getItemName());
+                                if (productModel != null && !productModelArrayList.contains(productModel)) {
+                                    updateId = productModel;
+                                    productModelArrayList.add(productModel);
+                                    if (binding.recomRecyclerView.getAdapter() != null)
+                                        binding.recomRecyclerView.getAdapter().notifyDataSetChanged();
+                                }
+                            }
+
+                            if (updateId != null) {
+                                lastElemId.put(updateId.getItemCategory(), updateId.getItemId());
                             }
 
                         }
@@ -264,6 +340,8 @@ public class OrderFragment extends Fragment{
             }
         });
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
