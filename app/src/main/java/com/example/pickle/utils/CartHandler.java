@@ -3,6 +3,7 @@ package com.example.pickle.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -70,34 +71,43 @@ public class CartHandler {
 
     public Map<String, ProductModel> getCachedProductsMap() {
         Map<String, ProductModel> map = new HashMap<>();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        if (preferences != null) {
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> allEntries = preferences.getAll();
-            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            Log.e("CartHandler", allEntries.size() +" : size :");
+//            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+//                Log.e("CartHandler", entry+"");
 
-                String list = SharedPrefsUtils.getStringPreference(context, entry.getKey(), 0);
-                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-
-                if (list != null && models != null) {
-                    for (ProductModel productModel : models) {
-                        map.put(productModel.getItemId(), productModel);
-                    }
-                }
-            }
+//                String list = SharedPrefsUtils.getStringPreference(context, entry.getKey(), 0);
+//                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
+//
+//                if (list != null && models != null) {
+//                    for (ProductModel productModel : models) {
+//                        map.put(productModel.getItemId(), productModel);
+//                    }
+//                }
+//            }
+        } catch (Exception xe) {
+            Log.e("CartHandler", xe.getMessage());
         }
-        return map;
-    }
 
-    public List<ProductModel> getCachedProductList() {
-        return (List<ProductModel>) getCachedProductsMap().values();
+        return map;
     }
 
     public Map<String, ProductModel> getCartMap() {
         return cartMap;
     }
 
+    public List<ProductModel> getCachedProductList() {
+        return (List<ProductModel>) getCachedProductsMap().values();
+    }
+
     public List<ProductModel> getProductLis() {
         return (List<ProductModel>) cartMap.values();
+    }
+
+    public int getCartSize() {
+        return getCachedProductsMap().size();
     }
 
     private void save(String key) {

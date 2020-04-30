@@ -3,10 +3,12 @@ package com.example.pickle.activity.Main.NavigationFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +38,7 @@ import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
+import com.example.pickle.utils.CartHandler;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -104,8 +107,14 @@ public class OrderFragment extends Fragment{
 
         MenuItem item = menu.findItem(R.id.menu_main_cart_btn);
         LayerDrawable icon = (LayerDrawable) item.getIcon();
-//            if (count > 0) {
-//                    setBadgeCount(getActivity(), icon, count);
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            Map<String, ?> prefEntry = preferences.getAll();
+            if (prefEntry.size() > 0) setBadgeCount(getActivity(), icon, prefEntry.size());
+        } catch (Exception xe) {
+            Log.e("OrderFragment", xe.getMessage());
+        }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
