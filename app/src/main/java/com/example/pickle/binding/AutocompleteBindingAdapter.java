@@ -8,7 +8,7 @@ import com.example.pickle.Adapters.AutoCompleteAdapter;
 
 import java.util.List;
 
-public class AutocompleteAdapter {
+public class AutocompleteBindingAdapter {
 
     @BindingAdapter("autoCompleteList")
     public static void autoComplete(AutoCompleteTextView autoCompleteTextView, List<String> list) {

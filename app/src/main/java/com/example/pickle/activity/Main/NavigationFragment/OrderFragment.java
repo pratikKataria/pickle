@@ -3,12 +3,10 @@ package com.example.pickle.activity.Main.NavigationFragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,7 +73,7 @@ public class OrderFragment extends Fragment{
     private FragmentOrderBinding binding;
     private ArrayList<ProductModel> productModelArrayList;
 
-    private Map<String, String> lastElemId;
+    private Map<String, String> saveToMap;
     private int adapterPos;
 
     public OrderFragment() {
@@ -85,7 +83,7 @@ public class OrderFragment extends Fragment{
     private void init_fields(View v) {
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
         productModelArrayList = new ArrayList<>();
-        lastElemId = new HashMap<>();
+        saveToMap = new HashMap<>();
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
 
@@ -111,6 +109,7 @@ public class OrderFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -119,27 +118,8 @@ public class OrderFragment extends Fragment{
 
         MenuItem item = menu.findItem(R.id.menu_main_cart_btn);
         LayerDrawable icon = (LayerDrawable) item.getIcon();
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        if (preferences != null) {
-//            Map<String, ?> allEntries = preferences.getAll();
-//            int count = 0;
-//            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-//
-//                String list = SharedPrefsUtils.getStringPreference(getContext(), entry.getKey(), 0);
-//                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-//
-//                if (list != null && models != null) {
-//                    count += models.length;
-//                }
-//
-//                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
-//                Log.e("map values", " ------------------------  " );
-//            }
 //            if (count > 0) {
 //                    setBadgeCount(getActivity(), icon, count);
-//            }
-//        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -175,27 +155,26 @@ public class OrderFragment extends Fragment{
         getImageList();
         init_carousel(binding.getRoot());
 
-        new Handler().postDelayed(this::addProduct, 2000);
+        addProduct();
+
+        new Handler().postDelayed(() ->{binding.suggestionRecyclerView.setVisibility(View.VISIBLE);}, 600);
 
         binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
         binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
         binding.cardViewBeverages.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_beveragesFragment));
         binding.cardViewDairy.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_dairyFragment));
 
-        binding.recomRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.suggestionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.recomRecyclerView.getLayoutManager();
-                FirebaseSearchRecyclerAdapter firebaseSearchRecyclerAdapter = (FirebaseSearchRecyclerAdapter) binding.recomRecyclerView.getAdapter();
+                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.suggestionRecyclerView.getLayoutManager();
+                FirebaseSearchRecyclerAdapter firebaseSearchRecyclerAdapter = (FirebaseSearchRecyclerAdapter) binding.suggestionRecyclerView.getAdapter();
                 if (layoutManager != null && firebaseSearchRecyclerAdapter != null) {
                     int id = layoutManager.findFirstCompletelyVisibleItemPosition();
                     adapterPos = firebaseSearchRecyclerAdapter.getItemCount();
-//                    Log.e("OrderFragment ", adapterListSize + " adapter List Size ");
-//                    Log.e("Order Fragment ", id + " adapter id size ");
                     if (id >= adapterPos - 1) {
-                        Log.e("OrderFragment ", " add new item ");
                         addNewProduct();
                     }
                 }
@@ -266,13 +245,20 @@ public class OrderFragment extends Fragment{
                             ProductModel lastProduct = null;
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 lastProduct = snapshot.getValue(ProductModel.class);
-                                productModelArrayList.add(snapshot.getValue(ProductModel.class));
+
+                                //update product if available in to cart
+                                String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), lastProduct.getItemId(), 0);
+                                ProductModel savedProduct = new Gson().fromJson(savedProductString, ProductModel.class);
+                                if (lastProduct.equals(savedProduct)) {
+                                    lastProduct.setQuantityCounter(savedProduct.getQuantityCounter());
+                                }
+
+                                productModelArrayList.add(lastProduct);
                                 Collections.shuffle(productModelArrayList);
-                                if (binding.recomRecyclerView.getAdapter() != null && adapterPos > 2)
-                                    binding.recomRecyclerView.getAdapter().notifyItemRangeChanged(adapterPos-2, adapterPos);
+                                notifyChanges();
                             }
                             if (lastProduct != null) {
-                                lastElemId.put(lastProduct.getItemCategory(), lastProduct.getItemId());
+                                saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
                             }
                         }
 
@@ -293,7 +279,6 @@ public class OrderFragment extends Fragment{
     }
 
     private void addNewProduct() {
-        Log.e("Order Fragment ", " map values "+ lastElemId);
         DatabaseReference keysRef = FirebaseDatabase.getInstance().getReference("ProductCategories");
         Query keyQuery = keysRef.orderByKey();
         //todo remove listener
@@ -302,7 +287,7 @@ public class OrderFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
 
-                    String lastElem = lastElemId.containsKey(dataSnapshotChild.getValue(String.class)) ? lastElemId.get(dataSnapshotChild.getValue(String.class)) : "Vegetables";
+                    String lastElem = saveToMap.containsKey(dataSnapshotChild.getValue(String.class)) ? saveToMap.get(dataSnapshotChild.getValue(String.class)) : "Vegetables";
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
                     Query query = reference.orderByKey().startAt(lastElem).limitToFirst(LIST_SIZE);
                     query.keepSynced(true);
@@ -310,21 +295,28 @@ public class OrderFragment extends Fragment{
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                            ProductModel updateId = null;
+                            ProductModel lastProduct = null;
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 ProductModel productModel = snapshot.getValue(ProductModel.class);
                                 Log.e("Order fragnment ",  " last element name " + productModel.getItemName());
-                                if (productModel != null && !productModelArrayList.contains(productModel)) {
-                                    updateId = productModel;
+                                if (!productModelArrayList.contains(productModel)) {
+                                    lastProduct = productModel;
+
+                                    //update product if available in to cart
+                                    String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), lastProduct.getItemId(), 0);
+                                    ProductModel savedProduct = new Gson().fromJson(savedProductString, ProductModel.class);
+                                    if (lastProduct.equals(savedProduct)) {
+                                        lastProduct.setQuantityCounter(savedProduct.getQuantityCounter());
+                                    }
+
                                     productModelArrayList.add(productModel);
-                                    if (binding.recomRecyclerView.getAdapter() != null)
-                                        binding.recomRecyclerView.getAdapter().notifyDataSetChanged();
+                                    notifyChanges();
                                 }
                             }
 
-                            if (updateId != null) {
-                                lastElemId.put(updateId.getItemCategory(), updateId.getItemId());
+                            if (lastProduct != null) {
+                                saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
                             }
 
                         }
@@ -345,7 +337,13 @@ public class OrderFragment extends Fragment{
         });
     }
 
-
+    private void notifyChanges() {
+        try {
+            binding.suggestionRecyclerView.getAdapter().notifyDataSetChanged();
+        }catch (NullPointerException npe) {
+            Log.e("OrderFragment", npe.getMessage());
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

@@ -1,6 +1,7 @@
 package com.example.pickle.data;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -42,6 +43,8 @@ public class ProductViewModel extends BaseObservable {
 
             newProduct.setQuantityCounter(currentQuantity + 1);
             setProduct(newProduct);
+        }else {
+            Toast.makeText(context, "maximum quantity reached", Toast.LENGTH_SHORT).show();
         }
     }
 

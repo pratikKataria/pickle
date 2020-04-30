@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.data.ProductModel;
+import com.example.pickle.data.ProductViewModel;
 import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
 import com.example.pickle.ui.ProductViewHolder;
@@ -15,7 +16,7 @@ public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<ProductV
 
     Context context;
     ArrayList<ProductModel> productModelArrayList;
-    private int viewType = 0;
+    private int viewType;
 
     public FirebaseSearchRecyclerAdapter(Context context , ArrayList<ProductModel> productModelArrayList, int viewType) {
         this.context = context;
@@ -40,30 +41,14 @@ public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<ProductV
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
 
         ProductModel product = productModelArrayList.get(position);
+        ProductViewModel productViewModel = new ProductViewModel();
+        productViewModel.setProduct(product);
         if (viewType == 0) {
-            holder.setBinding(product);
+            holder.setCardViewSearchBinding(productViewModel);
         } else {
-            holder.setSuggestionBinding(product);
+            holder.setCardViewSuggestionBinding(productViewModel);
         }
 
-//        holder.addToCartBtn.setOnClickListener(view -> {
-////            int qty = cartHandler.add(product);
-////            product.setQuantityCounter(qty);
-//            notifyDataSetChanged();
-//        });
-
-
-//        holder.increaseQtyBtn.setOnClickListener(view -> {
-////            int qty = cartHandler.increaseQty(product.getItemId());
-////            product.setQuantityCounter(qty);
-//            notifyDataSetChanged();
-//        });
-
-//        holder.decreaseQtyBtn.setOnClickListener(view -> {
-////            int qty = cartHandler.decreaseQty(product.getItemId());
-////            product.setQuantityCounter(qty);
-//            notifyDataSetChanged();
-//        });
     }
 
     @Override
