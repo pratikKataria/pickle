@@ -36,8 +36,8 @@ public class RecyclerViewBinding {
         }
     }
 
-    @BindingAdapter({"productList", "category"})
-    public static void categoryRecyclerViewAdapter(RecyclerView recyclerView, List<ProductModel> productList, String category) {
+    @BindingAdapter("productList")
+    public static void categoryRecyclerViewAdapter(RecyclerView recyclerView, List<ProductModel> productList) {
         if (productList == null) {
             return;
         }
@@ -50,7 +50,7 @@ public class RecyclerViewBinding {
 
         CategoryRecyclerViewAdapter categoryRecyclerViewAdapter = (CategoryRecyclerViewAdapter) recyclerView.getAdapter();
         if (categoryRecyclerViewAdapter == null) {
-            categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(recyclerView.getContext(), (ArrayList<ProductModel>) productList, category);
+            categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(recyclerView.getContext(), (ArrayList<ProductModel>) productList);
             recyclerView.setAdapter(categoryRecyclerViewAdapter);
         }
     }

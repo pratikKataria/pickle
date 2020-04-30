@@ -1,59 +1,31 @@
 package com.example.pickle.Adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.pickle.data.ProductViewModel;
 import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityEmptyBinding;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
 import com.example.pickle.ui.SearchViewBottomSheetDialog;
-import com.example.pickle.utils.SharedPrefsUtils;
-import com.google.android.material.button.MaterialButton;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
     private ArrayList<ProductModel> productModelsList;
-    private ArrayList<ProductModel> cartList = null;
 
     private static final byte EMPTY_VIEW = 32;
     private static final byte CARD_VIEW = 55;
 
-    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductModel> productModelList, String category) {
+    public CategoryRecyclerViewAdapter(Context context, ArrayList<ProductModel> productModelList) {
         this.context = context;
         this.productModelsList = productModelList;
-
-        String cartProducts = SharedPrefsUtils.getStringPreference(context, category, 0);
-        ProductModel[] productModels = new Gson().fromJson(cartProducts, ProductModel[].class);
-
-
-        if (cartList != null) {
-            cartList = (ArrayList<ProductModel>) Arrays.asList(productModels);
-        } else {
-            if (productModels != null) {
-                cartList = new ArrayList<>();
-                for (ProductModel d : productModels) {
-                    cartList.add(d);
-                }
-            }
-        }
-
     }
 
     @NonNull
@@ -79,97 +51,12 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         if (holder instanceof ProductCardViewHolder) {
             ProductModel product = productModelsList.get(position);
             ProductCardViewHolder currCardViewHolder = (ProductCardViewHolder) holder;
+
             ProductViewModel productViewModel = new ProductViewModel();
             productViewModel.setProduct(product);
+
             currCardViewHolder.bind(productViewModel);
-
-            ((ProductCardViewHolder) holder).binding.setIMainActivity((IMainActivity)context);
-
-//            currCardViewHolder._addToCartButton.setOnClickListener(view -> {
-//                if (cartList != null) {
-//                    if (isItemPresentInList(model)) {
-//                        removeItem(model);
-//                        model.setQuantityCounter(1);
-//                        cartList.add(model);
-//                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-//                        ((Activity) context).invalidateOptionsMenu();
-//                        notifyDataSetChanged();
-//                    } else {
-//                        model.setQuantityCounter(1);
-//                        cartList.add(model);
-//                        SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-//                        ((Activity) context).invalidateOptionsMenu();
-//                        notifyDataSetChanged();
-//                    }
-//                } else {
-//                    cartList = new ArrayList<>(Arrays.asList(model));
-//                    removeItem(model);
-//                    model.setQuantityCounter(1);
-//                    cartList.add(model);
-//                    SharedPrefsUtils.setStringPreference(context, model.getItemCategory(), new Gson().toJson(cartList));
-//                    notifyDataSetChanged();
-//                    ((Activity) context).invalidateOptionsMenu();
-//                }
-//            });
-
-//            currCardViewHolder._increaseCart.setOnClickListener(view -> {
-//                if (product.getQuantityCounter() >= 1 && product.getQuantityCounter() < product.getItemMaxQtyPerUser()) {
-//                    int a = product.getQuantityCounter();
-//                    a++;
-//                    currCardViewHolder._qtyCounter.setText(Integer.toString(a));
-//                    if (cartList != null) {
-//                        if (isItemPresentInList(product)) {
-//                            removeItem(product);
-//                            product.setQuantityCounter(a);
-//                            cartList.add(product);
-//                            SharedPrefsUtils.setStringPreference(context, product.getItemCategory(), new Gson().toJson(cartList));
-//                            notifyDataSetChanged();
-//
-//
-//                        } else {
-//                            product.setQuantityCounter(a);
-//                            cartList.add(product);
-//                            SharedPrefsUtils.setStringPreference(context, product.getItemCategory(), new Gson().toJson(cartList));
-//                            notifyDataSetChanged();
-//
-//                        }
-//                    }
-//                }else {
-//                    Toast.makeText(context, "can't add more items", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-
-//            currCardViewHolder._decreaseCart.setOnClickListener(view -> {
-//
-//                if (product.getQuantityCounter() <= 1) {
-//                    int a = product.getQuantityCounter();
-//                    a--;
-//
-//                    Iterator<ProductModel> itr  = cartList.iterator();
-//                    while (itr.hasNext()) {
-//                        ProductModel mdl = itr.next();
-//                        if (product.getItemId().equals(mdl.getItemId())) {
-//                            itr.remove();
-//                            product.setQuantityCounter(a);
-//                            notifyDataSetChanged();
-//                            SharedPrefsUtils.setStringPreference(context, product.getItemCategory(), new Gson().toJson(cartList));
-//                        }
-//                    }
-//
-//                    ((Activity) context).invalidateOptionsMenu();
-//
-//                } else {
-//                    int a = product.getQuantityCounter();
-//                    a--;
-//                    currCardViewHolder._qtyCounter.setText(Integer.toString(a));
-//                    removeItem(product);
-//                    product.setQuantityCounter(a);
-//                    cartList.add(product);
-//                    SharedPrefsUtils.setStringPreference(context, product.getItemCategory(), new Gson().toJson(cartList));
-//                    ((Activity) context).invalidateOptionsMenu();
-//                    notifyDataSetChanged();
-//                }
-//            });
+            currCardViewHolder.binding.setIMainActivity((IMainActivity)context);
 
             ((ProductCardViewHolder) holder).binding.cardView.setOnClickListener(
                     n -> ((ProductCardViewHolder) holder).showDialog(productModelsList.get(position))
@@ -180,26 +67,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
 
-    }
-
-    public boolean isItemPresentInList(ProductModel model) {
-        for (ProductModel m : cartList) {
-            if (model.getItemId().equals(m.getItemId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void removeItem(ProductModel model) {
-        Iterator<ProductModel> itr  = cartList.iterator();
-        while (itr.hasNext()) {
-            ProductModel mdl = itr.next();
-            if (model.getItemId().equals(mdl.getItemId())) {
-                itr.remove();
-                notifyDataSetChanged();
-            }
-        }
     }
 
     @Override
@@ -220,30 +87,19 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    class EmptyView extends  RecyclerView.ViewHolder {
-
+    static class EmptyView extends  RecyclerView.ViewHolder {
         public EmptyView(@NonNull View itemView) {
             super(itemView);
         }
     }
 
-    class ProductCardViewHolder extends RecyclerView.ViewHolder{
+     class ProductCardViewHolder extends RecyclerView.ViewHolder{
 
         CardViewCategoryProductBinding binding;
-        private MaterialButton _increaseCart;
-        private MaterialButton _decreaseCart;
-        private MaterialButton _addToCartButton;
-
-        private TextView _qtyCounter;
 
         public ProductCardViewHolder(@NonNull CardViewCategoryProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
-            _increaseCart = binding.increaseCartItem;
-            _decreaseCart = binding.decreaseCartItem;
-            _addToCartButton = binding.addToCartButton;
-            _qtyCounter = binding.qtyCounter;
         }
 
         public void bind(ProductViewModel viewModel) {

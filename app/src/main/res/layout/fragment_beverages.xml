@@ -18,11 +18,10 @@
         tools:context=".activity.Main.ProductsFragment.BeveragesFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/beverages_recycler_view"
+            android:id="@+id/beveragesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:productList="@{productList}"
-            app:category="`Beverages`"/>
+            app:productList="@{productList}"/>
 
     </FrameLayout>
 </layout>
