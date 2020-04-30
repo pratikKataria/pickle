@@ -8,13 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.databinding.CardviewCarouselBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHolder> {
 
-    private List<CarouselImage> images;
+    private ArrayList<CarouselImage> images;
 
-    public CarouselAdapter(List<CarouselImage> images) {
+    public CarouselAdapter(ArrayList<CarouselImage> images) {
         this.images = images;
     }
 

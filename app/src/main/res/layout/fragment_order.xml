@@ -6,9 +6,14 @@
 
     <data>
         <import type="com.example.pickle.data.ProductModel"/>
+
         <variable
             name="productList"
             type="java.util.List&lt;ProductModel>" />
+
+        <variable
+            name="carouselImage"
+            type="java.util.List&lt;com.example.pickle.activity.carousel.CarouselImage>" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -234,6 +239,7 @@
                 android:id="@+id/rvScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:carouselList="@{carouselImage}"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar" />
 
             <androidx.constraintlayout.widget.Guideline

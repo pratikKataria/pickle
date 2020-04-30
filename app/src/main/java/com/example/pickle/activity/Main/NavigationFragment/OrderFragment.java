@@ -32,7 +32,6 @@ import com.example.pickle.R;
 import com.example.pickle.activity.Main.FirebaseSearchActivity;
 import com.example.pickle.activity.Main.MainActivity;
 import com.example.pickle.activity.Main.Options.CartViewActivity;
-import com.example.pickle.activity.carousel.CarouselAdapter;
 import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
@@ -46,10 +45,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.yarolegovich.discretescrollview.DSVOrientation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
-import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,17 +84,6 @@ public class OrderFragment extends Fragment{
         //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
 
-    private void init_carousel(View v) {
-        imageList = new ArrayList<>();
-        carouselScrollView = binding.rvScroll;
-        carouselScrollView.setOrientation(DSVOrientation.HORIZONTAL);
-        infiniteAdapter = InfiniteScrollAdapter.wrap(new CarouselAdapter(imageList));
-        carouselScrollView.setAdapter(infiniteAdapter);
-        carouselScrollView.setItemTransitionTimeMillis(150);
-        carouselScrollView.setItemTransformer(new ScaleTransformer.Builder()
-        .setMinScale(0.8F)
-        .build());
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -150,10 +136,11 @@ public class OrderFragment extends Fragment{
         );
 
         init_fields(binding.getRoot());
+        imageList = new ArrayList<>();
         binding.setProductList(productModelArrayList);
         setUpToolbar();
         getImageList();
-        init_carousel(binding.getRoot());
+        binding.setCarouselImage(imageList);
 
         addProduct();
 
@@ -192,14 +179,22 @@ public class OrderFragment extends Fragment{
         reference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-                    infiniteAdapter.notifyDataSetChanged();
+                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                try {
+                    binding.rvScroll.getAdapter().notifyDataSetChanged();
+                } catch (NullPointerException npe) {
+                    Log.e("OrderFragment", npe.getMessage());
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-                    infiniteAdapter.notifyDataSetChanged();
+                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                try {
+                    binding.rvScroll.getAdapter().notifyDataSetChanged();
+                } catch (NullPointerException npe) {
+                    Log.e("OrderFragment", npe.getMessage());
+                }
             }
 
             @Override
