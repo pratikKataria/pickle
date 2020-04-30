@@ -121,7 +121,7 @@ public class OrderFragment extends Fragment{
     public static void setBadgeCount(Context context, LayerDrawable icon, int count) {
         BadgeDrawableUtils badge ;
         Drawable reuse = icon.findDrawableByLayerId(R.id.ic_count);
-        if (reuse != null && reuse instanceof BadgeDrawableUtils) {
+        if (reuse instanceof BadgeDrawableUtils) {
             badge = (BadgeDrawableUtils) reuse;
         } else {
             badge = new BadgeDrawableUtils(context);

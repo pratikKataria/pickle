@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,23 +19,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
 import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.data.Address;
 import com.example.pickle.data.CartCalculator;
+import com.example.pickle.data.CartViewModel;
 import com.example.pickle.data.CustomerOrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
 import com.example.pickle.ui.CustomRadioButton;
-import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,28 +46,23 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class CartViewActivity extends AppCompatActivity {
+public class CartViewActivity extends AppCompatActivity implements IMainActivity {
 
-    private RecyclerView _cartRecyclerView;
-    private List<ProductModel> cartList;
-    private ActivityCartTestViewBinding _activityCartTestViewBinding;
-    private CartCalculator _cartCalculator;
+    private ActivityCartTestViewBinding binding;
     private BottomSheetBehavior _bottomSheetBehavior;
 
     private TextView _cartAmount;
     private TextView _amountToBePaid;
     private TextView _deliveryPrice;
-    private MaterialButton _placeOrderBtn;
+//    private ImageButton _placeOrderBtn;
     private CustomRadioButton customRadioButton;
 
     public final int[] anIntCartAmount = new int[1];
@@ -86,28 +78,22 @@ public class CartViewActivity extends AppCompatActivity {
     private RadioGroup radioGroup;
 
     private void initFields() {
-
-        _activityCartTestViewBinding = DataBindingUtil.setContentView(this, R.layout.activity_cart_test_view);
-
-
-        _cartRecyclerView = _activityCartTestViewBinding.cartRecyclerView;
-        _amountToBePaid = _activityCartTestViewBinding.amountToBePaid;
-        _deliveryPrice = _activityCartTestViewBinding.deliveryPrice;
-        _placeOrderBtn = _activityCartTestViewBinding.placeOrderBtn;
-        _bottomSheet = _activityCartTestViewBinding.includeLayout;
-        _cartAmount = _activityCartTestViewBinding.cartAmountTextView;
+        _amountToBePaid = binding.amountToBePaid;
+        _deliveryPrice = binding.deliveryPrice;
+//        _placeOrderBtn = binding.placeOrderBtn;
+        _bottomSheet = binding.includeLayout;
+        _cartAmount = binding.cartAmountTextView;
 
         _childDeliveryTime1 = _bottomSheet.findViewById(R.id.chipDeliveryTime1);
         _childDeliveryTime2 = _bottomSheet.findViewById(R.id.chipDeliveryTime2);
 
         _currentLocationBtn = _bottomSheet.findViewById(R.id.btm_sheet_cip_current_location);
-
-        cartList = new ArrayList<>();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_test_view);
 
 
         initFields();
@@ -117,36 +103,9 @@ public class CartViewActivity extends AppCompatActivity {
         init_customRadioButton();
         init_loadAddress();
 
-        populateList();
-        init_recyclerView();
+        getShoppingCart();
 
         location_setup();
-
-        _cartCalculator = new CartCalculator();
-        _cartCalculator.cartAmount((ArrayList<ProductModel>) cartList);
-        int amount = _cartCalculator.getCartAmount();
-
-        _cartAmount.setText(amount + "");
-        _placeOrderBtn.setOnClickListener(n -> {
-            for (ProductModel pm : cartList) {
-
-                if (deliveryTime.isEmpty()) {
-                    Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
-                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    return;
-                }
-
-                if (deliveryAddress.isEmpty()) {
-                    Toast.makeText(this, "select delivery address", Toast.LENGTH_SHORT).show();
-                    _bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    return;
-                }
-
-                if (pm != null) {
-                    placeOrder(pm);
-                }
-            }
-        });
 
         _childDeliveryTime1.setOnClickListener(n -> {
             deliveryTime = _childDeliveryTime1.getText().toString();
@@ -158,8 +117,8 @@ public class CartViewActivity extends AppCompatActivity {
     }
 
     private void emptyCart() {
-        _activityCartTestViewBinding.setActivity(this);
-        ChipGroup group = _activityCartTestViewBinding.chipGroup;
+        binding.setActivity(this);
+        ChipGroup group = binding.chipGroup;
         group.setOnCheckedChangeListener((group1, checkedId) -> {
             Chip chipSelected = findViewById(group1.getCheckedChipId());
             Log.e("CartViewActivity", chipSelected.getText().toString());
@@ -184,7 +143,6 @@ public class CartViewActivity extends AppCompatActivity {
         startActivity(new Intent(CartViewActivity.this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
         finish();
     }
-
 
     private void init_loadAddress() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
@@ -238,50 +196,6 @@ public class CartViewActivity extends AppCompatActivity {
         });
     }
 
-    private void init_recyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        CartRecyclerViewAdapter adapter = new CartRecyclerViewAdapter(this, (ArrayList<ProductModel>) cartList);
-        adapter.setOnPriceChangeListener(new CartRecyclerViewAdapter.PriceChangeListener() {
-            @Override
-            public void onPriceIncreaseListener(int price) {
-                Log.e("price increase listerner" , "cart amount:  " + _cartAmount.getText().toString());
-                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ? PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
-                Log.e("price increase listerner" , "cart amount:  "+PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) + " price form listner " + price);
-                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(price + currPrice));
-                _amountToBePaid.setText(PriceFormatUtils.getStringFormattedPrice(price + PriceFormatUtils.getIntFormattedPrice(_deliveryPrice.getText().toString())));
-                showEmptyCart(adapter.getItemCount());
-            }
-
-            @Override
-            public void onPriceDecreaseListener(int price) {
-                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ?  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
-
-                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
-                Log.e("price increase listerner" , "cart amount:  "+currPrice + " price form listner " + price);
-                showEmptyCart(adapter.getItemCount());
-            }
-
-            @Override
-            public void onItemRemovedPriceListener(int price) {
-                int currPrice =  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) > 0 ?  PriceFormatUtils.getIntFormattedPrice(_cartAmount.getText().toString()) : 0;
-                _cartAmount.setText(PriceFormatUtils.getStringFormattedPrice(Math.abs((price - currPrice))));
-                showEmptyCart(adapter.getItemCount());
-            }
-        });
-        _cartRecyclerView.setLayoutManager(linearLayoutManager);
-        _cartRecyclerView.setAdapter(adapter);
-        Log.e("cart items", " " + adapter.getItemCount());
-        showEmptyCart(adapter.getItemCount());
-    }
-
-    private void showEmptyCart(int count) {
-        if (count == 0) {
-            _activityCartTestViewBinding.cartView.animate().alpha(0f).setDuration(400).start();
-            _activityCartTestViewBinding.emptyCart.animate().alpha(1f).setDuration(400).start();
-            _activityCartTestViewBinding.cartView.setVisibility(View.GONE);
-        }
-    }
-
     private void placeOrder(ProductModel pm) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child(FirebaseAuth.getInstance().getUid());
 
@@ -303,23 +217,26 @@ public class CartViewActivity extends AppCompatActivity {
         });
     }
 
-    private void populateList() {
+    private void getShoppingCart() {
+        List<ProductModel> cartList = new ArrayList<>();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences != null) {
             Map<String, ?> allEntries = preferences.getAll();
             for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-
                 String list = SharedPrefsUtils.getStringPreference(this, entry.getKey(), 0);
-                ProductModel[] models = new Gson().fromJson(list, ProductModel[].class);
-
-                if (list != null && models != null) {
-                    cartList.addAll(Arrays.asList(models));
+                ProductModel cartProduct = new Gson().fromJson(list, ProductModel.class);
+                if (cartProduct != null) {
+                    cartList.add(cartProduct);
                 }
             }
-
         }
 
+        binding.setCartList(cartList);
+
+        CartViewModel cartViewModel = new CartViewModel();
+        cartViewModel.setCartProducts(cartList);
+        binding.setCartViewModel(cartViewModel);
     }
 
     /*
@@ -454,6 +371,23 @@ public class CartViewActivity extends AppCompatActivity {
         if (locationTrack != null) {
             locationTrack.stopListener();
         }
+    }
+
+
+    @Override
+    public void updateQuantity(ProductModel productModel, int quantity) {
+        if (productModel != null) {
+            productModel.setQuantityCounter(quantity);
+            SharedPrefsUtils.setStringPreference(this, productModel.getItemId(), new Gson().toJson(productModel));
+            getShoppingCart();
+        }
+    }
+
+    @Override
+    public void removeProduct(ProductModel productModel) {
+        SharedPrefsUtils.removeValuePreference(this, productModel.getItemId());
+        getShoppingCart();
+        ((CartRecyclerViewAdapter)binding.cartRecyclerView.getAdapter()).updateCartItemsList(productModel);
     }
 
 }

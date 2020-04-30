@@ -7,6 +7,13 @@ import androidx.databinding.BindingAdapter;
 
 public class StrikeThrough {
 
+
+    /**
+     *
+     * @param textView
+     * accept boolean to set strike
+     * @param strikeThrough
+     */
     @BindingAdapter("strikeThrough")
     public static void strikeThrough(TextView textView, boolean strikeThrough) {
         if (strikeThrough) {

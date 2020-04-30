@@ -1,6 +1,7 @@
 package com.example.pickle.data;
 
 import android.content.Context;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.databinding.BaseObservable;
@@ -65,6 +66,14 @@ public class ProductViewModel extends BaseObservable {
             iMainActivity.removeProduct(newProduct);
         }
 
+    }
+
+    public void deleteFromCart(Context context) {
+        ProductModel newProduct = getProduct();
+        IMainActivity iMainActivity = (IMainActivity) context;
+        newProduct.setQuantityCounter(0);
+        setProduct(newProduct);
+        iMainActivity.removeProduct(newProduct);
     }
 
 }

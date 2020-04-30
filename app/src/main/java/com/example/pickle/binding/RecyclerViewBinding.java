@@ -1,10 +1,9 @@
 package com.example.pickle.binding;
-
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
+import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.data.ProductModel;
@@ -52,6 +51,26 @@ public class RecyclerViewBinding {
         if (categoryRecyclerViewAdapter == null) {
             categoryRecyclerViewAdapter = new CategoryRecyclerViewAdapter(recyclerView.getContext(), (ArrayList<ProductModel>) productList);
             recyclerView.setAdapter(categoryRecyclerViewAdapter);
+        }
+    }
+
+    @BindingAdapter("carProductList")
+    public static void cartViewRecyclerBinding(RecyclerView recyclerView, List<ProductModel> list) {
+
+        if (list == null) {
+            return;
+        }
+
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            layoutManager = new LinearLayoutManager(recyclerView.getContext(), RecyclerView.VERTICAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+
+        CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) recyclerView.getAdapter();
+        if (cartRecyclerViewAdapter == null) {
+            cartRecyclerViewAdapter = new CartRecyclerViewAdapter(recyclerView.getContext(), (ArrayList<ProductModel>)list);
+            recyclerView.setAdapter(cartRecyclerViewAdapter);
         }
     }
 }

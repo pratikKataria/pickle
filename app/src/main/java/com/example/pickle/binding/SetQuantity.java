@@ -13,7 +13,6 @@ public class SetQuantity {
             return;
         }
 
-        Log.e("Qty binding", qty+"");
         if (qty <= maxQty) {
             textView.setText(String.valueOf(qty));
         }

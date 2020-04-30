@@ -3,6 +3,11 @@ package com.example.pickle.utils;
 import android.util.Log;
 
 public class PriceFormatUtils {
+    /**
+     * this will format price form int to string and append rupees symbol at start
+     * @param price
+     * @return
+     */
     public static String getStringFormattedPrice(int price) {
         return "\u20b9"+String.valueOf(price);
     }

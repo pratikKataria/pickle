@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="com.example.pickle.R"/>
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
         <import type="com.example.pickle.data.CartCalculator"/>
 
@@ -24,20 +24,27 @@
         <variable
             name="activity"
             type="android.app.Activity" />
+
+        <variable
+            name="cartList"
+            type="java.util.List&lt;com.example.pickle.data.ProductModel>" />
+
+        <variable
+            name="cartViewModel"
+            type="com.example.pickle.data.CartViewModel" />
     </data>
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg"
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/emptyCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0">
+            android:visibility="gone">
 
 
             <ImageView
@@ -56,9 +63,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@drawable/ic_round_rect"
                 android:layout_marginTop="195dp"
+                android:background="@drawable/ic_round_rect"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageView4">
 
                 <ImageButton
@@ -101,9 +109,9 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenir_next_bold"
+                    android:gravity="center"
                     android:onClick="@{() -> activity.onBackPressed()}"
                     android:text="GO HOME"
-                    android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
                     app:layout_constraintEnd_toEndOf="@+id/imageButton2"
                     app:layout_constraintStart_toStartOf="@+id/imageButton2"
@@ -183,7 +191,6 @@
             android:id="@+id/cartView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bg"
             android:orientation="vertical"
             android:visibility="visible">
 
@@ -208,6 +215,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
+                        android:overScrollMode="never"
+                        app:carProductList="@{cartList}"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
@@ -217,6 +226,12 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginEnd="18dp"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@{`total `+ cartViewModel.productQuantitiesString}"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -234,7 +249,7 @@
                                 android:id="@+id/cartAmountTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0" />
+                                android:text="@{cartViewModel.totalCostString}" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -256,11 +271,18 @@
                                 android:text="\u20b90" />
                         </LinearLayout>
 
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/grey" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp">
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp">
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -272,68 +294,42 @@
                                 android:id="@+id/amountToBePaid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="\u20b90" />
+                                android:text="@{cartViewModel.totalCostString}"/>
                         </LinearLayout>
 
-
-                        <LinearLayout
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp">
+                            android:layout_height="1dp"
+                            android:background="@color/grey" />
 
-                            <TextView
-                                android:layout_width="match_parent"
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="70dp">
+
+                            <ImageButton
+                                android:id="@+id/placeOrder"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="wallet balance available" />
+                                android:layout_marginTop="8dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/empty_cart_btn"
+                                app:layout_constraintEnd_toEndOf="@+id/textView6"
+                                app:layout_constraintStart_toStartOf="@+id/textView6"
+                                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="\u20b9123" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="amount to add" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="\u20b9123" />
-                        </LinearLayout>
-
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height=".5dp"
-                            android:background="@color/grey" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@color/grey" />
-
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/placeOrderBtn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="69dp"
-                            android:backgroundTint="@color/black"
-                            android:text="place order"
-                            android:textColor="@color/white" />
-
+                                android:text="Place Order"
+                                android:textColor="@color/black"
+                                android:layout_marginBottom="2dp"
+                                android:fontFamily="@font/avenir_next_bold"
+                                android:layout_gravity="center" />
+                        </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
 
