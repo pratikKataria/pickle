@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.Options;
+package com.example.pickle.activity.main.options;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

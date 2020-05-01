@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
-import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.IndividualHouseDataModel;
 import com.example.pickle.data.PersonalInformation;

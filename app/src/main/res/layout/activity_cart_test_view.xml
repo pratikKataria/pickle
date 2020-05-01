@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.pickle.R"/>
+        <import type="android.view.View"/>
+        <import type="com.example.pickle.binding.NavigationAction"/>
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
-        <import type="com.example.pickle.data.CartCalculator"/>
-
-        <variable
-            name="product"
-            type="com.example.pickle.data.ProductModel" />
 
         <variable
             name="priceFormatter"
             type="com.example.pickle.utils.PriceFormatUtils" />
-
-        <variable
-            name="cartCalculator"
-            type="CartCalculator" />
-
-        <variable
-            name="activity"
-            type="android.app.Activity" />
 
         <variable
             name="cartList"
@@ -44,8 +31,8 @@
             android:id="@+id/emptyCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
-
+            tools:visibility="visible"
+            android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -110,8 +97,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenir_next_bold"
                     android:gravity="center"
-                    android:onClick="@{() -> activity.onBackPressed()}"
                     android:text="GO HOME"
+                    android:onClick="@{() -> cartViewModel.onHomePressed(context)}"
                     app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
                     app:layout_constraintEnd_toEndOf="@+id/imageButton2"
                     app:layout_constraintStart_toStartOf="@+id/imageButton2"
@@ -136,6 +123,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{() -> cartViewModel.navigateTo(context, NavigationAction.NAVIGATE_TO_VEGETABLE)}"
                         android:text="Vegitables"
                         android:textColor="@color/black"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
@@ -150,6 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fruits"
+                        android:onClick="@{() -> cartViewModel.navigateTo(context, NavigationAction.NAVIGATE_TO_FRUIT)}"
                         android:textColor="@color/black"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
@@ -164,6 +153,7 @@
                         android:layout_height="wrap_content"
                         android:text="Diary"
                         android:textColor="@color/black"
+                        android:onClick="@{() -> cartViewModel.navigateTo(context, NavigationAction.NAVIGATE_TO_DAIRY)}"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
                         app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
@@ -177,6 +167,7 @@
                         android:layout_height="wrap_content"
                         android:text="Beverages"
                         android:textColor="@color/black"
+                        android:onClick="@{() -> cartViewModel.navigateTo(context, NavigationAction.NAVIGATE_TO_BEVERAGES)}"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
                         app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
@@ -192,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
@@ -200,7 +191,7 @@
                 android:layout_height="wrap_content"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 android:orientation="vertical"
-                tools:context=".activity.Main.Options.CartViewActivity">
+                tools:context=".activity.main.options.CartViewActivity">
 
 
                 <LinearLayout
@@ -301,35 +292,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/grey" />
-
-
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="70dp">
-
-                            <ImageButton
-                                android:id="@+id/placeOrder"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:src="@drawable/empty_cart_btn"
-                                app:layout_constraintEnd_toEndOf="@+id/textView6"
-                                app:layout_constraintStart_toStartOf="@+id/textView6"
-                                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Place Order"
-                                android:textColor="@color/black"
-                                android:layout_marginBottom="2dp"
-                                android:fontFamily="@font/avenir_next_bold"
-                                android:layout_gravity="center" />
-                        </FrameLayout>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -339,6 +301,40 @@
             <include
                 android:id="@+id/includeLayout"
                 layout="@layout/bottom_sheet_place_order" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:layout_anchor="@+id/includeLayout"
+                app:layout_anchorGravity="top|center"
+                android:layout_marginTop="8dp">
+
+                <ImageButton
+                    android:id="@+id/placeOrder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="false"
+                    android:src="@drawable/empty_cart_btn"/>
+
+                <TextView
+                    android:id="@+id/placeOrderTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/avenir_next_bold"
+                    android:text="Place Order"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/placeOrder"
+                    app:layout_constraintVertical_bias="0.30" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

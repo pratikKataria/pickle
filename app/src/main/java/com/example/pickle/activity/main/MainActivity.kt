@@ -1,9 +1,8 @@
-package com.example.pickle.activity.Main
+package com.example.pickle.activity.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
@@ -15,8 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
-import com.example.pickle.activity.Main.Options.AddNewItemActivity
-import com.example.pickle.activity.Main.Options.CartViewActivity
+import com.example.pickle.activity.main.options.AddNewItemActivity
 import com.example.pickle.binding.IMainActivity
 import com.example.pickle.data.ProductModel
 import com.example.pickle.utils.SharedPrefsUtils

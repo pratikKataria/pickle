@@ -8,21 +8,14 @@
     android:clickable="true"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="34dp"
+    app:behavior_peekHeight="54dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-    <View
-        android:layout_width="45dp"
-        android:layout_height="5dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@drawable/bottom_sheet_handel" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
+        android:layout_marginTop="32dp"
         android:text="Select Delivery Time"/>
 
 
@@ -31,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:singleSelection="true"
+        android:layout_marginTop="8dp"
         app:chipSpacing="16dp">
 
         <com.google.android.material.chip.Chip
@@ -73,12 +67,13 @@
         android:layout_height="53dp"
         android:layout_gravity="center"
         android:text="current Location"
-        app:rippleColor="@color/chipColorSateUnselected"
-        android:textColor="@color/chipColorStateSelect"
+        app:rippleColor="@color/secondaryColorLight"
+        android:textColor="@color/secondaryColorDark"
         app:chipBackgroundColor="@color/white"
         app:chipCornerRadius="4dp"
         app:chipIcon="@drawable/ic_location"
-        app:chipStrokeColor="@color/chipColorSateUnselected"
+        app:chipIconTint="@color/secondaryColorDark"
+        app:chipStrokeColor="@color/secondaryColorLight"
         app:chipStrokeWidth="1dp" />
 
     <TextView

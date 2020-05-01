@@ -15,7 +15,7 @@ import androidx.core.app.ActivityCompat
 import com.example.pickle.R
 import com.example.pickle.activity.Login.CustomerDetailActivity
 import com.example.pickle.activity.Login.LoginActivity
-import com.example.pickle.activity.Main.MainActivity
+import com.example.pickle.activity.main.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

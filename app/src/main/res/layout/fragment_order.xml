@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainActColor"
-        tools:context=".activity.Main.NavigationFragment.OrderFragment">
+        tools:context=".activity.main.navigation_fragment.OrderFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

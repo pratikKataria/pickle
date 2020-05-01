@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main;
+package com.example.pickle.activity.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 

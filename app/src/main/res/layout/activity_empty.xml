@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".activity.Main.EmptyActivity">
+            tools:context=".activity.main.EmptyActivity">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"

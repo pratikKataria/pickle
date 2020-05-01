@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.Options;
+package com.example.pickle.activity.main.options;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
@@ -12,8 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,19 +21,18 @@ import androidx.databinding.DataBindingUtil;
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
-import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.binding.IMainActivity;
+import com.example.pickle.binding.INavigation;
 import com.example.pickle.data.Address;
-import com.example.pickle.data.CartCalculator;
 import com.example.pickle.data.CartViewModel;
-import com.example.pickle.data.CustomerOrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
+import com.example.pickle.ui.ConstraintLayoutTouchListener;
 import com.example.pickle.ui.CustomRadioButton;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,9 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,22 +49,14 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class CartViewActivity extends AppCompatActivity implements IMainActivity {
+public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
 
     private ActivityCartTestViewBinding binding;
     private BottomSheetBehavior _bottomSheetBehavior;
 
-    private TextView _cartAmount;
-    private TextView _amountToBePaid;
-    private TextView _deliveryPrice;
-//    private ImageButton _placeOrderBtn;
     private CustomRadioButton customRadioButton;
 
-    public final int[] anIntCartAmount = new int[1];
     private View _bottomSheet;
-
-    private String deliveryTime = "";
-    private String deliveryAddress = "";
 
     private Chip _childDeliveryTime1;
     private Chip _childDeliveryTime2;
@@ -78,11 +65,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     private RadioGroup radioGroup;
 
     private void initFields() {
-        _amountToBePaid = binding.amountToBePaid;
-        _deliveryPrice = binding.deliveryPrice;
-//        _placeOrderBtn = binding.placeOrderBtn;
         _bottomSheet = binding.includeLayout;
-        _cartAmount = binding.cartAmountTextView;
 
         _childDeliveryTime1 = _bottomSheet.findViewById(R.id.chipDeliveryTime1);
         _childDeliveryTime2 = _bottomSheet.findViewById(R.id.chipDeliveryTime2);
@@ -97,52 +80,45 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
 
 
         initFields();
-        emptyCart();
+//        emptyCart();
 
         init_bottomSheet();
-        init_customRadioButton();
+//        init_customRadioButton();
         init_loadAddress();
 
         getShoppingCart();
+        binding.constraintLayout.setOnTouchListener(new ConstraintLayoutTouchListener(this, _bottomSheetBehavior));
 
         location_setup();
-
-        _childDeliveryTime1.setOnClickListener(n -> {
-            deliveryTime = _childDeliveryTime1.getText().toString();
-        });
-
-        _childDeliveryTime2.setOnClickListener(n -> {
-            deliveryTime = _childDeliveryTime2.getText().toString();
-        });
     }
 
-    private void emptyCart() {
-        binding.setActivity(this);
-        ChipGroup group = binding.chipGroup;
-        group.setOnCheckedChangeListener((group1, checkedId) -> {
-            Chip chipSelected = findViewById(group1.getCheckedChipId());
-            Log.e("CartViewActivity", chipSelected.getText().toString());
-            switch (chipSelected.getText().toString()) {
-                case "Vegitables":
-                    navigateTo(R.id.action_orderFragment_to_vegetableFragment);
-                    break;
-                case "Fruits":
-                    navigateTo(R.id.action_orderFragment_to_fruitsFragment);
-                    break;
-                case "Diary":
-                    navigateTo(R.id.action_orderFragment_to_dairyFragment);
-                    break;
-                case "Beverages":
-                    navigateTo(R.id.action_orderFragment_to_beveragesFragment);
-                    break;
-            }
-        });
-    }
+//    private void emptyCart() {
+//        binding.setActivity(this);
+//        ChipGroup group = binding.chipGroup;
+//        group.setOnCheckedChangeListener((group1, checkedId) -> {
+//            Chip chipSelected = findViewById(group1.getCheckedChipId());
+//            Log.e("CartViewActivity", chipSelected.getText().toString());
+//            switch (chipSelected.getText().toString()) {
+//                case "Vegitables":
+//                    navigateTo(R.id.action_orderFragment_to_vegetableFragment);
+//                    break;
+//                case "Fruits":
+//                    navigateTo(R.id.action_orderFragment_to_fruitsFragment);
+//                    break;
+//                case "Diary":
+//                    navigateTo(R.id.action_orderFragment_to_dairyFragment);
+//                    break;
+//                case "Beverages":
+//                    navigateTo(R.id.action_orderFragment_to_beveragesFragment);
+//                    break;
+//            }
+//        });
+//    }
 
-    private void navigateTo(int navigationId) {
-        startActivity(new Intent(CartViewActivity.this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
-        finish();
-    }
+//    private void navigateTo(int navigationId) {
+//        startActivity(new Intent(CartViewActivity.this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
+//        finish();
+//    }
 
     private void init_loadAddress() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
@@ -182,40 +158,40 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
         });
     }
 
-    private void init_customRadioButton() {
-        radioGroup = _bottomSheet.findViewById(R.id.radioGroup);
-        address1 = _bottomSheet.findViewById(R.id.address_slot_1);
+//    private void init_customRadioButton() {
+//        radioGroup = _bottomSheet.findViewById(R.id.radioGroup);
+//        address1 = _bottomSheet.findViewById(R.id.address_slot_1);
+//
+//        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+//            Toast.makeText(CartViewActivity.this, "radio group"+ checkedId, Toast.LENGTH_SHORT).show();
+//            switch (checkedId) {
+//                case R.id.address_slot_1:
+//                    deliveryAddress = address1.getText().toString();
+//                    break;
+//            }
+//        });
+//    }
 
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            Toast.makeText(CartViewActivity.this, "radio group"+ checkedId, Toast.LENGTH_SHORT).show();
-            switch (checkedId) {
-                case R.id.address_slot_1:
-                    deliveryAddress = address1.getText().toString();
-                    break;
-            }
-        });
-    }
-
-    private void placeOrder(ProductModel pm) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child(FirebaseAuth.getInstance().getUid());
-
-        CustomerOrdersData customerOrdersData = new CustomerOrdersData(
-                pm.getQuantityCounter(),
-                pm.getItemId(),
-                pm.getItemBasePrice(),
-                "ordered",
-                pm.getItemCategory(),
-                deliveryAddress,
-                FirebaseAuth.getInstance().getUid(),
-                new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
-                deliveryTime);
-
-        ref.child(pm.getItemId()).setValue(customerOrdersData).addOnSuccessListener(aVoid -> {
-            Toast.makeText(this, "item ordered", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        });
-    }
+//    private void placeOrder(ProductModel pm) {
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child(FirebaseAuth.getInstance().getUid());
+//
+//        CustomerOrdersData customerOrdersData = new CustomerOrdersData(
+//                pm.getQuantityCounter(),
+//                pm.getItemId(),
+//                pm.getItemBasePrice(),
+//                "ordered",
+//                pm.getItemCategory(),
+//                deliveryAddress,
+//                FirebaseAuth.getInstance().getUid(),
+//                new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
+//                deliveryTime);
+//
+//        ref.child(pm.getItemId()).setValue(customerOrdersData).addOnSuccessListener(aVoid -> {
+//            Toast.makeText(this, "item ordered", Toast.LENGTH_SHORT).show();
+//        }).addOnFailureListener(e -> {
+//            Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//        });
+//    }
 
     private void getShoppingCart() {
         List<ProductModel> cartList = new ArrayList<>();
@@ -268,7 +244,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
         _currentLocationBtn.setOnClickListener(n -> {
 
             radioGroup.clearCheck();
-            deliveryAddress = "";
+//            deliveryAddress = "";
             locationTrack = new LocationTracker(CartViewActivity.this);
 
             if (locationTrack.canGetLocation()) {
@@ -282,7 +258,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                 //intent.setPackage("com.google.android.apps.maps");
 
                 if (latitude > 0 && longitude> 0) {
-                    deliveryAddress = latitude +","+longitude;
+//                    deliveryAddress = latitude +","+longitude;
                 }
 //                startActivity(intent);
 //                Toast.makeText(CartViewActivity.this, deliveryAddress, Toast.LENGTH_SHORT).show();
@@ -387,7 +363,29 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     public void removeProduct(ProductModel productModel) {
         SharedPrefsUtils.removeValuePreference(this, productModel.getItemId());
         getShoppingCart();
-        ((CartRecyclerViewAdapter)binding.cartRecyclerView.getAdapter()).updateCartItemsList(productModel);
+        try {
+            ((CartRecyclerViewAdapter)binding.cartRecyclerView.getAdapter()).updateCartItemsList(productModel);
+        } catch (NullPointerException npe) {
+            Log.e(CartViewActivity.class.getName(), "cart update item: " + npe.getMessage());
+        }
     }
 
+    @Override
+    public void navigateTo(int navigationId) {
+        startActivity(new Intent(this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
+        finish();
+    }
+
+    @Override
+    public void onHomePressed(boolean pressed) {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
 }

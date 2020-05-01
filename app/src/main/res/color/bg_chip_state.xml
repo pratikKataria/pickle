@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_checked="true"
-        android:color="@color/chipColorStateSelect"/>
+        android:color="@color/secondaryColorDark"/>
 
-    <item android:color="@color/chipColorSateUnselected"/>
+    <item android:color="@color/secondaryColorLight"/>
 
 </selector>

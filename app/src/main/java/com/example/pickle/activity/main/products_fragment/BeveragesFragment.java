@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.ProductsFragment;
+package com.example.pickle.activity.main.products_fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentBeveragesBinding;
@@ -28,7 +25,6 @@ import com.google.firebase.database.Query;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class BeveragesFragment extends Fragment {

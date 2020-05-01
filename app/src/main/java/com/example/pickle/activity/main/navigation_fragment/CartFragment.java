@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.NavigationFragment;
+package com.example.pickle.activity.main.navigation_fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

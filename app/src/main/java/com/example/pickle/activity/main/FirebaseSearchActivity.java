@@ -1,18 +1,14 @@
-package com.example.pickle.activity.Main;
+package com.example.pickle.activity.main;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.AutoCompleteAdapter;
-import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityFirebaseSearchBinding;

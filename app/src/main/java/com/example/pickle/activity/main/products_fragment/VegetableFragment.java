@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.ProductsFragment;
+package com.example.pickle.activity.main.products_fragment;
 
 import android.os.Bundle;
 import android.os.Handler;

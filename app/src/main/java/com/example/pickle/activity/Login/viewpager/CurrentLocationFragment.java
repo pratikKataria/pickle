@@ -27,7 +27,7 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
-import com.example.pickle.activity.Main.MainActivity;
+import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.data.CurrentAddress;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.PersonalInformation;

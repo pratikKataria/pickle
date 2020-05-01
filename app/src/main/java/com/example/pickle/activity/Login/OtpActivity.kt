@@ -10,7 +10,7 @@ import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.Toast
 import com.example.pickle.R
-import com.example.pickle.activity.Main.MainActivity
+import com.example.pickle.activity.main.MainActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*

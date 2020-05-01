@@ -3,5 +3,5 @@
     <corners android:radius="8dp"/>
     <stroke
         android:width="1.5dp"
-        android:color="@color/chipColorSateUnselected" />
+        android:color="@color/secondaryColorLight" />
 </shape>

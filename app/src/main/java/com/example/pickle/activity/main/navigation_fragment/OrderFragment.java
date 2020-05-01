@@ -1,4 +1,4 @@
-package com.example.pickle.activity.Main.NavigationFragment;
+package com.example.pickle.activity.main.navigation_fragment;
 
 
 import android.content.Context;
@@ -31,14 +31,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
-import com.example.pickle.activity.Main.FirebaseSearchActivity;
-import com.example.pickle.activity.Main.MainActivity;
-import com.example.pickle.activity.Main.Options.CartViewActivity;
+import com.example.pickle.activity.main.FirebaseSearchActivity;
+import com.example.pickle.activity.main.MainActivity;
+import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
-import com.example.pickle.utils.CartHandler;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -357,6 +356,7 @@ public class OrderFragment extends Fragment{
                 break;
             case R.id.menu_main_cart_btn:
                 startActivity(new Intent(getActivity(), CartViewActivity.class));
+                getActivity().finish();
                 break;
             case R.id.menu_orders:
                 _navController.navigate(R.id.action_orderFragment_to_ordersPlacedFragment);

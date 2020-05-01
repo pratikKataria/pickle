@@ -1,9 +1,13 @@
 package com.example.pickle.data;
 
+import android.content.Context;
+
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.example.pickle.BR;
+import com.example.pickle.binding.INavigation;
+import com.example.pickle.binding.NavigationAction;
 import com.example.pickle.utils.PriceFormatUtils;
 
 import java.util.ArrayList;
@@ -42,13 +46,19 @@ public class CartViewModel extends BaseObservable {
             totalItems += product.getQuantityCounter();
         }
 
-        String s = "";
+        String s;
         if (totalItems > 1) {
             s = "items";
         } else {
             s = "item";
         }
-        return  ( "(" + String.valueOf(totalItems) + " " + s + ")");
+
+        if (totalItems > 0)
+            setCartVisible(true);
+        else
+            setCartVisible(false);
+
+        return ("(" + String.valueOf(totalItems) + " " + s + ")");
 
     }
 
@@ -67,4 +77,28 @@ public class CartViewModel extends BaseObservable {
         }
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
+
+    public void navigateTo(Context context, int navigate) {
+        INavigation iNavigation = (INavigation) context;
+        switch (navigate) {
+            case NavigationAction.NAVIGATE_TO_FRUIT:
+                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_FRUIT);
+                break;
+            case NavigationAction.NAVIGATE_TO_VEGETABLE:
+                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_VEGETABLE);
+                break;
+            case NavigationAction.NAVIGATE_TO_BEVERAGES:
+                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_BEVERAGES);
+                break;
+            case NavigationAction.NAVIGATE_TO_DAIRY:
+                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_DAIRY);
+                break;
+        }
+    }
+
+    public void onHomePressed(Context context) {
+        INavigation iNavigation = (INavigation) context;
+        iNavigation.onHomePressed(true);
+    }
+
 }

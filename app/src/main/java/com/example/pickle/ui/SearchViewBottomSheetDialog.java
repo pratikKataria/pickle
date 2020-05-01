@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
-import com.example.pickle.activity.Main.Options.CartViewActivity;
+import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.BottomSheetSearchViewBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
