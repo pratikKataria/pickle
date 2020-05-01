@@ -2,11 +2,14 @@ package com.example.pickle.activity.main.options;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -52,6 +55,22 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
 
         binding.includeLayout.placeOrder.setOnClickListener(n -> placeOrder());
 
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+        behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) { }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                if (slideOffset < 0.75) {
+                    binding.nestedScrollView.setAlpha(Math.abs(1 - slideOffset));
+                    binding.nestedScrollView.setBackgroundColor(Color.WHITE);
+                } else if (slideOffset > 0.90) {
+                    binding.nestedScrollView.setBackgroundColor(0xFFececec);
+                }
+            }
+        });
+
     }
 
 
@@ -86,6 +105,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                 ));
             }
 
+            //todo replace with firebase instance
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child("ddEk1gOv0hUFZVinEWzzdZNlBtF3");
             ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show()).addOnFailureListener(e -> Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
