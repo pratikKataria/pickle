@@ -116,14 +116,12 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{" +
-                "apartmentSociety='" + apartmentSociety + '\'' +
-                ", areaPin='" + areaPin + '\'' +
-                ", flatHouseNo='" + flatHouseNo + '\'' +
-                ", address='" + address + '\'' +
-                ", landmark='" + landmark + '\'' +
-                ", houseNoPlotno='" + houseNoPlotno + '\'' +
-                ", floors='" + floors + '\'' +
-                '}';
+        return apartmentSociety + "\n" +
+                areaPin + "\n" +
+                flatHouseNo + "\n" +
+                address + "\n" +
+                landmark + "\n" +
+                houseNoPlotno + "\n" +
+                floors;
     }
 }

@@ -355,8 +355,7 @@ public class OrderFragment extends Fragment{
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-                startActivity(new Intent(getActivity(), CartViewActivity.class));
-                getActivity().finish();
+                startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
             case R.id.menu_orders:
                 _navController.navigate(R.id.action_orderFragment_to_ordersPlacedFragment);
