@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.PlaceOrderAdapter;
 import com.example.pickle.R;
-import com.example.pickle.data.CustomerOrdersData;
+import com.example.pickle.data.OrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +35,7 @@ import java.util.Iterator;
 public class OrdersPlacedFragment extends Fragment {
 
     private FragmentOrdersPlacedBinding binding;
-    private ArrayList<CustomerOrdersData> customerOrdersDataArrayList;
+    private ArrayList<OrdersData> ordersDataArrayList;
     private ArrayList<ProductModel> productModelArrayList;
     private PlaceOrderAdapter placeOrderAdapter;
 
@@ -58,7 +58,7 @@ public class OrdersPlacedFragment extends Fragment {
 
         View view = binding.getRoot();
 
-        customerOrdersDataArrayList = new ArrayList<>();
+        ordersDataArrayList = new ArrayList<>();
         productModelArrayList = new ArrayList<>();
         populateList();
         init_recyclerView();
@@ -68,7 +68,7 @@ public class OrdersPlacedFragment extends Fragment {
 
     public void init_recyclerView() {
         RecyclerView recyclerView = binding.recyclerView;
-        placeOrderAdapter = new PlaceOrderAdapter(getActivity(), customerOrdersDataArrayList, productModelArrayList);
+        placeOrderAdapter = new PlaceOrderAdapter(getActivity(), ordersDataArrayList, productModelArrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(placeOrderAdapter);
@@ -82,8 +82,8 @@ public class OrdersPlacedFragment extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.e("OrdersPlacedFragment", dataSnapshot + "'''''''''''  onChildAdded   ''''''''' " + " " + s);
                 Log.e("OrdersPlaceFragment", dataSnapshot + " ");
-                CustomerOrdersData customerOrdersData = dataSnapshot.getValue(CustomerOrdersData.class);
-                customerOrdersDataArrayList.add(customerOrdersData);
+                OrdersData ordersData = dataSnapshot.getValue(OrdersData.class);
+                ordersDataArrayList.add(ordersData);
 
                 placeOrderAdapter.notifyDataSetChanged();
             }
@@ -91,15 +91,15 @@ public class OrdersPlacedFragment extends Fragment {
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Log.e("OrdersPlacedFragment", dataSnapshot + "'''''''''''  onChildChanged   '''''''''" + s);
-                Iterator<CustomerOrdersData> iterator = customerOrdersDataArrayList.iterator();
+                Iterator<OrdersData> iterator = ordersDataArrayList.iterator();
                 while (iterator.hasNext()) {
-                    CustomerOrdersData customerOrdersData =  iterator.next();
-                    if (customerOrdersData != null && customerOrdersData.getItemId().equals(s)) {
+                    OrdersData ordersData =  iterator.next();
+                    if (ordersData != null && ordersData.getItemId().equals(s)) {
                         iterator.remove();
                     }
                 }
 
-                customerOrdersDataArrayList.add(dataSnapshot.getValue(CustomerOrdersData.class));
+                ordersDataArrayList.add(dataSnapshot.getValue(OrdersData.class));
                 placeOrderAdapter.notifyDataSetChanged();
             }
 
@@ -135,8 +135,8 @@ public class OrdersPlacedFragment extends Fragment {
 //public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 //        Log.e("OrdersPlaceFragment", dataSnapshot + " ");
-//        CustomerOrdersData placeOrderModel = snapshot.getValue(CustomerOrdersData.class);
-//        customerOrdersDataArrayList.add(placeOrderModel);
+//        OrdersData placeOrderModel = snapshot.getValue(OrdersData.class);
+//        ordersDataArrayList.add(placeOrderModel);
 //        Log.e("placeOrderAdapter", placeOrderModel.getItemCategory()+"");
 //
 //

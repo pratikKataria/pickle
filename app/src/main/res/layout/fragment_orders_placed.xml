@@ -7,7 +7,7 @@
 
         <variable
             name="orderPlaced"
-            type="com.example.pickle.data.CustomerOrdersData" />
+            type="com.example.pickle.data.OrdersData" />
 
     </data>
 

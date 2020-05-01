@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.data.CustomerOrdersData;
+import com.example.pickle.data.OrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.CardviewOrderPlacedBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -23,10 +23,10 @@ import java.util.ArrayList;
 public class PlaceOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private ArrayList<CustomerOrdersData> modelArrayList;
+    private ArrayList<OrdersData> modelArrayList;
     private ArrayList<ProductModel> productModelArrayList;
 
-    public PlaceOrderAdapter(Context context, ArrayList<CustomerOrdersData> modelArrayList, ArrayList<ProductModel> productModelArrayList) {
+    public PlaceOrderAdapter(Context context, ArrayList<OrdersData> modelArrayList, ArrayList<ProductModel> productModelArrayList) {
         this.context = context;
         this.modelArrayList = modelArrayList;
         this.productModelArrayList = productModelArrayList;
@@ -52,7 +52,7 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         OrdersViewModel ordersViewModel = (OrdersViewModel) holder;
 
-        CustomerOrdersData customerOrdersData = modelArrayList.get(position);
+        OrdersData ordersData = modelArrayList.get(position);
         ordersViewModel.bindPlaceOrderModel(modelArrayList.get(position));
 
 
@@ -75,10 +75,10 @@ public class PlaceOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             imageView = orderPlacedBinding.imageView;
         }
 
-        public void bindPlaceOrderModel(CustomerOrdersData customerOrdersData) {
-            orderPlacedBinding.setOrderPlaced(customerOrdersData);
+        public void bindPlaceOrderModel(OrdersData ordersData) {
+            orderPlacedBinding.setOrderPlaced(ordersData);
             orderPlacedBinding.executePendingBindings();
-            setProductDetails(customerOrdersData.getItemCategory(), customerOrdersData.getItemId());
+            setProductDetails(ordersData.getItemCategory(), ordersData.getItemId());
         }
 
         public void bindProductModelView(ProductModel model) {

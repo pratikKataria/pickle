@@ -18,13 +18,14 @@ import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.binding.INavigation;
+import com.example.pickle.binding.OrderStatus;
 import com.example.pickle.data.CartViewModel;
-import com.example.pickle.data.CustomerOrdersData;
+import com.example.pickle.data.OrderDetails;
+import com.example.pickle.data.OrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -92,26 +93,30 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
             List<ProductModel> productCartList = binding.getCartList();
             Map<String, Object> atomicOperation = new HashMap<>();
             for (ProductModel product : productCartList) {
-                atomicOperation.put(product.getItemId(), new CustomerOrdersData(
-                        product.getQuantityCounter(),
+                String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
+                atomicOperation.put("OrdersDetails/" + key, new OrdersData(
                         product.getItemId(),
+                        new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
+                        product.getQuantityCounter(),
                         product.getItemBasePrice(),
-                        "ordered",
                         product.getItemCategory(),
                         deliveryAddress,
-                        FirebaseAuth.getInstance().getUid(),
-                        new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
                         deliveryTime
                 ));
+                atomicOperation.put("Orders/" + key, new OrderDetails(
+                        "ddEk1gOv0hUFZVinEWzzdZNlBtF3"/*FirebaseAuth.getInstance().getUid()*/,
+                        product.getItemId(),
+                        OrderStatus.PROCESSING
+                ));
             }
-
             //todo replace with firebase instance
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Orders").child("ddEk1gOv0hUFZVinEWzzdZNlBtF3");
-            ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show()).addOnFailureListener(e -> Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show())
+                    .addOnFailureListener(e -> Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show());
 
-        } catch (NullPointerException npe) {
+        } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
-            Log.e(CartViewActivity.class.getName(), npe.getMessage());
+            Log.e(CartViewActivity.class.getName(), xe.getMessage());
         }
     }
 

@@ -1,30 +1,27 @@
 package com.example.pickle.data;
 
-public class CustomerOrdersData {
-    private int itemQty;
-    private int itemBasePrice;
-    private String orderStatus;
-    private String itemCategory;
-    private String address;
+public class OrdersData {
     private String userId;
     private String itemId;
     private String date;
+    private int itemQty;
+    private int itemBasePrice;
+    private String itemCategory;
+    private String address;
     private String deliveryTime;
 
-    public CustomerOrdersData(int itemQty, String itemId, int itemBasePrice, String orderStatus, String itemCategory, String address, String userId, String date, String deliveryTime) {
-        this.itemQty = itemQty;
-        this.itemBasePrice = itemBasePrice;
-        this.orderStatus = orderStatus;
-        this.itemCategory = itemCategory;
-        this.address = address;
-        this.userId = userId;
+    public OrdersData(String itemId, String date, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;
         this.date = date;
+        this.itemQty = itemQty;
+        this.itemBasePrice = itemBasePrice;
+        this.itemCategory = itemCategory;
+        this.address = address;
         this.deliveryTime = deliveryTime;
     }
 
-    public CustomerOrdersData() {
-    }
+
+    public OrdersData() { }
 
     public String getDeliveryTime() {
         return deliveryTime;
@@ -48,14 +45,6 @@ public class CustomerOrdersData {
 
     public void setItemBasePrice(int itemBasePrice) {
         this.itemBasePrice = itemBasePrice;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
     }
 
     public String getItemCategory() {
@@ -90,7 +79,7 @@ public class CustomerOrdersData {
         this.date = date;
     }
 
-    public int getItemQty() {
+    public Integer getItemQty() {
         return itemQty;
     }
 }
