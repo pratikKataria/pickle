@@ -10,19 +10,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
+import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityFirebaseSearchBinding;
+import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class FirebaseSearchActivity extends AppCompatActivity {
+public class FirebaseSearchActivity extends AppCompatActivity implements IMainActivity {
 
     private ValueEventListener valueEventListener;
 
@@ -78,11 +81,19 @@ public class FirebaseSearchActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                if (snapshot.exists() && !searchList.contains(snapshot.getValue(ProductModel.class))) {
-                                        searchList.add(snapshot.getValue(ProductModel.class));
+                                if (snapshot.exists()) {
+                                    ProductModel newProduct = snapshot.getValue(ProductModel.class);
+                                    if (!searchList.contains(newProduct)) {
+                                        String productStringGson = SharedPrefsUtils.getStringPreference(FirebaseSearchActivity.this, newProduct.getItemId(), 0);
+                                        ProductModel cartProduct = new Gson().fromJson(productStringGson, ProductModel.class);
+                                        if (cartProduct != null)
+                                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+
+                                        searchList.add(newProduct);
                                         if (binding.searchRecyclerView.getAdapter() != null) {
                                             binding.searchRecyclerView.getAdapter().notifyDataSetChanged();
                                         }
+                                    }
                                 }
                             }
 
@@ -112,4 +123,16 @@ public class FirebaseSearchActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void updateQuantity(ProductModel productModel, int quantity) {
+        if (productModel != null) {
+            productModel.setQuantityCounter(quantity);
+            SharedPrefsUtils.setStringPreference(this, productModel.getItemId(), new Gson().toJson(productModel));
+        }
+    }
+
+    @Override
+    public void removeProduct(ProductModel productModel) {
+        SharedPrefsUtils.removeValuePreference(this, productModel.getItemId());
+    }
 }

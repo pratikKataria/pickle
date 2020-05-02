@@ -151,12 +151,15 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
             //todo replace with firebase instance
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
             ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
+                binding.getCartList().clear();
+                binding.cartRecyclerView.getAdapter().notifyDataSetChanged(); // todo add try catch
+                binding.getCartViewModel().setCartVisible(false);
+                SharedPrefsUtils.clearCart(this);
                 new Handler().postDelayed(() -> {
                     confirmOrderBinding.lottieAnimationView2.setAlpha(0);
                     confirmOrderBinding.successAnimation.setVisibility(View.VISIBLE);
                     confirmOrderBinding.successAnimation.playAnimation();
                     confirmOrderBinding.thankText.animate().alpha(1).setDuration(500).start();
-
                     confirmOrderBinding.homeBtn.setVisibility(View.VISIBLE);
                     confirmOrderBinding.homeBtn.setOnClickListener(v -> {
                         alertDialog.dismiss();

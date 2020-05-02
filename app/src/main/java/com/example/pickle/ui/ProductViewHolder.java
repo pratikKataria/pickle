@@ -13,16 +13,16 @@ import com.example.pickle.databinding.CardViewSearchItemBinding;
 
 public class ProductViewHolder extends  RecyclerView.ViewHolder {
 
-    private CardViewSearchItemBinding binding;
+    private CardViewSearchItemBinding searchViewBinding;
     private CardViewProductSuggestionBinding suggestionBinding;
     private Context context;
 
     public ProductViewHolder(@NonNull CardViewSearchItemBinding searchViewBinding, Context context) {
         super(searchViewBinding.getRoot());
-        this.binding = searchViewBinding;
+        this.searchViewBinding = searchViewBinding;
         this.context = context;
 
-        searchViewBinding.cardView.setOnClickListener(n -> showBottomSheet(suggestionBinding.getProductViewModel().getProduct()));
+        searchViewBinding.cardView.setOnClickListener(n -> showBottomSheet(searchViewBinding.getProductViewModel().getProduct()));
     }
 
     public ProductViewHolder(CardViewProductSuggestionBinding suggestionBinding, Context context) {
@@ -34,7 +34,7 @@ public class ProductViewHolder extends  RecyclerView.ViewHolder {
     }
 
     public void setCardViewSearchBinding(ProductViewModel productViewModel) {
-        binding.setProductViewModel(productViewModel);
+        searchViewBinding.setProductViewModel(productViewModel);
     }
 
     public void setCardViewSuggestionBinding(ProductViewModel productViewModel) {

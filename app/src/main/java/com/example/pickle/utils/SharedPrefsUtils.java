@@ -212,6 +212,18 @@ final public class SharedPrefsUtils {
         } catch (Exception xe) {
             Log.e("SharedPrefUtils", xe.getMessage());
         }
+    }
 
+    public static boolean clearCart(Context context) {
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor  editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+            return true;
+        } catch (Exception xe) {
+            Log.e(SharedPrefsUtils.class.getName(), xe.getMessage());
+            return  false;
+        }
     }
 }
