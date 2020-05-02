@@ -3,6 +3,7 @@ package com.example.pickle.activity.main
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
 import android.widget.Toast
@@ -40,6 +41,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+//        val mFirebaseUser = FirebaseAuth.getInstance()
+//        if (mFirebaseUser.currentUser == null) {
+//            startActivity(Intent(this, LoginActivity::class.java))
+//            finish()
+//        }
+
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
 
@@ -50,17 +57,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
 
         navigationView.setNavigationItemSelectedListener(this)
-
         var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
-        if (navHostFragment != null) {
-            _navController = navHostFragment.navController
-            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+        _navController = navHostFragment.navController
+        NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+
+        try {
+            //todo fix bug here
             val navigationId: Int? = intent.extras?.getInt("NAVIGATION_ID");
             if (navigationId != null)
-                //todo fix bug here
                 _navController.navigate(navigationId)
+        } catch (xe : Exception) {
+            Log.e(MainActivity::class.java.name, xe.message)
         }
-
     }
 
     @SuppressLint("WrongConstant")
@@ -68,15 +76,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var drawerLayout : DrawerLayout = findViewById(R.id.activity_main_drawer_layout)
         drawerLayout.openDrawer(Gravity.START)
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        val mFirebaseUser = FirebaseAuth.getInstance()
-//        if (mFirebaseUser.currentUser == null) {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
-//    }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when(p0.itemId) {

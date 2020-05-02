@@ -51,7 +51,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="195dp"
+                android:layout_marginTop="175dp"
                 android:background="@drawable/ic_round_rect"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> cartViewModel.onHomePressed(context)}"
                     android:src="@drawable/empty_cart_btn"
                     app:layout_constraintEnd_toEndOf="@+id/textView6"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
@@ -184,6 +185,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="32dp"
             android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
 
             <androidx.core.widget.NestedScrollView

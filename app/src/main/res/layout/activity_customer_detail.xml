@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,113 +10,144 @@
     tools:context=".activity.Login.CustomerDetailActivity">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:id="@+id/imageView"
         android:src="@drawable/pablo_delivery"
-        android:scaleType="fitXY" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        app:cardCornerRadius="32dp"
-        android:layout_marginTop="-25dp"
         app:cardBackgroundColor="@color/white"
-        app:cardElevation="8dp">
+        app:cardCornerRadius="32dp"
+        app:cardElevation="8dp"
+        android:layout_marginTop="210dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="25dp"
-                android:padding="16dp"
-                android:orientation="vertical">
+            android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/customer_details_note" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:paddingBottom="25dp">
 
                 <RadioGroup
                     android:id="@+id/radioGroup_outer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup_inner">
+
                     <com.example.pickle.ui.MyRadioButton
-                    android:id="@+id/apartment"
-                    style="@style/CustomerDetailRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="14dp"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                    android:layout_marginTop="8dp"
-                    android:tag="0"
-                    android:checked="true"
-                    android:drawableStart="@drawable/ic_apartment"
-                    android:drawablePadding="8dp"
-                    android:text="Appartment or Gated Society" />
+                        android:id="@+id/apartment"
+                        style="@style/CustomerDetailRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-12dp"
+                        android:checked="true"
+                        android:drawableStart="@drawable/ic_apartment"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:scaleX=".85"
+                        android:scaleY=".85"
+                        android:singleLine="true"
+                        android:tag="0"
+                        android:text="Appartment or Society"
+                        android:textSize="12dp" />
 
                     <com.example.pickle.ui.MyRadioButton
                         android:id="@+id/blank"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:tag="9999"/>
+                        android:tag="9999"
+                        android:visibility="gone" />
                 </RadioGroup>
+
                 <RadioGroup
                     android:id="@+id/radioGroup_inner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15">
 
                     <com.example.pickle.ui.MyRadioButton
                         android:id="@+id/individualHouse"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:padding="14dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
-                        android:tag="1"
+                        android:layout_marginStart="-12dp"
                         android:drawableStart="@drawable/ic_individual_house"
                         android:drawablePadding="8dp"
-                        android:text="Individual House" />
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:scaleX=".85"
+                        android:scaleY=".85"
+                        android:tag="1"
+                        android:text="Individual House"
+                        android:textSize="12dp" />
 
                     <com.example.pickle.ui.MyRadioButton
                         android:id="@+id/currentAddress"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:padding="14dp"
-                        android:paddingStart="14dp"
-                        android:paddingEnd="14dp"
-                        android:tag="2"
-                        android:singleLine="true"
-                        android:layout_marginStart="8dp"
-                        android:text="Current Location"
+                        android:layout_marginStart="-12dp"
                         android:drawableStart="@drawable/ic_gps"
-                        android:drawablePadding="8dp"/>
+                        android:drawablePadding="8dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:scaleX=".85"
+                        android:scaleY=".85"
+                        android:singleLine="true"
+                        android:tag="2"
+                        android:text="Current Location"
+                        android:textSize="12dp" />
 
                 </RadioGroup>
 
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/customer_details_note"
+                    android:textSize="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup_outer" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
     </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

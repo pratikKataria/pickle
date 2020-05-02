@@ -20,8 +20,7 @@
             android:id="@+id/grid_view_iv_image"
             android:layout_width="match_parent"
             android:layout_height="127dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/download" />
+            android:scaleType="fitCenter"/>
 
         <TextView
             android:id="@+id/product_card_view_item_tv_price"

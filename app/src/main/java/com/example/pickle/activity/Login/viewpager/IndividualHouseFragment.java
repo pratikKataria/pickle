@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
+import com.example.pickle.data.ApartmentDataModel;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.IndividualHouseDataModel;
 import com.example.pickle.data.PersonalInformation;
@@ -24,6 +25,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,43 +99,36 @@ public class IndividualHouseFragment extends Fragment {
 
             );
 
-            uploadCustomerDetails(
-                    customer,
-                    new IndividualHouseDataModel(
+            IndividualHouseDataModel individualHouseDataModel = new IndividualHouseDataModel(
                     etareaPin.getText().toString(),
                     editTextAddress.getText().toString(),
                     landmark.getText().toString(),
                     etFloor.getText().toString(),
-                            "individualHouse"
-            ));
+                    "individualHouse");
+
+
+            atomicUpdate(customer, individualHouseDataModel);
         });
 
         return view;
     }
 
-    public void uploadCustomerDetails(Customer _customer, IndividualHouseDataModel individualHouseDataModel) {
-
+    private void atomicUpdate(Customer customer, IndividualHouseDataModel individualHouseDataModel) {
         progressBar.setVisibility(View.VISIBLE);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getUid());
-        ref.setValue(_customer).addOnSuccessListener(task -> {
-            updateAddress(individualHouseDataModel);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-        });
-    }
+        HashMap<String, Object> update = new HashMap<>();
+        String uid = FirebaseAuth.getInstance().getUid();
+        update.put("Customers/" + uid, customer);
+        update.put("Addresses/" + uid, individualHouseDataModel);
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
 
-    private void updateAddress(IndividualHouseDataModel individualHouseDataModel) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Addresses").child(FirebaseAuth.getInstance().getUid()).child("slot1");
-
-        ref.setValue(individualHouseDataModel).addOnSuccessListener(task -> {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             getActivity().finish();
+
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);

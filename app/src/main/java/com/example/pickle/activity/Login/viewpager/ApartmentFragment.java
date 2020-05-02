@@ -26,6 +26,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -104,54 +105,44 @@ public class ApartmentFragment extends Fragment {
             }
 
             Customer customer = new Customer(
-
                     new PersonalInformation(
                             etName.getText().toString(),
                             FirebaseAuth.getInstance().getUid(),
                             FirebaseInstanceId.getInstance().getToken(),
                             new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
                             FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
-                    )
-            );
+                    ));
 
-            uploadCustomerDetails(
-                    customer,
-                    new ApartmentDataModel(
+            ApartmentDataModel apartmentDataModel = new ApartmentDataModel(
                     etName.getText().toString(),
                     etApartment.getText().toString(),
                     etFlat.getText().toString(),
                     editTextAddress.getText().toString(),
                     landmark.getText().toString(),
-                            "apartment or gated society"
-            ));
+                    "apartment or gated society");
+
+            atomicUpdate(customer, apartmentDataModel);
         });
 
         return view;
     }
 
-    public void uploadCustomerDetails(Customer _customer, ApartmentDataModel apartmentDataModel) {
-
+    private void atomicUpdate(Customer customer, ApartmentDataModel apartmentDataModel) {
         progressBar.setVisibility(View.VISIBLE);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getUid());
-        ref.setValue(_customer).addOnSuccessListener(task -> {
-            updateAddress(apartmentDataModel);
+        HashMap<String, Object> update = new HashMap<>();
+        String uid = FirebaseAuth.getInstance().getUid();
+        update.put("Customers/" + uid, customer);
+        update.put("Addresses/"+ uid, apartmentDataModel);
 
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-        });
-    }
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
 
-    private void updateAddress(ApartmentDataModel apartmentDataModel) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Addresses");
-
-        ref.child(FirebaseAuth.getInstance().getUid()).child("slot1").setValue(apartmentDataModel).addOnSuccessListener(task -> {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-
-            startActivity(new Intent(getActivity(), MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
             getActivity().finish();
+
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);

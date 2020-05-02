@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,11 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_test_view);
+
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        );
 
         getShoppingCart();
 
@@ -111,7 +117,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                         deliveryTime
                 ));
                 atomicOperation.put("Orders/" + key, new OrderDetails(
-                        "ddEk1gOv0hUFZVinEWzzdZNlBtF3"/*FirebaseAuth.getInstance().getUid()*/,
+                        "ddEk1gOv0hUFZVinEWzzdZNlBtF3"/*todo FirebaseAuth.getInstance().getUid()*/,
                         product.getItemId(),
                         OrderStatus.PROCESSING
                 ));
@@ -234,7 +240,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
 
     @Override
     public void onHomePressed(boolean pressed) {
-        onBackPressed();
+        finish();
     }
 
     @Override

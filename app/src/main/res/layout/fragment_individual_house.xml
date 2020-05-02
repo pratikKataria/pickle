@@ -23,13 +23,14 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_border"
             android:hint="username"
-            android:padding="14dp"
+            android:textSize="@dimen/act_customer_detail_et"
+            android:padding="@dimen/act_customer_detail_padding"
             android:singleLine="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="12dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -48,8 +49,9 @@
                     android:id="@+id/cd_et_pin_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
+                     android:padding="@dimen/act_customer_detail_padding"
                     android:hint="e.g. 451115"
+                    android:textSize="@dimen/act_customer_detail_et"
                     android:maxLength="6"
                     android:inputType="number"
                     android:singleLine="true"
@@ -74,8 +76,9 @@
                     android:id="@+id/cd_et_flat_house_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="14dp"
+                     android:padding="@dimen/act_customer_detail_padding"
                     android:hint="e.g. 2"
+                    android:textSize="@dimen/act_customer_detail_et"
                     android:singleLine="true"
                     android:background="@drawable/bg_border" />
             </LinearLayout>
@@ -84,7 +87,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:textColor="@android:color/darker_gray"
             android:text="Address*" />
 
@@ -92,8 +95,8 @@
             android:id="@+id/cd_et_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:padding="14dp"
+            android:textSize="@dimen/act_customer_detail_et"
+             android:padding="@dimen/act_customer_detail_padding"
             android:hint="e.g. Street, Area, Colony, Sector"
             android:singleLine="true"
             android:background="@drawable/bg_border" />
@@ -102,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:textColor="@android:color/darker_gray"
             android:text="Landmark / Instruction*" />
 
@@ -110,7 +113,8 @@
             android:id="@+id/cd_et_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="14dp"
+             android:padding="@dimen/act_customer_detail_padding"
+            android:textSize="@dimen/act_customer_detail_et"
             android:hint="e.g. near gardern, brown color door"
             android:singleLine="true"
             android:background="@drawable/bg_border" />
