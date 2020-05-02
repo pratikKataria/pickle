@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.example.pickle.data.ConfirmOrderViewModel"/>
+        <variable
+            name="confirmModel"
+            type="ConfirmOrderViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_alert_dialog">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Confirm Order"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@{`total quantity `+confirmModel.quantity}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"/>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{`total price ` + String.valueOf(confirmModel.totalPrice)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="price" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimationView2"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            app:lottie_fileName="confirm_order_loading.json" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/successAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="175dp"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12"
+            app:layout_constraintVertical_bias="1.0"
+            app:lottie_fileName="confirm_order_success.json"/>
+
+        <TextView
+            android:id="@+id/thankText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thank you For Shopping "
+            android:alpha="0"
+            android:fontFamily="@font/pacifico_regular"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView2"
+            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView2"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/lottieAnimationView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView13"
+            app:layout_constraintVertical_bias="0.534" />
+
+        <TextView
+            android:id="@+id/errorText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="error"
+            android:textAlignment="center"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/confirmBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.687"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:layout_constraintBottom_toBottomOf="@+id/confirmBtn"
+            app:layout_constraintEnd_toStartOf="@+id/confirmBtn"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/confirmBtn"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/homeBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

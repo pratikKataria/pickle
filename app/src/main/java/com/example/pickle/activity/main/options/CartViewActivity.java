@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
@@ -20,10 +23,13 @@ import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.binding.INavigation;
 import com.example.pickle.binding.OrderStatus;
 import com.example.pickle.data.CartViewModel;
+import com.example.pickle.data.ConfirmOrderViewModel;
 import com.example.pickle.data.OrderDetails;
 import com.example.pickle.data.OrdersData;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
+import com.example.pickle.databinding.LayoutConfirmOrderBinding;
+import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.DatabaseReference;
@@ -40,6 +46,7 @@ import java.util.Map;
 public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
 
     private ActivityCartTestViewBinding binding;
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +98,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                 return;
             }
             List<ProductModel> productCartList = binding.getCartList();
-            Map<String, Object> atomicOperation = new HashMap<>();
+            HashMap<String, Object> atomicOperation = new HashMap<>();
             for (ProductModel product : productCartList) {
                 String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
                 atomicOperation.put("OrdersDetails/" + key, new OrdersData(
@@ -109,15 +116,69 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                         OrderStatus.PROCESSING
                 ));
             }
-            //todo replace with firebase instance
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show())
-                    .addOnFailureListener(e -> Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+            showOrderConfirmationDialog(atomicOperation);
 
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartViewActivity.class.getName(), xe.getMessage());
         }
+    }
+
+    private void showOrderConfirmationDialog(HashMap<String, Object> atomicOperation) {
+        LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_confirm_order,
+                null,
+                false);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
+        alertDialog = alertDialogBuilder.create();
+
+        ConfirmOrderViewModel confirmOrderViewModel = new ConfirmOrderViewModel();
+        String totalText = binding.amountToBePaid.getText().toString();
+        String totalQuantity = binding.getCartViewModel().getProductQuantitiesString();
+        confirmOrderViewModel.setTotalPrice(PriceFormatUtils.getIntFormattedPrice(totalText));
+        confirmOrderViewModel.setQuantity(totalQuantity);
+        confirmOrderBinding.setConfirmModel(confirmOrderViewModel);
+        alertDialog.show();
+
+        confirmOrderBinding.successAnimation.setVisibility(View.GONE);
+        confirmOrderBinding.confirmBtn.setOnClickListener(n -> {
+            confirmOrderBinding.lottieAnimationView2.playAnimation();
+            confirmOrderBinding.lottieAnimationView2.loop(true);
+
+            //todo replace with firebase instance
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
+                new Handler().postDelayed(() -> {
+                    confirmOrderBinding.lottieAnimationView2.setAlpha(0);
+                    confirmOrderBinding.successAnimation.setVisibility(View.VISIBLE);
+                    confirmOrderBinding.successAnimation.playAnimation();
+                    confirmOrderBinding.thankText.animate().alpha(1).setDuration(500).start();
+
+                    confirmOrderBinding.homeBtn.setVisibility(View.VISIBLE);
+                    confirmOrderBinding.homeBtn.setOnClickListener(v -> {
+                        alertDialog.dismiss();
+                        finish();
+                    });
+                    confirmOrderBinding.backBtn.setVisibility(View.GONE);
+                    confirmOrderBinding.confirmBtn.setVisibility(View.GONE);
+                    alertDialog.setCancelable(false);
+
+                    Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show();
+                }, 1200);
+            }).addOnFailureListener(e -> {
+                confirmOrderBinding.errorText.setVisibility(View.VISIBLE);
+                confirmOrderBinding.errorText.setText(e.getMessage());
+                Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+        });
+
+        confirmOrderBinding.backBtn.setOnClickListener(n -> {
+            alertDialog.dismiss();
+        });
+
     }
 
     private void getShoppingCart() {
@@ -177,5 +238,14 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
     }
 }

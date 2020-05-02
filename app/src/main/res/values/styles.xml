@@ -73,4 +73,9 @@
         <item name="android:textSize">14dp</item>
     </style>
 
+    <style name="AlertDialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
