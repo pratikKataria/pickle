@@ -169,7 +169,6 @@ public class CartViewModel extends BaseObservable {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Address newAddress = dataSnapshot.getValue(Address.class);
-                Log.e(CartViewModel.class.getName(), newAddress.toString());
                 if (newAddress != null)
                     setAddress(newAddress.toString());
             }

@@ -1,6 +1,6 @@
 package com.example.pickle.data;
 
-public class OrdersData {
+public class OrdersDetails {
     private String userId;
     private String itemId;
     private String date;
@@ -10,7 +10,7 @@ public class OrdersData {
     private String address;
     private String deliveryTime;
 
-    public OrdersData(String itemId, String date, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
+    public OrdersDetails(String itemId, String date, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;
         this.date = date;
         this.itemQty = itemQty;
@@ -21,7 +21,7 @@ public class OrdersData {
     }
 
 
-    public OrdersData() { }
+    public OrdersDetails() { }
 
     public String getDeliveryTime() {
         return deliveryTime;
@@ -81,5 +81,19 @@ public class OrdersData {
 
     public Integer getItemQty() {
         return itemQty;
+    }
+
+    @Override
+    public String toString() {
+        return "OrdersDetails{" +
+                "userId='" + userId + '\'' +
+                ", itemId='" + itemId + '\'' +
+                ", date='" + date + '\'' +
+                ", itemQty=" + itemQty +
+                ", itemBasePrice=" + itemBasePrice +
+                ", itemCategory='" + itemCategory + '\'' +
+                ", address='" + address + '\'' +
+                ", deliveryTime='" + deliveryTime + '\'' +
+                '}';
     }
 }

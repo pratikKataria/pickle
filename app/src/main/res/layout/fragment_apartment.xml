@@ -30,7 +30,7 @@
             android:layout_marginTop="12dp"
             android:textSize="@dimen/act_customer_detail_tv"
             android:textColor="@android:color/darker_gray"
-            android:text="Apartment / Society*" />
+            android:text="Apartment / Society" />
 
         <EditText
             android:id="@+id/cd_et_apartment"
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/act_customer_detail_tv"
-                    android:text="Flat / House no*" />
+                    android:text="Flat / House no" />
 
                 <EditText
                     android:id="@+id/cd_et_flat_house_no"
@@ -126,7 +126,7 @@
             android:layout_marginTop="12dp"
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/act_customer_detail_tv"
-            android:text="Landmark / Instruction*" />
+            android:text="Landmark / Instruction" />
 
         <EditText
             android:id="@+id/cd_et_instruction"

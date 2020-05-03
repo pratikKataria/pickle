@@ -6,6 +6,8 @@
 
     <color name="mainActColor">#FEFEFE</color>
 
+    <color name="colorGrey50">#fafafa</color>
+
     <color name="chipColorStateSelect">#6600EB</color>
     <color name="chipColorSateUnselected">#E4D2FC</color>
 

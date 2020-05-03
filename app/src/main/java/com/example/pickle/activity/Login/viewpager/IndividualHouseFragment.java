@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
-import com.example.pickle.data.ApartmentDataModel;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.IndividualHouseDataModel;
 import com.example.pickle.data.PersonalInformation;
@@ -58,28 +57,15 @@ public class IndividualHouseFragment extends Fragment {
             if (etName.getText().toString().isEmpty()) {
                 etName.setError("should not be empty");
                 etName.requestFocus();
-                return;
             }
 
 
             if (!(etareaPin.getText().toString().length() == 6)) {
                 etareaPin.setError("incorrect number");
                 etareaPin.requestFocus();
-                return;
             }
 
 
-            if (etFloor.getText().toString().isEmpty()) {
-                etFloor.setError("should not be empty");
-                etFloor.requestFocus();
-                return;
-            }
-
-            if (landmark.getText().toString().isEmpty()) {
-                landmark.setError("should not be empty");
-                landmark.requestFocus();
-                return;
-            }
 
             if (editTextAddress.getText().toString().isEmpty()) {
                 editTextAddress.setError("should not be empty");
@@ -88,24 +74,28 @@ public class IndividualHouseFragment extends Fragment {
             }
 
             Customer customer = new Customer(
-
                     new PersonalInformation(
                             etName.getText().toString(),
                             FirebaseAuth.getInstance().getUid(),
                             FirebaseInstanceId.getInstance().getToken(),
                             new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
-                    )
-
+                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
             );
 
-            IndividualHouseDataModel individualHouseDataModel = new IndividualHouseDataModel(
-                    etareaPin.getText().toString(),
-                    editTextAddress.getText().toString(),
-                    landmark.getText().toString(),
-                    etFloor.getText().toString(),
-                    "individualHouse");
-
+            IndividualHouseDataModel individualHouseDataModel;
+            if (etFloor.getText().toString().isEmpty() && landmark.getText().toString().isEmpty()) {
+                individualHouseDataModel = new IndividualHouseDataModel(
+                        etareaPin.getText().toString(),
+                        editTextAddress.getText().toString(),
+                        "individualHouse");
+            } else {
+                individualHouseDataModel = new IndividualHouseDataModel(
+                        etareaPin.getText().toString(),
+                        editTextAddress.getText().toString(),
+                        landmark.getText().toString(),
+                        etFloor.getText().toString(),
+                        "individualHouse");
+            }
 
             atomicUpdate(customer, individualHouseDataModel);
         });
@@ -118,8 +108,9 @@ public class IndividualHouseFragment extends Fragment {
 
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
+//        String uid = "ddEk1gOv0hUFZVinEWzzdZNlBtF3";
         update.put("Customers/" + uid, customer);
-        update.put("Addresses/" + uid, individualHouseDataModel);
+        update.put("Addresses/" + uid + "/slot1", individualHouseDataModel);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {

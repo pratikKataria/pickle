@@ -1,13 +1,18 @@
 package com.example.pickle.data;
 
 import android.content.Context;
-import android.widget.ImageButton;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pickle.BR;
+import com.example.pickle.R;
+import com.example.pickle.binding.IAnimation;
 import com.example.pickle.binding.IMainActivity;
 
 public class ProductViewModel extends BaseObservable {
@@ -31,6 +36,16 @@ public class ProductViewModel extends BaseObservable {
 
         newProduct.setQuantityCounter(1);
         setProduct(newProduct);
+
+        try {
+            NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+            Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
+            IAnimation iAnimation = (IAnimation) fragment;
+            iAnimation.play();
+        } catch (Exception xe) {
+            Log.e(ProductViewModel.class.getName(), xe.getMessage());
+        }
+
     }
 
     public void increaseQuantity(Context context) {
@@ -44,6 +59,17 @@ public class ProductViewModel extends BaseObservable {
 
             newProduct.setQuantityCounter(currentQuantity + 1);
             setProduct(newProduct);
+
+            try {
+                NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+                Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
+                IAnimation iAnimation = (IAnimation) fragment;
+                iAnimation.play();
+            } catch (Exception xe) {
+                Log.e(ProductViewModel.class.getName(), xe.getMessage());
+            }
+
+
         }else {
             Toast.makeText(context, "maximum quantity reached", Toast.LENGTH_SHORT).show();
         }

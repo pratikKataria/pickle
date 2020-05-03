@@ -11,12 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
@@ -25,8 +23,8 @@ import com.example.pickle.binding.INavigation;
 import com.example.pickle.binding.OrderStatus;
 import com.example.pickle.data.CartViewModel;
 import com.example.pickle.data.ConfirmOrderViewModel;
-import com.example.pickle.data.OrderDetails;
-import com.example.pickle.data.OrdersData;
+import com.example.pickle.data.Orders;
+import com.example.pickle.data.OrdersDetails;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartTestViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
@@ -36,7 +34,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -107,7 +104,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
             HashMap<String, Object> atomicOperation = new HashMap<>();
             for (ProductModel product : productCartList) {
                 String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
-                atomicOperation.put("OrdersDetails/" + key, new OrdersData(
+                atomicOperation.put("OrdersDetails/" + key, new OrdersDetails(
                         product.getItemId(),
                         new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
                         product.getQuantityCounter(),
@@ -116,10 +113,11 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                         deliveryAddress,
                         deliveryTime
                 ));
-                atomicOperation.put("Orders/" + key, new OrderDetails(
+                atomicOperation.put("Orders/" + key, new Orders(
                         "ddEk1gOv0hUFZVinEWzzdZNlBtF3"/*todo FirebaseAuth.getInstance().getUid()*/,
-                        product.getItemId(),
-                        OrderStatus.PROCESSING
+                        key,
+                        OrderStatus.PROCESSING,
+                        new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date())
                 ));
             }
 

@@ -1,18 +1,24 @@
 package com.example.pickle.activity.main.products_fragment;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.R;
+import com.example.pickle.binding.IAnimation;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentFruitsBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -32,7 +38,7 @@ import java.util.Iterator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FruitsFragment extends Fragment {
+public class FruitsFragment extends Fragment implements IAnimation {
 
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
@@ -57,6 +63,8 @@ public class FruitsFragment extends Fragment {
         fruitList = new ArrayList<>();
         fruitsBinding.setProductList(fruitList);
         new Handler().postDelayed(this::populateList,1200);
+
+        changeStatusBarColor();
 
         return fruitsBinding.getRoot();
     }
@@ -151,5 +159,26 @@ public class FruitsFragment extends Fragment {
         if (childEventListener != null) {
             reference.removeEventListener(childEventListener);
         }
+    }
+
+    void changeStatusBarColor() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Window window = getActivity().getWindow();
+                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorGrey50));
+            }
+        } catch (Exception xe) {
+            Log.e(FruitsFragment.class.getName(), "error "+xe.getMessage());
+        }
+    }
+
+    @Override
+    public void play() {
+        LottieAnimationView lottieCart = fruitsBinding.cartAnim;
+        lottieCart.setMinAndMaxProgress(.3f, 1f);
+        lottieCart.playAnimation();
+
+        Log.e("Fruit ", "play");
     }
 }

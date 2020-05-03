@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
+import com.example.pickle.Adapters.OrdersRecyclerAdapter;
+import com.example.pickle.data.OrdersDetails;
 import com.example.pickle.data.ProductModel;
 
 import java.util.ArrayList;
@@ -70,6 +72,26 @@ public class RecyclerViewBinding {
         CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) recyclerView.getAdapter();
         if (cartRecyclerViewAdapter == null) {
             cartRecyclerViewAdapter = new CartRecyclerViewAdapter(recyclerView.getContext(), (ArrayList<ProductModel>)list);
+            recyclerView.setAdapter(cartRecyclerViewAdapter);
+        }
+    }
+
+    @BindingAdapter("orderPlacedList")
+    public static void orderPlaced(RecyclerView recyclerView, List<OrdersDetails> list) {
+
+        if (list == null) {
+            return;
+        }
+
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            layoutManager = new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+
+        OrdersRecyclerAdapter cartRecyclerViewAdapter = (OrdersRecyclerAdapter) recyclerView.getAdapter();
+        if (cartRecyclerViewAdapter == null) {
+            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<OrdersDetails>)list);
             recyclerView.setAdapter(cartRecyclerViewAdapter);
         }
     }

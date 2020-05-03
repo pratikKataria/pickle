@@ -56,7 +56,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             productViewModel.setProduct(product);
 
             currCardViewHolder.bind(productViewModel);
-            currCardViewHolder.binding.setIMainActivity((IMainActivity)context);
 
             ((ProductCardViewHolder) holder).binding.cardView.setOnClickListener(
                     n -> ((ProductCardViewHolder) holder).showDialog(productModelsList.get(position))

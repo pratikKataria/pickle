@@ -13,6 +13,11 @@ public class IndividualHouseDataModel extends  Address{
         this.residentialType =residentialType;
     }
 
+    public IndividualHouseDataModel(String areaPin, String address, String residentialType) {
+        super(areaPin, address);
+        this.residentialType = residentialType;
+    }
+
     public String getResidentialType() {
         return residentialType;
     }

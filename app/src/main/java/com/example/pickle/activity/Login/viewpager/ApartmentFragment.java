@@ -57,7 +57,7 @@ public class ApartmentFragment extends Fragment {
 
         EditText etName = view.findViewById(R.id.cd_et_userName);
         EditText etApartment = view.findViewById(R.id.cd_et_apartment);
-        EditText etTower = view.findViewById(R.id.cd_et_pin_code);
+        EditText pincode = view.findViewById(R.id.cd_et_pin_code);
         EditText etFlat = view.findViewById(R.id.cd_et_flat_house_no);
         EditText landmark = view.findViewById(R.id.cd_et_instruction);
         EditText editTextAddress = view.findViewById(R.id.cd_et_address);
@@ -70,32 +70,11 @@ public class ApartmentFragment extends Fragment {
             if (etName.getText().toString().isEmpty()) {
                 etName.setError("should not be empty");
                 etName.requestFocus();
-                return;
             }
 
-            if (etApartment.getText().toString().isEmpty()) {
-                etApartment.setError("should not be empty");
-                etApartment.requestFocus();
-                return;
-            }
-
-            if (!(etTower.getText().toString().length() == 6)) {
-                etTower.setError("incorrect number");
-                etTower.requestFocus();
-                return;
-            }
-
-
-            if (etFlat.getText().toString().isEmpty()) {
-                etFlat.setError("should not be empty");
-                etFlat.requestFocus();
-                return;
-            }
-
-            if (landmark.getText().toString().isEmpty()) {
-                landmark.setError("should not be empty");
-                landmark.requestFocus();
-                return;
+            if (!(pincode.getText().toString().length() == 6)) {
+                pincode.setError("incorrect number");
+                pincode.requestFocus();
             }
 
             if (editTextAddress.getText().toString().isEmpty()) {
@@ -110,16 +89,23 @@ public class ApartmentFragment extends Fragment {
                             FirebaseAuth.getInstance().getUid(),
                             FirebaseInstanceId.getInstance().getToken(),
                             new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
-                    ));
-
-            ApartmentDataModel apartmentDataModel = new ApartmentDataModel(
-                    etName.getText().toString(),
-                    etApartment.getText().toString(),
-                    etFlat.getText().toString(),
-                    editTextAddress.getText().toString(),
-                    landmark.getText().toString(),
-                    "apartment or gated society");
+                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
+                    );
+            ApartmentDataModel apartmentDataModel;
+            if (etFlat.getText().toString().isEmpty() && landmark.getText().toString().isEmpty()) {
+                apartmentDataModel = new ApartmentDataModel(
+                        etApartment.getText().toString(),
+                        editTextAddress.getText().toString(),
+                        "apartment or gated society");
+            } else {
+                apartmentDataModel = new ApartmentDataModel(
+                        etApartment.getText().toString(),
+                        pincode.getText().toString(),
+                        etFlat.getText().toString(),
+                        editTextAddress.getText().toString(),
+                        landmark.getText().toString(),
+                        "apartment or gated society");
+            }
 
             atomicUpdate(customer, apartmentDataModel);
         });
@@ -132,8 +118,10 @@ public class ApartmentFragment extends Fragment {
 
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
+//        String uid = "ddEk1gOv0hUFZVinEWzzdZNlBtF3";
+
         update.put("Customers/" + uid, customer);
-        update.put("Addresses/"+ uid, apartmentDataModel);
+        update.put("Addresses/"+ uid+"/slot1", apartmentDataModel);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {

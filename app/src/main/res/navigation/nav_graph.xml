@@ -44,12 +44,12 @@
             app:enterAnim="@anim/slide_in_up"
             app:exitAnim="@anim/slide_out_down" />
         <action
-            android:id="@+id/action_orderFragment_to_ordersPlacedFragment"
-            app:destination="@id/ordersPlacedFragment"
+            android:id="@+id/action_orderFragment_to_nav_menu_sub_orders"
+            app:destination="@id/nav_menu_sub_orders"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/fruitsFragment"
@@ -93,13 +93,9 @@
         android:id="@+id/cartFragment"
         android:name="com.example.pickle.activity.main.navigation_fragment.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
-        <action
-            android:id="@+id/action_cartFragment_to_orderFragment"
-            app:destination="@id/orderFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_cart" />
     <fragment
-        android:id="@+id/ordersPlacedFragment"
+        android:id="@+id/nav_menu_sub_orders"
         android:name="com.example.pickle.activity.main.options.OrdersPlacedFragment"
         android:label="fragment_orders_placed"
         tools:layout="@layout/fragment_orders_placed" />

@@ -34,6 +34,12 @@ public class Address {
         this.landmark = landmark;
     }
 
+
+    public Address(String areaPin, String address) {
+        this.areaPin = areaPin;
+        this.address = address;
+    }
+
     //Address individual
     public Address(String areaPin, String address, String landmark, String floors) {
         this.areaPin = areaPin;

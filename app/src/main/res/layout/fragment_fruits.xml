@@ -14,17 +14,125 @@
 
    </data>
 
-   <LinearLayout
+   <androidx.coordinatorlayout.widget.CoordinatorLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       tools:context=".activity.main.products_fragment.FruitsFragment">
+       tools:context=".activity.main.products_fragment.FruitsFragment"
+       android:orientation="vertical">
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/fruits_recycler_view"
+      <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/appBarLayout"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          app:productList="@{productList}"/>
+          android:layout_height="wrap_content">
 
-   </LinearLayout>
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/colorGrey50"
+             app:layout_collapseMode="parallax"
+             app:layout_scrollFlags="scroll|enterAlways|snap">
+
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewFruits"
+                android:layout_width="85dp"
+                android:layout_height="100dp"
+                android:layout_margin="12dp"
+                android:background="@color/white"
+                android:backgroundTint="@color/icFruitBg"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton4">
+
+               <ImageView
+                   android:id="@+id/grid_view_iv_image"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:layout_marginStart="8dp"
+                   android:layout_marginEnd="8dp"
+                   android:src="@drawable/ic_fruits" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="Fruits"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
+                app:layout_constraintTop_toTopOf="@+id/cardViewFruits" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="29 items"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/textView16"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/cart_anim"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="8dp"
+                android:layout_marginBottom="12dp"
+                android:scaleX="1.2"
+                android:scaleY="1.2"
+                app:lottie_speed="1.5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:lottie_fileName="cart_added_animation.json"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go to cart"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cart_anim"
+                app:layout_constraintHorizontal_bias="0.50"
+                app:layout_constraintStart_toStartOf="@+id/cart_anim"
+                app:layout_constraintTop_toBottomOf="@+id/ib_overlay" />
+
+            <ImageButton
+                android:id="@+id/ib_overlay"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/cart_anim"
+                app:layout_constraintEnd_toEndOf="@+id/cart_anim"
+                app:layout_constraintStart_toStartOf="@+id/cart_anim"
+                app:layout_constraintTop_toTopOf="@+id/cart_anim" />
+         </androidx.constraintlayout.widget.ConstraintLayout>
+      </com.google.android.material.appbar.AppBarLayout>
+
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/fruits_recycler_view"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:productList="@{productList}"
+             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+
+   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
 
