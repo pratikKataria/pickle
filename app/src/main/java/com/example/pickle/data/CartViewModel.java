@@ -30,15 +30,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CartViewModel extends BaseObservable {
-    List<ProductModel> cartProducts = new ArrayList<>();
-    boolean isCartVisible;
-    boolean currentLocationFound;
-    String address;
-    String deliveryTime;
+    private List<ProductModel> cartProducts = new ArrayList<>();
+    private boolean isCartVisible;
+    private boolean currentLocationFound;
+    private String address;
+    private String deliveryTime;
+    private String stringDate;
     DatabaseReference reference;
 
     @Bindable
@@ -101,11 +105,27 @@ public class CartViewModel extends BaseObservable {
     @Bindable
     public String getDeliveryTime() {return deliveryTime;}
 
+
+    @Bindable
+    public String getStringDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        Date date = calendar.getTime();
+        this.stringDate = new SimpleDateFormat("EEE dd MMM").format(date);
+        return stringDate;
+    }
+
+    @Bindable
+    public void setStringDate(String stringDate) {
+        this.stringDate = stringDate;
+        notifyPropertyChanged(BR.stringDate);
+    }
+
     public String getProductQuantitiesString() {
         int totalItems = 0;
 
         for (ProductModel product : cartProducts) {
-            totalItems += product.getQuantityCounter();
+            totalItems += 1;
         }
 
         String s;

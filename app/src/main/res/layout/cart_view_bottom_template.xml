@@ -25,50 +25,51 @@
         android:id="@+id/textView19"
         android:layout_width="107dp"
         android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:text="Cash on Delivery"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/avenir_next_bold"
+        android:text="Cancel delivery within 24hr"
         android:textColor="@color/colorGrey200"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView5" />
+        app:layout_constraintStart_toStartOf="@+id/textView21"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:src="@drawable/ic_delivery_time"
+        app:layout_constraintBottom_toBottomOf="@+id/textView24"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+        app:layout_constraintTop_toTopOf="@+id/textView23" />
 
     <TextView
         android:id="@+id/textView18"
         android:layout_width="107dp"
         android:layout_height="22dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/avenir_next_bold"
-        android:textColor="@color/colorGrey200"
         android:text="Cash on Delivery"
+        android:textColor="@color/colorGrey200"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:src="@drawable/ic_cancel"
+        app:layout_constraintBottom_toBottomOf="@+id/textView22"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView22" />
+        app:layout_constraintTop_toTopOf="@+id/textView19" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:src="@drawable/ic_cash_on_delivery"
+        app:layout_constraintBottom_toBottomOf="@+id/textView21"
         app:layout_constraintStart_toStartOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toTopOf="@+id/textView18" />
 
     <TextView
         android:id="@+id/textView21"
@@ -84,9 +85,9 @@
         android:id="@+id/textView22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cash, Gpay and all payment accepted at delivery"
-        android:textSize="10sp"
+        android:text="cancel delivery with no questions asked"
         android:textColor="@color/colorGrey150"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
@@ -94,9 +95,9 @@
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cash, Gpay and all payment accepted at delivery"
-        android:textSize="10sp"
+        android:text="delivery time vary due to external factors"
         android:textColor="@color/colorGrey150"
+        android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/textView23"
         app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
@@ -104,12 +105,12 @@
         android:id="@+id/textView23"
         android:layout_width="107dp"
         android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:text="Cash on Delivery"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/avenir_next_bold"
+        android:text="Delivery time may vary"
         android:textColor="@color/colorGrey200"
-        app:layout_constraintStart_toEndOf="@+id/imageView6"
-        app:layout_constraintTop_toTopOf="@+id/imageView6" />
+        app:layout_constraintStart_toStartOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
     <ImageView
         android:id="@+id/imageView2"

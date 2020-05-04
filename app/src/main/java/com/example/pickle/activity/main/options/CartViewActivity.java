@@ -30,7 +30,7 @@ import com.example.pickle.data.ConfirmOrderViewModel;
 import com.example.pickle.data.Orders;
 import com.example.pickle.data.OrdersDetails;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.databinding.ActivityCartTestViewBinding;
+import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -48,13 +48,13 @@ import java.util.Map;
 
 public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
 
-    private ActivityCartTestViewBinding binding;
+    private ActivityCartViewBinding binding;
     private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_test_view);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_view);
 
         getShoppingCart();
 
@@ -190,7 +190,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
 
     private void getShoppingCart() {
         List<ProductModel> cartList = new ArrayList<>();
-
+//todo replace with new mehtod
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (preferences != null) {
             Map<String, ?> allEntries = preferences.getAll();
