@@ -1,12 +1,10 @@
 package com.example.pickle.activity.main.options;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,11 +38,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
 
@@ -189,22 +185,8 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     }
 
     private void getShoppingCart() {
-        List<ProductModel> cartList = new ArrayList<>();
-//todo replace with new mehtod
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (preferences != null) {
-            Map<String, ?> allEntries = preferences.getAll();
-            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-                String list = SharedPrefsUtils.getStringPreference(this, entry.getKey(), 0);
-                ProductModel cartProduct = new Gson().fromJson(list, ProductModel.class);
-                if (cartProduct != null) {
-                    cartList.add(cartProduct);
-                }
-            }
-        }
-
+        List<ProductModel> cartList = SharedPrefsUtils.getAllProducts(this);
         binding.setCartList(cartList);
-
         CartViewModel cartViewModel = new CartViewModel();
         cartViewModel.setCartProducts(cartList);
         binding.setCartViewModel(cartViewModel);
