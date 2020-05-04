@@ -206,6 +206,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
                 app:layout_collapseMode="pin"
+                app:title=" "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -213,12 +214,12 @@
                 app:titleMargin="18dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingStart="42dp"
+                    android:layout_gravity="center"
                     android:text="Pickle India"
                     android:typeface="@{typeface}"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </androidx.appcompat.widget.Toolbar>
 

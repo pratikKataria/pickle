@@ -229,8 +229,6 @@ public class OrderFragment extends Fragment{
     private void setUpToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(_toolbar);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Pickle India");
-
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -361,9 +359,6 @@ public class OrderFragment extends Fragment{
                 startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
 
-            case R.id.menu_main_search_btn:
-                startActivity(new Intent(getActivity(), FirebaseSearchActivity.class));
-                break;
         }
         return super.onOptionsItemSelected(item);
     }

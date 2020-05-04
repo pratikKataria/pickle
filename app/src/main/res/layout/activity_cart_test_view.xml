@@ -185,7 +185,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="32dp"
             android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
 
             <androidx.core.widget.NestedScrollView
@@ -196,25 +195,112 @@
                 android:orientation="vertical"
                 tools:context=".activity.main.options.CartViewActivity">
 
-
                 <LinearLayout
                     android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:backgroundTint="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_arrow_left"
+                                android:layout_marginStart="8dp"
+                                android:layout_gravity="center|start"
+                                android:background="?attr/selectableItemBackgroundBorderless" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:layout_marginStart="8dp"
+                                android:layout_gravity="center|start"
+                                android:text="@{`total `+ cartViewModel.productQuantitiesString}" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginEnd="@dimen/cart_margin_end"
+                        android:padding="12dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_alert_dialog"
+                        android:backgroundTint="@color/secondaryColorLight">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/secondaryColorDark"
+                            android:fontFamily="@font/avenir_next_bold"
+                            android:text="Earliest delivery date Wed, 6 May." />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="10sp"
+                            android:text="Thank you for choosing Pickle. We take a day to verify your address on your first daily to ensure smooth deliveries in the future" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deliver once orders (1)"
+                        android:layout_margin="@dimen/cart_margin_start"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/avenir_next_medium" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/cartRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginEnd="@dimen/cart_margin_end"
                         app:carProductList="@{cartList}"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Subscription orders(0)"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/avenir_next_medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_border"
+                        android:padding="8dp"
+                        android:textSize="10sp"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:text="Get your products on the daily basis with subscription" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="18dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="18dp"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="@dimen/cart_margin_end"
                         android:layout_marginBottom="94dp"
                         android:orientation="vertical">
 
@@ -222,7 +308,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:text="@{`total `+ cartViewModel.productQuantitiesString}"/>
+                            android:text="@{`total subquanties `+ cartViewModel.productQuantitiesString}" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -249,11 +335,22 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="Delivery fee" />
+                                android:layout_height="wrap_content"                                    android:layout_weight="2"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="10sp"
+                                    android:layout_marginBottom="4dp"
+                                    android:text="product delivery changes as per area code"/>
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Delivery fee" />
+                            </LinearLayout>
 
                             <TextView
                                 android:id="@+id/deliveryPrice"
@@ -292,6 +389,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:background="@color/grey" />
+
+                        <include
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            layout="@layout/cart_view_bottom_template"/>
                     </LinearLayout>
                 </LinearLayout>
 

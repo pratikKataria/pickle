@@ -59,6 +59,11 @@ public class CartViewModel extends BaseObservable {
     }
 
     @Bindable
+    public boolean getCartVisible() {
+        return isCartVisible;
+    }
+
+    @Bindable
     public void setAddress(String address) {
         this.address = address;
         Log.e(CartViewActivity.class.getName(), "address: " + address);

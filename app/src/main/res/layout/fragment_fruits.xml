@@ -113,8 +113,7 @@
                    android:id="@+id/grid_view_iv_image"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   android:layout_marginStart="8dp"
-                   android:layout_marginEnd="8dp"
+
                    android:src="@drawable/ic_fruits" />
             </androidx.cardview.widget.CardView>
 

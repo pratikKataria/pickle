@@ -3,15 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_main_search_btn"
-        android:title="search"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/menu_main_cart_btn"
         android:title="cart"
         android:icon="@drawable/action_bar_group_icon"
         app:showAsAction="always"/>
+
 
 </menu>
