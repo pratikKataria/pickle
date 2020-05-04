@@ -358,8 +358,24 @@ public class OrderFragment extends Fragment{
             case R.id.menu_main_cart_btn:
                 startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                 break;
-
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+        for (ProductModel product : productModelArrayList) {
+            if (refreshList.contains(product)) {
+                ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
+                product.setQuantityCounter(newProduct.getQuantityCounter());
+                notifyChanges();
+            } else {
+                product.setQuantityCounter(0);
+                notifyChanges();
+            }
+        }
     }
 }

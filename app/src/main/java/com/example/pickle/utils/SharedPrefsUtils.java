@@ -238,7 +238,7 @@ final public class SharedPrefsUtils {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> prefEntry = preferences.getAll();
-            Log.e(SharedPrefsUtils.class.getName(), "" + prefEntry);
+//            Log.e(SharedPrefsUtils.class.getName(), "" + prefEntry);
             for (String key : prefEntry.keySet()) {
                 String productGson = (String) prefEntry.get(key);
                 ProductModel productModel = new Gson().fromJson(productGson, ProductModel.class);
