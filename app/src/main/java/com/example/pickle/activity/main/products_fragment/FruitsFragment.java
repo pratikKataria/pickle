@@ -169,6 +169,22 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+        for (ProductModel product : fruitList) {
+            if (refreshList.contains(product)) {
+                ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
+                product.setQuantityCounter(newProduct.getQuantityCounter());
+                notifyChanges();
+            } else {
+                product.setQuantityCounter(0);
+                notifyChanges();
+            }
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (childEventListener != null) {

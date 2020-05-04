@@ -7,6 +7,12 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.pickle.data.ProductModel;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * A pack of helpful getter and setter methods for reading/writing to {@link SharedPreferences}.
  */
@@ -224,6 +230,24 @@ final public class SharedPrefsUtils {
         } catch (Exception xe) {
             Log.e(SharedPrefsUtils.class.getName(), xe.getMessage());
             return  false;
+        }
+    }
+
+    public static ArrayList<ProductModel> getAllProducts(Context context) {
+        ArrayList<ProductModel> productModels = new ArrayList<>();
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Map<String, ?> prefEntry = preferences.getAll();
+            Log.e(SharedPrefsUtils.class.getName(), "" + prefEntry);
+            for (String key : prefEntry.keySet()) {
+                String productGson = (String) prefEntry.get(key);
+                ProductModel productModel = new Gson().fromJson(productGson, ProductModel.class);
+                productModels.add(productModel);
+            }
+            return productModels;
+        } catch (Exception xe) {
+            Log.e(SharedPrefsUtils.class.getName(), xe.getMessage());
+            return productModels;
         }
     }
 }
