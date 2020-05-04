@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.R;
 import com.example.pickle.activity.main.FirebaseSearchActivity;
+import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.binding.IFragmentCb;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentFruitsBinding;
@@ -68,6 +69,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
         fruitsBinding.setProductList(fruitList);
         fruitsBinding.setActivity(getActivity());
         fruitsBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        fruitsBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 
         changeStatusBarColor();
 
@@ -189,7 +191,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
     @Override
     public void play() {
         LottieAnimationView lottieCart = fruitsBinding.cartAnim;
-        lottieCart.setMinAndMaxProgress(.3f, 1f);
+        lottieCart.setMinAndMaxProgress(.20f, 1f);
         lottieCart.playAnimation();
 
         Log.e("Fruit ", "play");
