@@ -14,6 +14,10 @@
         <variable
             name="carouselImage"
             type="java.util.List&lt;com.example.pickle.activity.carousel.CarouselImage>" />
+
+        <variable
+            name="typeface"
+            type="android.graphics.Typeface" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -55,8 +59,6 @@
                         android:id="@+id/grid_view_iv_image"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
                         android:src="@drawable/ic_fruits" />
                 </androidx.cardview.widget.CardView>
 
@@ -94,9 +96,11 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_vegetables" />
+                        android:scaleType="fitCenter"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        android:layout_margin="4dp"
+                        android:src="@drawable/ic_vegetable" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -134,7 +138,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="12dp"
+                        android:layout_margin="4dp"
                         android:src="@drawable/ic_dairy" />
                 </androidx.cardview.widget.CardView>
 
@@ -172,7 +176,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_margin="16dp"
+                        android:layout_margin="4dp"
                         android:src="@drawable/ic_beverages" />
                 </androidx.cardview.widget.CardView>
 
@@ -214,6 +218,7 @@
                     android:gravity="center"
                     android:paddingStart="42dp"
                     android:text="Pickle India"
+                    android:typeface="@{typeface}"
                     android:textSize="16sp" />
             </androidx.appcompat.widget.Toolbar>
 

@@ -4,6 +4,8 @@ package com.example.pickle.activity.main.navigation_fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.RenderNode;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -83,7 +86,6 @@ public class OrderFragment extends Fragment{
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
         productModelArrayList = new ArrayList<>();
         saveToMap = new HashMap<>();
-        //final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
     }
 
 
@@ -150,6 +152,8 @@ public class OrderFragment extends Fragment{
         getImageList();
         binding.setCarouselImage(imageList);
 
+        final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
+        binding.setTypeface(tf);
         addProduct();
 
         new Handler().postDelayed(() ->{binding.suggestionRecyclerView.setVisibility(View.VISIBLE);}, 600);

@@ -72,8 +72,8 @@
     <color name="questionRemaining">#024065</color>
 
     <color name="notesBg">#303030</color>
-    <color name="icFruitBg">#FFDDE3</color>
-    <color name="icVegetableBg">#DCF8F0</color>
-    <color name="icDairyBg">#FFE6CC</color>
-    <color name="icBeveragesBg">#D5E9FD</color>
+    <color name="icFruitBg">#FEE8E8</color>
+    <color name="icVegetableBg">#EFF8F0</color>
+    <color name="icDairyBg">#F9F4ED</color>
+    <color name="icBeveragesBg">#F9E8D8</color>
 </resources>
