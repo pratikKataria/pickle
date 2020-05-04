@@ -47,6 +47,8 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
 
         binding.setProductModelList(searchList);
         binding.setAutoCompleteList(searchSuggestionList);
+        binding.setActivity(this);
+        binding.editQuery.requestFocus();
 
         binding.editQuery.addTextChangedListener(new TextWatcher() {
             @Override

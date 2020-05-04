@@ -1,5 +1,5 @@
 package com.example.pickle.binding;
 
-public interface IAnimation {
+public interface IFragmentCb {
     void play();
 }

@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.main.EmptyActivity"></activity>
         <activity android:name=".activity.main.FirebaseSearchActivity"
-            android:windowSoftInputMode="adjustNothing">
+            android:windowSoftInputMode="adjustNothing|stateAlwaysVisible">
 
         </activity>
         <activity android:name=".activity.main.options.CartViewActivity" >

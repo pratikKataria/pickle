@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pickle.BR;
 import com.example.pickle.R;
-import com.example.pickle.binding.IAnimation;
+import com.example.pickle.binding.IFragmentCb;
 import com.example.pickle.binding.IMainActivity;
 
 public class ProductViewModel extends BaseObservable {
@@ -40,8 +40,8 @@ public class ProductViewModel extends BaseObservable {
         try {
             NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
             Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
-            IAnimation iAnimation = (IAnimation) fragment;
-            iAnimation.play();
+            IFragmentCb iFragmentCb = (IFragmentCb) fragment;
+            iFragmentCb.play();
         } catch (Exception xe) {
             Log.e(ProductViewModel.class.getName(), xe.getMessage());
         }
@@ -63,8 +63,8 @@ public class ProductViewModel extends BaseObservable {
             try {
                 NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
                 Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
-                IAnimation iAnimation = (IAnimation) fragment;
-                iAnimation.play();
+                IFragmentCb iFragmentCb = (IFragmentCb) fragment;
+                iFragmentCb.play();
             } catch (Exception xe) {
                 Log.e(ProductViewModel.class.getName(), xe.getMessage());
             }

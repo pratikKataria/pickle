@@ -7,6 +7,7 @@
 
         <import type="com.example.pickle.data.ProductModel"/>
         <import type="java.util.List"/>
+        <import type="android.app.Activity"/>
         <import type="com.example.pickle.Adapters.AutoCompleteAdapter"/>
 
         <variable
@@ -16,6 +17,10 @@
         <variable
             name="autoCompleteList"
             type="List&lt;String>" />
+
+        <variable
+            name="activity"
+            type="Activity" />
 
     </data>
 
@@ -46,50 +51,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <AutoCompleteTextView
-                android:id="@+id/edit_query"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:autoCompleteList="@{autoCompleteList}"
-                android:background="@color/transparent"
-                android:completionThreshold="1"
-                android:dropDownAnchor="@id/chipGroup3"
-                android:elevation="5dp"
-                android:focusable="true"
-                android:hint="search here"
-                android:layout_marginBottom="8dp"
-                android:inputType="textAutoComplete|textAutoCorrect"
-                android:paddingStart="32dp"
-                android:popupBackground="@drawable/ic_round_rect_white"
-                android:scrollIndicators="none"
-                android:textCursorDrawable="@color/black"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView2"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/colorGrey100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/imageButton4"
+                app:layout_constraintTop_toTopOf="@+id/imageButton4">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/bg_search_bar"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_query"
-                app:layout_constraintEnd_toEndOf="parent"
+                <AutoCompleteTextView
+                    android:id="@+id/edit_query"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="16dp"
+                    android:background="@color/transparent"
+                    android:completionThreshold="1"
+                    android:cursorVisible="true"
+                    android:dropDownAnchor="@id/chipGroup3"
+                    android:focusable="true"
+                    android:focusedByDefault="true"
+                    android:hint="search here"
+                    android:inputType="textAutoComplete|textAutoCorrect"
+                    android:popupBackground="@drawable/ic_round_rect_white"
+                    android:scrollIndicators="none"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    app:autoCompleteList="@{autoCompleteList}"
+                    tools:layout_editor_absoluteX="65dp"
+                    tools:layout_editor_absoluteY="32dp" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_search" />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageButton4"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_margin="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="@color/colorGrey100"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+                <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="@{() -> activity.onBackPressed()}"
+                    android:src="@drawable/ic_arrow_left" />
+            </androidx.cardview.widget.CardView>
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="28dp"
-                android:background="@drawable/ic_search"
-                android:backgroundTint="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.38" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

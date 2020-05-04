@@ -1,6 +1,6 @@
 package com.example.pickle.activity.main.products_fragment;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,7 +18,8 @@ import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.R;
-import com.example.pickle.binding.IAnimation;
+import com.example.pickle.activity.main.FirebaseSearchActivity;
+import com.example.pickle.binding.IFragmentCb;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentFruitsBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -38,13 +39,14 @@ import java.util.Iterator;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FruitsFragment extends Fragment implements IAnimation {
+public class FruitsFragment extends Fragment implements IFragmentCb {
 
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
 
     private ArrayList<ProductModel> fruitList;
     private FragmentFruitsBinding fruitsBinding;
+    private static int countItems;
 
     public FruitsFragment() {
         // Required empty public constructor
@@ -61,8 +63,11 @@ public class FruitsFragment extends Fragment implements IAnimation {
         );
 
         fruitList = new ArrayList<>();
-        fruitsBinding.setProductList(fruitList);
         new Handler().postDelayed(this::populateList,1200);
+
+        fruitsBinding.setProductList(fruitList);
+        fruitsBinding.setActivity(getActivity());
+        fruitsBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 
         changeStatusBarColor();
 
@@ -79,16 +84,24 @@ public class FruitsFragment extends Fragment implements IAnimation {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     if (dataSnapshot.exists()) {
-
                         ProductModel product = dataSnapshot.getValue(ProductModel.class);
-                        String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
-                        ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+                        try {
+                            String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
+                            ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+                            if (product.equals(cartProduct))
+                                product.setQuantityCounter(cartProduct.getQuantityCounter());
 
-                        if (product.equals(cartProduct))
-                            product.setQuantityCounter(cartProduct.getQuantityCounter());
+                            countItems += 1;
+                            if (countItems > 0)
+                                fruitsBinding.countFruits.setText(countItems + " items");
+                            else
+                                fruitsBinding.countFruits.setText(countItems + " item");
 
-                        fruitList.add(product);
-                        notifyChanges();
+                            fruitList.add(product);
+                            notifyChanges();
+                        } catch (NullPointerException npe) {
+                            Log.e(FruitsFragment.class.getName(), "npe " + npe);
+                        }
                     }
             }
 
