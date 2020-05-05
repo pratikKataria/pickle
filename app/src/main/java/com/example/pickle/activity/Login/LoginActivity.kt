@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -60,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 countDownTimer.text = ""
-                progressBar.visibility = GONE
+                progressBar.visibility = VISIBLE
                 sendOtpButton.isEnabled = true
             }
         }
@@ -133,6 +132,7 @@ class LoginActivity : AppCompatActivity() {
                 Handler().postDelayed({
                     activity_login_tv_error.visibility = GONE
                     activity_login_tv_error.text = ""
+                    timer.cancel()
                 }, 10000)
             }
 

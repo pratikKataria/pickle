@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
+import com.example.pickle.activity.Login.LoginActivity;
 import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.binding.IMainActivity;
 import com.example.pickle.binding.INavigation;
@@ -33,10 +34,10 @@ import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +62,14 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
         }
 
         binding.setActivity(this);
-        binding.includeLayout.placeOrder.setOnClickListener(n -> placeOrder());
+        binding.includeLayout.placeOrder.setOnClickListener(n -> {
+            if (FirebaseAuth.getInstance().getUid() == null) {
+                startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            placeOrder();
+        });
 
         BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
