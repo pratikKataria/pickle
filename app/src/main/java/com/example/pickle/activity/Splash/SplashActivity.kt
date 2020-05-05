@@ -126,7 +126,6 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
         }
         build.show()
-
     }
 
     private fun hasPermissions(context: Context, permissions: Array<String>):
