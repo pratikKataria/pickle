@@ -15,9 +15,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
+import com.example.pickle.activity.main.navigation_fragment.OrderFragment
 import com.example.pickle.activity.main.options.AddNewItemActivity
+import com.example.pickle.binding.IFragmentCb
 import com.example.pickle.binding.IMainActivity
 import com.example.pickle.data.ProductModel
+import com.example.pickle.databinding.FragmentFruitsBinding
+import com.example.pickle.databinding.FragmentOrderBinding
 import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -26,7 +30,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    IMainActivity {
+    IMainActivity, IFragmentCb {
 
     lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
@@ -96,10 +100,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (productModel != null) {
             productModel.quantityCounter = quantity
             SharedPrefsUtils.setStringPreference(this, productModel.itemId, Gson().toJson(productModel))
+
+            //send update message to fragment order
+            val navHostFragment : NavHostFragment = this.supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
+            val fragment = navHostFragment.childFragmentManager.fragments[0]
+            if (fragment is OrderFragment) {
+                val iFragmentCb = fragment as IFragmentCb
+                iFragmentCb.updateIconItems()
+            }
         }
     }
 
     override fun removeProduct(productModel: ProductModel?) {
         SharedPrefsUtils.removeValuePreference(this, productModel!!.itemId)
+
+        //send update message to fragment order
+        val navHostFragment : NavHostFragment = this.supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
+        val fragment = navHostFragment.childFragmentManager.fragments[0]
+        if (fragment is OrderFragment) {
+            val iFragmentCb = fragment as IFragmentCb
+            iFragmentCb.updateIconItems()
+        }
+    }
+
+    override fun play() {}
+
+    override fun updateIconItems() {
+
     }
 }

@@ -68,13 +68,14 @@ dependencies {
 
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
 
-    implementation 'com.algolia:algoliasearch-android:3.27.0'
-
     implementation 'com.firebaseui:firebase-ui-database:6.2.1'
 
     implementation 'org.apache.commons:commons-lang3:3.10'
 
     implementation 'com.google.android:flexbox:2.0.1'
+
+    implementation 'com.hanks:htextview-base:0.1.6'
+    implementation "com.hanks:htextview-evaporate:0.1.6"
 
     // This will automatically update to the latest v3 release when you build your project
 

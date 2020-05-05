@@ -219,6 +219,7 @@
                     android:layout_gravity="center"
                     android:text="Pickle India"
                     android:typeface="@{typeface}"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </androidx.appcompat.widget.Toolbar>

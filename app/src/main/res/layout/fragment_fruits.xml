@@ -18,6 +18,10 @@
           name="productList"
           type="List&lt;ProductModel>" />
 
+      <variable
+          name="cartViewModel"
+          type="com.example.pickle.data.CartViewModel" />
+
    </data>
 
    <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -152,11 +156,12 @@
                 app:lottie_fileName="cart_added_animation.json"/>
 
             <TextView
+                android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cart"
-                android:gravity="center"
                 android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="Cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/cart_anim"
                 app:layout_constraintHorizontal_bias="0.50"

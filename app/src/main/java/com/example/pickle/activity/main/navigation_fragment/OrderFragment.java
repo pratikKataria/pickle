@@ -3,14 +3,11 @@ package com.example.pickle.activity.main.navigation_fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.RenderNode;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,10 +31,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
-import com.example.pickle.activity.main.FirebaseSearchActivity;
+import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.activity.main.options.CartViewActivity;
-import com.example.pickle.activity.carousel.CarouselImage;
+import com.example.pickle.binding.IFragmentCb;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrderBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
@@ -62,7 +59,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment{
+public class OrderFragment extends Fragment implements IFragmentCb {
 
     private static final int LIST_SIZE = 2;
     private Toolbar _toolbar;
@@ -77,6 +74,9 @@ public class OrderFragment extends Fragment{
 
     private Map<String, String> saveToMap;
     private int adapterPos;
+    private static int itemCount;
+
+    IFragmentCb iFragmentCb;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -108,14 +108,7 @@ public class OrderFragment extends Fragment{
 
         MenuItem item = menu.findItem(R.id.menu_main_cart_btn);
         LayerDrawable icon = (LayerDrawable) item.getIcon();
-        try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            Map<String, ?> prefEntry = preferences.getAll();
-            if (prefEntry.size() > 0) setBadgeCount(getActivity(), icon, prefEntry.size());
-        } catch (Exception xe) {
-            Log.e("OrderFragment", xe.getMessage());
-        }
-
+        if (itemCount > 0) setBadgeCount(getActivity(), icon, itemCount);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -132,7 +125,6 @@ public class OrderFragment extends Fragment{
         icon.mutate();
         icon.setDrawableByLayerId(R.id.ic_count, badge);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -155,6 +147,9 @@ public class OrderFragment extends Fragment{
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
         binding.setTypeface(tf);
         addProduct();
+
+        itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
+        getActivity().invalidateOptionsMenu();
 
         new Handler().postDelayed(() ->{binding.suggestionRecyclerView.setVisibility(View.VISIBLE);}, 600);
 
@@ -224,7 +219,6 @@ public class OrderFragment extends Fragment{
             }
         });
     }
-
 
     private void setUpToolbar() {
         ((AppCompatActivity)getActivity()).setSupportActionBar(_toolbar);
@@ -356,7 +350,7 @@ public class OrderFragment extends Fragment{
                 ((MainActivity)(getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-                startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -367,6 +361,13 @@ public class OrderFragment extends Fragment{
         super.onResume();
 
         ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+
+        //update cart icon on resume
+        itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
+        getActivity().invalidateOptionsMenu();
+
+
+
         for (ProductModel product : productModelArrayList) {
             if (refreshList.contains(product)) {
                 ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
@@ -376,6 +377,20 @@ public class OrderFragment extends Fragment{
                 product.setQuantityCounter(0);
                 notifyChanges();
             }
+        }
+    }
+
+    @Override
+    public void play() {
+    }
+
+    @Override
+    public void updateIconItems() {
+        try {
+            itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
+            getActivity().invalidateOptionsMenu();
+        } catch (Exception xe) {
+            Log.e(OrderFragment.class.getName(), "xe: " + xe.getMessage());
         }
     }
 }

@@ -21,6 +21,7 @@ import com.example.pickle.R;
 import com.example.pickle.activity.main.FirebaseSearchActivity;
 import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.binding.IFragmentCb;
+import com.example.pickle.data.CartViewModel;
 import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentFruitsBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -182,6 +183,9 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
                 notifyChanges();
             }
         }
+
+        CartViewModel cartViewModel = new CartViewModel();
+        cartViewModel.setCartProducts(fruitList);
     }
 
     @Override
@@ -209,7 +213,8 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
         LottieAnimationView lottieCart = fruitsBinding.cartAnim;
         lottieCart.setMinAndMaxProgress(.20f, 1f);
         lottieCart.playAnimation();
-
-        Log.e("Fruit ", "play");
     }
+
+    @Override
+    public void updateIconItems() {}
 }

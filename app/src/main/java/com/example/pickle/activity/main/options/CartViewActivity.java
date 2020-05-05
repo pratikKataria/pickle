@@ -60,6 +60,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
             Log.e(CartViewActivity.class.getName(), npe.getMessage());
         }
 
+        binding.setActivity(this);
         binding.includeLayout.placeOrder.setOnClickListener(n -> placeOrder());
 
         BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
