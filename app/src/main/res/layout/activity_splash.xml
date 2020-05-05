@@ -6,37 +6,61 @@
     android:layout_height="match_parent"
     tools:context=".activity.Splash.SplashActivity">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottieAnimationView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="delivery_latest.json"
-        app:lottie_loop="true" />
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_veg_bundle"
+        app:layout_constraintEnd_toStartOf="parent"
+        tools:layout_editor_absoluteY="403dp" />
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/veg_i"
+        app:layout_constraintEnd_toStartOf="parent"
+        tools:layout_editor_absoluteY="334dp" />
+
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/veg_ii"
+        app:layout_constraintStart_toEndOf="parent"
+        tools:layout_editor_absoluteY="322dp" />
+
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/veg_iii"
+        app:layout_constraintStart_toEndOf="parent"
+        tools:layout_editor_absoluteY="414dp" />
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="105dp"
+        android:layout_height="123dp"
+        android:src="@drawable/veg_iv"
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:layout_editor_absoluteX="255dp" />
+
+    <ImageView
+        android:layout_width="105dp"
+        android:layout_height="123dp"
+        android:src="@drawable/veg"
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:layout_editor_absoluteX="150dp" />
+
 
     <ProgressBar
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:indeterminateTint="@color/black"
         android:indeterminate="true"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="made by pratik katariya"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:indeterminateTint="@color/black"
+        tools:layout_editor_absoluteX="156dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

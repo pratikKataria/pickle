@@ -8,24 +8,15 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
-import com.example.pickle.activity.Login.CustomerDetailActivity
-import com.example.pickle.activity.Login.LoginActivity
 import com.example.pickle.activity.main.MainActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 class SplashActivity : AppCompatActivity() {
 
-    private val TAG = "TEST"
     private val PERMISSION_ALL = 1
 
     private val permission = arrayOf(
@@ -49,55 +40,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        //todo remove this in splash activity
-//        startActivity(Intent(this, FirebaseSearchActivity::class.java))
-
-
         if (hasPermissions(this, permission)) {
-            if (checkAuth())
-                checkDoc()
-            else {
-                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                finish()
-            }
+            startActivityMain()
         } else {
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         }
-
-    }
-
-    private fun checkAuth(): Boolean {
-        return FirebaseAuth.getInstance().uid != null
-    }
-
-    private fun checkDoc() {
-        Log.e("check doc ", " chek doc")
-        var reference = FirebaseDatabase.getInstance().getReference("Customers")
-            .child(FirebaseAuth.getInstance().uid!!)
-            .child("personalInformation")
-            .child("username")
-        reference.keepSynced(true)
-        reference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                if (dataSnapshot.exists()) {
-                    Log.e("check doc ", " chek doc $dataSnapshot")
-                    startMain()
-                } else {
-                    Log.e("check doc ", " chek doc $dataSnapshot" + " null")
-                    Handler().postDelayed( {
-                        startActivity(Intent(this@SplashActivity, CustomerDetailActivity::class.java))
-                        finish()
-                    }, 1200)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-//                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-                // ...
-            }
-        })
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -113,12 +60,7 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
             if (allImportantPermissionGranted) {
-                if (checkAuth()) {
-                    checkDoc()
-                } else {
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
-                    finish();
-                }
+                startActivityMain();
             }else displayNeverAskAgainDialog()
 
         }
@@ -142,13 +84,13 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    private fun startMain() {
+    private fun hasPermissions(context: Context, permissions: Array<String>):
+            Boolean = permissions.all { ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
+
+    private fun startActivityMain() {
         Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish();
-        }, 2000)
+        }, 1500)
     }
-
-    private fun hasPermissions(context: Context, permissions: Array<String>):
-            Boolean = permissions.all { ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
 }
