@@ -49,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (hasPermissions(this, permission)) {
+        if (hasPermissions(this, required_permission)) {
             startActivityMain()
         } else {
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
@@ -136,5 +136,14 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish();
         }, 1500)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (hasPermissions(this, permission)) {
+            startActivityMain()
+        } else {
+            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+        }
     }
 }
