@@ -1,32 +1,33 @@
 package com.example.pickle.activity.Login
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.pickle.R
-import com.example.pickle.activity.main.MainActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.activity_otp.*
 
 class OtpActivity : AppCompatActivity() {
 
-    var mAuth = FirebaseAuth.getInstance()
+    private var mAuth = FirebaseAuth.getInstance()
     private lateinit var editTextOtp: EditText
     private lateinit var verifyBtn: MaterialButton
 
     private var doubleBackToExitPressedOnce = false
 
-    private fun init_fields() {
+    private fun initFields() {
         editTextOtp = findViewById(R.id.activity_otp_et_enter_otp)
         verifyBtn = findViewById(R.id.activity_otp_mb_submit_otp)
     }
@@ -35,7 +36,7 @@ class OtpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_otp)
 
-        init_fields()
+        initFields()
 
         val AuthCredential : String = intent.getStringExtra("AuthCredentials")
 
@@ -87,10 +88,7 @@ class OtpActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // Get Post object and use the values to update the UI
                 if (dataSnapshot.exists()) {
-                    val data = dataSnapshot.value as String
-                    Log.e("otp activity ", data)
-                    Log.e("otp activity ", "$dataSnapshot")
-                    checkDeviceToken()
+                    setDeviceToken()
                 } else {
                     Handler().postDelayed( {
                         activity_otp_progress.visibility = GONE
@@ -107,7 +105,7 @@ class OtpActivity : AppCompatActivity() {
         })
     }
 
-    private fun checkDeviceToken() {
+    private fun setDeviceToken() {
         if (FirebaseAuth.getInstance().uid != null) {
             val ref = FirebaseDatabase.getInstance().getReference("Customers")
                 .child(FirebaseAuth.getInstance().uid!!)
@@ -116,19 +114,13 @@ class OtpActivity : AppCompatActivity() {
             ref.keepSynced(true)
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot != null && dataSnapshot.exists()) {
-                        Log.e("Opt activity ", " curr ent token "+ dataSnapshot)
+                    if (dataSnapshot.exists()) {
                         val token = dataSnapshot.value
-                        if (token != null && token == FirebaseInstanceId.getInstance().token) {
-                            activity_otp_progress.visibility = GONE
-                            sendUserToHome()
-                            Log.e("Opt activity ", " curr ent token "+ token)
-                        } else {
-                            ref.setValue(FirebaseInstanceId.getInstance().token) { _: DatabaseError?, _: DatabaseReference? ->
+
+                        activity_otp_progress.visibility = GONE
+                        ref.setValue(FirebaseInstanceId.getInstance().token) { _: DatabaseError?, _: DatabaseReference? ->
                                 activity_otp_progress.visibility = GONE
-                                Toast.makeText(this@OtpActivity, "Token Updated", Toast.LENGTH_SHORT).show()
-                                sendUserToHome()
-                            }
+                                checkAddress()
                         }
                     }
                 }
@@ -141,12 +133,42 @@ class OtpActivity : AppCompatActivity() {
         }
     }
 
+    private fun checkAddress() {
+        var databaseReference = FirebaseDatabase.getInstance().getReference("Addresses")
+        if (FirebaseAuth.getInstance().uid != null) {
+            databaseReference.child(FirebaseAuth.getInstance().uid!!).child("slot1");
+            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.exists()) {
+                        sendUserToHome()
+                    } else {
+                        startActivity(
+                            Intent(
+                                this@OtpActivity,
+                                CustomerDetailActivity::class.java
+                            ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        )
+                        finish()
+                    }
+                }
+
+                override fun onCancelled(p0: DatabaseError) {
+                    Toast.makeText(this@OtpActivity, "error: " + p0.message, Toast.LENGTH_SHORT)
+                        .show();
+                }
+            })
+
+        }
+    }
+
 
     private fun sendUserToHome() {
-        val homeIntent = Intent(this@OtpActivity, MainActivity::class.java)
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        startActivity(homeIntent)
+//        val homeIntent = Intent(this@OtpActivity, MainActivity::class.java)
+//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//        startActivity(homeIntent)
         finish()
     }
 
