@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_splash.*
 
 class SplashActivity : AppCompatActivity() {
 
-    private val PERMISSION_ALL = 1
+    private val PERMISSION_ALL = 110
 
     private val permission = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -49,10 +49,22 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        if (hasPermissions(this, required_permission)) {
-            startActivityMain()
+
+        val sharedPreferences = getSharedPreferences("permissions", 0)
+        if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
+            startActivity(
+                Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK
+                ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            )
+            sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply()
+            finish()
         } else {
-            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+            if (hasPermissions(this, required_permission)) {
+                startActivityMain()
+            } else {
+                ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
+            }
         }
 
 
@@ -104,10 +116,10 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
-            if (allImportantPermissionGranted) {
-                startActivityMain();
-            }else displayNeverAskAgainDialog()
-
+            if (allImportantPermissionGranted)
+                startActivityMain()
+            else
+                displayNeverAskAgainDialog()
         }
     }
 
@@ -140,10 +152,8 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (hasPermissions(this, permission)) {
+        if (hasPermissions(this, required_permission)) {
             startActivityMain()
-        } else {
-            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         }
     }
 }

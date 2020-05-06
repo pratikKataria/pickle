@@ -17,10 +17,5 @@ public class Pickle extends Application {
         super.onCreate();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("permissions", 0);
-        if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
-            startActivity(new Intent(Pickle.this, OnBoardingActivity.class).addFlags(FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-            sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply();
-        }
     }
 }
