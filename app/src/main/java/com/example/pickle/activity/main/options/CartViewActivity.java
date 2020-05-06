@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
+import com.example.pickle.activity.Login.CustomerDetailActivity;
 import com.example.pickle.activity.Login.LoginActivity;
 import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.binding.IMainActivity;
@@ -35,9 +36,13 @@ import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,12 +68,17 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
 
         binding.setActivity(this);
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
+
+            //check if user is login or not
             if (FirebaseAuth.getInstance().getUid() == null) {
                 startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
                 return;
             }
-            placeOrder();
+
+            //check if user address is present
+            checkAddress();
+
         });
 
         BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
@@ -258,4 +268,30 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
         }
         window.setStatusBarColor(Color.TRANSPARENT);
     }
+
+    //check address in database and place order
+    private void checkAddress() {
+        Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            databaseReference.child(FirebaseAuth.getInstance().getUid()).child("slot1")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                placeOrder();
+                            } else {
+                                Toast.makeText(CartViewActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(CartViewActivity.this, CustomerDetailActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+    }
+
 }
