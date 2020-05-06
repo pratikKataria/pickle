@@ -28,6 +28,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
+import com.example.pickle.activity.main.options.CartViewActivity;
+import com.example.pickle.data.ApartmentDataModel;
 import com.example.pickle.data.CurrentAddress;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.PersonalInformation;
@@ -40,6 +42,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -160,26 +163,28 @@ public class CurrentLocationFragment extends Fragment implements LocationListene
         );
 
         progressBar.setVisibility(View.VISIBLE);
+        CurrentAddress currentAddress = new CurrentAddress(location);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getUid());
-        ref.child("personalInformation").setValue(customer).addOnSuccessListener(task -> {
-            updateAddress();
-        }).addOnFailureListener(e -> {
-            Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            updateBtn.setText("update");
-            progressBar.setVisibility(View.GONE);
-        });
+        atomicUpdate(customer, currentAddress);
     }
 
-    private void updateAddress() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Addresses");
-        ref.child(FirebaseAuth.getInstance().getUid()).child("slot1").setValue(new CurrentAddress(location)).addOnSuccessListener(task -> {
-            progressBar.setVisibility(View.GONE);
-            updateBtn.setText("update");
-            Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
+    private void atomicUpdate(Customer customer, CurrentAddress currentAddress) {
+        progressBar.setVisibility(View.VISIBLE);
 
-            startActivity(new Intent(getActivity(), MainActivity.class));
+        HashMap<String, Object> update = new HashMap<>();
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        update.put("Customers/" + uid, customer);
+        update.put("Addresses/"+ uid+"/slot1", currentAddress);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
+
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             getActivity().finish();
+
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);

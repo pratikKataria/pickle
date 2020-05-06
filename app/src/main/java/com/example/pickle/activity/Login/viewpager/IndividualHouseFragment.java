@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.main.MainActivity;
+import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.data.Customer;
 import com.example.pickle.data.IndividualHouseDataModel;
 import com.example.pickle.data.PersonalInformation;
@@ -117,7 +118,7 @@ public class IndividualHouseFragment extends Fragment {
 
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getActivity(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             getActivity().finish();
 
         }).addOnFailureListener(e -> {

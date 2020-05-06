@@ -6,10 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -185,24 +183,23 @@ public class CartViewModel extends BaseObservable {
 
     public void getDatabaseAddress() {
         Log.e(CartViewModel.class.getName(), "load address ");
-//        if (FirebaseAuth.getInstance().getUid() != null) {
-//            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
-        //todo replace FirebaseAuth.getInstance().getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + "ddEk1gOv0hUFZVinEWzzdZNlBtF3");
-        reference.keepSynced(true);
-        reference.child("slot1").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Address newAddress = dataSnapshot.getValue(Address.class);
-                if (newAddress != null)
-                    setAddress(newAddress.toString());
-            }
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
+            reference.keepSynced(true);
+            reference.child("slot1").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Address newAddress = dataSnapshot.getValue(Address.class);
+                    if (newAddress != null)
+                        setAddress(newAddress.toString());
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                setAddress(databaseError.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    setAddress(databaseError.getMessage());
+                }
+            });
+        }
     }
 
     public void getCurrentLocation(Context context) {

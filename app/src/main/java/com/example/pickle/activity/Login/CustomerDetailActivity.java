@@ -1,5 +1,6 @@
 package com.example.pickle.activity.Login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.pickle.R;
+import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.ui.ZoomOutPageTransformer;
 import com.example.pickle.activity.Login.viewpager.ViewPagerAdapter;
 
@@ -65,5 +67,12 @@ public class CustomerDetailActivity extends AppCompatActivity {
     private ViewPagerAdapter createAdapter() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         return adapter;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+        finish();
     }
 }

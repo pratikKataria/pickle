@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pickle.R
+import com.example.pickle.activity.main.options.CartViewActivity
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
@@ -165,10 +166,8 @@ class OtpActivity : AppCompatActivity() {
 
 
     private fun sendUserToHome() {
-//        val homeIntent = Intent(this@OtpActivity, MainActivity::class.java)
-//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//        startActivity(homeIntent)
+        val homeIntent = Intent(this@OtpActivity, CartViewActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        startActivity(homeIntent)
         finish()
     }
 

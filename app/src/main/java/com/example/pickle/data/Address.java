@@ -1,5 +1,7 @@
 package com.example.pickle.data;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Address {
     private String apartmentSociety;
     private String areaPin;
@@ -120,14 +122,17 @@ public class Address {
     }
 
 
+    @NotNull
     @Override
     public String toString() {
-        return apartmentSociety + "\n" +
-                areaPin + "\n" +
-                flatHouseNo + "\n" +
-                address + "\n" +
-                landmark + "\n" +
-                houseNoPlotno + "\n" +
-                floors;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(apartmentSociety != null ? apartmentSociety + "\n" : "").append(areaPin).append("\n")
+                .append(flatHouseNo != null ? flatHouseNo + "\n" : "")
+                .append(address != null ? address + "\n" :"")
+                .append(landmark != null ? landmark + "\n" :"")
+                .append(houseNoPlotno != null? houseNoPlotno + "\n":"")
+                .append(floors!=null? floors : "");
+
+        return stringBuilder.toString();
     }
 }
