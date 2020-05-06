@@ -1,5 +1,6 @@
 package com.example.pickle.activity.Login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -72,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (phoneNumber.text.length < 10) {
+            if (!(phoneNumber.text.length == 10)) {
                 phoneNumber.error = "invalid number"
                 phoneNumber.requestFocus()
                 return@setOnClickListener
@@ -114,9 +115,9 @@ class LoginActivity : AppCompatActivity() {
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
 //                Log.w(TAG, "onVerificationFailed", e)
-
-                progressBar.visibility = VISIBLE
-                countDownTimer.visibility = VISIBLE
+                timer.cancel()
+                progressBar.visibility = INVISIBLE
+                countDownTimer.visibility = INVISIBLE
 
                 if (e is FirebaseAuthInvalidCredentialsException) {
                     activity_login_tv_error.visibility = VISIBLE
@@ -132,7 +133,6 @@ class LoginActivity : AppCompatActivity() {
                 Handler().postDelayed({
                     activity_login_tv_error.visibility = GONE
                     activity_login_tv_error.text = ""
-                    timer.cancel()
                 }, 10000)
             }
 
