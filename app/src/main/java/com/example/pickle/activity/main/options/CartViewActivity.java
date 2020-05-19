@@ -295,5 +295,4 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                     });
         }
     }
-
 }
