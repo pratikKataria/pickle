@@ -134,7 +134,7 @@
                 tools:text="Fruits"
                 android:text="@{headerText}"
                 android:textColor="@color/black"
-                android:textSize="24sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
                 app:layout_constraintTop_toTopOf="@+id/cardViewFruits" />
 
@@ -142,7 +142,7 @@
                 android:id="@+id/countFruits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="29 items"
+                tools:text="24 items"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/textView16"
                 app:layout_constraintTop_toBottomOf="@+id/textView16" />

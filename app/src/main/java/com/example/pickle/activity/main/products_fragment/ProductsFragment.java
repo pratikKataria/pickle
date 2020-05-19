@@ -51,7 +51,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     private ArrayList<ProductModel> fruitList;
     private FragmentProductsBinding productBinding;
     private String headerText = "";
-    private static int countItems;
+    private int countItems;
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -106,9 +106,10 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
                             countItems += 1;
                             if (countItems > 0)
-                                ProductsFragment.this.productBinding.countFruits.setText(countItems + " items");
+                                productBinding.countFruits.setText(countItems + " items");
                             else
-                                ProductsFragment.this.productBinding.countFruits.setText(countItems + " item");
+                                productBinding.countFruits.setText(countItems + " item");
+
 
                             fruitList.add(product);
                             notifyChanges();
