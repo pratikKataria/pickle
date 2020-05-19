@@ -62,6 +62,7 @@ import static com.example.pickle.utils.Constant.DAIRY;
 import static com.example.pickle.utils.Constant.DAIRY_IMG_RES;
 import static com.example.pickle.utils.Constant.FRUITS;
 import static com.example.pickle.utils.Constant.FRUIT_IMG_RES;
+import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 import static com.example.pickle.utils.Constant.VEGETABLES;
 import static com.example.pickle.utils.Constant.VEGETABLE_IMG_RES;
 
@@ -166,21 +167,21 @@ public class OrderFragment extends Fragment implements IFragmentCb {
         Bundle bundle = new Bundle();
 
         binding.cardViewFruits.setOnClickListener(n -> {
-            bundle.putString("DATABASE_REF", FRUITS);
+            bundle.putString(PRODUCT_BUNDLE, FRUITS);
             _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
         });
 
         binding.cardViewVegetables.setOnClickListener(n -> {
-            bundle.putString("DATABASE_REF", VEGETABLES);
+            bundle.putString(PRODUCT_BUNDLE, VEGETABLES);
             _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
         });
 
         binding.cardViewBeverages.setOnClickListener(n -> {
-            bundle.putString("DATABASE_REF", BEVERAGES);
+            bundle.putString(PRODUCT_BUNDLE, BEVERAGES);
             _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
         });
         binding.cardViewDairy.setOnClickListener(n -> {
-            bundle.putString("DATABASE_REF", DAIRY);
+            bundle.putString(PRODUCT_BUNDLE, DAIRY);
             _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
         });
 

@@ -158,13 +158,9 @@ public class CartViewModel extends BaseObservable {
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
 
-    public void navigateTo(Context context, int navigate) {
+    public void navigateTo(Context context, String navigateTo) {
         INavigation iNavigation = (INavigation) context;
-        switch (navigate) {
-            case NavigationAction.NAVIGATE_TO_FRUIT:
-                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_FRUIT);
-                break;
-        }
+        iNavigation.navigateTo(navigateTo);
     }
 
     public void onHomePressed(Context context) {

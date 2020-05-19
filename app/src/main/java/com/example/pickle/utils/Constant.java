@@ -20,7 +20,8 @@ public abstract class Constant {
             FRUITS,
             VEGETABLES,
             DAIRY,
-            BEVERAGES
+            BEVERAGES,
+            PRODUCT_BUNDLE
     })
 
     public @interface IConstant {}
@@ -31,6 +32,7 @@ public abstract class Constant {
     public static final String DAIRY = "Dairy";
     public static final String BEVERAGES = "Beverages";
 
+    public static final String PRODUCT_BUNDLE = "productsInfo";
 
     @IntDef({
           FRUIT_IMG_RES,

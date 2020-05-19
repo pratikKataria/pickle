@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static com.example.pickle.utils.Constant.PRODUCT;
+import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,8 +62,12 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
-        headerText = bundle.getString("DATABASE_REF");
-        reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child((String) bundle.get("DATABASE_REF"));
+        headerText = bundle.getString(PRODUCT_BUNDLE);
+        if (headerText != null) {
+            reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child((String) bundle.get(PRODUCT_BUNDLE));
+        } else {
+            reference = FirebaseDatabase.getInstance().getReference(PRODUCT);
+        }
     }
 
     @Override

@@ -19,7 +19,10 @@ import com.example.pickle.activity.main.navigation_fragment.OrderFragment
 import com.example.pickle.activity.main.options.AddNewItemActivity
 import com.example.pickle.binding.IFragmentCb
 import com.example.pickle.binding.IMainActivity
+import com.example.pickle.binding.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.data.ProductModel
+import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
+import com.example.pickle.utils.NavigationUtils
 import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -65,9 +68,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         try {
             //todo fix bug here
-            val navigationId: Int? = intent.extras?.getInt("NAVIGATION_ID");
-            if (navigationId != null)
-                _navController.navigate(navigationId)
+            val navigationTo: String? = intent.extras?.getString(PRODUCT_BUNDLE)
+            if (navigationTo != null) {
+                _navController.navigate(NAVIGATE_TO_PRODUCTS, NavigationUtils.getNavBundle(navigationTo))
+            }
         } catch (xe : Exception) {
             Log.e(MainActivity::class.java.name, xe.message)
         }

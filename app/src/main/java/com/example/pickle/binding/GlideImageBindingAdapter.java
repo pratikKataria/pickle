@@ -21,6 +21,11 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageResource")
     public static void setImageCustom(ImageView _imageView, String imageResource) {
+
+        if (imageResource == null) {
+            return;
+        }
+
         switch (imageResource) {
             case FRUITS:
                 _imageView.setImageDrawable(_imageView.getContext().getDrawable(R.drawable.ic_fruits));
@@ -40,6 +45,9 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customBackground")
     public static void setCustomBackground(CardView cardView, String imageResource) {
+        if (imageResource == null) {
+            return;
+        }
         switch (imageResource) {
             case FRUITS:
                 cardView.setBackgroundColor(cardView.getContext().getColor(R.color.icFruitBg));

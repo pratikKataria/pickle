@@ -48,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
+
 public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
 
     private ActivityCartViewBinding binding;
@@ -232,8 +234,8 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     }
 
     @Override
-    public void navigateTo(int navigationId) {
-        startActivity(new Intent(this, MainActivity.class).putExtra("NAVIGATION_ID", navigationId));
+    public void navigateTo(String navigationTo) {
+        startActivity(new Intent(this, MainActivity.class).putExtra(PRODUCT_BUNDLE, navigationTo));
         finish();
     }
 

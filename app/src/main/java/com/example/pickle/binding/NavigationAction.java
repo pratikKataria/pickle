@@ -10,11 +10,11 @@ import java.lang.annotation.RetentionPolicy;
 public abstract class NavigationAction {
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
-            NAVIGATE_TO_FRUIT,
+            NAVIGATE_TO_PRODUCTS,
     })
     public @interface NavigationDestination { }
 
-    public static final int NAVIGATE_TO_FRUIT = R.id.action_orderFragment_to_productsFragment;
+    public static final int NAVIGATE_TO_PRODUCTS = R.id.action_orderFragment_to_productsFragment;
 
 
     @NavigationDestination
