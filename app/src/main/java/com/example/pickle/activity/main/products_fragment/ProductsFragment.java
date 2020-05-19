@@ -23,7 +23,7 @@ import com.example.pickle.activity.main.options.CartViewActivity;
 import com.example.pickle.binding.IFragmentCb;
 import com.example.pickle.data.CartViewModel;
 import com.example.pickle.data.ProductModel;
-import com.example.pickle.databinding.FragmentFruitsBinding;
+import com.example.pickle.databinding.FragmentProductsBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,20 +38,29 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static com.example.pickle.utils.Constant.PRODUCT;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FruitsFragment extends Fragment implements IFragmentCb {
+public class ProductsFragment extends Fragment implements IFragmentCb {
 
     private DatabaseReference reference;
     private ChildEventListener childEventListener;
 
     private ArrayList<ProductModel> fruitList;
-    private FragmentFruitsBinding fruitsBinding;
+    private FragmentProductsBinding fruitsBinding;
     private static int countItems;
 
-    public FruitsFragment() {
+    public ProductsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child((String) bundle.get("DATABASE_REF"));
     }
 
     @Override
@@ -59,7 +68,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
         // Inflate the layout for this fragment
         fruitsBinding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_fruits,
+                R.layout.fragment_products,
                 container,
                 false
         );
@@ -78,8 +87,6 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
     }
 
     private void populateList() {
-        //online database
-        reference = FirebaseDatabase.getInstance().getReference("Products/Fruits");
 
         Query query = reference.orderByChild("itemName").limitToLast(15);
 
@@ -103,7 +110,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
                             fruitList.add(product);
                             notifyChanges();
                         } catch (NullPointerException npe) {
-                            Log.e(FruitsFragment.class.getName(), "npe " + npe);
+                            Log.e(ProductsFragment.class.getName(), "npe " + npe);
                         }
                     }
             }
@@ -196,7 +203,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
         }
     }
 
-    void changeStatusBarColor() {
+    private void changeStatusBarColor() {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = getActivity().getWindow();
@@ -204,7 +211,7 @@ public class FruitsFragment extends Fragment implements IFragmentCb {
                 window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorGrey50));
             }
         } catch (Exception xe) {
-            Log.e(FruitsFragment.class.getName(), "error "+xe.getMessage());
+            Log.e(ProductsFragment.class.getName(), "error "+xe.getMessage());
         }
     }
 

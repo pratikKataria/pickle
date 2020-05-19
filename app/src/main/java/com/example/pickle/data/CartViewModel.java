@@ -164,15 +164,6 @@ public class CartViewModel extends BaseObservable {
             case NavigationAction.NAVIGATE_TO_FRUIT:
                 iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_FRUIT);
                 break;
-            case NavigationAction.NAVIGATE_TO_VEGETABLE:
-                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_VEGETABLE);
-                break;
-            case NavigationAction.NAVIGATE_TO_BEVERAGES:
-                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_BEVERAGES);
-                break;
-            case NavigationAction.NAVIGATE_TO_DAIRY:
-                iNavigation.navigateTo(NavigationAction.NAVIGATE_TO_DAIRY);
-                break;
         }
     }
 

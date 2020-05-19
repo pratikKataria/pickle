@@ -25,7 +25,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +55,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.pickle.utils.Constant.BEVERAGES;
+import static com.example.pickle.utils.Constant.DAIRY;
+import static com.example.pickle.utils.Constant.FRUITS;
+import static com.example.pickle.utils.Constant.VEGETABLES;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -152,12 +156,29 @@ public class OrderFragment extends Fragment implements IFragmentCb {
         itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
         getActivity().invalidateOptionsMenu();
 
-        new Handler().postDelayed(() ->{binding.suggestionRecyclerView.setVisibility(View.VISIBLE);}, 600);
+        new Handler().postDelayed(() -> {
+            binding.suggestionRecyclerView.setVisibility(View.VISIBLE);
+        }, 600);
+        Bundle bundle = new Bundle();
 
-        binding.cardViewFruits.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_fruitsFragment));
-        binding.cardViewVegetables.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_vegetableFragment));
-        binding.cardViewBeverages.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_beveragesFragment));
-        binding.cardViewDairy.setOnClickListener(n -> _navController.navigate(R.id.action_orderFragment_to_dairyFragment));
+        binding.cardViewFruits.setOnClickListener(n -> {
+            bundle.putString("DATABASE_REF", FRUITS);
+            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+        });
+
+        binding.cardViewVegetables.setOnClickListener(n -> {
+            bundle.putString("DATABASE_REF", VEGETABLES);
+            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+        });
+
+        binding.cardViewBeverages.setOnClickListener(n -> {
+            bundle.putString("DATABASE_REF", BEVERAGES);
+            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+        });
+        binding.cardViewDairy.setOnClickListener(n -> {
+            bundle.putString("DATABASE_REF", DAIRY);
+            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+        });
 
         binding.suggestionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

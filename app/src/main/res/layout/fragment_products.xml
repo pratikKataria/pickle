@@ -27,7 +27,7 @@
    <androidx.coordinatorlayout.widget.CoordinatorLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       tools:context=".activity.main.products_fragment.FruitsFragment"
+       tools:context=".activity.main.products_fragment.ProductsFragment"
        android:orientation="vertical">
 
       <com.google.android.material.appbar.AppBarLayout

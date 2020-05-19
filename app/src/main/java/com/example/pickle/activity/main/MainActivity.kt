@@ -20,8 +20,6 @@ import com.example.pickle.activity.main.options.AddNewItemActivity
 import com.example.pickle.binding.IFragmentCb
 import com.example.pickle.binding.IMainActivity
 import com.example.pickle.data.ProductModel
-import com.example.pickle.databinding.FragmentFruitsBinding
-import com.example.pickle.databinding.FragmentOrderBinding
 import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView

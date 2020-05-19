@@ -11,28 +11,9 @@
         android:label="fragment_order"
         tools:layout="@layout/fragment_order" >
         <action
-            android:id="@+id/action_orderFragment_to_fruitsFragment"
-            app:destination="@id/fruitsFragment"
+            android:id="@+id/action_orderFragment_to_productsFragment"
+            app:destination="@id/productsFragment"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
-        <action
-            android:id="@+id/action_orderFragment_to_vegetableFragment"
-            app:destination="@id/vegetableFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-        <action
-            android:id="@+id/action_orderFragment_to_beveragesFragment"
-            app:destination="@id/beveragesFragment" app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left" />
-        <action
-            android:id="@+id/action_orderFragment_to_dairyFragment"
-            app:destination="@id/dairyFragment"  app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
@@ -52,33 +33,10 @@
             app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
-        android:id="@+id/fruitsFragment"
-        android:name="com.example.pickle.activity.main.products_fragment.FruitsFragment"
+        android:id="@+id/productsFragment"
+        android:name="com.example.pickle.activity.main.products_fragment.ProductsFragment"
         android:label="fragment_fruits"
-        tools:layout="@layout/fragment_fruits" >
-        <action
-            android:id="@+id/action_fruitsFragment_to_orderFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popUpTo="@+id/orderFragment"/>
-    </fragment>
-    <fragment
-        android:id="@+id/vegetableFragment"
-        android:name="com.example.pickle.activity.main.products_fragment.VegetableFragment"
-        android:label="fragment_vegetable"
-        tools:layout="@layout/fragment_vegetable" />
-    <fragment
-        android:id="@+id/beveragesFragment"
-        android:name="com.example.pickle.activity.main.products_fragment.BeveragesFragment"
-        android:label="fragment_beverages"
-        tools:layout="@layout/fragment_beverages" />
-    <fragment
-        android:id="@+id/dairyFragment"
-        android:name="com.example.pickle.activity.main.products_fragment.DairyFragment"
-        android:label="fragment_dairy"
-        tools:layout="@layout/fragment_dairy" />
+        tools:layout="@layout/fragment_products" />
     <fragment
         android:id="@+id/exploreFragment"
         android:name="com.example.pickle.activity.main.navigation_fragment.ExploreFragment"

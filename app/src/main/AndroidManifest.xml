@@ -29,14 +29,16 @@
             android:theme="@style/Base.Theme.AppCompat" />
         <activity android:name=".activity.Login.CustomerDetailActivity" />
         <activity android:name=".activity.Splash.SplashActivity">
+
+        </activity>
+        <activity android:name=".activity.Login.OtpActivity" />
+        <activity android:name=".activity.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Login.OtpActivity" />
-        <activity android:name=".activity.main.MainActivity" />
         <activity android:name=".activity.Login.LoginActivity" />
         <activity android:name=".activity.Splash.OnBoardingActivity" />
 
