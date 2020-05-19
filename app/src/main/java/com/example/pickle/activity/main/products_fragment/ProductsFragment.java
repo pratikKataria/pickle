@@ -49,7 +49,8 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     private ChildEventListener childEventListener;
 
     private ArrayList<ProductModel> fruitList;
-    private FragmentProductsBinding fruitsBinding;
+    private FragmentProductsBinding productBinding;
+    private String headerText = "";
     private static int countItems;
 
     public ProductsFragment() {
@@ -60,13 +61,14 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
+        headerText = bundle.getString("DATABASE_REF");
         reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child((String) bundle.get("DATABASE_REF"));
     }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fruitsBinding = DataBindingUtil.inflate(
+        productBinding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_products,
                 container,
@@ -76,14 +78,15 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         fruitList = new ArrayList<>();
         new Handler().postDelayed(this::populateList,1200);
 
-        fruitsBinding.setProductList(fruitList);
-        fruitsBinding.setActivity(getActivity());
-        fruitsBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
-        fruitsBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        productBinding.setProductList(fruitList);
+        productBinding.setActivity(getActivity());
+        productBinding.setHeaderText(headerText);
+        productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        productBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 
         changeStatusBarColor();
 
-        return fruitsBinding.getRoot();
+        return productBinding.getRoot();
     }
 
     private void populateList() {
@@ -103,9 +106,9 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
                             countItems += 1;
                             if (countItems > 0)
-                                fruitsBinding.countFruits.setText(countItems + " items");
+                                ProductsFragment.this.productBinding.countFruits.setText(countItems + " items");
                             else
-                                fruitsBinding.countFruits.setText(countItems + " item");
+                                ProductsFragment.this.productBinding.countFruits.setText(countItems + " item");
 
                             fruitList.add(product);
                             notifyChanges();
@@ -170,7 +173,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
     private void notifyChanges() {
         try {
-            fruitsBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
+            productBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
         } catch (NullPointerException npe) {
             Log.e("FruitFragment", "npe exception " + npe.getMessage());
         }
@@ -217,7 +220,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
     @Override
     public void play() {
-        LottieAnimationView lottieCart = fruitsBinding.cartAnim;
+        LottieAnimationView lottieCart = productBinding.cartAnim;
         lottieCart.setMinAndMaxProgress(.20f, 1f);
         lottieCart.playAnimation();
     }

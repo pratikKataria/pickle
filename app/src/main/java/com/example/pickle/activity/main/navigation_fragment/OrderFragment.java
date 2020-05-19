@@ -57,9 +57,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.pickle.utils.Constant.BEVERAGES;
+import static com.example.pickle.utils.Constant.BEVERAGE_IMG_RES;
 import static com.example.pickle.utils.Constant.DAIRY;
+import static com.example.pickle.utils.Constant.DAIRY_IMG_RES;
 import static com.example.pickle.utils.Constant.FRUITS;
+import static com.example.pickle.utils.Constant.FRUIT_IMG_RES;
 import static com.example.pickle.utils.Constant.VEGETABLES;
+import static com.example.pickle.utils.Constant.VEGETABLE_IMG_RES;
 
 /**
  * A simple {@link Fragment} subclass.
