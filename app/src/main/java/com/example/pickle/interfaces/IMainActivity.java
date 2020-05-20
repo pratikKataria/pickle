@@ -1,6 +1,6 @@
-package com.example.pickle.binding;
+package com.example.pickle.interfaces;
 
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.ProductModel;
 
 public interface IMainActivity {
     void updateQuantity(ProductModel productModel, int quantity);

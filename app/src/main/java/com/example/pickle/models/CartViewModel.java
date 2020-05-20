@@ -1,4 +1,4 @@
-package com.example.pickle.data;
+package com.example.pickle.models;
 
 import android.Manifest;
 import android.app.Activity;
@@ -17,8 +17,7 @@ import androidx.databinding.Bindable;
 import com.example.pickle.BR;
 import com.example.pickle.LocationTracker;
 import com.example.pickle.activity.main.options.CartViewActivity;
-import com.example.pickle.binding.INavigation;
-import com.example.pickle.binding.NavigationAction;
+import com.example.pickle.interfaces.INavigation;
 import com.example.pickle.utils.PermissionUtils;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.google.firebase.auth.FirebaseAuth;

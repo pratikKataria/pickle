@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.ProductModel;
 
 import java.util.List;
 

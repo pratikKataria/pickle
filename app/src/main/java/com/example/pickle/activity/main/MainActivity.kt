@@ -15,12 +15,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.pickle.R
 import com.example.pickle.activity.Login.LoginActivity
-import com.example.pickle.activity.main.navigation_fragment.OrderFragment
+import com.example.pickle.activity.main.navigation_fragment.HomeFragment
 import com.example.pickle.activity.main.options.AddNewItemActivity
-import com.example.pickle.binding.IFragmentCb
-import com.example.pickle.binding.IMainActivity
+import com.example.pickle.interfaces.IFragmentCb
+import com.example.pickle.interfaces.IMainActivity
 import com.example.pickle.binding.NavigationAction.NAVIGATE_TO_PRODUCTS
-import com.example.pickle.data.ProductModel
+import com.example.pickle.models.ProductModel
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.NavigationUtils
 import com.example.pickle.utils.SharedPrefsUtils
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
-        bottomNavigationView.itemIconTintList = null
+        bottomNavigationView.itemIconTintList = null;
 
         drawerLayout = findViewById(R.id.activity_main_drawer_layout)
 
@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
         _navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+        _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders)
 
         try {
             //todo fix bug here
@@ -92,6 +93,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
+            R.id.nav_menu_sub_orders -> {
+                try {
+                    _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders)
+                } catch (xe : Exception) {
+                    Log.e("MainActivity", xe.message);
+                }
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -105,7 +113,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //send update message to fragment order
             val navHostFragment : NavHostFragment = this.supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
             val fragment = navHostFragment.childFragmentManager.fragments[0]
-            if (fragment is OrderFragment) {
+            if (fragment is HomeFragment) {
                 val iFragmentCb = fragment as IFragmentCb
                 iFragmentCb.updateIconItems()
             }
@@ -118,7 +126,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //send update message to fragment order
         val navHostFragment : NavHostFragment = this.supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
         val fragment = navHostFragment.childFragmentManager.fragments[0]
-        if (fragment is OrderFragment) {
+        if (fragment is HomeFragment) {
             val iFragmentCb = fragment as IFragmentCb
             iFragmentCb.updateIconItems()
         }

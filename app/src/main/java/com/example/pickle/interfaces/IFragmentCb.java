@@ -1,4 +1,4 @@
-package com.example.pickle.binding;
+package com.example.pickle.interfaces;
 
 public interface IFragmentCb {
     void play();

@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;

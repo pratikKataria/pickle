@@ -14,7 +14,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
 import com.example.pickle.activity.main.options.CartViewActivity;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.BottomSheetSearchViewBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

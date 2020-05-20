@@ -1,14 +1,15 @@
-package com.example.pickle.data;
+package com.example.pickle.models;
 
 public class Orders {
     private String userId;
     private String orderId;
     private int orderStatus;
-    private String date;
+    private long date;
 
     public Orders() {}
 
-    public Orders(String userId, String orderId, int orderStatus, String date) {
+
+    public Orders(String userId, String orderId, int orderStatus, long date) {
         this.userId = userId;
         this.orderId = orderId;
         this.orderStatus = orderStatus;
@@ -39,11 +40,21 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "userId='" + userId + '\'' +
+                ", orderId='" + orderId + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", date=" + date +
+                '}';
     }
 }

@@ -5,17 +5,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
-import com.example.pickle.binding.OrderStatus;
-import com.example.pickle.data.Orders;
-import com.example.pickle.data.OrdersDetails;
-import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
+import com.example.pickle.models.Orders;
+import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.utils.DateFormatUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +25,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
+import static com.example.pickle.utils.Constant.ORDERS;
+import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 
 
 /**
@@ -64,38 +68,55 @@ public class OrdersPlacedFragment extends Fragment {
 
 
     public void populateList() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Orders/");
-        Query query = reference.orderByChild("userId").equalTo("ddEk1gOv0hUFZVinEWzzdZNlBtF3");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(ORDERS);
+        Query query = reference.orderByChild("userId").equalTo("ddEk1gOv0hUFZVinEWzzdZNlBtF3").limitToLast(5);
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
                     Orders orders = dataSnapshot.getValue(Orders.class);
-                    if (orders.getOrderStatus() == OrderStatus.PROCESSING) {
-                        try {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("OrdersDetails/");
-                            Query detailQuery = reference.orderByKey().equalTo(orders.getOrderId()).limitToLast(15);
-                            detailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                                        OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
-                                        ordersList.add(ordersDetails);
-                                        notifyChanges();
-                                        Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
-                                    }
-                                }
+                    Log.e("datasnapshot", orders.getOrderId());
+                    Log.e("datasnapshot", DateFormatUtils.getDate(orders.getDate()));
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            Log.e(OrdersPlacedFragment.class.getName(), e.getMessage());
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS);
+                    Query detailQuery = reference.orderByChild("date").limitToLast(15);
+                    detailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         }
-                    }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+//                    if (orders.getOrderStatus() == OrderStatus.PROCESSING) {
+//                        try {
+//                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("OrdersDetails/");
+//                            Query detailQuery = reference.orderByKey().equalTo(orders.getOrderId()).limitToLast(15);
+//                            detailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+//                                        OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
+//                                        ordersList.add(ordersDetails);
+//                                        notifyChanges();
+//                                        Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                                }
+//                            });
+//
+//                        } catch (Exception e) {
+//                            Log.e(OrdersPlacedFragment.class.getName(), e.getMessage());
+//                        }
+//                    }
                 }
             }
 

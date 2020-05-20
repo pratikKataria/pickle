@@ -1,10 +1,7 @@
-package com.example.pickle.data;
-
-import android.util.Log;
+package com.example.pickle.models;
 
 import androidx.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.Date;
 
 public class ProductModel {

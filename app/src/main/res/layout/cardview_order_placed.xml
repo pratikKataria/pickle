@@ -8,11 +8,11 @@
 
         <variable
             name="orderPlaced"
-            type="com.example.pickle.data.OrdersDetails" />
+            type="com.example.pickle.models.OrdersDetails" />
 
         <variable
             name="productDetail"
-            type="com.example.pickle.data.ProductModel" />
+            type="com.example.pickle.models.ProductModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +66,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:text="@{String.valueOf(orderPlaced.date)}"
+            android:text="@{String.valueOf(orderPlaced.itemThumbImage)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 

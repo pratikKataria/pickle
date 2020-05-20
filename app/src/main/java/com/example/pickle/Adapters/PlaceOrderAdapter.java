@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.data.OrdersDetails;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.CardviewOrderPlacedBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

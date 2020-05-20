@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.pickle.data.ProductModel"/>
+        <import type="com.example.pickle.models.ProductModel"/>
 
         <variable
             name="productList"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainActColor"
-        tools:context=".activity.main.navigation_fragment.OrderFragment">
+        tools:context=".activity.main.navigation_fragment.HomeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

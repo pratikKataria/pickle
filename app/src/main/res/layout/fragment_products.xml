@@ -6,7 +6,7 @@
 
    <data>
       <import type="java.util.List"/>
-      <import type="com.example.pickle.data.ProductModel"/>
+      <import type="com.example.pickle.models.ProductModel"/>
 
       <import type="android.app.Activity" />
 
@@ -20,7 +20,7 @@
 
       <variable
           name="cartViewModel"
-          type="com.example.pickle.data.CartViewModel" />
+          type="com.example.pickle.models.CartViewModel" />
 
       <variable
           name="headerText"

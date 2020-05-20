@@ -53,4 +53,3 @@ public class MyRadioButton extends AppCompatRadioButton {
     }
 
 }
-                  

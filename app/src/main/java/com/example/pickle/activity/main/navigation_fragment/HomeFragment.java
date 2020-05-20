@@ -34,9 +34,9 @@ import com.example.pickle.R;
 import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.activity.main.options.CartViewActivity;
-import com.example.pickle.binding.IFragmentCb;
-import com.example.pickle.data.ProductModel;
-import com.example.pickle.databinding.FragmentOrderBinding;
+import com.example.pickle.interfaces.IFragmentCb;
+import com.example.pickle.models.ProductModel;
+import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
@@ -65,7 +65,7 @@ import static com.example.pickle.utils.Constant.VEGETABLES;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrderFragment extends Fragment implements IFragmentCb {
+public class HomeFragment extends Fragment implements IFragmentCb {
 
     private static final int LIST_SIZE = 2;
     private Toolbar _toolbar;
@@ -75,7 +75,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
     private InfiniteScrollAdapter infiniteAdapter;
     private NavController _navController;
 
-    private FragmentOrderBinding binding;
+    private FragmentHomeBinding binding;
     private ArrayList<ProductModel> productModelArrayList;
 
     private Map<String, String> saveToMap;
@@ -84,7 +84,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
 
     IFragmentCb iFragmentCb;
 
-    public OrderFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -138,7 +138,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
 
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_order,
+                R.layout.fragment_home,
                 container,
                 false
         );
@@ -212,7 +212,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
                 try {
                     binding.rvScroll.getAdapter().notifyDataSetChanged();
                 } catch (NullPointerException npe) {
-                    Log.e("OrderFragment", npe.getMessage());
+                    Log.e("HomeFragment", npe.getMessage());
                 }
             }
 
@@ -222,7 +222,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
                 try {
                     binding.rvScroll.getAdapter().notifyDataSetChanged();
                 } catch (NullPointerException npe) {
-                    Log.e("OrderFragment", npe.getMessage());
+                    Log.e("HomeFragment", npe.getMessage());
                 }
             }
 
@@ -362,7 +362,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
         try {
             binding.suggestionRecyclerView.getAdapter().notifyDataSetChanged();
         }catch (NullPointerException npe) {
-            Log.e("OrderFragment", npe.getMessage());
+            Log.e("HomeFragment", npe.getMessage());
         }
     }
 
@@ -413,7 +413,7 @@ public class OrderFragment extends Fragment implements IFragmentCb {
             itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
             getActivity().invalidateOptionsMenu();
         } catch (Exception xe) {
-            Log.e(OrderFragment.class.getName(), "xe: " + xe.getMessage());
+            Log.e(HomeFragment.class.getName(), "xe: " + xe.getMessage());
         }
     }
 }

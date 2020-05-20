@@ -10,7 +10,7 @@
 
         <variable
             name="product"
-            type="com.example.pickle.data.ProductModel" />
+            type="com.example.pickle.models.ProductModel" />
 
     </data>
 

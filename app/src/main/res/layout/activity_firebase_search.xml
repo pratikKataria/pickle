@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.example.pickle.data.ProductModel"/>
+        <import type="com.example.pickle.models.ProductModel"/>
         <import type="java.util.List"/>
         <import type="android.app.Activity"/>
         <import type="com.example.pickle.Adapters.AutoCompleteAdapter"/>

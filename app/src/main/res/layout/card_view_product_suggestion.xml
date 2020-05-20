@@ -10,11 +10,11 @@
 
         <variable
             name="iMainActivity"
-            type="com.example.pickle.binding.IMainActivity" />
+            type="com.example.pickle.interfaces.IMainActivity" />
 
         <variable
             name="productViewModel"
-            type="com.example.pickle.data.ProductViewModel" />
+            type="com.example.pickle.models.ProductViewModel" />
 
     </data>
 

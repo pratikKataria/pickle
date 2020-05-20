@@ -3,22 +3,15 @@ package com.example.pickle.Adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.ProductViewModel;
-import com.example.pickle.utils.SharedPrefsUtils;
+import com.example.pickle.models.ProductModel;
+import com.example.pickle.models.ProductViewModel;
 import com.example.pickle.databinding.CardViewCartBinding;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 
 public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 

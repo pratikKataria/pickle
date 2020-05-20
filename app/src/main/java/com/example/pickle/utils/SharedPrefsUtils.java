@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.ProductModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;

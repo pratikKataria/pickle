@@ -7,8 +7,8 @@ import com.example.pickle.Adapters.CartRecyclerViewAdapter;
 import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
 import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.Adapters.OrdersRecyclerAdapter;
-import com.example.pickle.data.OrdersDetails;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.models.ProductModel;
 
 import java.util.ArrayList;
 import java.util.List;

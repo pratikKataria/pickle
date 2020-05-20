@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.main.EmptyActivity"></activity>
+        <activity android:name=".activity.main.EmptyActivity"
+            android:hardwareAccelerated="true"></activity>
         <activity android:name=".activity.main.FirebaseSearchActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysVisible">
 

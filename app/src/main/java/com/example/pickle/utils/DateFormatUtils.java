@@ -1,30 +1,20 @@
 package com.example.pickle.utils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DateFormatUtils {
-    public static String parseDateToddMMyyyy(String time) {
-
-        if (time == null) {
-            return " ";
+    public static String getDate(Long timestamp) {
+        if (timestamp == null) {
+            return "";
         }
-
-        String inputPattern = "yyyy.MM.dd 'at' HH:mm:ss";
-        String outputPattern = "dd-MMM-yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-        Date date = null;
-        String str = null;
-
         try {
-            date = inputFormat.parse(time);
-            str = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            return  sfd.format(new Date((long)timestamp*1000));
+        } catch (Exception xe) {
+            return "date";
         }
-        return str;
     }
 }

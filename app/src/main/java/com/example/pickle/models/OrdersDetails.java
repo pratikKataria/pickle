@@ -1,18 +1,18 @@
-package com.example.pickle.data;
+package com.example.pickle.models;
 
 public class OrdersDetails {
     private String userId;
     private String itemId;
-    private String date;
+    private String itemThumbImage;
     private int itemQty;
     private int itemBasePrice;
     private String itemCategory;
     private String address;
     private String deliveryTime;
 
-    public OrdersDetails(String itemId, String date, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
+    public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;
-        this.date = date;
+        this.itemThumbImage = itemThumbImage;
         this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
         this.itemCategory = itemCategory;
@@ -71,12 +71,12 @@ public class OrdersDetails {
         this.userId = userId;
     }
 
-    public String getDate() {
-        return date;
+    public String getItemThumbImage() {
+        return itemThumbImage;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setItemThumbImage(String itemThumbImage) {
+        this.itemThumbImage = itemThumbImage;
     }
 
     public Integer getItemQty() {
@@ -88,7 +88,7 @@ public class OrdersDetails {
         return "OrdersDetails{" +
                 "userId='" + userId + '\'' +
                 ", itemId='" + itemId + '\'' +
-                ", date='" + date + '\'' +
+                ", date='" + itemThumbImage + '\'' +
                 ", itemQty=" + itemQty +
                 ", itemBasePrice=" + itemBasePrice +
                 ", itemCategory='" + itemCategory + '\'' +

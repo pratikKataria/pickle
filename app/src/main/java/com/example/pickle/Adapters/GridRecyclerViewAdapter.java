@@ -1,11 +1,9 @@
 package com.example.pickle.Adapters;
 
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
-import com.example.pickle.data.GridItem;
+import com.example.pickle.models.GridItem;
 
 import java.util.List;
 

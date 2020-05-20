@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.example.pickle.data.ConfirmOrderViewModel"/>
+        <import type="com.example.pickle.models.ConfirmOrderViewModel"/>
         <variable
             name="confirmModel"
             type="ConfirmOrderViewModel" />

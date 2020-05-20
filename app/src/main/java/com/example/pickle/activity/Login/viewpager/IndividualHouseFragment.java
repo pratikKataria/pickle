@@ -12,11 +12,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
-import com.example.pickle.activity.main.MainActivity;
 import com.example.pickle.activity.main.options.CartViewActivity;
-import com.example.pickle.data.Customer;
-import com.example.pickle.data.IndividualHouseDataModel;
-import com.example.pickle.data.PersonalInformation;
+import com.example.pickle.models.Customer;
+import com.example.pickle.models.IndividualHouseDataModel;
+import com.example.pickle.models.PersonalInformation;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

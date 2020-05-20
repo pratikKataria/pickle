@@ -1,6 +1,4 @@
-package com.example.pickle.data;
-
-import android.widget.TextView;
+package com.example.pickle.models;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;

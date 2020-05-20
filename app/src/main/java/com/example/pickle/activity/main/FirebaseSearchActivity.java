@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
-import com.example.pickle.binding.IMainActivity;
-import com.example.pickle.data.ProductModel;
+import com.example.pickle.interfaces.IMainActivity;
+import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.ActivityFirebaseSearchBinding;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.DataSnapshot;

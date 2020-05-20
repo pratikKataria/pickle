@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.data.OrdersDetails;
-import com.example.pickle.data.ProductModel;
-import com.example.pickle.data.ProductViewModel;
+import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.models.ProductModel;
+import com.example.pickle.models.ProductViewModel;
 import com.example.pickle.databinding.CardviewOrdersBinding;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

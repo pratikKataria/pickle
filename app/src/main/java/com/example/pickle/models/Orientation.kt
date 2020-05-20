@@ -1,4 +1,4 @@
-package com.example.pickle.data
+package com.example.pickle.models
 
 /**
  * Created by Vipul Asri on 07-06-2016.

@@ -22,16 +22,15 @@ import com.example.pickle.R;
 import com.example.pickle.activity.Login.CustomerDetailActivity;
 import com.example.pickle.activity.Login.LoginActivity;
 import com.example.pickle.activity.main.MainActivity;
-import com.example.pickle.binding.IMainActivity;
-import com.example.pickle.binding.INavigation;
 import com.example.pickle.binding.OrderStatus;
-import com.example.pickle.data.CartViewModel;
-import com.example.pickle.data.ConfirmOrderViewModel;
-import com.example.pickle.data.Orders;
-import com.example.pickle.data.OrdersDetails;
-import com.example.pickle.data.ProductModel;
 import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
+import com.example.pickle.interfaces.IMainActivity;
+import com.example.pickle.interfaces.INavigation;
+import com.example.pickle.models.CartViewModel;
+import com.example.pickle.models.ConfirmOrderViewModel;
+import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -40,6 +39,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
@@ -48,6 +48,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class CartViewActivity extends AppCompatActivity implements IMainActivity, INavigation {
@@ -123,19 +124,19 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                 String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
                 atomicOperation.put("OrdersDetails/" + key, new OrdersDetails(
                         product.getItemId(),
-                        new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date()),
+                        product.getItemThumbImage(),
                         product.getQuantityCounter(),
                         product.getItemBasePrice(),
                         product.getItemCategory(),
                         deliveryAddress,
                         deliveryTime
                 ));
-                atomicOperation.put("Orders/" + key, new Orders(
-                        "ddEk1gOv0hUFZVinEWzzdZNlBtF3"/*todo FirebaseAuth.getInstance().getUid()*/,
-                        key,
-                        OrderStatus.PROCESSING,
-                        new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss").format(new Date())
-                ));
+
+                atomicOperation.put("Orders/"+key+"/userId", FIREBASE_AUTH_ID);
+                atomicOperation.put("Orders/"+key+"/orderId", key);
+                atomicOperation.put("Orders/"+key+"/orderStatus", OrderStatus.PROCESSING);
+                atomicOperation.put("Orders/"+key+"/date", ServerValue.TIMESTAMP);
+
             }
 
             showOrderConfirmationDialog(atomicOperation);

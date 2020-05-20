@@ -1,4 +1,4 @@
-package com.example.pickle.data;
+package com.example.pickle.models;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,8 +12,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pickle.BR;
 import com.example.pickle.R;
-import com.example.pickle.binding.IFragmentCb;
-import com.example.pickle.binding.IMainActivity;
+import com.example.pickle.interfaces.IFragmentCb;
+import com.example.pickle.interfaces.IMainActivity;
 
 public class ProductViewModel extends BaseObservable {
     private ProductModel product;

@@ -15,11 +15,11 @@
 
         <variable
             name="cartList"
-            type="java.util.List&lt;com.example.pickle.data.ProductModel>" />
+            type="java.util.List&lt;com.example.pickle.models.ProductModel>" />
 
         <variable
             name="cartViewModel"
-            type="com.example.pickle.data.CartViewModel" />
+            type="com.example.pickle.models.CartViewModel" />
 
         <variable
             name="activity"

@@ -9,7 +9,7 @@
 
         <variable
             name="cartView"
-            type="com.example.pickle.data.CartViewModel" />
+            type="com.example.pickle.models.CartViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

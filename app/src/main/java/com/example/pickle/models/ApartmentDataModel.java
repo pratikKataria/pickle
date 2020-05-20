@@ -1,4 +1,4 @@
-package com.example.pickle.data;
+package com.example.pickle.models;
 
 public class ApartmentDataModel  extends  Address{
 
