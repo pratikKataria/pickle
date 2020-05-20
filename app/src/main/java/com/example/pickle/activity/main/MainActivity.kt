@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
+        bottomNavigationView.itemIconTintList = null
 
         drawerLayout = findViewById(R.id.activity_main_drawer_layout)
 

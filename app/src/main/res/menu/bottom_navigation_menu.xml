@@ -2,20 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/exploreFragment"
-        android:title="Explore"
-        android:icon="@drawable/ic_explore"
-        app:cnb_backgroundColor="@color/darkBlue"/>
 
     <item
         android:id="@+id/orderFragment"
-        android:title="Order"
-        android:icon="@drawable/ic_orders"
+        android:title="Home"
+        android:icon="@drawable/ic_home_state"
         app:cnb_backgroundColor="@color/darkBlue"/>
 
     <item android:id="@+id/offerFragment"
-        android:title="Offers"
-        android:icon="@drawable/ic_offer_card"
+        android:title="Scheduling"
+        android:icon="@drawable/ic_scheduling_state"
         app:cnb_backgroundColor="@color/darkBlue"/>
 
 </menu>
