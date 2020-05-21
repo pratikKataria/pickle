@@ -22,7 +22,7 @@ import com.example.pickle.R;
 import com.example.pickle.activity.Login.CustomerDetailActivity;
 import com.example.pickle.activity.Login.LoginActivity;
 import com.example.pickle.activity.main.MainActivity;
-import com.example.pickle.binding.OrderStatus;
+import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
@@ -43,8 +43,6 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 

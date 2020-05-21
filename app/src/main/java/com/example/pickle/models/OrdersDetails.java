@@ -10,6 +10,10 @@ public class OrdersDetails {
     private String address;
     private String deliveryTime;
 
+    public transient boolean isPastOrder;
+    public transient String orderId;
+    public transient int status;
+
     public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;
         this.itemThumbImage = itemThumbImage;

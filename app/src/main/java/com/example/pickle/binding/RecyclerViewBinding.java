@@ -9,6 +9,7 @@ import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.Adapters.OrdersRecyclerAdapter;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
+import com.google.api.Distribution;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,27 @@ public class RecyclerViewBinding {
 
         RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
         if (layoutManager == null) {
-            layoutManager = new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL);
+            layoutManager = new LinearLayoutManager(recyclerView.getContext(), RecyclerView.VERTICAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+
+        OrdersRecyclerAdapter cartRecyclerViewAdapter = (OrdersRecyclerAdapter) recyclerView.getAdapter();
+        if (cartRecyclerViewAdapter == null) {
+            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<OrdersDetails>)list);
+            recyclerView.setAdapter(cartRecyclerViewAdapter);
+        }
+    }
+
+    @BindingAdapter("pastOrdersList")
+    public static void  pastOrdersList(RecyclerView recyclerView, List<OrdersDetails> list) {
+
+        if (list == null) {
+            return;
+        }
+
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager == null) {
+            layoutManager = new LinearLayoutManager(recyclerView.getContext(), RecyclerView.VERTICAL, false);
             recyclerView.setLayoutManager(layoutManager);
         }
 

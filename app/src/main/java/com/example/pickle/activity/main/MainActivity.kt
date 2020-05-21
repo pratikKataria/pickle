@@ -19,7 +19,7 @@ import com.example.pickle.activity.main.navigation_fragment.HomeFragment
 import com.example.pickle.activity.main.options.AddNewItemActivity
 import com.example.pickle.interfaces.IFragmentCb
 import com.example.pickle.interfaces.IMainActivity
-import com.example.pickle.binding.NavigationAction.NAVIGATE_TO_PRODUCTS
+import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.NavigationUtils

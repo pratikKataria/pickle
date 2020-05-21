@@ -2,10 +2,12 @@ package com.example.pickle.Adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.models.ProductViewModel;
@@ -17,6 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.pickle.utils.Constant.ORDERS;
 
 public class OrdersRecyclerAdapter extends RecyclerView.Adapter<OrdersRecyclerAdapter.OrderViewHolder> {
 
@@ -35,16 +41,19 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<OrdersRecyclerAd
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         CardviewOrdersBinding view = CardviewOrdersBinding.inflate(layoutInflater, parent, false);
 
-        return  new OrderViewHolder(view);
+        return  new OrderViewHolder(view, context);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         holder.binding.setOrderDetails(ordersList.get(position));
-        holder.setImage(ordersList.get(position).getItemCategory(), ordersList.get(position).getItemId());
         holder.setName(ordersList.get(position).getItemCategory(), ordersList.get(position).getItemId());
 
-
+        if (!ordersList.get(position).isPastOrder) {
+            holder.binding.cancelButtonMb.setOnClickListener(n -> {
+                holder.cancelOrder(ordersList.get(position));
+            });
+        }
     }
 
 
@@ -61,34 +70,19 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<OrdersRecyclerAd
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
 
         CardviewOrdersBinding binding;
+        private Context context;
         private ProductViewModel viewModel;
         private ProductModel productModel;
 
-        public OrderViewHolder(@NonNull CardviewOrdersBinding binding) {
+        public OrderViewHolder(@NonNull CardviewOrdersBinding binding, Context context) {
             super(binding.getRoot());
             this.binding = binding;
+            this.context = context;
             viewModel = new ProductViewModel();
             productModel = new ProductModel();
 
             viewModel.setProduct(productModel);
             binding.setProductViewModel(viewModel);
-        }
-
-        public void setImage(String productCategory, String productId) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/"+productCategory+"/"+productId+"/itemThumbImage");
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String imageUrl = dataSnapshot.getValue(String.class);
-                    productModel.setItemThumbImage(imageUrl);
-                    viewModel.setProduct(productModel);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
 
         }
 
@@ -109,5 +103,15 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<OrdersRecyclerAd
             });
         }
 
+        public void cancelOrder(OrdersDetails ordersDetails) {
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(ORDERS).child(ordersDetails.orderId);
+            Map<String, Object> updateOrder = new HashMap<>();
+            updateOrder.put("orderStatus", OrderStatus.CANCEL);
+            databaseReference.updateChildren(updateOrder).addOnSuccessListener(task -> {
+                Toast.makeText(context, "order cancel successfully", Toast.LENGTH_SHORT).show();
+            }).addOnFailureListener(taskFailed -> {
+                Toast.makeText(context, "failed to cancel order", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 }

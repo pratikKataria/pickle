@@ -13,6 +13,9 @@
             name="ordersList"
             type="java.util.List&lt;com.example.pickle.models.OrdersDetails>" />
 
+        <variable
+            name="pastOrdersList"
+            type="java.util.List&lt;com.example.pickle.models.OrdersDetails>"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -81,16 +84,50 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:clipToPadding="false"
-            orderPlacedList="@{ordersList}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical">
+
+                <include layout="@layout/cart_notice_layout" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ongoing orders"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    orderPlacedList="@{ordersList}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Past orders"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewPastOrders"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="52dp"
+                    android:clipToPadding="false"
+                    app:pastOrdersList="@{pastOrdersList}" />
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
