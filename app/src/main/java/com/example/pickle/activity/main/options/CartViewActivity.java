@@ -17,7 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.example.pickle.Adapters.CartRecyclerViewAdapter;
+import com.example.pickle.adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.Login.CustomerDetailActivity;
 import com.example.pickle.activity.Login.LoginActivity;

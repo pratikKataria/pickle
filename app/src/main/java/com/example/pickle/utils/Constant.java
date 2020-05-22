@@ -22,11 +22,14 @@ public abstract class Constant {
             VEGETABLES,
             DAIRY,
             BEVERAGES,
-            PRODUCT_BUNDLE
+            PRODUCT_BUNDLE,
+            ORDERS_CANCELLED,
+            ORDERS_DELIVERED
     })
 
     public @interface IConstant {}
 
+    public static final String ROOT = "pickle-8bac6";
     public static final String PRODUCT = "Products";
     public static final String FRUITS = "Fruits";
     public static final String VEGETABLES = "Vegetables";
@@ -34,6 +37,8 @@ public abstract class Constant {
     public static final String BEVERAGES = "Beverages";
     public static final String ORDERS = "Orders";
     public static final String ORDERS_DETAILS = "OrdersDetails";
+    public static final String ORDERS_CANCELLED ="OrdersCancelled";
+    public static final String ORDERS_DELIVERED ="OrdersDelivered";
     public static final String FIREBASE_AUTH_ID = FirebaseAuth.getInstance().getUid();
 
     public static final String PRODUCT_BUNDLE = "productsInfo";

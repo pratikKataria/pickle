@@ -29,7 +29,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
+import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.carousel.CarouselImage;
 import com.example.pickle.activity.main.MainActivity;

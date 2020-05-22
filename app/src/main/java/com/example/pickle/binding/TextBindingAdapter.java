@@ -4,10 +4,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 
 import com.example.pickle.R;
 import com.example.pickle.interfaces.OrderStatus;
+import com.example.pickle.utils.DateUtils;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import static com.example.pickle.utils.Constant.ORDERS_CANCELLED;
+import static com.example.pickle.utils.Constant.ORDERS_DELIVERED;
 
 public class TextBindingAdapter {
 

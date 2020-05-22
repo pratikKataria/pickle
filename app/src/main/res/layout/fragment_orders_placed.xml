@@ -6,16 +6,20 @@
     <data>
 
         <variable
+            name="visitor"
+            type="com.example.pickle.interfaces.Visitor" />
+
+        <variable
             name="orderPlaced"
             type="com.example.pickle.models.OrdersDetails" />
 
         <variable
             name="ordersList"
-            type="java.util.List&lt;com.example.pickle.models.OrdersDetails>" />
+            type="java.util.List&lt;com.example.pickle.interfaces.Visitable>" />
 
         <variable
             name="pastOrdersList"
-            type="java.util.List&lt;com.example.pickle.models.OrdersDetails>"/>
+            type="java.util.List&lt;com.example.pickle.interfaces.Visitable>"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -109,7 +113,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
-                    orderPlacedList="@{ordersList}" />
+                    orderPlacedList="@{ordersList}"
+                    visitor="@{visitor}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -123,7 +128,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginBottom="52dp"
                     android:clipToPadding="false"
-                    app:pastOrdersList="@{pastOrdersList}" />
+                    app:pastOrdersList="@{pastOrdersList}"
+                    visitor="@{visitor}"/>
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

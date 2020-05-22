@@ -1,6 +1,9 @@
 package com.example.pickle.models;
 
-public class OrdersDetails {
+import com.example.pickle.interfaces.Visitable;
+import com.example.pickle.interfaces.Visitor;
+
+public class OrdersDetails implements Visitable {
     private String userId;
     private String itemId;
     private String itemThumbImage;
@@ -99,5 +102,10 @@ public class OrdersDetails {
                 ", address='" + address + '\'' +
                 ", deliveryTime='" + deliveryTime + '\'' +
                 '}';
+    }
+
+    @Override
+    public int accept(Visitor visitor) {
+        return visitor.type(this);
     }
 }

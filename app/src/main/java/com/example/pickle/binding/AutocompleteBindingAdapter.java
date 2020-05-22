@@ -4,7 +4,7 @@ import android.widget.AutoCompleteTextView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.example.pickle.Adapters.AutoCompleteAdapter;
+import com.example.pickle.adapters.AutoCompleteAdapter;
 
 import java.util.List;
 

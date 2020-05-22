@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.pickle.utils.HorizontalFlipTransformation
 import com.example.pickle.R
-import com.example.pickle.Adapters.SliderAdapter
+import com.example.pickle.adapters.SliderAdapter
 import com.example.pickle.activity.Login.LoginActivity
 import com.google.android.material.button.MaterialButton
 

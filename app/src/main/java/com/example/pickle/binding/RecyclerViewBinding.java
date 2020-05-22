@@ -1,15 +1,18 @@
 package com.example.pickle.binding;
+import android.util.Log;
+
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-import com.example.pickle.Adapters.CartRecyclerViewAdapter;
-import com.example.pickle.Adapters.CategoryRecyclerViewAdapter;
-import com.example.pickle.Adapters.FirebaseSearchRecyclerAdapter;
-import com.example.pickle.Adapters.OrdersRecyclerAdapter;
+import com.example.pickle.adapters.CartRecyclerViewAdapter;
+import com.example.pickle.adapters.CategoryRecyclerViewAdapter;
+import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
+import com.example.pickle.adapters.OrdersRecyclerAdapter;
+import com.example.pickle.interfaces.Visitable;
+import com.example.pickle.interfaces.Visitor;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
-import com.google.api.Distribution;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +80,8 @@ public class RecyclerViewBinding {
         }
     }
 
-    @BindingAdapter("orderPlacedList")
-    public static void orderPlaced(RecyclerView recyclerView, List<OrdersDetails> list) {
+    @BindingAdapter({"orderPlacedList", "visitor"})
+    public static void orderPlaced(RecyclerView recyclerView, List<Visitable> list, Visitor visitor) {
 
         if (list == null) {
             return;
@@ -92,13 +95,13 @@ public class RecyclerViewBinding {
 
         OrdersRecyclerAdapter cartRecyclerViewAdapter = (OrdersRecyclerAdapter) recyclerView.getAdapter();
         if (cartRecyclerViewAdapter == null) {
-            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<OrdersDetails>)list);
+            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<Visitable>)list, visitor);
             recyclerView.setAdapter(cartRecyclerViewAdapter);
         }
     }
 
-    @BindingAdapter("pastOrdersList")
-    public static void  pastOrdersList(RecyclerView recyclerView, List<OrdersDetails> list) {
+    @BindingAdapter({"pastOrdersList", "visitor"})
+    public static void  pastOrdersList(RecyclerView recyclerView, List<Visitable> list, Visitor visitor) {
 
         if (list == null) {
             return;
@@ -112,7 +115,7 @@ public class RecyclerViewBinding {
 
         OrdersRecyclerAdapter cartRecyclerViewAdapter = (OrdersRecyclerAdapter) recyclerView.getAdapter();
         if (cartRecyclerViewAdapter == null) {
-            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<OrdersDetails>)list);
+            cartRecyclerViewAdapter = new OrdersRecyclerAdapter(recyclerView.getContext(), (ArrayList<Visitable>)list, visitor);
             recyclerView.setAdapter(cartRecyclerViewAdapter);
         }
     }

@@ -1,4 +1,4 @@
-package com.example.pickle.Adapters;
+package com.example.pickle.adapters;
 
 
 import android.content.Context;

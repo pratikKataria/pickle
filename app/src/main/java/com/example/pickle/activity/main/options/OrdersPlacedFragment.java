@@ -12,8 +12,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
+import com.example.pickle.adapters.VisitorForList;
 import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
+import com.example.pickle.interfaces.Visitable;
+import com.example.pickle.interfaces.Visitor;
+import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.DateUtils;
@@ -25,7 +29,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
 import static com.example.pickle.utils.Constant.ORDERS;
@@ -37,8 +49,8 @@ import static com.example.pickle.utils.Constant.ORDERS;
 public class OrdersPlacedFragment extends Fragment {
 
     private FragmentOrdersPlacedBinding binding;
-    private ArrayList<OrdersDetails> ordersList;
-    private ArrayList<OrdersDetails> pastOrdersList;
+    private ArrayList<Visitable> ordersList;
+    private ArrayList<Visitable> pastOrdersList;
 
     private static int countProcessing;
 
@@ -65,7 +77,14 @@ public class OrdersPlacedFragment extends Fragment {
         pastOrdersList = new ArrayList<>();
         binding.setOrdersList(ordersList);
         binding.setPastOrdersList(pastOrdersList);
-        populateList();
+
+        Visitor visitor = new VisitorForList();
+        binding.setVisitor(visitor);
+        ordersList.add(new EmptyState());
+
+        pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img));
+
+//        populateList();
         return view;
     }
 
