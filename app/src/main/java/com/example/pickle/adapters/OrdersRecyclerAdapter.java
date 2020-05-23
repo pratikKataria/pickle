@@ -156,7 +156,7 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHold
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Log.e("datasnapshot", dataSnapshot + " --------------------------------------------------------------------------------");
-                            String date = DateUtils.getDate(dataSnapshot.child("date").getValue(Long.class));
+                            String date = DateUtils.getServerDate(dataSnapshot.child("date").getValue(Long.class));
                             binding.cardViewTvDate.setText("Date: " + date);
                         }
 

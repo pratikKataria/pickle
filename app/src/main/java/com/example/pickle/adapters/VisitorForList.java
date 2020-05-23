@@ -1,9 +1,6 @@
 package com.example.pickle.adapters;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.pickle.adapters.viewholders.AbstractViewHolder;
 import com.example.pickle.adapters.viewholders.EmptyViewHolder;
 import com.example.pickle.adapters.viewholders.OrdersViewHolder;

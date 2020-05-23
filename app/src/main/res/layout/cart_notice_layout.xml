@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_next_bold"
             tools:text=" Wed, 6 May."
-            android:text="@{DateUtils.stringDate}"
+            android:text="@{DateUtils.nextDate}"
             android:textColor="@color/secondaryColorDark"
             app:layout_constraintStart_toEndOf="@+id/textView20"
             app:layout_constraintTop_toTopOf="parent" />

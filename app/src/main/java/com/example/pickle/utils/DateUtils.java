@@ -10,7 +10,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
-    public static String getDate(long timestamp) {
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getServerDate(long timestamp) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             return  sdf.format(new Date((long)timestamp));
@@ -19,6 +21,7 @@ public class DateUtils {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static boolean isEqual(long timestamp) {
         try {
             SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
@@ -34,10 +37,15 @@ public class DateUtils {
      * used to set date in include layout
      */
     @SuppressLint("SimpleDateFormat")
-    public static String getStringDate() {
+    public static String getNextDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
         Date date = calendar.getTime();
         return new SimpleDateFormat("EEE dd MMM").format(date);
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getCurrentDate() {
+        return new SimpleDateFormat("EEE dd MMM").format(new Date());
     }
 }

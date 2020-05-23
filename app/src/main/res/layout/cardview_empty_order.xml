@@ -12,7 +12,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewEmptyOrders"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:cardElevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardview_empty_order_constraint_l"
@@ -51,6 +52,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:text="@{emptyOrders.heading}"
+                android:textColor="@android:color/black"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintBottom_toTopOf="@+id/cardview_empty_order_tv_desc"
                 app:layout_constraintStart_toStartOf="parent"

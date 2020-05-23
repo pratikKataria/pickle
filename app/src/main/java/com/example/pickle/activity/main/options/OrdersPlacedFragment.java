@@ -13,14 +13,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
-import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
+import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.interfaces.Visitable;
-import com.example.pickle.interfaces.Visitor;
 import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
-import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.DateUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +31,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
-import static com.example.pickle.utils.Constant.FRUITS;
 import static com.example.pickle.utils.Constant.ORDERS;
 
 
@@ -46,7 +43,6 @@ public class OrdersPlacedFragment extends Fragment {
     private ArrayList<Visitable> ordersList;
     private ArrayList<Visitable> pastOrdersList;
 
-    private static int countProcessing;
 
     public OrdersPlacedFragment() {
         // Required empty public constructor
@@ -62,24 +58,19 @@ public class OrdersPlacedFragment extends Fragment {
                 inflater,
                 R.layout.fragment_orders_placed,
                 container,
-                false
-        );
-
-        View view = binding.getRoot();
+                false);
 
         ordersList = new ArrayList<>();
         pastOrdersList = new ArrayList<>();
         binding.setOrdersList(ordersList);
         binding.setPastOrdersList(pastOrdersList);
+        binding.setVisitor(new VisitorForList());
 
-        Visitor visitor = new VisitorForList();
-        binding.setVisitor(visitor);
-        ordersList.add(new EmptyState());
+        pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "Your past order's", "shows the history of order's past 6 month's"));
 
-        pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "No past orders", "you haven't order any thing within past 6 month's"));
+        populateList();
 
-//        populateList();
-        return view;
+        return binding.getRoot();
     }
 
 
@@ -90,6 +81,7 @@ public class OrdersPlacedFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()) {
+
                     Orders orders = dataSnapshot.getValue(Orders.class);
                     int orderStatus  = orders.getOrderStatus();
                     if (DateUtils.isEqual(orders.getDate()) && orderStatus == OrderStatus.PROCESSING || orderStatus == OrderStatus.ORDERED) {
@@ -106,6 +98,7 @@ public class OrdersPlacedFragment extends Fragment {
                                             ordersDetails.status = orders.getOrderStatus();
                                             ordersDetails.orderId = orders.getOrderId();
                                             ordersList.add(ordersDetails);
+                                            updateHeaderView();
                                             notifyChanges();
                                             Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
                                         }
@@ -135,6 +128,7 @@ public class OrdersPlacedFragment extends Fragment {
                                             ordersDetails.orderId = orders.getOrderId();
                                             ordersDetails.status = orders.getOrderStatus();
                                             pastOrdersList.add(ordersDetails);
+                                            updateHeaderView();
                                             notifyChanges();
                                             Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
                                         }
@@ -177,7 +171,7 @@ public class OrdersPlacedFragment extends Fragment {
     }
 
 
-    void notifyChanges(){
+    private void notifyChanges() {
         try {
             binding.recyclerView.getAdapter().notifyDataSetChanged();
             binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
@@ -187,4 +181,12 @@ public class OrdersPlacedFragment extends Fragment {
     }
 
 
+    private void updateHeaderView() {
+        if (ordersList.size() == 0) {
+            ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
+        } else if (ordersList.size() > 1) {
+            ordersList.remove(0);
+            ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
+        }
+    }
 }

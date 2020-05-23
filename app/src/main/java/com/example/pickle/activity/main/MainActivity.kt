@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var navHostFragment = supportFragmentManager.findFragmentById(R.id.activity_main_nav_host) as NavHostFragment;
         _navController = navHostFragment.navController
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
-        _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders)
+        _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders) //todo throws an  exception 001
 
         try {
             //todo fix bug here
