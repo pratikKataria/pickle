@@ -24,6 +24,7 @@ import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.models.CartViewModel;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.FragmentProductsBinding;
+import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import static com.example.pickle.utils.Constant.PRODUCT;
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
@@ -51,23 +53,10 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
     private ArrayList<ProductModel> fruitList;
     private FragmentProductsBinding productBinding;
-    private String headerText = "";
     private int countItems;
 
     public ProductsFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle bundle = getArguments();
-        headerText = bundle.getString(PRODUCT_BUNDLE);
-        if (headerText != null) {
-            reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child((String) bundle.get(PRODUCT_BUNDLE));
-        } else {
-            reference = FirebaseDatabase.getInstance().getReference(PRODUCT);
-        }
     }
 
     @Override
@@ -80,12 +69,17 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
                 false
         );
 
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(PRODUCT_BUNDLE)) {
+            reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(bundle.getString(PRODUCT_BUNDLE));
+        }
+
         fruitList = new ArrayList<>();
         new Handler().postDelayed(this::populateList,1200);
 
         productBinding.setProductList(fruitList);
         productBinding.setActivity(getActivity());
-        productBinding.setHeaderText(headerText);
+        productBinding.setBundle(BundleUtils.setNavigationBundle(bundle.getString(PRODUCT_BUNDLE)));
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartViewActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 
@@ -95,6 +89,10 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     }
 
     private void populateList() {
+
+        if (reference == null) {
+            reference = FirebaseDatabase.getInstance().getReference(PRODUCT);
+        }
 
         Query query = reference.orderByChild("itemName").limitToLast(15);
 

@@ -24,6 +24,10 @@
         <variable
             name="activity"
             type="android.app.Activity" />
+
+        <variable
+            name="dateString"
+            type="String" />
     </data>
 
 
@@ -234,7 +238,12 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <include layout="@layout/cart_notice_layout"/>
+                    <include
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginEnd="@dimen/cart_margin_end"
+                        layout="@layout/cart_notice_layout"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"

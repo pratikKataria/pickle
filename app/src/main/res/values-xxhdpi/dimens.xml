@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    <dimen name="crd_view_empty_orders_width"></dimen>-->
+    <dimen name="crd_view_empty_orders_height">150dp</dimen>
+
+</resources>

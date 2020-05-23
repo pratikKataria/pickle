@@ -23,12 +23,8 @@
           type="com.example.pickle.models.CartViewModel" />
 
       <variable
-          name="headerText"
-          type="String" />
-
-      <variable
-          name="headerImgRes"
-          type="int" />
+          name="bundle"
+          type="android.os.Bundle" />
    </data>
 
    <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -110,7 +106,7 @@
                 android:layout_height="100dp"
                 android:layout_margin="12dp"
                 android:clickable="true"
-                app:customBackground="@{headerText}"
+                app:customBackgroundColor="@{bundle.getInt(`BACKGROUND_COLOR`)}"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +118,7 @@
                    android:id="@+id/grid_view_iv_image"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   app:customImageResource="@{headerText}" />
+                   app:customImageResource="@{bundle.getInt(`IMAGE_RES`)}" />
             </androidx.cardview.widget.CardView>
 
             <TextView
@@ -132,7 +128,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 tools:text="Fruits"
-                android:text="@{headerText}"
+                android:text="@{bundle.getString(`productsInfo`)}"
                 android:textColor="@color/black"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintStart_toEndOf="@+id/cardViewFruits"

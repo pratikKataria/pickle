@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.example.pickle.BR;
 import com.example.pickle.adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.activity.Login.CustomerDetailActivity;
@@ -43,6 +44,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,7 +75,7 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
 
             //check if user is login or not
-            if (FirebaseAuth.getInstance().getUid() == null) {
+            if (FIREBASE_AUTH_ID == null) {
                 startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
                 return;
@@ -97,7 +101,6 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
                 }
             }
         });
-
     }
 
 
@@ -274,8 +277,8 @@ public class CartViewActivity extends AppCompatActivity implements IMainActivity
     private void checkAddress() {
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getUid() != null) {
-            databaseReference.child(FirebaseAuth.getInstance().getUid()).child("slot1")
+        if (FIREBASE_AUTH_ID != null) {
+            databaseReference.child(FIREBASE_AUTH_ID).child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

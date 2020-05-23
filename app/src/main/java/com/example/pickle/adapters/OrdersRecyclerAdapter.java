@@ -87,6 +87,7 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHold
 
     @Override
     public int getItemViewType(int position) {
+        Log.e("OrdersRecyclerview", visitableArrayList.get(position).accept(visitor) +" ");
         return visitableArrayList.get(position).accept(visitor);
     }
 

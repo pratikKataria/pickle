@@ -20,6 +20,7 @@ import com.example.pickle.interfaces.Visitor;
 import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.DateUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,17 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
+import static com.example.pickle.utils.Constant.FRUITS;
 import static com.example.pickle.utils.Constant.ORDERS;
 
 
@@ -82,7 +76,7 @@ public class OrdersPlacedFragment extends Fragment {
         binding.setVisitor(visitor);
         ordersList.add(new EmptyState());
 
-        pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img));
+        pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "No past orders", "you haven't order any thing within past 6 month's"));
 
 //        populateList();
         return view;

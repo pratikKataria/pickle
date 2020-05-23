@@ -39,7 +39,6 @@ public class CartViewModel extends BaseObservable {
     private boolean currentLocationFound;
     private String address;
     private String deliveryTime;
-    private String stringDate;
     DatabaseReference reference;
 
     @Bindable
@@ -101,22 +100,6 @@ public class CartViewModel extends BaseObservable {
 
     @Bindable
     public String getDeliveryTime() {return deliveryTime;}
-
-
-    @Bindable
-    public String getStringDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-        Date date = calendar.getTime();
-        this.stringDate = new SimpleDateFormat("EEE dd MMM").format(date);
-        return stringDate;
-    }
-
-    @Bindable
-    public void setStringDate(String stringDate) {
-        this.stringDate = stringDate;
-        notifyPropertyChanged(BR.stringDate);
-    }
 
     public String getProductQuantitiesString() {
         int totalItems = 0;

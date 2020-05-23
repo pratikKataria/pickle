@@ -3,9 +3,11 @@ package com.example.pickle.binding;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
@@ -20,49 +22,18 @@ import static com.example.pickle.utils.Constant.VEGETABLES;
 public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageResource")
-    public static void setImageCustom(ImageView _imageView, String imageResource) {
+    public static void setImageCustom(ImageView imageView, int imageRes) {
+            imageView.setImageDrawable(imageView.getContext().getDrawable(imageRes));
+    }
 
-        if (imageResource == null) {
-            return;
-        }
-
-        switch (imageResource) {
-            case FRUITS:
-                _imageView.setImageDrawable(_imageView.getContext().getDrawable(R.drawable.ic_fruits));
-                break;
-            case BEVERAGES:
-                _imageView.setImageDrawable(_imageView.getContext().getDrawable(R.drawable.ic_beverages));
-                break;
-            case DAIRY:
-                _imageView.setImageDrawable(_imageView.getContext().getDrawable(R.drawable.ic_dairy));
-                break;
-            case VEGETABLES:
-                _imageView.setImageDrawable(_imageView.getContext().getDrawable(R.drawable.ic_vegetable));
-                break;
-
-        }
+    @BindingAdapter("customBackgroundColor")
+    public static void setCustomBackground(CardView cardView, int colorRes) {
+        cardView.setBackgroundColor(cardView.getContext().getColor(colorRes));
     }
 
     @BindingAdapter("customBackground")
-    public static void setCustomBackground(CardView cardView, String imageResource) {
-        if (imageResource == null) {
-            return;
-        }
-        switch (imageResource) {
-            case FRUITS:
-                cardView.setBackgroundColor(cardView.getContext().getColor(R.color.icFruitBg));
-                break;
-            case BEVERAGES:
-                cardView.setBackgroundColor(cardView.getContext().getColor(R.color.icBeveragesBg));
-                break;
-            case DAIRY:
-                cardView.setBackgroundColor(cardView.getContext().getColor(R.color.icDairyBg));
-                break;
-            case VEGETABLES:
-                cardView.setBackgroundColor(cardView.getContext().getColor(R.color.icVegetableBg));
-                break;
-
-        }
+    public static void setCustomBackground(View view, int colorRes) {
+        view.setBackground(view.getContext().getDrawable(colorRes));
     }
 
     @BindingAdapter("imageResourceAdapter")

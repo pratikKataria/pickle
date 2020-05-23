@@ -1,10 +1,14 @@
 package com.example.pickle.adapters;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.pickle.adapters.viewholders.AbstractViewHolder;
 import com.example.pickle.adapters.viewholders.EmptyViewHolder;
 import com.example.pickle.adapters.viewholders.OrdersViewHolder;
+import com.example.pickle.databinding.CardviewEmptyOrderBinding;
+import com.example.pickle.databinding.CardviewOrdersBinding;
 import com.example.pickle.interfaces.Visitor;
 import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.OrdersDetails;
@@ -25,10 +29,12 @@ public class VisitorForList implements Visitor {
       AbstractViewHolder createViewHolder = null;
       switch (type) {
           case OrdersViewHolder.LAYOUT:
-              createViewHolder = new OrdersViewHolder(parent);
+              CardviewOrdersBinding cardviewOrdersBinding = CardviewOrdersBinding.bind(parent);
+              createViewHolder = new OrdersViewHolder(cardviewOrdersBinding);
               break;
           case EmptyViewHolder.LAYOUT:
-              createViewHolder = new EmptyViewHolder(parent);
+              CardviewEmptyOrderBinding cardviewEmptyOrderBinding = CardviewEmptyOrderBinding.bind(parent);
+              createViewHolder = new EmptyViewHolder(cardviewEmptyOrderBinding);
               break;
       }
       return createViewHolder;

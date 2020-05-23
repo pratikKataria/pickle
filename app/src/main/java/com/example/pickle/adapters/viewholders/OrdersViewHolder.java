@@ -5,14 +5,15 @@ import android.view.View;
 import androidx.annotation.LayoutRes;
 
 import com.example.pickle.R;
+import com.example.pickle.databinding.CardviewOrdersBinding;
 import com.example.pickle.models.OrdersDetails;
 
 public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
     @LayoutRes
     public static final int LAYOUT = R.layout.cardview_orders;
 
-    public OrdersViewHolder(View itemView) {
-        super(itemView);
+    public OrdersViewHolder(CardviewOrdersBinding binding) {
+        super(binding.getRoot());
     }
 
     @Override

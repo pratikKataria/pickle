@@ -22,7 +22,7 @@ import com.example.pickle.interfaces.IMainActivity
 import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
-import com.example.pickle.utils.NavigationUtils
+import com.example.pickle.utils.BundleUtils
 import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //todo fix bug here
             val navigationTo: String? = intent.extras?.getString(PRODUCT_BUNDLE)
             if (navigationTo != null) {
-                _navController.navigate(NAVIGATE_TO_PRODUCTS, NavigationUtils.getNavBundle(navigationTo))
+                _navController.navigate(NAVIGATE_TO_PRODUCTS, BundleUtils.setNavigationBundle(navigationTo))
             }
         } catch (xe : Exception) {
             Log.e(MainActivity::class.java.name, xe.message)

@@ -1,10 +1,12 @@
 package com.example.pickle.utils;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
@@ -26,5 +28,16 @@ public class DateUtils {
         } catch (Exception xe) {
             return false;
         }
+    }
+
+    /*
+     * used to set date in include layout
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getStringDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        Date date = calendar.getTime();
+        return new SimpleDateFormat("EEE dd MMM").format(date);
     }
 }
