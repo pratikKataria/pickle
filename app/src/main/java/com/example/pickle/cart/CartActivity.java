@@ -33,6 +33,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,8 +44,6 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
-
-import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity, INavigation {
@@ -69,7 +68,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
 
             //check if user is login or not
-            if (FIREBASE_AUTH_ID == null) {
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
                 return;
@@ -127,7 +126,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                         deliveryTime
                 ));
 
-                atomicOperation.put("Orders/"+key+"/userId", FIREBASE_AUTH_ID);
+                atomicOperation.put("Orders/"+key+"/userId", FirebaseAuth.getInstance().getCurrentUser());
                 atomicOperation.put("Orders/"+key+"/orderId", key);
                 atomicOperation.put("Orders/"+key+"/orderStatus", OrderStatus.PROCESSING);
                 atomicOperation.put("Orders/"+key+"/date", ServerValue.TIMESTAMP);
@@ -271,8 +270,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     private void checkAddress() {
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FIREBASE_AUTH_ID != null) {
-            databaseReference.child(FIREBASE_AUTH_ID).child("slot1")
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            databaseReference.child(FirebaseAuth.getInstance().getUid()).child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

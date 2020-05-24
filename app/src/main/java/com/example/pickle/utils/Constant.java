@@ -40,7 +40,6 @@ public abstract class Constant {
     public static final String ORDERS_DETAILS = "OrdersDetails";
     public static final String ORDERS_CANCELLED = "OrdersCancelled";
     public static final String ORDERS_DELIVERED = "OrdersDelivered";
-    public static final String FIREBASE_AUTH_ID = FirebaseAuth.getInstance().getUid();
 
     public static final String PRODUCT_BUNDLE = "productsInfo";
 
