@@ -27,7 +27,8 @@ public abstract class Constant {
             ORDERS_DELIVERED
     })
 
-    public @interface IConstant {}
+    public @interface IConstant {
+    }
 
     public static final String ROOT = "pickle-8bac6";
     public static final String PRODUCT = "Products";
@@ -37,24 +38,39 @@ public abstract class Constant {
     public static final String BEVERAGES = "Beverages";
     public static final String ORDERS = "Orders";
     public static final String ORDERS_DETAILS = "OrdersDetails";
-    public static final String ORDERS_CANCELLED ="OrdersCancelled";
-    public static final String ORDERS_DELIVERED ="OrdersDelivered";
+    public static final String ORDERS_CANCELLED = "OrdersCancelled";
+    public static final String ORDERS_DELIVERED = "OrdersDelivered";
     public static final String FIREBASE_AUTH_ID = FirebaseAuth.getInstance().getUid();
 
     public static final String PRODUCT_BUNDLE = "productsInfo";
 
     @IntDef({
-          FRUIT_IMG_RES,
-          VEGETABLE_IMG_RES,
-          BEVERAGE_IMG_RES,
-          DAIRY_IMG_RES
+            FRUIT_IMG_RES,
+            VEGETABLE_IMG_RES,
+            BEVERAGE_IMG_RES,
+            DAIRY_IMG_RES
     })
 
-    public @interface ImageResourceInterface {}
+    public @interface ImageResourceInterface {
+    }
 
     public static final int FRUIT_IMG_RES = R.drawable.ic_fruits;
     public static final int VEGETABLE_IMG_RES = R.drawable.ic_vegetable;
     public static final int BEVERAGE_IMG_RES = R.drawable.ic_beverages;
     public static final int DAIRY_IMG_RES = R.drawable.ic_dairy;
+
+    @IntDef({
+            ADD,
+            REMOVE,
+            MODIFIED
+    })
+
+    public @interface DatabaseOperation {
+    }
+
+    public static final int ADD    = 1;
+    public static final int REMOVE = 2;
+    public static final int MODIFIED = 3;
+
 
 }

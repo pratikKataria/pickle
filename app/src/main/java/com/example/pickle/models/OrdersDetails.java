@@ -1,5 +1,7 @@
 package com.example.pickle.models;
 
+import androidx.annotation.Nullable;
+
 import com.example.pickle.interfaces.Visitable;
 import com.example.pickle.interfaces.Visitor;
 
@@ -107,5 +109,14 @@ public class OrdersDetails implements Visitable {
     @Override
     public int accept(Visitor visitor) {
         return visitor.type(this);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof OrdersDetails) {
+            OrdersDetails ordersDetails = (OrdersDetails) obj;
+            return ordersDetails.orderId.equals(orderId);
+        }
+        return false;
     }
 }

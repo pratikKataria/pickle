@@ -6,32 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.pickle.OrdersViewModel;
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
 import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
-import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.interfaces.Visitable;
 import com.example.pickle.models.EmptyState;
+import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
-import com.example.pickle.utils.DateUtils;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.example.pickle.utils.Constant.FIREBASE_AUTH_ID;
-import static com.example.pickle.utils.Constant.ORDERS;
+import static com.example.pickle.interfaces.OrderStatus.CANCEL;
+import static com.example.pickle.utils.Constant.ADD;
+import static com.example.pickle.utils.Constant.MODIFIED;
+import static com.example.pickle.utils.Constant.REMOVE;
 
 
 /**
@@ -65,109 +60,67 @@ public class OrdersPlacedFragment extends Fragment {
         binding.setOrdersList(ordersList);
         binding.setPastOrdersList(pastOrdersList);
         binding.setVisitor(new VisitorForList());
+        updateHeaderView();
 
         pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "Your past order's", "shows the history of order's past 6 month's"));
 
-        populateList();
+
+        OrdersViewModel ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
+        LiveData<Operation> firebaseQueryLiveData =  ordersViewModel.getLiveData();
+
+        firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
+            updateHeaderView();
+            switch (operation.mode) {
+                case ADD:
+                    OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
+                    if (newOrdersDetails.isPastOrder) {
+                        addPastOrders(newOrdersDetails);
+                    } else {
+                        addProduct(newOrdersDetails);
+                    }
+                    break;
+                case MODIFIED:
+                    Orders orderModified = (Orders) operation.aClass;
+                    if (orderModified.getOrderStatus() == CANCEL) {
+                        removeProduct(orderModified.getOrderId());
+                    }
+                    break;
+                case REMOVE:
+                    Log.e("ORDER PLACED FRAGMENT", "removed");
+                    break;
+            }
+
+        });
+
 
         return binding.getRoot();
     }
 
 
-    public void populateList() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(ORDERS);
-        Query query = reference.orderByChild("userId").equalTo(FIREBASE_AUTH_ID).limitToLast(5);
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()) {
 
-                    Orders orders = dataSnapshot.getValue(Orders.class);
-                    int orderStatus  = orders.getOrderStatus();
-                    if (DateUtils.isEqual(orders.getDate()) && orderStatus == OrderStatus.PROCESSING || orderStatus == OrderStatus.ORDERED) {
-                        try {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("OrdersDetails/");
-                            Query detailQuery = reference.orderByKey().equalTo(orders.getOrderId()).limitToLast(15);
-                            detailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                                        if (s.exists()) {
-                                            OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
-                                            ordersDetails.isPastOrder = false;
-                                            ordersDetails.status = orders.getOrderStatus();
-                                            ordersDetails.orderId = orders.getOrderId();
-                                            ordersList.add(ordersDetails);
-                                            updateHeaderView();
-                                            notifyChanges();
-                                            Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
-                                        }
-                                    }
-                                }
+    private void addProduct(OrdersDetails addedOrdersDetails) {
+        ordersList.add(addedOrdersDetails);
+        notifyChanges();
+    }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+    private void addPastOrders(OrdersDetails pastOrderDetails) {
+        pastOrdersList.add(pastOrderDetails);
+        notifyChanges();
+    }
 
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            Log.e(OrdersPlacedFragment.class.getName(), e.getMessage());
-                        }
-                    } else if (orderStatus == OrderStatus.PROCESSING || orderStatus == OrderStatus.DELIVERED || orderStatus == OrderStatus.CANCEL) {
-                        try {
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("OrdersDetails/");
-                            Query detailQuery = reference.orderByKey().equalTo(orders.getOrderId()).limitToLast(15);
-                            detailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                                        if (s.exists()) {
-                                            OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
-                                            ordersDetails.isPastOrder = true;
-                                            ordersDetails.orderId = orders.getOrderId();
-                                            ordersDetails.status = orders.getOrderStatus();
-                                            pastOrdersList.add(ordersDetails);
-                                            updateHeaderView();
-                                            notifyChanges();
-                                            Log.e(OrdersPlacedFragment.class.getName(),  ordersDetails.toString());
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            Log.e(OrdersPlacedFragment.class.getName(), e.getMessage());
-                        }
-                    }
-                }
+    private void removeProduct(String orderId) {
+        //start from 1 because at 0 index there is empty state card holder
+        for (int i = 1; i < ordersList.size(); i++) {
+            OrdersDetails currentOrdersDetails = (OrdersDetails) ordersList.get(i);
+            if (orderId.equals(currentOrdersDetails.orderId)) {
+                currentOrdersDetails.isPastOrder = true;
+                currentOrdersDetails.status = CANCEL;
+                ordersList.remove(currentOrdersDetails);
+                pastOrdersList.add(currentOrdersDetails);
+                notifyChanges();
+                updateHeaderView();
             }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        }
     }
 
 
@@ -184,9 +137,11 @@ public class OrdersPlacedFragment extends Fragment {
     private void updateHeaderView() {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
-        } else if (ordersList.size() > 1) {
+            notifyChanges();
+        } else if (ordersList.size() == 2) {
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
+            notifyChanges();
         }
     }
 }

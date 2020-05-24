@@ -87,7 +87,6 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHold
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("OrdersRecyclerview", visitableArrayList.get(position).accept(visitor) +" ");
         return visitableArrayList.get(position).accept(visitor);
     }
 
@@ -110,38 +109,6 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHold
 
         }
 
-        void setName(String productCategory, String productId) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/"+productCategory+"/"+productId+"/itemName");
-            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    String name = dataSnapshot.getValue(String.class);
-                    productModel.setItemName(name);
-                    viewModel.setProduct(productModel);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        void cancelOrder(OrdersDetails ordersDetails) {
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-            Map<String, Object> atomicUpdate = new HashMap<>();
-
-            atomicUpdate.put(ORDERS + "/" + ordersDetails.orderId + "/" + "orderStatus", OrderStatus.CANCEL);
-            atomicUpdate.put(ORDERS_CANCELLED + "/" + ordersDetails.orderId + "/" + "orderId", ordersDetails.orderId);
-            atomicUpdate.put(ORDERS_CANCELLED + "/" + ordersDetails.orderId + "/" + "date", ServerValue.TIMESTAMP);
-
-            databaseReference.updateChildren(atomicUpdate).addOnSuccessListener(task -> {
-                Toast.makeText(context, "order cancel successfully", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(taskFailed -> {
-                Toast.makeText(context, "failed to cancel order", Toast.LENGTH_SHORT).show();
-            });
-        }
 
         void setDate(OrdersDetails ordersDetails) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
