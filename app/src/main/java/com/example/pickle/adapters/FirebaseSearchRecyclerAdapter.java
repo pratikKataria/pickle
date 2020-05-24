@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.models.ProductViewModel;
+import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
 import com.example.pickle.ui.ProductViewHolder;

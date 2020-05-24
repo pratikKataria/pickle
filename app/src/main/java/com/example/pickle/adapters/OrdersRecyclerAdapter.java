@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,20 +16,16 @@ import com.example.pickle.interfaces.Visitable;
 import com.example.pickle.interfaces.Visitor;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.models.ProductViewModel;
+import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.utils.DateUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_CANCELLED;
 
 public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHolder> {

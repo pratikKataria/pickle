@@ -19,7 +19,7 @@
 
         <variable
             name="cartViewModel"
-            type="com.example.pickle.models.CartViewModel" />
+            type="com.example.pickle.cart.CartViewModel" />
 
         <variable
             name="activity"
@@ -202,7 +202,7 @@
                 android:overScrollMode="never"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 android:orientation="vertical"
-                tools:context=".activity.main.options.CartViewActivity">
+                tools:context=".activity.main.CartActivity">
 
                 <LinearLayout
                     android:id="@+id/linearLayout"

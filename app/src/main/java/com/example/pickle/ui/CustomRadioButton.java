@@ -6,9 +6,7 @@ import android.widget.CompoundButton;
 
 import androidx.appcompat.widget.AppCompatRadioButton;
 
-import com.example.pickle.activity.Login.CustomerDetailActivity;
-
-import java.text.AttributedCharacterIterator;
+import com.example.pickle.Login.CustomerDetailActivity;
 
 public class CustomRadioButton extends AppCompatRadioButton {
 

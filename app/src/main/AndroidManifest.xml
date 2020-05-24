@@ -15,33 +15,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.main.EmptyActivity"
+        <activity
+            android:name=".empty.EmptyActivity"
             android:hardwareAccelerated="true"></activity>
-        <activity android:name=".activity.main.FirebaseSearchActivity"
+        <activity
+            android:name=".main.FirebaseSearchActivity"
             android:windowSoftInputMode="adjustNothing|stateAlwaysVisible">
 
         </activity>
-        <activity android:name=".activity.main.options.CartViewActivity" >
+        <activity android:name=".cart.CartActivity">
 
         </activity>
-        <activity android:name=".activity.main.options.AddNewItemActivity" />
+        <activity android:name=".main.AddNewItemActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".activity.Login.CustomerDetailActivity" />
-        <activity android:name=".activity.Splash.SplashActivity">
+        <activity android:name="com.example.pickle.Login.CustomerDetailActivity" />
+        <activity android:name="com.example.pickle.splash.SplashActivity">
 
         </activity>
-        <activity android:name=".activity.Login.OtpActivity" />
-        <activity android:name=".activity.main.MainActivity">
+        <activity android:name="com.example.pickle.Login.OtpActivity" />
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Login.LoginActivity" />
-        <activity android:name=".activity.Splash.OnBoardingActivity" />
+        <activity android:name="com.example.pickle.Login.LoginActivity" />
+        <activity android:name="com.example.pickle.splash.OnBoardingActivity" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

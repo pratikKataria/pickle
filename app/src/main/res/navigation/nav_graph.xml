@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/orderFragment"
-        android:name="com.example.pickle.activity.main.navigation_fragment.HomeFragment"
+        android:name="com.example.pickle.navigation.HomeFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_home" >
         <action
@@ -30,27 +30,27 @@
     </fragment>
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.example.pickle.activity.main.products_fragment.ProductsFragment"
+        android:name="com.example.pickle.activity.main.ProductsFragment"
         android:label="fragment_fruits"
         tools:layout="@layout/fragment_products" />
     <fragment
         android:id="@+id/exploreFragment"
-        android:name="com.example.pickle.activity.main.navigation_fragment.ExploreFragment"
+        android:name="com.example.pickle.navigation.ExploreFragment"
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" />
     <fragment
         android:id="@+id/offerFragment"
-        android:name="com.example.pickle.activity.main.navigation_fragment.OfferFragment"
+        android:name="com.example.pickle.navigation.OfferFragment"
         android:label="fragment_offer"
         tools:layout="@layout/fragment_offer" />
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.example.pickle.activity.main.navigation_fragment.CartFragment"
+        android:name="com.example.pickle.navigation.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/nav_menu_sub_orders"
-        android:name="com.example.pickle.activity.main.options.OrdersPlacedFragment"
+        android:name="com.example.pickle.orders.OrdersPlacedFragment"
         android:label="fragment_orders_placed"
         tools:layout="@layout/fragment_orders_placed" />
 </navigation>

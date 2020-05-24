@@ -2,12 +2,11 @@ package com.example.pickle.binding;
 
 import androidx.databinding.BindingAdapter;
 
-import com.example.pickle.activity.carousel.CarouselAdapter;
-import com.example.pickle.activity.carousel.CarouselImage;
+import com.example.pickle.carousel.CarouselAdapter;
+import com.example.pickle.carousel.CarouselImage;
 import com.yarolegovich.discretescrollview.DSVOrientation;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
-import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;

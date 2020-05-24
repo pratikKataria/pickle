@@ -11,7 +11,7 @@
 
         <variable
             name="productViewModel"
-            type="com.example.pickle.models.ProductViewModel" />
+            type="com.example.pickle.product.ProductViewModel" />
 
     </data>
 

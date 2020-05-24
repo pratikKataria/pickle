@@ -7,7 +7,7 @@
     android:layout_marginBottom="-25dp"
     android:orientation="vertical"
     android:background="@color/lightWeightGrey"
-    tools:context=".activity.Login.CustomerDetailActivity">
+    tools:context=".Login.CustomerDetailActivity">
 
     <ImageView
         android:id="@+id/imageView"

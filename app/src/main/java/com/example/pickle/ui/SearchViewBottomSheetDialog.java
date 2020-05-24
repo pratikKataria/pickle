@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.R;
-import com.example.pickle.activity.main.options.CartViewActivity;
+import com.example.pickle.cart.CartActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.BottomSheetSearchViewBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -50,7 +50,7 @@ public class SearchViewBottomSheetDialog extends BottomSheetDialogFragment {
         searchViewBinding.setProduct(productModel);
         searchViewBinding.goToCartBtn.setOnClickListener(n -> {
              if (getActivity() != null) {
-                 startActivity(new Intent(getActivity(), CartViewActivity.class));
+                 startActivity(new Intent(getActivity(), CartActivity.class));
              }
          });
 

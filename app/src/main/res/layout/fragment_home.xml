@@ -13,7 +13,7 @@
 
         <variable
             name="carouselImage"
-            type="java.util.List&lt;com.example.pickle.activity.carousel.CarouselImage>" />
+            type="java.util.List&lt;com.example.pickle.carousel.CarouselImage>" />
 
         <variable
             name="typeface"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainActColor"
-        tools:context=".activity.main.navigation_fragment.HomeFragment">
+        tools:context=".navigation.HomeFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

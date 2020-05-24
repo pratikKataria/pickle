@@ -20,7 +20,7 @@
 
       <variable
           name="cartViewModel"
-          type="com.example.pickle.models.CartViewModel" />
+          type="com.example.pickle.cart.CartViewModel" />
 
       <variable
           name="bundle"
@@ -30,7 +30,7 @@
    <androidx.coordinatorlayout.widget.CoordinatorLayout
        android:layout_width="match_parent"
        android:layout_height="match_parent"
-       tools:context=".activity.main.products_fragment.ProductsFragment"
+       tools:context=".activity.main.ProductsFragment"
        android:orientation="vertical">
 
       <com.google.android.material.appbar.AppBarLayout
