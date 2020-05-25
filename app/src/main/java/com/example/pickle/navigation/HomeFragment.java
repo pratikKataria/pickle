@@ -39,6 +39,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -142,6 +143,9 @@ public class HomeFragment extends Fragment implements IFragmentCb {
                 container,
                 false
         );
+
+        MaterialFadeThrough materialFadeThrough = MaterialFadeThrough.create();
+        setExitTransition(materialFadeThrough);
 
         init_fields(binding.getRoot());
         imageList = new ArrayList<>();

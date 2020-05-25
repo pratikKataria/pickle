@@ -4,6 +4,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
 import com.example.pickle.R;
+import com.example.pickle.product.ProductsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.annotation.Retention;
@@ -43,6 +44,7 @@ public abstract class Constant {
 
     public static final String PRODUCT_BUNDLE = "productsInfo";
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({
             FRUIT_IMG_RES,
             VEGETABLE_IMG_RES,
@@ -70,6 +72,4 @@ public abstract class Constant {
     public static final int ADD    = 1;
     public static final int REMOVE = 2;
     public static final int MODIFIED = 3;
-
-
 }

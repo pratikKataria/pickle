@@ -1,5 +1,6 @@
 package com.example.pickle.orders;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
-import com.example.pickle.databinding.FragmentOrdersPlacedBinding;
+import com.example.pickle.databinding.FragmentOrdersBinding;
 import com.example.pickle.interfaces.Visitable;
+import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
 
@@ -33,7 +36,7 @@ import static com.example.pickle.utils.Constant.REMOVE;
  */
 public class OrdersPlacedFragment extends Fragment {
 
-    private FragmentOrdersPlacedBinding binding;
+    private FragmentOrdersBinding binding;
     private ArrayList<Visitable> ordersList;
     private ArrayList<Visitable> pastOrdersList;
 
@@ -50,15 +53,20 @@ public class OrdersPlacedFragment extends Fragment {
 
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_orders_placed,
+                R.layout.fragment_orders,
                 container,
                 false);
+
+        MaterialFadeThrough materialFadeThrough = MaterialFadeThrough.create();
+        setEnterTransition(materialFadeThrough);
 
         ordersList = new ArrayList<>();
         pastOrdersList = new ArrayList<>();
         binding.setOrdersList(ordersList);
         binding.setPastOrdersList(pastOrdersList);
         binding.setVisitor(new VisitorForList());
+        binding.setActivity(getActivity());
+        binding.setIntent(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
         updateHeaderView();
 
         pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "Your past order's", "shows the history of order's past 6 month's"));
@@ -125,8 +133,8 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void notifyChanges() {
         try {
-            binding.recyclerView.getAdapter().notifyDataSetChanged();
-            binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
+//            binding.recyclerView.getAdapter().notifyDataSetChanged();
+//            binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
         } catch (NullPointerException npe) {
             Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
         }

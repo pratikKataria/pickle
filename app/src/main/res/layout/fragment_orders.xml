@@ -20,6 +20,14 @@
         <variable
             name="pastOrdersList"
             type="java.util.List&lt;com.example.pickle.interfaces.Visitable>"/>
+
+        <variable
+            name="activity"
+            type="android.app.Activity" />
+
+        <variable
+            name="intent"
+            type="android.content.Intent" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -48,6 +56,7 @@
                     app:cardCornerRadius="8dp"
                     android:layout_margin="8dp"
                     app:cardElevation="0dp"
+                    android:onClick="@{() -> activity.startActivity(intent)}"
                     android:backgroundTint="@color/colorGrey100"
                     app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +90,8 @@
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_arrow_left" />
+                        android:src="@drawable/ic_arrow_left"
+                        android:onClick="@{() -> activity.onBackPressed()}"/>
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -168,7 +168,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
             ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
                 binding.getCartList().clear();
-                binding.cartRecyclerView.getAdapter().notifyDataSetChanged(); // todo add try catch
+//                binding.cartRecyclerView.getAdapter().notifyDataSetChanged(); // todo add try catch
                 binding.getCartViewModel().setCartVisible(false);
                 SharedPrefsUtils.clearCart(this);
                 new Handler().postDelayed(() -> {
