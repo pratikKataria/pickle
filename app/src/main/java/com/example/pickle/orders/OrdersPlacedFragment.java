@@ -133,8 +133,8 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void notifyChanges() {
         try {
-//            binding.recyclerView.getAdapter().notifyDataSetChanged();
-//            binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
+            binding.recyclerView.getAdapter().notifyDataSetChanged();
+            binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
         } catch (NullPointerException npe) {
             Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
         }

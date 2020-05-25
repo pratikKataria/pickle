@@ -41,6 +41,7 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
     public void bind(OrdersDetails element) {
         binding.setOrderDetails(element);
         setName(element.getItemCategory(), element.getItemId());
+        Log.e("OrdersViewHolder", element.toString());
         binding.cancelButtonMb.setOnClickListener(n -> cancelOrder(element.orderId));
     }
 

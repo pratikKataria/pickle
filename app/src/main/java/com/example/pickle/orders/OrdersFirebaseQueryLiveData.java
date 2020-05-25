@@ -62,7 +62,6 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
                         if (s.exists()) {
                             OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
                             ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate()) ||
-                                    (!DateUtils.isEqual(orders.getDate()) && orders.getOrderStatus() == PROCESSING) ||
                                     orders.getOrderStatus() == CANCEL ||
                                     orders.getOrderStatus() == DELIVERED;
                             ordersDetails.status = orders.getOrderStatus();

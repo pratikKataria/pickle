@@ -6,12 +6,10 @@
     <item
         android:id="@+id/orderFragment"
         android:title="Home"
-        android:icon="@drawable/ic_home_state"
-        app:cnb_backgroundColor="@color/darkBlue"/>
+        android:icon="@drawable/ic_home_state" />
 
     <item android:id="@+id/offerFragment"
         android:title="Scheduling"
-        android:icon="@drawable/ic_scheduling_state"
-        app:cnb_backgroundColor="@color/darkBlue"/>
+        android:icon="@drawable/ic_scheduling_state" />
 
 </menu>

@@ -77,6 +77,7 @@ public class OrdersRecyclerAdapter extends RecyclerView.Adapter<AbstractViewHold
 
     @Override
     public int getItemCount() {
+        Log.e("OrdersRecyclerAdapter", visitableArrayList.size() +"");
         return visitableArrayList.size();
     }
 

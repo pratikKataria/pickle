@@ -126,7 +126,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                         deliveryTime
                 ));
 
-                atomicOperation.put("Orders/"+key+"/userId", FirebaseAuth.getInstance().getCurrentUser());
+                atomicOperation.put("Orders/"+key+"/userId", FirebaseAuth.getInstance().getUid());
                 atomicOperation.put("Orders/"+key+"/orderId", key);
                 atomicOperation.put("Orders/"+key+"/orderStatus", OrderStatus.PROCESSING);
                 atomicOperation.put("Orders/"+key+"/date", ServerValue.TIMESTAMP);
