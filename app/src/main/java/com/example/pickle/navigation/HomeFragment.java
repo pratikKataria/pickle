@@ -29,14 +29,14 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.R;
+import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.carousel.CarouselImage;
-import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.cart.CartActivity;
+import com.example.pickle.databinding.FragmentHomeBinding;
+import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialFadeThrough;
@@ -52,7 +52,6 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -149,7 +148,6 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
         init_fields(binding.getRoot());
         imageList = new ArrayList<>();
-        binding.setProductList(productModelArrayList);
         setUpToolbar();
         getImageList();
         binding.setCarouselImage(imageList);
@@ -161,9 +159,7 @@ public class HomeFragment extends Fragment implements IFragmentCb {
         itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
         getActivity().invalidateOptionsMenu();
 
-        new Handler().postDelayed(() -> {
-            binding.suggestionRecyclerView.setVisibility(View.VISIBLE);
-        }, 600);
+        new Handler().postDelayed(() -> binding.setProductList(productModelArrayList), 600);
         Bundle bundle = new Bundle();
 
         binding.cardViewFruits.setOnClickListener(n -> {
@@ -214,7 +210,7 @@ public class HomeFragment extends Fragment implements IFragmentCb {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
                 try {
-                    binding.rvScroll.getAdapter().notifyDataSetChanged();
+                    binding.rvScroll.getAdapter().notifyItemChanged(Math.max(imageList.size() - 1, 0));
                 } catch (NullPointerException npe) {
                     Log.e("HomeFragment", npe.getMessage());
                 }
@@ -222,9 +218,9 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
                 try {
-                    binding.rvScroll.getAdapter().notifyDataSetChanged();
+                    binding.rvScroll.getAdapter().notifyItemChanged(0);
                 } catch (NullPointerException npe) {
                     Log.e("HomeFragment", npe.getMessage());
                 }
@@ -279,8 +275,9 @@ public class HomeFragment extends Fragment implements IFragmentCb {
                                 }
 
                                 productModelArrayList.add(lastProduct);
-                                Collections.shuffle(productModelArrayList);
-                                notifyChanges();
+                                if (productModelArrayList.size() > 0) {
+                                    notifyChangesAtPosition(productModelArrayList.indexOf(lastProduct));
+                                }
                             }
                             if (lastProduct != null) {
                                 saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
@@ -336,7 +333,7 @@ public class HomeFragment extends Fragment implements IFragmentCb {
                                     }
 
                                     productModelArrayList.add(productModel);
-                                    notifyChanges();
+                                    notifyChangesAtPosition(productModelArrayList.size()-1);
                                 }
                             }
 
@@ -362,9 +359,9 @@ public class HomeFragment extends Fragment implements IFragmentCb {
         });
     }
 
-    private void notifyChanges() {
+    private void notifyChangesAtPosition(int pos) {
         try {
-            binding.suggestionRecyclerView.getAdapter().notifyDataSetChanged();
+            binding.suggestionRecyclerView.getAdapter().notifyItemChanged(pos);
         }catch (NullPointerException npe) {
             Log.e("HomeFragment", npe.getMessage());
         }
@@ -399,10 +396,10 @@ public class HomeFragment extends Fragment implements IFragmentCb {
             if (refreshList.contains(product)) {
                 ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
                 product.setQuantityCounter(newProduct.getQuantityCounter());
-                notifyChanges();
+                notifyChangesAtPosition(productModelArrayList.indexOf(product));
             } else {
                 product.setQuantityCounter(0);
-                notifyChanges();
+                notifyChangesAtPosition(productModelArrayList.indexOf(product));
             }
         }
     }
