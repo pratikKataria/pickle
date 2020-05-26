@@ -107,12 +107,12 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void addProduct(OrdersDetails addedOrdersDetails) {
         ordersList.add(addedOrdersDetails);
-        notifyChanges();
+        notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
     }
 
     private void addPastOrders(OrdersDetails pastOrderDetails) {
         pastOrdersList.add(pastOrderDetails);
-        notifyChanges();
+        notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
     }
 
     private void removeProduct(String orderId) {
@@ -124,17 +124,17 @@ public class OrdersPlacedFragment extends Fragment {
                 currentOrdersDetails.status = CANCEL;
                 ordersList.remove(currentOrdersDetails);
                 pastOrdersList.add(currentOrdersDetails);
-                notifyChanges();
+                notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
                 updateHeaderView();
             }
         }
     }
 
 
-    private void notifyChanges() {
+    private void notifyChangesAtPosition(int pos) {
         try {
-            binding.recyclerView.getAdapter().notifyItemChanged(Math.max(ordersList.size() - 1, 0));
-            binding.recyclerViewPastOrders.getAdapter().notifyItemChanged(Math.max(ordersList.size() - 1, 0));
+            binding.recyclerView.getAdapter().notifyItemChanged(pos);
+            binding.recyclerViewPastOrders.getAdapter().notifyItemChanged(pos);
         } catch (NullPointerException npe) {
             Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
         }
@@ -144,11 +144,11 @@ public class OrdersPlacedFragment extends Fragment {
     private void updateHeaderView() {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
-            notifyChanges();
+            notifyChangesAtPosition(0);
         } else if (ordersList.size() == 2) {
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
-            notifyChanges();
+            notifyChangesAtPosition(0);
         }
     }
 }
