@@ -75,29 +75,29 @@ public class OrdersPlacedFragment extends Fragment {
         OrdersViewModel ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
         LiveData<Operation> firebaseQueryLiveData =  ordersViewModel.getLiveData();
 
-//        firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
-//            updateHeaderView();
-//            switch (operation.mode) {
-//                case ADD:
-//                    OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
-//                    if (newOrdersDetails.isPastOrder) {
-//                        addPastOrders(newOrdersDetails);
-//                    } else {
-//                        addProduct(newOrdersDetails);
-//                    }
-//                    break;
-//                case MODIFIED:
-//                    Orders orderModified = (Orders) operation.aClass;
-//                    if (orderModified.getOrderStatus() == CANCEL) {
-//                        removeProduct(orderModified.getOrderId());
-//                    }
-//                    break;
-//                case REMOVE:
-//                    Log.e("ORDER PLACED FRAGMENT", "removed");
-//                    break;
-//            }
-//
-//        });
+        firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
+            updateHeaderView();
+            switch (operation.mode) {
+                case ADD:
+                    OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
+                    if (newOrdersDetails.isPastOrder) {
+                        addPastOrders(newOrdersDetails);
+                    } else {
+                        addProduct(newOrdersDetails);
+                    }
+                    break;
+                case MODIFIED:
+                    Orders orderModified = (Orders) operation.aClass;
+                    if (orderModified.getOrderStatus() == CANCEL) {
+                        removeProduct(orderModified.getOrderId());
+                    }
+                    break;
+                case REMOVE:
+                    Log.e("ORDER PLACED FRAGMENT", "removed");
+                    break;
+            }
+
+        });
 
 
         return binding.getRoot();
@@ -133,8 +133,8 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void notifyChanges() {
         try {
-            binding.recyclerView.getAdapter().notifyDataSetChanged();
-            binding.recyclerViewPastOrders.getAdapter().notifyDataSetChanged();
+            binding.recyclerView.getAdapter().notifyItemChanged(Math.max(ordersList.size() - 1, 0));
+            binding.recyclerViewPastOrders.getAdapter().notifyItemChanged(Math.max(ordersList.size() - 1, 0));
         } catch (NullPointerException npe) {
             Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
         }

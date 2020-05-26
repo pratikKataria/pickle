@@ -7,7 +7,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
+public class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle{
 
     private Runnable runnable;
 
@@ -16,13 +16,20 @@ public class SmoothActionBarDrawerToggle extends ActionBarDrawerToggle {
     }
 
     @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        super.onDrawerSlide(drawerView, slideOffset);
+    }
+
+    @Override
     public void onDrawerOpened(View drawerView) {
         super.onDrawerOpened(drawerView);
     }
+
     @Override
-    public void onDrawerClosed(View view) {
-        super.onDrawerClosed(view);
+    public void onDrawerClosed(View drawerView) {
+        super.onDrawerClosed(drawerView);
     }
+
     @Override
     public void onDrawerStateChanged(int newState) {
         super.onDrawerStateChanged(newState);
