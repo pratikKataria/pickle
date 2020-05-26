@@ -1,13 +1,9 @@
 package com.example.pickle.adapters.viewholders;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-
 import com.example.pickle.R;
 import com.example.pickle.databinding.CardviewOrdersBinding;
 import com.example.pickle.interfaces.OrderStatus;
@@ -41,7 +37,6 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
     public void bind(OrdersDetails element) {
         binding.setOrderDetails(element);
         setName(element.getItemCategory(), element.getItemId());
-        Log.e("OrdersViewHolder", element.toString());
         binding.cancelButtonMb.setOnClickListener(n -> cancelOrder(element.orderId));
     }
 

@@ -75,29 +75,29 @@ public class OrdersPlacedFragment extends Fragment {
         OrdersViewModel ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
         LiveData<Operation> firebaseQueryLiveData =  ordersViewModel.getLiveData();
 
-        firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
-            updateHeaderView();
-            switch (operation.mode) {
-                case ADD:
-                    OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
-                    if (newOrdersDetails.isPastOrder) {
-                        addPastOrders(newOrdersDetails);
-                    } else {
-                        addProduct(newOrdersDetails);
-                    }
-                    break;
-                case MODIFIED:
-                    Orders orderModified = (Orders) operation.aClass;
-                    if (orderModified.getOrderStatus() == CANCEL) {
-                        removeProduct(orderModified.getOrderId());
-                    }
-                    break;
-                case REMOVE:
-                    Log.e("ORDER PLACED FRAGMENT", "removed");
-                    break;
-            }
-
-        });
+//        firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
+//            updateHeaderView();
+//            switch (operation.mode) {
+//                case ADD:
+//                    OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
+//                    if (newOrdersDetails.isPastOrder) {
+//                        addPastOrders(newOrdersDetails);
+//                    } else {
+//                        addProduct(newOrdersDetails);
+//                    }
+//                    break;
+//                case MODIFIED:
+//                    Orders orderModified = (Orders) operation.aClass;
+//                    if (orderModified.getOrderStatus() == CANCEL) {
+//                        removeProduct(orderModified.getOrderId());
+//                    }
+//                    break;
+//                case REMOVE:
+//                    Log.e("ORDER PLACED FRAGMENT", "removed");
+//                    break;
+//            }
+//
+//        });
 
 
         return binding.getRoot();

@@ -14,16 +14,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.pickle.R
 import com.example.pickle.Login.LoginActivity
+import com.example.pickle.R
+import com.example.pickle.SmoothActionBarDrawerToggle
 import com.example.pickle.interfaces.IFragmentCb
 import com.example.pickle.interfaces.IMainActivity
 import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.navigation.HomeFragment
-import com.example.pickle.network.ConnectivityReceiver
-import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.BundleUtils
+import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.SharedPrefsUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
@@ -34,27 +34,24 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     IMainActivity, IFragmentCb {
 
-    lateinit var navigationView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
-
-    lateinit var _navController : NavController;
-
-
-    lateinit var bottomNavigationView: BottomNavigationView
-
+    private lateinit var navigationView: NavigationView
+    private lateinit var _navController: NavController;
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var drawerToggle: SmoothActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.e("MainActivity ", "connectivity ${ConnectivityReceiver.isConnected()}")
-
+        drawerLayout = findViewById(R.id.activity_main_drawer_layout)
+        navigationView = findViewById(R.id.activity_main_nv_side_navigation);
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
         bottomNavigationView.itemIconTintList = null;
 
-        drawerLayout = findViewById(R.id.activity_main_drawer_layout)
+        drawerToggle = SmoothActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(drawerToggle);
 
-        navigationView = findViewById(R.id.activity_main_nv_side_navigation);
 
         activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
 
@@ -91,7 +88,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_menu_sub_orders -> {
                 try {
-                    _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders)
+                    drawerToggle.runWhenIdle {
+                        _navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders)
+                    }
+                    drawerLayout.closeDrawers()
                 } catch (xe : Exception) {
                     Log.e("MainActivity", xe.message);
                 }
