@@ -50,7 +50,6 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("ordersViewHolder", dataSnapshot+" ");
                 String name = dataSnapshot.getValue(String.class);
                 binding.setName(name);
             }

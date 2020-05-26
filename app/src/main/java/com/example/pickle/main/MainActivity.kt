@@ -21,6 +21,7 @@ import com.example.pickle.interfaces.IMainActivity
 import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.navigation.HomeFragment
+import com.example.pickle.network.ConnectivityReceiver
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.BundleUtils
 import com.example.pickle.utils.SharedPrefsUtils
@@ -46,12 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val mFirebaseUser = FirebaseAuth.getInstance()
-//        if (mFirebaseUser.currentUser == null) {
-//            startActivity(Intent(this, LoginActivity::class.java))
-//            finish()
-//        }
-
+        Log.e("MainActivity ", "connectivity ${ConnectivityReceiver.isConnected()}")
 
         bottomNavigationView = findViewById(R.id.activity_main_cnb_bottom_nav)
         bottomNavigationView.itemIconTintList = null;
