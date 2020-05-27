@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -28,6 +29,7 @@ import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.navigation.HomeFragment
 import com.example.pickle.network.ConnectivityReceiver
+import com.example.pickle.network.NetworkConnectionStateMonitor
 import com.example.pickle.utils.BundleUtils
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.SharedPrefsUtils
@@ -88,13 +90,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onStart() {
         super.onStart()
-        val intentFilter = IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        registerReceiver(connectivityReceiver, intentFilter);
+
+        var connectionMonitor = NetworkConnectionStateMonitor(this);
+        connectionMonitor.observe(this, Observer {
+            Log.e("connectivity receiver", "network $it");
+        } )
+//        val intentFilter = IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
+//        registerReceiver(connectivityReceiver, intentFilter);
     }
 
     override fun onStop() {
         super.onStop()
-        unregisterReceiver(connectivityReceiver)
+//        unregisterReceiver(connectivityReceiver)
+//        ConnectivityReceiver.registerNetworkCallback(applicationContext);
     }
 
 
