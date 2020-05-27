@@ -2,7 +2,11 @@ package com.example.pickle.main;
 
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -17,11 +21,13 @@ import androidx.navigation.ui.NavigationUI
 import com.example.pickle.Login.LoginActivity
 import com.example.pickle.R
 import com.example.pickle.SmoothActionBarDrawerToggle
+import com.example.pickle.cart.CartActivity
 import com.example.pickle.interfaces.IFragmentCb
 import com.example.pickle.interfaces.IMainActivity
 import com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS
 import com.example.pickle.models.ProductModel
 import com.example.pickle.navigation.HomeFragment
+import com.example.pickle.network.ConnectivityReceiver
 import com.example.pickle.utils.BundleUtils
 import com.example.pickle.utils.Constant.PRODUCT_BUNDLE
 import com.example.pickle.utils.SharedPrefsUtils
@@ -53,6 +59,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.addDrawerListener(drawerToggle);
 
 
+        drawerLayout.setOnClickListener {
+           startActivity(Intent(this@MainActivity, CartActivity::class.java))
+        }
+
         activity_main_fab_add_item.setOnClickListener { startActivity(Intent(this@MainActivity, AddNewItemActivity::class.java)) }
 
         navigationView.setNavigationItemSelectedListener(this)
@@ -70,7 +80,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } catch (xe : Exception) {
             Log.e(MainActivity::class.java.name, xe.message)
         }
+
+
     }
+
+    var connectivityReceiver = ConnectivityReceiver();
+
+    override fun onStart() {
+        super.onStart()
+        val intentFilter = IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        registerReceiver(connectivityReceiver, intentFilter);
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(connectivityReceiver)
+    }
+
 
     @SuppressLint("WrongConstant")
     public fun openDrawer() {

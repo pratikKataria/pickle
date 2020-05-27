@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.example.pickle.Pickle;
 
-public class ConnectivityReceiver extends BroadcastReceiver {
+public class ConnectivityReceiver extends BroadcastReceiver implements BroadcastRegistration {
 
-    public static ConnectivityReceiverListener connectivityReceiverListener;
+//    public static ConnectivityReceiverListener connectivityReceiverListener;
 
     public ConnectivityReceiver() {
         super();
@@ -18,31 +20,29 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-
-        boolean isConnected = activeNetwork == null && activeNetwork.isConnected();
-
-        if (connectivityReceiverListener == null) {
-            connectivityReceiverListener.onNetworkConnectionChanged(isConnected);
+        int wifiStateExtra = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN);
+        switch (wifiStateExtra) {
+            case WifiManager.WIFI_STATE_ENABLED:
+                Log.e("Connectivity Receiver", "WIFI_STATE_ENABLED");
+                break;
+            case WifiManager.WIFI_STATE_DISABLED:
+                Log.e("Connectivity Receiver", "WIFI_STATE_DISABLED");
+                break;
         }
+    }
+
+    @Override
+    public void attach() {
 
     }
 
-    public static boolean isConnected( ) {
-        ConnectivityManager cm = (ConnectivityManager) Pickle
-                .getInstance()
-                .getApplicationContext()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+    @Override
+    public void detach() {
 
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-
-        return activeNetwork == null && activeNetwork.isConnected();
     }
 
-    public interface ConnectivityReceiverListener {
-        void onNetworkConnectionChanged(boolean isConnected);
-    }
+
+//    public interface ConnectivityReceiverListener {
+//        void onNetworkConnectionChanged(boolean isConnected);
+//    }
 }
