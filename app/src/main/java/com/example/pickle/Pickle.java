@@ -2,7 +2,6 @@ package com.example.pickle;
 
 import android.app.Application;
 
-import com.example.pickle.network.ConnectivityReceiver;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Pickle extends Application {

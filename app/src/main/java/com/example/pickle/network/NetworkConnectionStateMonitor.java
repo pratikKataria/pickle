@@ -11,11 +11,10 @@ import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-public class NetworkConnectionStateMonitor extends LiveData<Boolean> {
+public class NetworkConnectionStateMonitor extends LiveData<Boolean> implements INetworkState {
     private Context context;
     private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback();
     private ConnectivityManager connectivityManager;
@@ -59,6 +58,11 @@ public class NetworkConnectionStateMonitor extends LiveData<Boolean> {
         }
     }
 
+    @Override
+    public void state(String type, boolean status) {
+
+    }
+
     class NetworkCallback extends ConnectivityManager.NetworkCallback {
         private NetworkConnectionStateMonitor connectionStateMonitor;
 
@@ -69,18 +73,30 @@ public class NetworkConnectionStateMonitor extends LiveData<Boolean> {
         @Override
         public void onAvailable(@NonNull Network network) {
             Log.e("connectivity receiver", "onAvailable");
+            state("onAvailable", true);
             connectionStateMonitor.postValue(true);
         }
 
         @Override
         public void onLost(@NonNull Network network) {
             Log.e("connectivity receiver", "onLost");
+            state("onLost", true);
         }
 
         @Override
         public void onUnavailable() {
-            super.onUnavailable();
+            Log.e("connectivity receiver", "onUnavailable");
+            state("onUnavailable", true);
         }
+
+        @Override
+        public void onLosing(@NonNull Network network, int maxMsToLive) {
+            Log.e("connectivity receiver", "onLosing"+maxMsToLive);
+            state("onLosing", true);
+
+        }
+
+
     }
 
     @Override

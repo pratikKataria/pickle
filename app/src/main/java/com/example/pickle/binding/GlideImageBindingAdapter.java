@@ -3,6 +3,7 @@ package com.example.pickle.binding;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -28,7 +29,11 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customBackgroundColor")
     public static void setCustomBackground(CardView cardView, int colorRes) {
-        cardView.setBackgroundColor(cardView.getContext().getColor(colorRes));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            cardView.setBackgroundColor(cardView.getContext().getColor(colorRes));
+        } else {
+            cardView.setBackgroundColor(cardView.getContext().getResources().getColor(colorRes));
+        }
     }
 
     @BindingAdapter("customBackground")
