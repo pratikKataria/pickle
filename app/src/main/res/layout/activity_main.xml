@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.main.MainActivity"
+    tools:context=".main.MainActivity"
     android:id="@+id/activity_main_drawer_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +37,14 @@
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/activity_main_cnb_bottom_nav"

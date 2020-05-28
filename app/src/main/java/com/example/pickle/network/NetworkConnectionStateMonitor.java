@@ -16,7 +16,7 @@ import androidx.lifecycle.LiveData;
 
 public class NetworkConnectionStateMonitor extends LiveData<Boolean> implements INetworkState {
     private Context context;
-    private ConnectivityManager.NetworkCallback networkCallback = new ConnectivityManager.NetworkCallback();
+    private ConnectivityManager.NetworkCallback networkCallback;
     private ConnectivityManager connectivityManager;
     private NetworkReceiver networkReceiver;
 
@@ -44,6 +44,16 @@ public class NetworkConnectionStateMonitor extends LiveData<Boolean> implements 
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback);
         } else {
             context.registerReceiver(networkReceiver, new IntentFilter(Context.CONNECTIVITY_SERVICE));
+        }
+    }
+
+    @Override
+    protected void onInactive() {
+        super.onInactive();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connectivityManager.unregisterNetworkCallback(networkCallback);
+        } else {
+            context.unregisterReceiver(networkReceiver);
         }
     }
 
@@ -81,11 +91,13 @@ public class NetworkConnectionStateMonitor extends LiveData<Boolean> implements 
         public void onLost(@NonNull Network network) {
             Log.e("connectivity receiver", "onLost");
             state("onLost", true);
+            connectionStateMonitor.postValue(false);
         }
 
         @Override
         public void onUnavailable() {
             Log.e("connectivity receiver", "onUnavailable");
+            connectionStateMonitor.postValue(false);
             state("onUnavailable", true);
         }
 
@@ -99,21 +111,11 @@ public class NetworkConnectionStateMonitor extends LiveData<Boolean> implements 
 
     }
 
-    @Override
-    protected void onInactive() {
-        super.onInactive();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectivityManager.unregisterNetworkCallback(networkCallback);
-        } else {
-            context.unregisterReceiver(networkReceiver);
-        }
-    }
-
     class NetworkReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(Context.CONNECTIVITY_SERVICE)) {
-                updateConnection();
+//                updateConnection();
             }
         }
     }
