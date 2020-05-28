@@ -54,8 +54,8 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
             Orders orders = dataSnapshot.getValue(Orders.class);
             DatabaseReference orderDetailsDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS);
-            Query orderDetailsQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
-            orderDetailsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
+            ordersFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
