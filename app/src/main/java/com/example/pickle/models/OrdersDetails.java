@@ -18,6 +18,7 @@ public class OrdersDetails implements Visitable {
     public transient boolean isPastOrder;
     public transient String orderId;
     public transient int status;
+    public transient long date;
 
     public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;

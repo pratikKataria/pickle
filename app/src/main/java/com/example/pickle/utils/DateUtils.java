@@ -14,7 +14,7 @@ public class DateUtils {
     @SuppressLint("SimpleDateFormat")
     public static String getServerDate(long timestamp) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM");
             return  sdf.format(new Date((long)timestamp));
         } catch (Exception xe) {
             return "date";
