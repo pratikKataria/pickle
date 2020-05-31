@@ -6,7 +6,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import com.example.pickle.R;
 import com.example.pickle.databinding.CardviewOrdersBinding;
-import com.example.pickle.utils.OrderStatus;
+import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.models.OrdersDetails;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

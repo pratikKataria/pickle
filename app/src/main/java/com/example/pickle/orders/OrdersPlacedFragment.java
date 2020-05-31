@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
@@ -23,10 +25,12 @@ import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.utils.RecyclerViewOnScrollListener;
 import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
 
+import static com.example.pickle.interfaces.OrderStatus.CANCEL;
 import static com.example.pickle.utils.Constant.ADD;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.REMOVE;
@@ -108,7 +112,7 @@ public class OrdersPlacedFragment extends Fragment {
                     break;
                 case MODIFIED:
                     Orders orderModified = (Orders) operation.aClass;
-
+                    removeProduct(orderModified.getOrderId());
                     break;
                 case REMOVE:
                     Log.e("ORDER PLACED FRAGMENT", "removed");
@@ -133,6 +137,22 @@ public class OrdersPlacedFragment extends Fragment {
         notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
     }
 
+    private void removeProduct(String orderId) {
+        //start from 1 because at 0 index there is empty state card holder
+        for (int i = 1; i < ordersList.size(); i++) {
+            OrdersDetails currentOrdersDetails = (OrdersDetails) ordersList.get(i);
+            if (orderId.equals(currentOrdersDetails.orderId)) {
+                short removeIndex = (short) ordersList.indexOf(currentOrdersDetails);
+                ordersList.remove(currentOrdersDetails);
+                currentOrdersDetails.status = CANCEL;
+                ordersList.add(currentOrdersDetails);
+                binding.recyclerView.getAdapter().notifyItemMoved(removeIndex, ordersList.size()-1);
+                binding.recyclerView.getAdapter().notifyItemChanged(removeIndex);
+                Log.e("OrdersPlacedFragment", currentOrdersDetails.toString());
+                updateHeaderView();
+            }
+        }
+    }
 
 
     private void notifyChangesAtPosition(int pos) {

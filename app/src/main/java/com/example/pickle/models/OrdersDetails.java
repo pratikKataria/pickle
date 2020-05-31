@@ -104,7 +104,7 @@ public class OrdersDetails implements Visitable {
                 ", itemCategory='" + itemCategory + '\'' +
                 ", address='" + address + '\'' +
                 ", deliveryTime='" + deliveryTime + '\'' +
-                '}';
+                ", status ='" + status + '\'' +' ' +  + '}';
     }
 
     @Override

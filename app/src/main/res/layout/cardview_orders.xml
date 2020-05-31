@@ -9,7 +9,7 @@
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
         <import type="com.example.pickle.models.OrdersDetails"/>
         <import type="com.example.pickle.utils.DateUtils"/>
-        <import type="com.example.pickle.utils.OrderStatus"/>
+        <import type="com.example.pickle.interfaces.OrderStatus"/>
         <variable
             name="productViewModel"
             type="com.example.pickle.product.ProductViewModel"/>
@@ -89,8 +89,8 @@
                             orderStatusText="@{orderDetails.status}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="10dp"
                             android:layout_marginEnd="8dp"
+                            android:textSize="10dp"
                             android:textAlignment="center"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -149,11 +149,12 @@
                         android:layout_height="33dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginBottom="8dp"
+                        app:elevation="0dp"
                         android:backgroundTint="@color/secondaryColorLight"
                         android:text="cancel"
                         android:textColor="@color/secondaryColorDark"
                         android:textSize="10sp"
-                        android:visibility="@{orderDetails.isPastOrder || orderDetails.status == OrderStatus.DELIVERED || orderDetails.status == OrderStatus.CANCEL? View.GONE:View.VISIBLE}"
+                        android:visibility="@{orderDetails.isPastOrder || orderDetails.status ==  OrderStatus.DELIVERED || orderDetails.status ==  OrderStatus.CANCEL ?View.GONE:View.VISIBLE}"
                         app:cornerRadius="4dp"
                         android:layout_gravity="end"
                         app:layout_constraintBottom_toBottomOf="parent"

@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.pickle.models.Operation;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
 import static com.example.pickle.utils.Constant.ORDERS;
 
