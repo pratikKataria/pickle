@@ -169,7 +169,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("OrdersFirebaseQata", databaseError.getCode() +" ");
             }
         });
     }

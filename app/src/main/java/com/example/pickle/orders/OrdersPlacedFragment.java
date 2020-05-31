@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
@@ -21,6 +25,7 @@ import com.example.pickle.models.EmptyState;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
+import com.example.pickle.utils.RecyclerViewOnScrollListener;
 import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
@@ -67,6 +72,25 @@ public class OrdersPlacedFragment extends Fragment {
         binding.setVisitor(new VisitorForList());
         binding.setActivity(getActivity());
         binding.setIntent(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+
+        binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+            if (v.getChildAt(v.getChildCount() -1) != null) {
+                if((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY){
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binding.recyclerViewPastOrders.getLayoutManager();
+                    if (linearLayoutManager != null) {
+                        int firstVisibleProductPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                        int visibleProductCount = linearLayoutManager.getChildCount();
+                        int totalProductCount = linearLayoutManager.getItemCount();
+                        if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
+
+                        }
+                    }
+                }
+            }
+        });
+
+
         updateHeaderView();
 
         pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "Your past order's", "shows the history of order's past 6 month's"));

@@ -99,6 +99,7 @@
 
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -141,6 +142,8 @@
                     android:layout_marginBottom="52dp"
                     android:clipToPadding="false"
                     android:layout_marginTop="8dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:nestedScrollingEnabled="false"
                     app:pastOrdersList="@{pastOrdersList}"
                     visitor="@{visitor}"/>
 

@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
@@ -17,10 +16,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import static com.example.pickle.interfaces.OrderStatus.CANCEL;
 import static com.example.pickle.interfaces.OrderStatus.DELIVERED;
-import static com.example.pickle.interfaces.OrderStatus.PROCESSING;
 import static com.example.pickle.utils.Constant.ADD;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
@@ -54,30 +51,39 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
             Orders orders = dataSnapshot.getValue(Orders.class);
             DatabaseReference orderDetailsDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS);
-            ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
-            ordersFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                        if (s.exists()) {
-                            OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
-                            ordersDetails.date = orders.getDate();
-                            ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate()) ||
-                                    orders.getOrderStatus() == CANCEL ||
-                                    orders.getOrderStatus() == DELIVERED;
-                            ordersDetails.status = orders.getOrderStatus();
-                            ordersDetails.orderId = orders.getOrderId();
-                            Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
-                            setValue(operation);
+            orderDetailsDatabaseReference.keepSynced(true);
+
+            if (orders != null && orders.getOrderId() != null) {
+                ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
+
+                ordersFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot s : dataSnapshot.getChildren()) {
+                            if (s.exists()) {
+                                OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
+                                ordersDetails.date = orders.getDate();
+                                ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate()) ||
+                                        orders.getOrderStatus() == CANCEL ||
+                                        orders.getOrderStatus() == DELIVERED;
+                                ordersDetails.status = orders.getOrderStatus();
+                                ordersDetails.orderId = orders.getOrderId();
+                                Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
+                                setValue(operation);
+                            }
                         }
                     }
-                }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Log.e("OrdersFirebaseQata", databaseError.getCode() +" ");
+                        //                    if (databaseError.getCode() ==  DatabaseError.NETWORK_ERROR) {
+//
+//                    }
+                    }
+                });
+            }
 
-                }
-            });
         }
 
         @Override
