@@ -1,4 +1,4 @@
-package com.example.pickle.interfaces;
+package com.example.pickle.utils;
 
 import androidx.annotation.IntDef;
 

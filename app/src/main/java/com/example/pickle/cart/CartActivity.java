@@ -21,7 +21,7 @@ import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.adapters.CartRecyclerViewAdapter;
 import com.example.pickle.R;
 import com.example.pickle.Login.LoginActivity;
-import com.example.pickle.interfaces.OrderStatus;
+import com.example.pickle.utils.OrderStatus;
 import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;

@@ -9,6 +9,7 @@ import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.DateUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,8 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import static com.example.pickle.interfaces.OrderStatus.CANCEL;
-import static com.example.pickle.interfaces.OrderStatus.DELIVERED;
+
 import static com.example.pickle.utils.Constant.ADD;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
@@ -29,7 +29,7 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
     private final MyChildEventListener listener = new MyChildEventListener();
 
     public OrdersFirebaseQueryLiveData(DatabaseReference databaseReference) {
-        this.ordersFirebaseQuery = databaseReference;
+        this.ordersFirebaseQuery = databaseReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getUid()).limitToLast(15);
     }
 
     @Override
@@ -51,7 +51,6 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
             Orders orders = dataSnapshot.getValue(Orders.class);
             DatabaseReference orderDetailsDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS);
-            orderDetailsDatabaseReference.keepSynced(true);
 
             if (orders != null && orders.getOrderId() != null) {
                 ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
@@ -63,9 +62,7 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
                             if (s.exists()) {
                                 OrdersDetails ordersDetails = s.getValue(OrdersDetails.class);
                                 ordersDetails.date = orders.getDate();
-                                ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate()) ||
-                                        orders.getOrderStatus() == CANCEL ||
-                                        orders.getOrderStatus() == DELIVERED;
+                                ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate());
                                 ordersDetails.status = orders.getOrderStatus();
                                 ordersDetails.orderId = orders.getOrderId();
                                 Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
@@ -88,6 +85,7 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.e(LOG_TAG, "chnaged");
             Orders ordersChanged = dataSnapshot.getValue(Orders.class);
             Operation<Orders> ordersOperation = new Operation<>(ordersChanged, MODIFIED);
             setValue(ordersOperation);
