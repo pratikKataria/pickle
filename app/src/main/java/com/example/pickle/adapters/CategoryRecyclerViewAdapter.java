@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.pickle.databinding.CardviewEmptyOrderBinding;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.databinding.ActivityEmptyBinding;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
 import com.example.pickle.ui.SearchViewBottomSheetDialog;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         RecyclerView.ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         if (viewType == EMPTY_VIEW) {
-            ActivityEmptyBinding view = ActivityEmptyBinding.inflate(layoutInflater, parent, false);
+            CardviewEmptyOrderBinding view = CardviewEmptyOrderBinding.inflate(layoutInflater, parent, false);
             holder = new EmptyView(view.getRoot());
         } else {
             CardViewCategoryProductBinding view = CardViewCategoryProductBinding.inflate(layoutInflater, parent, false);

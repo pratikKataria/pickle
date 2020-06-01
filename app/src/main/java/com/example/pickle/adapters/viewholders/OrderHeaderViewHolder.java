@@ -11,18 +11,14 @@ import com.example.pickle.R;
 import com.example.pickle.databinding.CardviewEmptyOrderBinding;
 import com.example.pickle.models.EmptyState;
 
-public class EmptyViewHolder extends  AbstractViewHolder<EmptyState>{
-
-    private Context context;
-    private ImageView imageView;
-    private ConstraintLayout constraintLayout;
+public class OrderHeaderViewHolder extends  AbstractViewHolder<EmptyState>{
 
     CardviewEmptyOrderBinding binding;
 
     @LayoutRes
     public static final int LAYOUT = R.layout.cardview_empty_order;
 
-    public EmptyViewHolder(CardviewEmptyOrderBinding binding) {
+    public OrderHeaderViewHolder(CardviewEmptyOrderBinding binding) {
         super(binding.getRoot());
         this.binding = binding;
     }

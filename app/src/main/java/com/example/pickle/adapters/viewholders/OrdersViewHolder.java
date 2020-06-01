@@ -1,6 +1,7 @@
 package com.example.pickle.adapters.viewholders;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -57,6 +58,7 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
     }
 
     private void cancelOrder(String ordersId) {
+        binding.progressBar.setVisibility(View.VISIBLE);
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Map<String, Object> atomicUpdate = new HashMap<>();
@@ -66,8 +68,10 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
 
         databaseReference.updateChildren(atomicUpdate).addOnSuccessListener(task -> {
             Toast.makeText(context, "order cancel successfully", Toast.LENGTH_SHORT).show();
+            binding.progressBar.setVisibility(View.GONE);
         }).addOnFailureListener(taskFailed -> {
             Toast.makeText(context, "failed to cancel order", Toast.LENGTH_SHORT).show();
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 }

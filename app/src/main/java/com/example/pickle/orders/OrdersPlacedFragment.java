@@ -7,14 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
@@ -22,10 +20,10 @@ import com.example.pickle.databinding.FragmentOrdersBinding;
 import com.example.pickle.interfaces.Visitable;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.EmptyState;
+import com.example.pickle.models.LoadingModel;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
-import com.example.pickle.utils.RecyclerViewOnScrollListener;
 import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
@@ -83,7 +81,11 @@ public class OrdersPlacedFragment extends Fragment {
                         int visibleProductCount = linearLayoutManager.getChildCount();
                         int totalProductCount = linearLayoutManager.getItemCount();
                         if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
-
+                            int lastIndex = pastOrdersList.size() - 1;
+                            if (!(pastOrdersList.get(lastIndex) instanceof LoadingModel)) {
+                                pastOrdersList.add(new LoadingModel());
+                                notifyChangesAtPosition(lastIndex);
+                            }
                         }
                     }
                 }

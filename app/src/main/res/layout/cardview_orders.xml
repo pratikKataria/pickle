@@ -10,26 +10,14 @@
         <import type="com.example.pickle.models.OrdersDetails"/>
         <import type="com.example.pickle.utils.DateUtils"/>
         <import type="com.example.pickle.interfaces.OrderStatus"/>
-        <variable
-            name="productViewModel"
-            type="com.example.pickle.product.ProductViewModel"/>
 
         <variable
             name="orderDetails"
             type="OrdersDetails"/>
-        
-        <variable
-            name="isVisible"
-            type="boolean" />
 
         <variable
             name="name"
             type="String" />
-
-        <variable
-            name="date"
-            type="String" />
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -38,15 +26,25 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="4dp"
         app:cardElevation="2dp"
-        android:padding="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminateTint="@color/colorAccent"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
             <ImageView
                 android:id="@+id/card_view_iv_product_image"
@@ -126,7 +124,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/cancel_button_mb"
                         app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
                         app:layout_constraintTop_toBottomOf="@+id/card_view_iv_base_price"
-                        tools:text="date" />
+                        tools:text="dat" />
 
                     <TextView
                         android:id="@+id/card_view_order_id"

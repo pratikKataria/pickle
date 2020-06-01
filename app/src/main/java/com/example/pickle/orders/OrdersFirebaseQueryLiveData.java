@@ -5,10 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import com.example.pickle.interfaces.IFirebaseState;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.DateUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,20 +18,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import static com.example.pickle.interfaces.OrderStatus.CANCEL;
-import static com.example.pickle.interfaces.OrderStatus.DELIVERED;
 import static com.example.pickle.utils.Constant.ADD;
+import static com.example.pickle.utils.Constant.FAILED;
+import static com.example.pickle.utils.Constant.LIMIT;
+import static com.example.pickle.utils.Constant.LOADING;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
+import static com.example.pickle.utils.Constant.SUCCESS;
 
-public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
+public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements IFirebaseState {
     private static final String LOG_TAG = "OrdersFirebaseQueryLiveData";
 
     private Query ordersFirebaseQuery;
     private final MyChildEventListener listener = new MyChildEventListener();
 
     public OrdersFirebaseQueryLiveData(DatabaseReference databaseReference) {
-        this.ordersFirebaseQuery = databaseReference;
+        this.ordersFirebaseQuery = databaseReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getUid()).limitToLast(LIMIT);
     }
 
     @Override
@@ -44,17 +48,24 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
         Log.e("firebase query live data", "ONINACTIVE ");
     }
 
+    @Override
+    public void state(int iFirebaseState) {
+
+    }
+
     private class MyChildEventListener implements ChildEventListener {
 
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            state(LOADING);
 
             Orders orders = dataSnapshot.getValue(Orders.class);
             DatabaseReference orderDetailsDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS);
             orderDetailsDatabaseReference.keepSynced(true);
 
             if (orders != null && orders.getOrderId() != null) {
-                ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(20);
+                ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(LIMIT);
 
                 ordersFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -68,15 +79,17 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
                                 ordersDetails.orderId = orders.getOrderId();
                                 Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
                                 setValue(operation);
+
+                                state(SUCCESS);
                             }
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.e("OrdersFirebaseQata", databaseError.getCode() +" ");
+                        Log.e("OrdersFirebaseQata", databaseError.getCode() + " ");
                         //                    if (databaseError.getCode() ==  DatabaseError.NETWORK_ERROR) {
-//
+                        state(FAILED);
 //                    }
                     }
                 });
@@ -88,6 +101,7 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
             Orders ordersChanged = dataSnapshot.getValue(Orders.class);
             Operation<Orders> ordersOperation = new Operation<>(ordersChanged, MODIFIED);
+            Log.e("OrdersFirebaseQata",  "changed ");
             setValue(ordersOperation);
         }
 

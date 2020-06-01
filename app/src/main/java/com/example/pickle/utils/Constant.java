@@ -72,4 +72,12 @@ public abstract class Constant {
     public static final int ADD    = 1;
     public static final int REMOVE = 2;
     public static final int MODIFIED = 3;
+
+    // firebase loading state
+    public static final byte LOADING = 2;
+    public static final byte SUCCESS = 1;
+    public static final byte FAILED = -1;
+
+    public static final byte LIMIT = 15;
+
 }
