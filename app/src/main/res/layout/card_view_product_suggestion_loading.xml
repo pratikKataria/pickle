@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.example.pickle.utils.PriceFormatUtils" />
+
+        <variable
+            name="iMainActivity"
+            type="com.example.pickle.interfaces.IMainActivity" />
+
+        <variable
+            name="productViewModel"
+            type="com.example.pickle.product.ProductViewModel" />
+
+    </data>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:lottie_fileName="loading_suggestion_list.json"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true" />
+
+</layout>

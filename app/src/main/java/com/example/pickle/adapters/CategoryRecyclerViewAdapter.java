@@ -109,7 +109,6 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
             SearchViewBottomSheetDialog searchViewBottomSheetDialog = new SearchViewBottomSheetDialog(product);
             searchViewBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
-
-    }
+     }
 
 }

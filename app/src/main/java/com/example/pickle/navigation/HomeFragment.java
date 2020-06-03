@@ -73,8 +73,6 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     private Toolbar _toolbar;
 
     private List<CarouselImage> imageList;
-    private DiscreteScrollView carouselScrollView;
-    private InfiniteScrollAdapter infiniteAdapter;
     private NavController _navController;
 
     private FragmentHomeBinding binding;
@@ -84,7 +82,8 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     private int adapterPos;
     private static int itemCount;
 
-    IFragmentCb iFragmentCb;
+    private ChildEventListener carouselImageChildEventListener;
+    private DatabaseReference carouselImagesDatabaseReference;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -210,8 +209,9 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
 
     private void getImageList() {
         //todo remove listener
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("CarouselImages");
-        reference.addChildEventListener(new ChildEventListener() {
+        carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
+        carouselImagesDatabaseReference.keepSynced(true);
+        carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
@@ -281,9 +281,8 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                                 }
 
                                 productModelArrayList.add(lastProduct);
-                                if (productModelArrayList.size() > 0) {
-                                    notifyChangesAtPosition(productModelArrayList.indexOf(lastProduct));
-                                }
+
+                                binding.suggestionRecyclerView.getAdapter().notifyItemInserted(productModelArrayList.size());
                             }
                             if (lastProduct != null) {
                                 saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
@@ -339,7 +338,9 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                                     }
 
                                     productModelArrayList.add(productModel);
-                                    notifyChangesAtPosition(productModelArrayList.size()-1);
+                                    binding.suggestionRecyclerView.getAdapter().notifyItemInserted(productModelArrayList.size()-1);
+//                                    binding.suggestionRecyclerView.getAdapter().notifyItemChanged(productModelArrayList.size()-1);
+//                                    notifyChangesAtPosition(Math.max(productModelArrayList.size()-1, 0));
                                 }
                             }
 
@@ -407,6 +408,14 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                 product.setQuantityCounter(0);
                 notifyChangesAtPosition(productModelArrayList.indexOf(product));
             }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (carouselImageChildEventListener != null && carouselImagesDatabaseReference != null) {
+            carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
         }
     }
 

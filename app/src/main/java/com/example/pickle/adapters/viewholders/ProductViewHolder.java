@@ -1,4 +1,4 @@
-package com.example.pickle.ui;
+package com.example.pickle.adapters.viewholders;
 
 import android.content.Context;
 
@@ -10,6 +10,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
+import com.example.pickle.ui.SearchViewBottomSheetDialog;
 
 public class ProductViewHolder extends  RecyclerView.ViewHolder {
 

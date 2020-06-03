@@ -2,21 +2,26 @@ package com.example.pickle.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.pickle.databinding.CardViewProductSuggestionLoadingBinding;
+import com.example.pickle.databinding.CardviewEmptyOrderBinding;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
-import com.example.pickle.ui.ProductViewHolder;
+import com.example.pickle.adapters.viewholders.ProductViewHolder;
 import java.util.ArrayList;
 
-public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<ProductViewHolder> {
+public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     ArrayList<ProductModel> productModelArrayList;
     private int viewType;
+    private byte EMPTY_VIEW = -1;
 
     public FirebaseSearchRecyclerAdapter(Context context , ArrayList<ProductModel> productModelArrayList, int viewType) {
         this.context = context;
@@ -27,37 +32,59 @@ public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<ProductV
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 0) {
             CardViewSearchItemBinding cardViewBinding = CardViewSearchItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new ProductViewHolder(cardViewBinding, context);
-        } else {
+        } else if (viewType == EMPTY_VIEW) {
+            CardViewProductSuggestionLoadingBinding cardViewProductSuggestionLoadingBinding = CardViewProductSuggestionLoadingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new EmptyView(cardViewProductSuggestionLoadingBinding.getRoot());
+        }else {
             CardViewProductSuggestionBinding cardViewProductSuggestionBinding = CardViewProductSuggestionBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new ProductViewHolder(cardViewProductSuggestionBinding, context);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        ProductModel product = productModelArrayList.get(position);
-        ProductViewModel productViewModel = new ProductViewModel();
-        productViewModel.setProduct(product);
-        if (viewType == 0) {
-            holder.setCardViewSearchBinding(productViewModel);
-        } else {
-            holder.setCardViewSuggestionBinding(productViewModel);
+        if (holder instanceof ProductViewHolder) {
+            ProductModel product = productModelArrayList.get(position);
+            ProductViewModel productViewModel = new ProductViewModel();
+            productViewModel.setProduct(product);
+
+            ProductViewHolder productViewHolder = (ProductViewHolder) holder;
+            if (viewType == 0) {
+                productViewHolder.setCardViewSearchBinding(productViewModel);
+            } else {
+                productViewHolder.setCardViewSuggestionBinding(productViewModel);
+            }
+        }else {
+            EmptyView emptyView = (EmptyView) holder;
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return productModelArrayList.size();
+        if (productModelArrayList.size() == 0) {
+            return 1;
+        }
+        return productModelArrayList.size() ;
     }
 
     @Override
     public int getItemViewType(int position) {
+        if (productModelArrayList.size() == 0) {
+            return EMPTY_VIEW;
+        }
         return viewType;
+    }
+
+    static class EmptyView extends  RecyclerView.ViewHolder {
+        public EmptyView(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 }

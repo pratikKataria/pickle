@@ -242,7 +242,7 @@
             <com.yarolegovich.discretescrollview.DiscreteScrollView
                 android:id="@+id/rvScroll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="164dp"
                 app:carouselList="@{carouselImage}"
                 app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar" />
 
@@ -277,6 +277,7 @@
                 android:layout_height="wrap_content"
                 app:viewType="@{1}"
                 app:list="@{productList}"
+                android:overScrollMode="never"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="100dp"
                 app:layout_constraintHorizontal_bias="0.0"

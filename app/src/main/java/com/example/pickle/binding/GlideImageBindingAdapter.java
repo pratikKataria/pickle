@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
 
+import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pickle.R;
@@ -54,6 +55,7 @@ public class GlideImageBindingAdapter {
         Glide.with(context)
                 .setDefaultRequestOptions(requestOptions)
                 .load(imageUrl)
+                .transition(GenericTransitionOptions.with(R.anim.fade_in))
                 .into(_imageView);
     }
 }
