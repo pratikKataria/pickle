@@ -76,9 +76,6 @@
 
             </androidx.cardview.widget.CardView>
 
-
-
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/imageButton4"
                 android:layout_width="45dp"

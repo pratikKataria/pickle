@@ -26,6 +26,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.FragmentProductsBinding;
 import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,6 +68,8 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
                 container,
                 false
         );
+
+        setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
         Bundle bundle = getArguments();
         if (bundle != null && bundle.containsKey(PRODUCT_BUNDLE)) {

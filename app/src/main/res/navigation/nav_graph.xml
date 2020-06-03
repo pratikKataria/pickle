@@ -12,28 +12,28 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_orderFragment_to_productsFragment"
-            app:destination="@id/productsFragment"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:destination="@id/productsFragment" />
         <action
             android:id="@+id/action_orderFragment_to_nav_menu_sub_orders"
             app:destination="@id/nav_menu_sub_orders" />
     </fragment>
+
     <fragment
         android:id="@+id/productsFragment"
         android:name="com.example.pickle.product.ProductsFragment"
         android:label="fragment_fruits"
-        tools:layout="@layout/fragment_products" />
+        app:popUpTo="@+id/orderFragment"
+        tools:layout="@layout/fragment_products"/>
     <fragment
         android:id="@+id/offerFragment"
         android:name="com.example.pickle.navigation.OfferFragment"
         android:label="fragment_offer"
+        app:popUpTo="@+id/orderFragment"
         tools:layout="@layout/fragment_offer" />
     <fragment
         android:id="@+id/nav_menu_sub_orders"
         android:name="com.example.pickle.orders.OrdersPlacedFragment"
         android:label="fragment_orders_placed"
+        app:popUpTo="@+id/orderFragment"
         tools:layout="@layout/fragment_orders" />
 </navigation>

@@ -29,6 +29,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pickle.BaseFragment;
 import com.example.pickle.R;
 import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.carousel.CarouselImage;
@@ -40,6 +41,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,7 +67,7 @@ import static com.example.pickle.utils.Constant.VEGETABLES;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements IFragmentCb {
+public class HomeFragment extends BaseFragment implements IFragmentCb {
 
     private static final int LIST_SIZE = 2;
     private Toolbar _toolbar;
@@ -90,7 +92,6 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
     private void init_fields(View v) {
         _toolbar = v.findViewById(R.id.fragment_order_toolbar);
-        productModelArrayList = new ArrayList<>();
         saveToMap = new HashMap<>();
     }
 
@@ -99,12 +100,16 @@ public class HomeFragment extends Fragment implements IFragmentCb {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         _navController = Navigation.findNavController(view);
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+        productModelArrayList = new ArrayList<>();
+        addProduct();
+        Log.e("ONCREATE", getClass().getName() +" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 
     }
 
@@ -135,13 +140,16 @@ public class HomeFragment extends Fragment implements IFragmentCb {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(
+                    inflater,
+                    R.layout.fragment_home,
+                    container,
+                    false
+            );
+        }
 
-        binding = DataBindingUtil.inflate(
-                inflater,
-                R.layout.fragment_home,
-                container,
-                false
-        );
+        setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
         MaterialFadeThrough materialFadeThrough = MaterialFadeThrough.create();
         setExitTransition(materialFadeThrough);
@@ -154,7 +162,6 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
         binding.setTypeface(tf);
-        addProduct();
 
         itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
         getActivity().invalidateOptionsMenu();
@@ -198,9 +205,8 @@ public class HomeFragment extends Fragment implements IFragmentCb {
             }
         });
 
-        return binding.getRoot();
+          return binding.getRoot();
     }
-
 
     private void getImageList() {
         //todo remove listener
@@ -402,6 +408,18 @@ public class HomeFragment extends Fragment implements IFragmentCb {
                 notifyChangesAtPosition(productModelArrayList.indexOf(product));
             }
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("OnDestroyView", getClass().getName());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("OnDestroy", getClass().getName());
     }
 
     @Override

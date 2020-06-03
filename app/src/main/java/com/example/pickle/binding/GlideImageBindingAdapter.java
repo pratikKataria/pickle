@@ -1,30 +1,27 @@
 package com.example.pickle.binding;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pickle.R;
 
-import static com.example.pickle.utils.Constant.BEVERAGES;
-import static com.example.pickle.utils.Constant.DAIRY;
-import static com.example.pickle.utils.Constant.FRUITS;
-import static com.example.pickle.utils.Constant.VEGETABLES;
-
 public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageResource")
     public static void setImageCustom(ImageView imageView, int imageRes) {
+        try {
             imageView.setImageDrawable(imageView.getContext().getDrawable(imageRes));
+        } catch (Exception xe) {
+            Log.e("GlideImageBindingAdapter", xe.getMessage());
+        }
     }
 
     @BindingAdapter("customBackgroundColor")
@@ -38,7 +35,11 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customBackground")
     public static void setCustomBackground(View view, int colorRes) {
-        view.setBackground(view.getContext().getDrawable(colorRes));
+        try {
+            view.setBackground(view.getContext().getDrawable(colorRes));
+        } catch (Exception xe) {
+            Log.e("GlideImageBindingAdapter", xe.getMessage());
+        }
     }
 
     @BindingAdapter("imageResourceAdapter")

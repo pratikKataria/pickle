@@ -65,9 +65,9 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
             orderDetailsDatabaseReference.keepSynced(true);
 
             if (orders != null && orders.getOrderId() != null) {
-                ordersFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId()).limitToLast(LIMIT);
+                Query ordersDetailsFirebaseQuery = orderDetailsDatabaseReference.orderByKey().equalTo(orders.getOrderId());
 
-                ordersFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                ordersDetailsFirebaseQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot s : dataSnapshot.getChildren()) {
