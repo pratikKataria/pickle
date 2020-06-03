@@ -71,32 +71,9 @@ public class OrdersPlacedFragment extends Fragment {
         binding.setActivity(getActivity());
         binding.setIntent(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
 
-        binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-
-            if (v.getChildAt(v.getChildCount() -1) != null) {
-                if((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY){
-                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binding.recyclerViewPastOrders.getLayoutManager();
-                    if (linearLayoutManager != null) {
-                        int firstVisibleProductPosition = linearLayoutManager.findFirstVisibleItemPosition();
-                        int visibleProductCount = linearLayoutManager.getChildCount();
-                        int totalProductCount = linearLayoutManager.getItemCount();
-                        if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
-                            int lastIndex = pastOrdersList.size() - 1;
-                            if (!(pastOrdersList.get(lastIndex) instanceof LoadingModel)) {
-                                pastOrdersList.add(new LoadingModel());
-                                notifyChangesAtPosition(lastIndex);
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-
-        updateHeaderView();
-
         pastOrdersList.add(new EmptyState(R.drawable.crd_empty_past_order_bg, R.drawable.empty_past_orders_img, "Your past order's", "shows the history of order's past 6 month's"));
 
+        initRecyclerViewScrollListener();
 
         OrdersViewModel ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
         LiveData<Operation> firebaseQueryLiveData =  ordersViewModel.getLiveData();
@@ -123,20 +100,51 @@ public class OrdersPlacedFragment extends Fragment {
 
         });
 
-
+        updateHeaderView();
         return binding.getRoot();
     }
 
+    private void initRecyclerViewScrollListener() {
+        binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+
+            Log.e("past ordersList ", "last item" + oldScrollY);
+
+            if (scrollY < (oldScrollY-60) && pastOrdersList.get(pastOrdersList.size()-1) instanceof LoadingModel) {
+                pastOrdersList.remove(pastOrdersList.size()-1);
+                binding.recyclerViewPastOrders.getAdapter().notifyItemRemoved(pastOrdersList.size()-1);
+            }
+
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) && scrollY > oldScrollY) {
+                    LinearLayoutManager linearLayoutManager = (LinearLayoutManager) binding.recyclerViewPastOrders.getLayoutManager();
+                    Log.e("past ordersList ", "last item" + (pastOrdersList.get(pastOrdersList.size() -1) instanceof LoadingModel));
+                    if (linearLayoutManager != null) {
+                        int firstVisibleProductPosition = linearLayoutManager.findFirstVisibleItemPosition();
+                        int visibleProductCount = linearLayoutManager.getChildCount();
+                        int totalProductCount = linearLayoutManager.getItemCount();
+                        int lastIndex = pastOrdersList.size() - 1;
+                        Log.e("before order", "orders placed fragment" + firstVisibleProductPosition + visibleProductCount );
+                        if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
+                            if (!(pastOrdersList.get(lastIndex) instanceof LoadingModel)) {
+                                pastOrdersList.add(new LoadingModel());
+                                notifyItemInsertedAtPastOrdersList(lastIndex);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 
 
     private void addProduct(OrdersDetails addedOrdersDetails) {
         ordersList.add(addedOrdersDetails);
-        notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
+        notifyItemInsertedAtOrdersList(ordersList.size());
     }
 
     private void addPastOrders(OrdersDetails pastOrderDetails) {
         pastOrdersList.add(pastOrderDetails);
-        notifyChangesAtPosition(Math.max(ordersList.size() - 1, 0));
+        notifyItemInsertedAtPastOrdersList(ordersList.size());
     }
 
     private void removeProduct(String orderId) {
@@ -148,33 +156,47 @@ public class OrdersPlacedFragment extends Fragment {
                 ordersList.remove(currentOrdersDetails);
                 currentOrdersDetails.status = CANCEL;
                 ordersList.add(currentOrdersDetails);
-                binding.recyclerView.getAdapter().notifyItemMoved(removeIndex, ordersList.size()-1);
-                binding.recyclerView.getAdapter().notifyItemChanged(removeIndex);
+                binding.recyclerView.getAdapter().notifyItemMoved(removeIndex, ordersList.size() - 1);
+                notifyItemInsertedAtOrdersList(removeIndex);
                 Log.e("OrdersPlacedFragment", currentOrdersDetails.toString());
                 updateHeaderView();
             }
         }
     }
 
-
-    private void notifyChangesAtPosition(int pos) {
+    private void notifyItemInsertedAtOrdersList(int index) {
         try {
-            binding.recyclerView.getAdapter().notifyItemChanged(pos);
-            binding.recyclerViewPastOrders.getAdapter().notifyItemChanged(pos);
+            binding.recyclerView.getAdapter().notifyItemChanged(index);
         } catch (NullPointerException npe) {
             Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
         }
     }
 
+    private void notifyItemChangedAtOrdersList(int index) {
+        try {
+            binding.recyclerView.getAdapter().notifyItemChanged(index);
+        } catch (NullPointerException npe) {
+            Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
+        }
+    }
+
+    private void notifyItemInsertedAtPastOrdersList(int index) {
+        try {
+            binding.recyclerViewPastOrders.getAdapter().notifyItemChanged(index);
+        } catch (NullPointerException npe) {
+            Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
+        }
+    }
 
     private void updateHeaderView() {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
-            notifyChangesAtPosition(0);
+            notifyItemInsertedAtOrdersList(0);
+            notifyItemInsertedAtPastOrdersList(0);
         } else if (ordersList.size() == 2) {
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
-            notifyChangesAtPosition(0);
+            notifyItemInsertedAtOrdersList(0);
         }
     }
 }
