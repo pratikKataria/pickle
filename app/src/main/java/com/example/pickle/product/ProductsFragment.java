@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.airbnb.lottie.L;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.R;
 import com.example.pickle.cart.CartActivity;
@@ -117,7 +118,8 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
 
                             fruitList.add(product);
-                            notifyChanges();
+                            Log.e("productsfragment", Math.max(fruitList.size()-1, 0) + " ");
+                            productBinding.fruitsRecyclerView.getAdapter().notifyItemInserted(fruitList.size());
                         } catch (NullPointerException npe) {
                             Log.e(ProductsFragment.class.getName(), "npe " + npe);
                         }
@@ -126,37 +128,14 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                int position = 0;
-                Iterator<ProductModel> iterator = fruitList.iterator();
-                while (iterator.hasNext()) {
-                    position++;
-                    ProductModel product = iterator.next();
-                    ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                    if (product.equals(newProduct)) {
-                        iterator.remove();
-                        break;
-                    }
-                }
-
+                //new implementation /2 jun 2020
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-
-                if (newProduct != null) {
-
-                    //on item changed get default saved product and set saved quantity counted to the new product
-                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), newProduct.getItemId(), 0);
-                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
-
-                    if (newProduct.equals(cartProduct))
-                            newProduct.setQuantityCounter(cartProduct.getQuantityCounter());
-                    //closed
-
-                    if ((position - 1) <= fruitList.size()) {
-                        fruitList.add(position - 1, newProduct);
-                        notifyChanges();
-                    } else {
-                        fruitList.add(newProduct);
-                        notifyChanges();
-                    }
+                if (fruitList.contains(newProduct)) {
+                    int indexOfOldProduct = fruitList.indexOf(newProduct);
+                    ProductModel oldProduct = fruitList.get(indexOfOldProduct);
+                    fruitList.remove(oldProduct);
+                    fruitList.add(indexOfOldProduct, newProduct);
+                    productBinding.fruitsRecyclerView.getAdapter().notifyItemChanged(indexOfOldProduct);
                 }
             }
 

@@ -208,7 +208,6 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     }
 
     private void getImageList() {
-        //todo remove listener
         carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
         carouselImagesDatabaseReference.keepSynced(true);
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
