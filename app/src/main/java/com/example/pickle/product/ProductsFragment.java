@@ -16,15 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.airbnb.lottie.L;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.pickle.R;
 import com.example.pickle.cart.CartActivity;
-import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.cart.CartViewModel;
+import com.example.pickle.databinding.FragmentProductsBinding;
+import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.databinding.FragmentProductsBinding;
 import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -39,7 +38,6 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import static com.example.pickle.utils.Constant.PRODUCT;
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
@@ -78,7 +76,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         }
 
         fruitList = new ArrayList<>();
-        new Handler().postDelayed(this::populateList,1200);
+        new Handler().postDelayed(this::populateList,800);
 
         productBinding.setProductList(fruitList);
         productBinding.setActivity(getActivity());
@@ -102,28 +100,24 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         childEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    if (dataSnapshot.exists()) {
-                        ProductModel product = dataSnapshot.getValue(ProductModel.class);
-                        try {
-                            String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
-                            ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
-                            if (product.equals(cartProduct))
-                                product.setQuantityCounter(cartProduct.getQuantityCounter());
+                ProductModel product = dataSnapshot.getValue(ProductModel.class);
+                if (product != null) {
+                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
+                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
 
-                            countItems += 1;
-                            if (countItems > 0)
-                                productBinding.countFruits.setText(countItems + " items");
-                            else
-                                productBinding.countFruits.setText(countItems + " item");
+                    if (product.equals(cartProduct))
+                        product.setQuantityCounter(cartProduct.getQuantityCounter());
 
+                    fruitList.add(product);
+                    productBinding.fruitsRecyclerView.getAdapter().notifyItemInserted(fruitList.size());
 
-                            fruitList.add(product);
-                            Log.e("productsfragment", Math.max(fruitList.size()-1, 0) + " ");
-                            productBinding.fruitsRecyclerView.getAdapter().notifyItemInserted(fruitList.size());
-                        } catch (NullPointerException npe) {
-                            Log.e(ProductsFragment.class.getName(), "npe " + npe);
-                        }
-                    }
+                    countItems += 1;
+                    if (countItems > 0)
+                        productBinding.countFruits.setText(countItems + " items");
+                    else
+                        productBinding.countFruits.setText(countItems + " item");
+
+                }
             }
 
             @Override
