@@ -26,7 +26,6 @@ public class DateUtils {
         try {
             SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy");
             String date = sfd.format(new Date(timestamp));
-            Log.e("date ", date);
             return date.equals(new SimpleDateFormat("dd-MM-yyyy").format(new Date(System.currentTimeMillis())));
         } catch (Exception xe) {
             return false;

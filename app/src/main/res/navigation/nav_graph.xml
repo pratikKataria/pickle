@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/orderFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/orderFragment"
+        android:id="@+id/homeFragment"
         android:name="com.example.pickle.navigation.HomeFragment"
         android:label="fragment_order"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_orderFragment_to_productsFragment"
+            android:id="@+id/action_homeFragment_to_productsFragment"
             app:destination="@id/productsFragment" />
         <action
-            android:id="@+id/action_orderFragment_to_nav_menu_sub_orders"
+            android:id="@+id/action_homeFragment_to_nav_menu_sub_orders"
             app:destination="@id/nav_menu_sub_orders" />
     </fragment>
 
@@ -22,18 +22,18 @@
         android:id="@+id/productsFragment"
         android:name="com.example.pickle.product.ProductsFragment"
         android:label="fragment_fruits"
-        app:popUpTo="@+id/orderFragment"
+        app:popUpTo="@+id/homeFragment"
         tools:layout="@layout/fragment_products"/>
     <fragment
         android:id="@+id/offerFragment"
         android:name="com.example.pickle.navigation.OfferFragment"
         android:label="fragment_offer"
-        app:popUpTo="@+id/orderFragment"
+        app:popUpTo="@+id/homeFragment"
         tools:layout="@layout/fragment_offer" />
     <fragment
         android:id="@+id/nav_menu_sub_orders"
         android:name="com.example.pickle.orders.OrdersPlacedFragment"
         android:label="fragment_orders_placed"
-        app:popUpTo="@+id/orderFragment"
+        app:popUpTo="@+id/homeFragment"
         tools:layout="@layout/fragment_orders" />
 </navigation>

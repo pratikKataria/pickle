@@ -38,6 +38,7 @@ import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ProductModel;
+import com.example.pickle.orders.OrdersPlacedFragment;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialFadeThrough;
@@ -50,8 +51,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,21 +169,21 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
 
         binding.cardViewFruits.setOnClickListener(n -> {
             bundle.putString(PRODUCT_BUNDLE, FRUITS);
-            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
         });
 
         binding.cardViewVegetables.setOnClickListener(n -> {
             bundle.putString(PRODUCT_BUNDLE, VEGETABLES);
-            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
         });
 
         binding.cardViewBeverages.setOnClickListener(n -> {
             bundle.putString(PRODUCT_BUNDLE, BEVERAGES);
-            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
         });
         binding.cardViewDairy.setOnClickListener(n -> {
             bundle.putString(PRODUCT_BUNDLE, DAIRY);
-            _navController.navigate(R.id.action_orderFragment_to_productsFragment, bundle);
+            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
         });
 
         binding.suggestionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -281,10 +280,10 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
 
                                 productModelArrayList.add(lastProduct);
 
-                                binding.suggestionRecyclerView.getAdapter().notifyItemInserted(productModelArrayList.size());
+                                notifyItemInsertedAtPos(productModelArrayList.size());
                             }
                             if (lastProduct != null) {
-                                saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
+//                                saveToMap.put(lastProduct.getItemCategory(), lastProduct.getItemId());
                             }
                         }
 
@@ -337,7 +336,7 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                                     }
 
                                     productModelArrayList.add(productModel);
-                                    binding.suggestionRecyclerView.getAdapter().notifyItemInserted(productModelArrayList.size()-1);
+                                    notifyItemInsertedAtPos(productModelArrayList.size() - 1);
 //                                    binding.suggestionRecyclerView.getAdapter().notifyItemChanged(productModelArrayList.size()-1);
 //                                    notifyChangesAtPosition(Math.max(productModelArrayList.size()-1, 0));
                                 }
@@ -363,6 +362,14 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                 Toast.makeText(getActivity(), "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void notifyItemInsertedAtPos(int index) {
+        try {
+            binding.suggestionRecyclerView.getAdapter().notifyItemChanged(index);
+        } catch (NullPointerException npe) {
+            Log.e(OrdersPlacedFragment.class.getName(), npe.getMessage());
+        }
     }
 
     private void notifyChangesAtPosition(int pos) {

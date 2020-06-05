@@ -21,19 +21,18 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import static com.example.pickle.utils.Constant.ADD;
-import static com.example.pickle.utils.Constant.LOADING;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.example.pickle.utils.Constant.SUCCESS;
 
-public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements IFirebaseState {
+public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation> implements IFirebaseState {
     private static final String LOG_TAG = "OrdersFirebaseQueryLiveData";
 
     private Query ordersFirebaseQuery;
     private final MyChildEventListener listener = new MyChildEventListener();
 
-    public OrdersFirebaseQueryLiveData(Query query) {
+    public OrdersLoadmoreFirebaseQueryLiveData(Query query) {
         this.ordersFirebaseQuery = query;
     }
 
@@ -41,14 +40,14 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
     @Override
     protected void onActive() {
         ordersFirebaseQuery.addChildEventListener(listener);
-//        Log.e("firebase query live data", "ONACTIVE ");
+        Log.e("firebase query live data", "ONACTIVE ");
     }
 
     @SuppressLint("LongLogTag")
     @Override
     public void onInactive() {
         ordersFirebaseQuery.removeEventListener(listener);
-//        Log.e("firebase query live data", "ONINACTIVE ");
+        Log.e("firebase query live data", "ONINACTIVE ");
     }
 
     @Override
@@ -63,11 +62,10 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             String key = dataSnapshot.getKey();
-            Log.e("TAG ", key);
-
+//            Log.e("TAG ", key);
+////
             DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS).child(key);
-            Query orderQuery = orderDatabaseReference.orderByChild("date");
-            orderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            orderDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot ordersDataSnapshot) {
                     Orders orders = ordersDataSnapshot.getValue(Orders.class);

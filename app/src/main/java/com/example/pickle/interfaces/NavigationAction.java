@@ -14,7 +14,7 @@ public abstract class NavigationAction {
     })
     public @interface NavigationDestination { }
 
-    public static final int NAVIGATE_TO_PRODUCTS = R.id.action_orderFragment_to_productsFragment;
+    public static final int NAVIGATE_TO_PRODUCTS = R.id.action_homeFragment_to_productsFragment;
 
 
     @NavigationDestination

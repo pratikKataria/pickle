@@ -5,8 +5,14 @@ import com.example.pickle.interfaces.Visitor;
 
 public class LoadingModel implements Visitable {
 
-    public LoadingModel() {
+    private static LoadingModel loadingModel_singleton = null;
 
+    public static LoadingModel getInstance() {
+        if (loadingModel_singleton == null) {
+            loadingModel_singleton = new LoadingModel();
+        }
+
+        return loadingModel_singleton;
     }
 
     @Override

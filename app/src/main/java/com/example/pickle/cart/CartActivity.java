@@ -18,14 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.pickle.Login.CustomerDetailActivity;
-import com.example.pickle.adapters.CartRecyclerViewAdapter;
-import com.example.pickle.R;
 import com.example.pickle.Login.LoginActivity;
-import com.example.pickle.interfaces.OrderStatus;
+import com.example.pickle.R;
+import com.example.pickle.adapters.CartRecyclerViewAdapter;
 import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.interfaces.INavigation;
+import com.example.pickle.interfaces.OrderStatus;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ConfirmOrderViewModel;
 import com.example.pickle.models.OrdersDetails;
@@ -44,6 +44,8 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Stack;
+
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity, INavigation {
@@ -126,11 +128,15 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                         deliveryTime
                 ));
 
+                long localTimestamp = System.currentTimeMillis();
+
                 atomicOperation.put("Orders/"+key+"/userId", FirebaseAuth.getInstance().getUid());
                 atomicOperation.put("Orders/"+key+"/orderId", key);
                 atomicOperation.put("Orders/"+key+"/orderStatus", OrderStatus.PROCESSING);
-                atomicOperation.put("Orders/"+key+"/date", ServerValue.TIMESTAMP);
+                atomicOperation.put("Orders/"+key+"/date", localTimestamp);
 
+                atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
+                atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
             }
 
             showOrderConfirmationDialog(atomicOperation);
@@ -139,6 +145,22 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage());
         }
+    }
+
+    private String convertToAlphabet(int number) {
+        StringBuilder sb = new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
+        while (number > 0) {
+            int digit = number % 10;
+            number = number / 10;
+            stack.push(digit);
+        }
+
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+
+        return sb.toString();
     }
 
     private void showOrderConfirmationDialog(HashMap<String, Object> atomicOperation) {

@@ -78,6 +78,6 @@ public abstract class Constant {
     public static final byte SUCCESS = 1;
     public static final byte FAILED = -1;
 
-    public static final byte LIMIT = 15;
+    public static final byte LIMIT = 3;
 
 }

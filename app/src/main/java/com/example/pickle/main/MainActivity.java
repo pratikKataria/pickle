@@ -20,10 +20,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavOptions;
-import androidx.navigation.Navigator;
-import androidx.navigation.fragment.FragmentNavigator;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
@@ -41,7 +37,6 @@ import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.utils.SnackbarNoSwipeBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -82,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
+        navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders);
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
 
         try {
@@ -141,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_orders:
                 try {
-                    smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_orderFragment_to_nav_menu_sub_orders));
+                    smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
                     drawerLayout.closeDrawers();
                 } catch (Exception xe) {
                     Log.e("MainActivity", xe.getMessage());
