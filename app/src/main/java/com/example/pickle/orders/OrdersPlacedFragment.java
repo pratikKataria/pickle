@@ -92,8 +92,8 @@ public class OrdersPlacedFragment extends Fragment {
     private void initRecyclerViewScrollListener() {
         binding.nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
-            if (scrollY < (oldScrollY-60) && pastOrdersList.get(pastOrdersList.size()-1) instanceof LoadingModel) {
-                pastOrdersList.remove(pastOrdersList.size() - 1);
+            if (scrollY < (oldScrollY-60) && pastOrdersList.contains(LoadingModel.getInstance())) {
+                pastOrdersList.remove(LoadingModel.getInstance());
                 NotifyRecyclerItems.notifyItemRemovedAt(binding.recyclerViewPastOrders, pastOrdersList.size() - 1);
             }
 

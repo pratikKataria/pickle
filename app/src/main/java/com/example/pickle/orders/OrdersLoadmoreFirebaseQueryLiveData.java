@@ -27,8 +27,6 @@ import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.example.pickle.utils.Constant.SUCCESS;
 
 public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation>{
-    private static final String LOG_TAG = "OrdersFirebaseQueryLiveData";
-
     private Query ordersFirebaseQuery;
     private final MyChildEventListener listener = new MyChildEventListener();
 
@@ -52,7 +50,6 @@ public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation>{
 
     private class MyChildEventListener implements ChildEventListener {
 
-        @SuppressLint("LongLogTag")
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
@@ -113,11 +110,7 @@ public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation>{
 
         }
 
-        @SuppressLint("LongLogTag")
         @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-            Log.e(LOG_TAG, "Can't listen to query " + ordersFirebaseQuery, databaseError.toException());
-
-        }
+        public void onCancelled(@NonNull DatabaseError databaseError) { }
     }
 }

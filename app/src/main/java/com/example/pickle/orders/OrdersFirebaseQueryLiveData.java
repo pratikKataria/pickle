@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import com.example.pickle.interfaces.IFirebaseState;
 import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
@@ -21,11 +20,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import static com.example.pickle.utils.Constant.ADD;
-import static com.example.pickle.utils.Constant.LOADING;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
-import static com.example.pickle.utils.Constant.SUCCESS;
 
 public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
