@@ -79,5 +79,6 @@ public abstract class Constant {
     public static final byte FAILED = -1;
 
     public static final byte LIMIT = 3;
+    public static final byte ONGOING_LIMIT = 35;
 
 }

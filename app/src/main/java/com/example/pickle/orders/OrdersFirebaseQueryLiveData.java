@@ -27,8 +27,7 @@ import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.example.pickle.utils.Constant.SUCCESS;
 
-public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements IFirebaseState {
-    private static final String LOG_TAG = "OrdersFirebaseQueryLiveData";
+public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
 
     private Query ordersFirebaseQuery;
     private final MyChildEventListener listener = new MyChildEventListener();
@@ -41,20 +40,14 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
     @Override
     protected void onActive() {
         ordersFirebaseQuery.addChildEventListener(listener);
-//        Log.e("firebase query live data", "ONACTIVE ");
     }
 
     @SuppressLint("LongLogTag")
     @Override
     public void onInactive() {
         ordersFirebaseQuery.removeEventListener(listener);
-//        Log.e("firebase query live data", "ONINACTIVE ");
     }
 
-    @Override
-    public void state(int iFirebaseState) {
-
-    }
 
     private class MyChildEventListener implements ChildEventListener {
 
@@ -80,13 +73,11 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
                                 if (orders != null && orders.getOrderId() != null && orderDetailsDataSnapshot.exists()) {
                                     OrdersDetails ordersDetails = orderDetailsDataSnapshot.getValue(OrdersDetails.class);
                                     ordersDetails.date = orders.getDate();
-                                    ordersDetails.isPastOrder = !DateUtils.isEqual(orders.getDate());
+                                    ordersDetails.isPastOrder =  !DateUtils.isEqual(orders.getDate());
                                     ordersDetails.status = orders.getOrderStatus();
                                     ordersDetails.orderId = orders.getOrderId();
                                     Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
                                     setValue(operation);
-
-                                    state(SUCCESS);
                                 }
                         }
 
@@ -126,7 +117,6 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation> implements 
         @SuppressLint("LongLogTag")
         @Override
         public void onCancelled(@NonNull DatabaseError databaseError) {
-            Log.e(LOG_TAG, "Can't listen to query " + ordersFirebaseQuery, databaseError.toException());
 
         }
     }

@@ -25,7 +25,7 @@ import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.interfaces.INavigation;
-import com.example.pickle.interfaces.OrderStatus;
+import com.example.pickle.utils.OrderStatus;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ConfirmOrderViewModel;
 import com.example.pickle.models.OrdersDetails;

@@ -26,7 +26,7 @@ import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.example.pickle.utils.Constant.SUCCESS;
 
-public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation> implements IFirebaseState {
+public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation>{
     private static final String LOG_TAG = "OrdersFirebaseQueryLiveData";
 
     private Query ordersFirebaseQuery;
@@ -50,11 +50,6 @@ public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation> imp
         Log.e("firebase query live data", "ONINACTIVE ");
     }
 
-    @Override
-    public void state(int iFirebaseState) {
-
-    }
-
     private class MyChildEventListener implements ChildEventListener {
 
         @SuppressLint("LongLogTag")
@@ -62,8 +57,7 @@ public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation> imp
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
             String key = dataSnapshot.getKey();
-//            Log.e("TAG ", key);
-////
+
             DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS).child(key);
             orderDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -83,8 +77,6 @@ public class OrdersLoadmoreFirebaseQueryLiveData extends LiveData<Operation> imp
                                     ordersDetails.orderId = orders.getOrderId();
                                     Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
                                     setValue(operation);
-
-                                    state(SUCCESS);
                                 }
                         }
 

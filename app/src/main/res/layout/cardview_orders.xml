@@ -9,7 +9,7 @@
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
         <import type="com.example.pickle.models.OrdersDetails"/>
         <import type="com.example.pickle.utils.DateUtils"/>
-        <import type="com.example.pickle.interfaces.OrderStatus"/>
+        <import type="com.example.pickle.utils.OrderStatus"/>
 
         <variable
             name="orderDetails"

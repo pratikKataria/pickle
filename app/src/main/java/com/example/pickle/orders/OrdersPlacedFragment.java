@@ -29,7 +29,7 @@ import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
 
-import static com.example.pickle.interfaces.OrderStatus.CANCEL;
+import static com.example.pickle.utils.OrderStatus.CANCEL;
 import static com.example.pickle.utils.Constant.ADD;
 import static com.example.pickle.utils.Constant.LIMIT;
 import static com.example.pickle.utils.Constant.MODIFIED;
@@ -78,7 +78,7 @@ public class OrdersPlacedFragment extends Fragment {
         initRecyclerViewScrollListener();
 
         ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
-        LiveData<Operation> firebaseQueryLiveData = ordersViewModel.getLiveData();
+        LiveData<Operation> firebaseQueryLiveData = ordersViewModel.orders();
 
         firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
             updateHeaderView();
@@ -106,13 +106,12 @@ public class OrdersPlacedFragment extends Fragment {
                         int totalProductCount = linearLayoutManager.getItemCount();
                         if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
                             LoadingModel loadingModel = LoadingModel.getInstance();
-                            if (!pastOrdersList.contains(loadingModel)) {
+                            if (!pastOrdersList.contains(loadingModel) && pastOrdersList.size() >= 2) {
                                 addLoadingView();
 
                                 OrdersDetails ordersDateOrderId = (OrdersDetails) pastOrdersList.get(pastOrdersList.size() - 2);
                                 ordersViewModel.loadMoreOrders(ordersDateOrderId.date + "_" + ordersDateOrderId.orderId).observe(getViewLifecycleOwner(), operation -> {
                                     addOrdersToType(operation);
-
                                     if ((pastOrdersList.size() - pastOrdersList.indexOf(loadingModel)) - 1 == LIMIT - 1) {
                                         removeLoadingView();
                                     }
