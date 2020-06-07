@@ -18,4 +18,9 @@ public class NotifyRecyclerItems {
         if (recyclerView != null && recyclerView.getAdapter() != null)
             recyclerView.getAdapter().notifyItemChanged(index);
     }
+
+    public static void notifyDataSetChanged(RecyclerView recyclerView) {
+        if (recyclerView != null && recyclerView.getAdapter() != null)
+            recyclerView.getAdapter().notifyDataSetChanged();
+    }
 }

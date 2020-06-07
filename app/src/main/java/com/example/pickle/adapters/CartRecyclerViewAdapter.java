@@ -30,7 +30,7 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         CardViewCartBinding view = CardViewCartBinding.inflate(layoutInflater, parent, false);
 
-        return  new CartProductViewHolder(view);
+        return new CartProductViewHolder(view);
     }
 
     @Override
@@ -47,11 +47,12 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public void updateCartItemsList(ProductModel product) {
+        int indexOfItemRemoved = cartList.indexOf(product);
         cartList.remove(product);
-        notifyDataSetChanged();
+        notifyItemRemoved(indexOfItemRemoved);
     }
 
-    class CartProductViewHolder extends RecyclerView.ViewHolder {
+    static class CartProductViewHolder extends RecyclerView.ViewHolder {
 
         private CardViewCartBinding binding;
 

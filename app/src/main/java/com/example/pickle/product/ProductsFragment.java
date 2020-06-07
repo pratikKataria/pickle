@@ -161,7 +161,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
             } else
                 product.setQuantityCounter(0);
 
-            NotifyRecyclerItems.notifyItemChangedAt(productBinding.recyclerView, cartArrayList.indexOf(product));
+            NotifyRecyclerItems.notifyItemChangedAt(productBinding.recyclerView, productsArrayList.indexOf(product));
         }
 
         CartViewModel cartViewModel = new CartViewModel();

@@ -25,11 +25,12 @@ import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.interfaces.INavigation;
-import com.example.pickle.utils.OrderStatus;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ConfirmOrderViewModel;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
+import com.example.pickle.utils.NotifyRecyclerItems;
+import com.example.pickle.utils.OrderStatus;
 import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -42,9 +43,9 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
 
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
@@ -70,15 +71,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
 
             //check if user is login or not
-            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                 startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
                 return;
-            }
+         }
 
             //check if user address is present
             checkAddress();
-
         });
 
         BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
@@ -170,11 +170,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
             confirmOrderBinding.lottieAnimationView2.playAnimation();
             confirmOrderBinding.lottieAnimationView2.loop(true);
 
-            //todo replace with firebase instance
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            ref.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
+            DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
+            ordersDatabaseReference.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
                 binding.getCartList().clear();
-//                binding.cartRecyclerView.getAdapter().notifyDataSetChanged(); // todo add try catch
+                NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
                 binding.getCartViewModel().setCartVisible(false);
                 SharedPrefsUtils.clearCart(this);
                 new Handler().postDelayed(() -> {
@@ -279,8 +278,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     private void checkAddress() {
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            databaseReference.child(FirebaseAuth.getInstance().getUid()).child("slot1")
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getUid() != null) {
+            databaseReference.child(FirebaseAuth.getInstance().getUid())
+                    .child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -288,8 +288,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                                 placeOrder();
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                                startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                             }
                         }
                         @Override
