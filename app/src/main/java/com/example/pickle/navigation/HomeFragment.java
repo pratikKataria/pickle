@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,26 +19,24 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.pickle.BaseFragment;
 import com.example.pickle.R;
-import com.example.pickle.adapters.FirebaseSearchRecyclerAdapter;
 import com.example.pickle.carousel.CarouselImage;
 import com.example.pickle.cart.CartActivity;
 import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.interfaces.IFragmentCb;
+import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.orders.OrdersPlacedFragment;
 import com.example.pickle.utils.BadgeDrawableUtils;
+import com.example.pickle.utils.NotifyRecyclerItems;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -57,11 +54,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.pickle.utils.Constant.BEVERAGES;
-import static com.example.pickle.utils.Constant.DAIRY;
-import static com.example.pickle.utils.Constant.FRUITS;
 import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
-import static com.example.pickle.utils.Constant.VEGETABLES;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,12 +62,9 @@ import static com.example.pickle.utils.Constant.VEGETABLES;
 public class HomeFragment extends BaseFragment implements IFragmentCb {
 
     private static final int LIST_SIZE = 2;
-    private Toolbar _toolbar;
-
-    private List<CarouselImage> imageList;
-    private NavController _navController;
 
     private FragmentHomeBinding binding;
+    private List<CarouselImage> imageList;
     private ArrayList<ProductModel> productModelArrayList;
 
     private Map<String, String> saveToMap;
@@ -89,16 +79,7 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     }
 
     private void init_fields(View v) {
-        _toolbar = v.findViewById(R.id.fragment_order_toolbar);
         saveToMap = new HashMap<>();
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        _navController = Navigation.findNavController(view);
-
     }
 
     @Override
@@ -106,9 +87,9 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
         productModelArrayList = new ArrayList<>();
+        imageList = new ArrayList<>();
         addProduct();
-        Log.e("ONCREATE", getClass().getName() +" $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-
+        getImageList();
     }
 
     @Override
@@ -138,25 +119,17 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (binding == null) {
-            binding = DataBindingUtil.inflate(
-                    inflater,
-                    R.layout.fragment_home,
-                    container,
-                    false
-            );
-        }
 
-        setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
+        if (binding == null) binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
-        MaterialFadeThrough materialFadeThrough = MaterialFadeThrough.create();
-        setExitTransition(materialFadeThrough);
+        setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
 
         init_fields(binding.getRoot());
-        imageList = new ArrayList<>();
         setUpToolbar();
-        getImageList();
+
+        binding.setProductList(productModelArrayList);
         binding.setCarouselImage(imageList);
+        binding.setHomeFragment(HomeFragment.this);
 
         final Typeface tf = ResourcesCompat.getFont(getContext(), R.font.pacifico_regular);
         binding.setTypeface(tf);
@@ -164,46 +137,14 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
         itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
         getActivity().invalidateOptionsMenu();
 
-        new Handler().postDelayed(() -> binding.setProductList(productModelArrayList), 600);
+        return binding.getRoot();
+    }
+
+    public void navigateToProductFragment(String type) {
+        NavController _navController = NavHostFragment.findNavController(this);
         Bundle bundle = new Bundle();
-
-        binding.cardViewFruits.setOnClickListener(n -> {
-            bundle.putString(PRODUCT_BUNDLE, FRUITS);
-            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
-        });
-
-        binding.cardViewVegetables.setOnClickListener(n -> {
-            bundle.putString(PRODUCT_BUNDLE, VEGETABLES);
-            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
-        });
-
-        binding.cardViewBeverages.setOnClickListener(n -> {
-            bundle.putString(PRODUCT_BUNDLE, BEVERAGES);
-            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
-        });
-        binding.cardViewDairy.setOnClickListener(n -> {
-            bundle.putString(PRODUCT_BUNDLE, DAIRY);
-            _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
-        });
-
-        binding.suggestionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                LinearLayoutManager layoutManager = (LinearLayoutManager) binding.suggestionRecyclerView.getLayoutManager();
-                FirebaseSearchRecyclerAdapter firebaseSearchRecyclerAdapter = (FirebaseSearchRecyclerAdapter) binding.suggestionRecyclerView.getAdapter();
-                if (layoutManager != null && firebaseSearchRecyclerAdapter != null) {
-                    int id = layoutManager.findFirstCompletelyVisibleItemPosition();
-                    adapterPos = firebaseSearchRecyclerAdapter.getItemCount();
-                    if (id >= adapterPos - 1) {
-                        addNewProduct();
-                    }
-                }
-            }
-        });
-
-          return binding.getRoot();
+        bundle.putString(PRODUCT_BUNDLE, type);
+        _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
     }
 
     private void getImageList() {
@@ -213,21 +154,14 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-                try {
-                    binding.rvScroll.getAdapter().notifyItemChanged(Math.max(imageList.size() - 1, 0));
-                } catch (NullPointerException npe) {
-                    Log.e("HomeFragment", npe.getMessage());
-                }
+                if (imageList.size() - 1 >= 0)
+                    NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, imageList.size() - 1);
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
-                try {
-                    binding.rvScroll.getAdapter().notifyItemChanged(0);
-                } catch (NullPointerException npe) {
-                    Log.e("HomeFragment", npe.getMessage());
-                }
+                NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
             }
 
             @Override
@@ -248,7 +182,7 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     }
 
     private void setUpToolbar() {
-        ((AppCompatActivity)getActivity()).setSupportActionBar(_toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.fragmentOrderToolbar);
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -384,10 +318,13 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                ((MainActivity)(getActivity())).openDrawer();
+                ((MainActivity) (getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
                 startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                break;
+            case R.id.menu_main_search_btn:
+                startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -402,8 +339,6 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
         //update cart icon on resume
         itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
         getActivity().invalidateOptionsMenu();
-
-
 
         for (ProductModel product : productModelArrayList) {
             if (refreshList.contains(product)) {
@@ -425,17 +360,6 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("OnDestroyView", getClass().getName());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.e("OnDestroy", getClass().getName());
-    }
 
     @Override
     public void play() {

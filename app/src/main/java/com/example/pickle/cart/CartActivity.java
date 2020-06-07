@@ -57,8 +57,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_view);
-
         getShoppingCart();
+        setTransparentStatusBar();
 
         try {
             binding.getCartViewModel().getDatabaseAddress();
@@ -147,22 +147,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         }
     }
 
-    private String convertToAlphabet(int number) {
-        StringBuilder sb = new StringBuilder();
-        Stack<Integer> stack = new Stack<>();
-        while (number > 0) {
-            int digit = number % 10;
-            number = number / 10;
-            stack.push(digit);
-        }
-
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
-        }
-
-        return sb.toString();
-    }
-
     private void showOrderConfirmationDialog(HashMap<String, Object> atomicOperation) {
         LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
@@ -243,6 +227,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     public void removeProduct(ProductModel productModel) {
         SharedPrefsUtils.removeValuePreference(this, productModel.getItemId());
         getShoppingCart();
+        setTransparentStatusBar();
         try {
             ((CartRecyclerViewAdapter)binding.cartRecyclerView.getAdapter()).updateCartItemsList(productModel);
         } catch (NullPointerException npe) {
@@ -277,15 +262,17 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     }
 
     public void setTransparentStatusBar() {
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }else {
-            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        if (binding.getCartList().size() <= 0) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            }else {
+                window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            }
+            window.setStatusBarColor(Color.TRANSPARENT);
         }
-        window.setStatusBarColor(Color.TRANSPARENT);
     }
 
     //check address in database and place order

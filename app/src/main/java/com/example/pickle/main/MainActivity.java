@@ -32,7 +32,6 @@ import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.navigation.HomeFragment;
 import com.example.pickle.network.NetworkConnectionStateMonitor;
-import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.utils.SnackbarNoSwipeBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,9 +39,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-
-import static com.example.pickle.interfaces.NavigationAction.NAVIGATE_TO_PRODUCTS;
-import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -77,17 +73,7 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
-        navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders);
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
-
-        try {
-            String navigateTo = getIntent().getStringExtra(PRODUCT_BUNDLE);
-            if (navigateTo != null) {
-                navController.navigate(NAVIGATE_TO_PRODUCTS, BundleUtils.setNavigationBundle(navigateTo));
-            }
-        } catch (Exception xe) {
-            Log.e(MainActivity.class.getName(), xe.getMessage());
-        }
     }
 
     @Override
@@ -96,13 +82,11 @@ public class MainActivity extends AppCompatActivity implements
         NetworkConnectionStateMonitor networkConnectionStateMonitor = new NetworkConnectionStateMonitor(this);
         Snackbar snackbar = Snackbar.make(snackBarLayout, "cannot connect to internet", Snackbar.LENGTH_INDEFINITE).setAction("Action", null);
         networkConnectionStateMonitor.observe(this, isAvailable -> {
-            Log.e("MainActivity", "isAvailable" + isAvailable);
             if (!isAvailable) {
                 customSnackBar(snackbar);
                 snackbar.setBehavior(new SnackbarNoSwipeBehavior());
                 snackbar.show();
             } else {
-                Log.e("MainActivity", "dismiss");
                 snackbar.dismiss();
             }
         });

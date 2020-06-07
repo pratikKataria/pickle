@@ -6,6 +6,7 @@
 
     <data>
         <import type="com.example.pickle.models.ProductModel"/>
+        <import type="com.example.pickle.utils.Constant"/>
 
         <variable
             name="productList"
@@ -18,11 +19,16 @@
         <variable
             name="typeface"
             type="android.graphics.Typeface" />
+
+        <variable
+            name="homeFragment"
+            type="com.example.pickle.navigation.HomeFragment" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:background="@color/mainActColor"
         tools:context=".navigation.HomeFragment">
 
@@ -51,6 +57,7 @@
                     android:background="@color/white"
                     android:backgroundTint="@color/icFruitBg"
                     android:clickable="true"
+                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.FRUITS)}"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
@@ -89,6 +96,7 @@
                     android:background="@color/white"
                     android:backgroundTint="@color/icVegetableBg"
                     android:clickable="true"
+                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.VEGETABLES)}"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp">
@@ -133,7 +141,8 @@
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.DAIRY)}">
 
                     <ImageView
                         android:layout_width="match_parent"
@@ -171,7 +180,8 @@
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.BEVERAGES)}">
 
                     <ImageView
                         android:layout_width="match_parent"

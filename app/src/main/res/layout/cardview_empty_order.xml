@@ -19,14 +19,14 @@
             android:id="@+id/cardview_empty_order_constraint_l"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:customBackground="@{emptyOrders.backgroundRes}">
+            app:customLayoutBackground="@{emptyOrders.backgroundRes}">
 
 
             <ImageView
                 android:id="@+id/cardview_empty_order_img"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/crd_view_empty_orders_height"
-                app:customImageResource="@{emptyOrders.backgroundImageRes}"
+                app:customImageBackgroundI="@{emptyOrders.backgroundImageRes}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="w,16:9"
                 app:layout_constraintEnd_toEndOf="parent"

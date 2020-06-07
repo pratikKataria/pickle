@@ -8,6 +8,11 @@ import androidx.databinding.BindingAdapter;
 
 import com.example.pickle.utils.OrderStatus;
 
+import static com.example.pickle.utils.Constant.BEVERAGES;
+import static com.example.pickle.utils.Constant.DAIRY;
+import static com.example.pickle.utils.Constant.FRUITS;
+import static com.example.pickle.utils.Constant.VEGETABLES;
+
 public class TextBindingAdapter {
 
 
@@ -46,5 +51,29 @@ public class TextBindingAdapter {
                 break;
         }
     }
+
+    @BindingAdapter("productText")
+    public static void setProductFragmentText(TextView textView, String type) {
+        if (type == null) {
+            return;
+        }
+
+        switch (type) {
+            case FRUITS:
+                textView.setText(FRUITS);
+                break;
+            case VEGETABLES:
+                textView.setText(VEGETABLES);
+                break;
+            case BEVERAGES:
+                textView.setText(BEVERAGES);
+                break;
+            case DAIRY:
+                textView.setText(DAIRY);
+                break;
+        }
+
+    }
+
 
 }

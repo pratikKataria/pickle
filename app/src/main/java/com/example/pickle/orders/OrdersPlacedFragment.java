@@ -26,6 +26,7 @@ import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.NotifyRecyclerItems;
 import com.google.android.material.transition.MaterialFadeThrough;
+import com.google.android.material.transition.MaterialSharedAxis;
 
 import java.util.ArrayList;
 
@@ -62,8 +63,7 @@ public class OrdersPlacedFragment extends Fragment {
                 container,
                 false);
 
-        MaterialFadeThrough materialFadeThrough = MaterialFadeThrough.create();
-        setEnterTransition(materialFadeThrough);
+        setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
         ordersList = new ArrayList<>();
         pastOrdersList = new ArrayList<>();

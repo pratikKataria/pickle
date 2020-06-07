@@ -24,7 +24,6 @@ import com.example.pickle.databinding.FragmentProductsBinding;
 import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.ProductModel;
-import com.example.pickle.utils.BundleUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.database.ChildEventListener;
@@ -80,7 +79,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
         productBinding.setProductList(fruitList);
         productBinding.setActivity(getActivity());
-        productBinding.setBundle(BundleUtils.setNavigationBundle(bundle.getString(PRODUCT_BUNDLE)));
+        productBinding.setType(bundle.getString(PRODUCT_BUNDLE));
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 

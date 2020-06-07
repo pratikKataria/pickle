@@ -1,7 +1,7 @@
 package com.example.pickle.binding;
 
 import android.content.Context;
-import android.os.Build;
+import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,35 +13,86 @@ import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pickle.R;
+import com.example.pickle.product.ProductsFragment;
+import com.example.pickle.utils.ResourceUtils;
+
+import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class GlideImageBindingAdapter {
 
-    @BindingAdapter("customImageResource")
-    public static void setImageCustom(ImageView imageView, int imageRes) {
+    @BindingAdapter("customBackgroundColor")
+    public static void productFragmentCustomCardViewBackground(CardView cardView, String type) {
+        Log.e(GlideImageBindingAdapter.class.getName(), "custom backgound " + type);
+        if (type == null) {
+            return;
+        }
+
+        if (ResourceUtils.backgroundColors.containsKey(type)) {
+            cardView.setCardBackgroundColor(
+                    cardView.getContext()
+                            .getResources()
+                            .getColor(
+                                    ResourceUtils.backgroundColors.get(type)
+                            )
+            );
+        }
+    }
+
+    @BindingAdapter("customImageBackgroundS")
+    public static void productFragmentCustomImageBackground(ImageView imageview, String type) {
+        Log.e(GlideImageBindingAdapter.class.getName(), "custom  img backgound " + type);
+        if (type == null) {
+            return;
+        }
+
+        if (ResourceUtils.backgroundColors.containsKey(type)) {
+            imageview.setImageDrawable(
+                    imageview.getContext()
+                            .getResources()
+                            .getDrawable(
+                                    ResourceUtils.foregroundImages.get(type)
+                            )
+            );
+        }
+    }
+
+    @BindingAdapter("customLayoutBackground")
+    public static void setCustomBackground(View view, int colorRes) {
+        Log.e(GlideImageBindingAdapter.class.getName(), "custom  lay backgound " + colorRes);
         try {
-            imageView.setImageDrawable(imageView.getContext().getDrawable(imageRes));
+            view.setBackground(view.getContext().getResources().getDrawable(colorRes));
         } catch (Exception xe) {
-            Log.e("GlideImageBindingAdapter", xe.getMessage());
+            Log.e("GlideBindingAdapter", xe.getMessage());
         }
     }
 
     @BindingAdapter("customBackgroundColor")
-    public static void setCustomBackground(CardView cardView, int colorRes) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            cardView.setBackgroundColor(cardView.getContext().getColor(colorRes));
-        } else {
-            cardView.setBackgroundColor(cardView.getContext().getResources().getColor(colorRes));
-        }
+    public static void productFragmentCustomCardViewBackground(CardView cardView, int resource) {
+        Log.e(GlideImageBindingAdapter.class.getName(), "custom int backgound " + resource);
+        cardView.setCardBackgroundColor(
+                    cardView.getContext()
+                            .getResources()
+                            .getColor(
+                                    resource
+                            )
+            );
     }
 
-    @BindingAdapter("customBackground")
-    public static void setCustomBackground(View view, int colorRes) {
-        try {
-            view.setBackground(view.getContext().getDrawable(colorRes));
-        } catch (Exception xe) {
-            Log.e("GlideImageBindingAdapter", xe.getMessage());
-        }
+    @BindingAdapter("customImageBackgroundI")
+    public static void productFragmentCustomImageBackground(ImageView imageview, int resource) {
+        Log.e(GlideImageBindingAdapter.class.getName(), "custom int  img backgound " + resource);
+        if (resource == 0)
+                return;
+
+            imageview.setImageDrawable(
+                    imageview.getContext()
+                            .getResources()
+                            .getDrawable(
+                                   resource
+                            )
+            );
     }
+
 
     @BindingAdapter("imageResourceAdapter")
     public static void setImage(ImageView _imageView, String imageUrl) {
