@@ -118,7 +118,7 @@
                 app:rippleColor="@color/secondaryColorLight" />
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/totalPriceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -136,9 +136,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:text="OR"
-                app:layout_constraintEnd_toEndOf="@+id/textView13"
-                app:layout_constraintStart_toStartOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintEnd_toEndOf="@+id/totalPriceTextView"
+                app:layout_constraintStart_toStartOf="@+id/totalPriceTextView"
+                app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"

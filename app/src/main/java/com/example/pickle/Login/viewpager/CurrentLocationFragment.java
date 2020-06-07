@@ -82,7 +82,7 @@ public class CurrentLocationFragment extends Fragment implements LocationListene
 
         lottie = view.findViewById(R.id.lottie_current_location);
         locationFound = view.findViewById(R.id.location_found);
-        textView = view.findViewById(R.id.textView);
+        textView = view.findViewById(R.id.quantityTextView);
         updateBtn = view.findViewById(R.id.updateBtn);
 
         username = view.findViewById(R.id.cd_et_userName);

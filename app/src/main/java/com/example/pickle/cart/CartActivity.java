@@ -26,12 +26,10 @@ import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.interfaces.INavigation;
 import com.example.pickle.main.MainActivity;
-import com.example.pickle.models.ConfirmOrderViewModel;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.NotifyRecyclerItems;
 import com.example.pickle.utils.OrderStatus;
-import com.example.pickle.utils.PriceFormatUtils;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +41,6 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +51,23 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
     private ActivityCartViewBinding binding;
     private AlertDialog alertDialog;
 
+    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+        }
+
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            if (slideOffset < 0.75) {
+                binding.nestedScrollView.setAlpha(Math.abs(1 - slideOffset));
+                binding.nestedScrollView.setBackgroundColor(Color.WHITE);
+            } else if (slideOffset > 0.90) {
+                binding.nestedScrollView.setBackgroundColor(0xFFececec);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,49 +75,62 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         getShoppingCart();
         setTransparentStatusBar();
 
-        try {
-            binding.getCartViewModel().getDatabaseAddress();
-        } catch (NullPointerException npe) {
-            Log.e(CartActivity.class.getName(), npe.getMessage());
-        }
-
         binding.setActivity(this);
-        binding.includeLayout.placeOrder.setOnClickListener(n -> {
+        binding.getCartViewModel().getDatabaseAddress();
 
-            //check if user is login or not
-         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-                Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
-                return;
-         }
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+        behavior.addBottomSheetCallback(bottomSheetCallback);
+
+        binding.includeLayout.placeOrder.setOnClickListener(n -> {
+            if (!checkFirebaseAuth()) return;
 
             //check if user address is present
             checkAddress();
         });
-
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
-        behavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) { }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                if (slideOffset < 0.75) {
-                    binding.nestedScrollView.setAlpha(Math.abs(1 - slideOffset));
-                    binding.nestedScrollView.setBackgroundColor(Color.WHITE);
-                } else if (slideOffset > 0.90) {
-                    binding.nestedScrollView.setBackgroundColor(0xFFececec);
-                }
-            }
-        });
     }
 
+    //check if user is login or not
+    private boolean checkFirebaseAuth() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //check address in database and place order
+    private void checkAddress() {
+        Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
+        DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            userAddressDatabaseReference.child(FirebaseAuth.getInstance().getUid())
+                    .child("slot1")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                placeOrder();
+                            } else {
+                                Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+        }
+    }
 
     private void placeOrder() {
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         try {
             String deliveryTime = binding.getCartViewModel().getDeliveryTime();
             String deliveryAddress = binding.getCartViewModel().getAddress();
+
             if (deliveryTime == null || deliveryTime.isEmpty()) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
@@ -114,6 +141,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                 Toast.makeText(this, "select delivery Address", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             List<ProductModel> productCartList = binding.getCartList();
             HashMap<String, Object> atomicOperation = new HashMap<>();
             for (ProductModel product : productCartList) {
@@ -140,10 +168,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
             }
 
             showOrderConfirmationDialog(atomicOperation);
-
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
-            Log.e(CartActivity.class.getName(), xe.getMessage());
+            Log.e(CartActivity.class.getName(), xe.getMessage() + "");
         }
     }
 
@@ -157,12 +184,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
         alertDialog = alertDialogBuilder.create();
 
-        ConfirmOrderViewModel confirmOrderViewModel = new ConfirmOrderViewModel();
-        String totalText = binding.amountToBePaid.getText().toString();
-        String totalQuantity = binding.getCartViewModel().getProductQuantitiesString();
-        confirmOrderViewModel.setTotalPrice(PriceFormatUtils.getIntFormattedPrice(totalText));
-        confirmOrderViewModel.setQuantity(totalQuantity);
-        confirmOrderBinding.setConfirmModel(confirmOrderViewModel);
+        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.amountToBePaid.getText().toString()));
+        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.getCartViewModel().getProductQuantitiesString()));
         alertDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
@@ -176,6 +199,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                 NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
                 binding.getCartViewModel().setCartVisible(false);
                 SharedPrefsUtils.clearCart(this);
+
                 new Handler().postDelayed(() -> {
                     confirmOrderBinding.lottieAnimationView2.setAlpha(0);
                     confirmOrderBinding.successAnimation.setVisibility(View.VISIBLE);
@@ -199,10 +223,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
             });
         });
 
-        confirmOrderBinding.backBtn.setOnClickListener(n -> {
-            alertDialog.dismiss();
-        });
-
+        confirmOrderBinding.backBtn.setOnClickListener(n -> alertDialog.dismiss());
     }
 
     private void getShoppingCart() {
@@ -227,21 +248,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         SharedPrefsUtils.removeValuePreference(this, productModel.getItemId());
         getShoppingCart();
         setTransparentStatusBar();
-        try {
-            ((CartRecyclerViewAdapter)binding.cartRecyclerView.getAdapter()).updateCartItemsList(productModel);
-        } catch (NullPointerException npe) {
-            Log.e(CartActivity.class.getName(), "cart update item: " + npe.getMessage());
-        }
+        CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
+        if (cartRecyclerViewAdapter != null) cartRecyclerViewAdapter.updateCartItemsList(productModel);
     }
 
     @Override
     public void navigateTo(String navigationTo) {
         startActivity(new Intent(this, MainActivity.class).putExtra(PRODUCT_BUNDLE, navigationTo));
-        finish();
-    }
-
-    @Override
-    public void onHomePressed(boolean pressed) {
         finish();
     }
 
@@ -271,31 +284,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
                 window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
             }
             window.setStatusBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    //check address in database and place order
-    private void checkAddress() {
-        Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getUid() != null) {
-            databaseReference.child(FirebaseAuth.getInstance().getUid())
-                    .child("slot1")
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                placeOrder();
-                            } else {
-                                Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-                            }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
         }
     }
 }

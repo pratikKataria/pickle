@@ -143,11 +143,6 @@ public class CartViewModel extends BaseObservable {
         iNavigation.navigateTo(navigateTo);
     }
 
-    public void onHomePressed(Context context) {
-        INavigation iNavigation = (INavigation) context;
-        iNavigation.onHomePressed(true);
-    }
-
     public void getDatabaseAddress() {
         Log.e(CartViewModel.class.getName(), "load address ");
         if (FirebaseAuth.getInstance().getUid() != null) {
