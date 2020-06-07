@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.pickle.models.ProductModel;
 import com.google.gson.Gson;
 
@@ -27,7 +29,7 @@ final public class SharedPrefsUtils {
      * @param i
      * @return The value from shared preferences, or null if the value could not be read.
      */
-    public static String getStringPreference(Context context, String key, int i) {
+    public static String getStringPreference(@Nullable Context context, @Nullable String key, int i) {
         String value = null;
        try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
