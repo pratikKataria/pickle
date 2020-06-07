@@ -24,6 +24,7 @@ import com.example.pickle.databinding.FragmentProductsBinding;
 import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.ProductModel;
+import com.example.pickle.utils.NotifyRecyclerItems;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.database.ChildEventListener;
@@ -46,11 +47,12 @@ import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
  */
 public class ProductsFragment extends Fragment implements IFragmentCb {
 
-    private DatabaseReference reference;
-    private ChildEventListener childEventListener;
-
-    private ArrayList<ProductModel> fruitList;
     private FragmentProductsBinding productBinding;
+    private ArrayList<ProductModel> productsArrayList;
+
+    private DatabaseReference productDatabaseReference;
+    private ChildEventListener productChildEventListener;
+
     private int countItems;
 
     public ProductsFragment() {
@@ -70,18 +72,17 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
         Bundle bundle = getArguments();
-        if (bundle != null && bundle.containsKey(PRODUCT_BUNDLE)) {
-            reference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(bundle.getString(PRODUCT_BUNDLE));
-        }
+        String childReference = bundle != null && bundle.containsKey(PRODUCT_BUNDLE) ? bundle.getString(PRODUCT_BUNDLE) : " ";
+        productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(childReference != null ? childReference : " ");
 
-        fruitList = new ArrayList<>();
-        new Handler().postDelayed(this::populateList,800);
+        productsArrayList = new ArrayList<>();
+        new Handler().postDelayed(this::populateList, 800);
 
-        productBinding.setProductList(fruitList);
+        productBinding.setProductList(productsArrayList);
         productBinding.setActivity(getActivity());
-        productBinding.setType(bundle.getString(PRODUCT_BUNDLE));
+        productBinding.setType(childReference);
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
-        productBinding.ibOverlay.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        productBinding.icCart.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
 
         changeStatusBarColor();
 
@@ -89,14 +90,11 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     }
 
     private void populateList() {
+        if (productDatabaseReference == null)
+            productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT);
 
-        if (reference == null) {
-            reference = FirebaseDatabase.getInstance().getReference(PRODUCT);
-        }
-
-        Query query = reference.orderByChild("itemName").limitToLast(15);
-
-        childEventListener = query.addChildEventListener(new ChildEventListener() {
+        Query query = productDatabaseReference.orderByChild("itemName").limitToLast(15);
+        productChildEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 ProductModel product = dataSnapshot.getValue(ProductModel.class);
@@ -107,28 +105,27 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
                     if (product.equals(cartProduct))
                         product.setQuantityCounter(cartProduct.getQuantityCounter());
 
-                    fruitList.add(product);
-                    productBinding.fruitsRecyclerView.getAdapter().notifyItemInserted(fruitList.size());
+                    productsArrayList.add(product);
+                    NotifyRecyclerItems.notifyItemInsertedAt(productBinding.recyclerView, productsArrayList.size());
 
                     countItems += 1;
-                    if (countItems > 0)
-                        productBinding.countFruits.setText(countItems + " items");
-                    else
-                        productBinding.countFruits.setText(countItems + " item");
-
+                    String itemsCountedText;
+                    if (countItems > 0) itemsCountedText = countItems + " items";
+                    else itemsCountedText = countItems + " item";
+                    productBinding.countFruits.setText(itemsCountedText);
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //new implementation /2 jun 2020
+                //new implementation /2 june 2020
                 ProductModel newProduct = dataSnapshot.getValue(ProductModel.class);
-                if (fruitList.contains(newProduct)) {
-                    int indexOfOldProduct = fruitList.indexOf(newProduct);
-                    ProductModel oldProduct = fruitList.get(indexOfOldProduct);
-                    fruitList.remove(oldProduct);
-                    fruitList.add(indexOfOldProduct, newProduct);
-                    productBinding.fruitsRecyclerView.getAdapter().notifyItemChanged(indexOfOldProduct);
+                if (productsArrayList.contains(newProduct)) {
+                    int indexOfOldProduct = productsArrayList.indexOf(newProduct);
+                    ProductModel oldProduct = productsArrayList.get(indexOfOldProduct);
+                    productsArrayList.remove(oldProduct);
+                    productsArrayList.add(indexOfOldProduct, newProduct);
+                    NotifyRecyclerItems.notifyItemChangedAt(productBinding.recyclerView, indexOfOldProduct);
                 }
             }
 
@@ -144,55 +141,46 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("OrdersFirebaseQata", databaseError.getCode() +" ");
+                Log.e(ProductsFragment.class.getName(), databaseError.getCode() + " ");
             }
         });
-    }
-
-    private void notifyChanges() {
-        try {
-            productBinding.fruitsRecyclerView.getAdapter().notifyDataSetChanged();
-        } catch (NullPointerException npe) {
-            Log.e("FruitFragment", "npe exception " + npe.getMessage());
-        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
-        for (ProductModel product : fruitList) {
-            if (refreshList.contains(product)) {
-                ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
+        // This method work when user navigate to the CartActivity and
+        // changes qty in the cart from CartActivity and come back to
+        // product fragment then this fragment is resume and update the
+        // changed product
+        ArrayList<ProductModel> cartArrayList = SharedPrefsUtils.getAllProducts(getActivity());
+        for (ProductModel product : productsArrayList) {
+            if (cartArrayList.contains(product)) {
+                ProductModel newProduct = cartArrayList.get(cartArrayList.indexOf(product));
                 product.setQuantityCounter(newProduct.getQuantityCounter());
-                notifyChanges();
-            } else {
+            } else
                 product.setQuantityCounter(0);
-                notifyChanges();
-            }
+
+            NotifyRecyclerItems.notifyItemChangedAt(productBinding.recyclerView, cartArrayList.indexOf(product));
         }
 
         CartViewModel cartViewModel = new CartViewModel();
-        cartViewModel.setCartProducts(fruitList);
+        cartViewModel.setCartProducts(productsArrayList);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (childEventListener != null) {
-            reference.removeEventListener(childEventListener);
+        if (productChildEventListener != null) {
+            productDatabaseReference.removeEventListener(productChildEventListener);
         }
     }
 
     private void changeStatusBarColor() {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Window window = getActivity().getWindow();
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorGrey50));
-            }
-        } catch (Exception xe) {
-            Log.e(ProductsFragment.class.getName(), "error "+xe.getMessage());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && getActivity() != null) {
+            Window window = getActivity().getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorGrey50));
         }
     }
 
