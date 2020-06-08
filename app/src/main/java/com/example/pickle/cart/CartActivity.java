@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
+import com.airbnb.lottie.L;
 import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
@@ -36,8 +39,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
@@ -48,7 +54,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
         }
 
         @Override
@@ -83,6 +88,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         });
     }
 
+    private void getShoppingCart() {
+        List<ProductModel> cartList = SharedPrefsUtils.getAllProducts(this);
+        binding.setCartList(cartList);
+        CartViewModel cartViewModel = new CartViewModel();
+        cartViewModel.setCartProducts(cartList);
+        binding.setCartViewModel(cartViewModel);
+    }
+
     //check if user is login or not
     private boolean checkFirebaseAuth() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -105,13 +118,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                placeOrder();
+                                checkDeliveryTimeAndAddress();
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                             }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
@@ -119,25 +131,92 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         }
     }
 
-    private void placeOrder() {
+    private void checkDeliveryTimeAndAddress() {
         BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+        String deliveryTime = binding.getCartViewModel().getDeliveryTime();
+        String deliveryAddress = binding.getCartViewModel().getAddress();
+
+        if (deliveryTime == null || deliveryTime.isEmpty()) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (deliveryAddress == null || deliveryAddress.isEmpty()) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            Toast.makeText(this, "select delivery Address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        showOrderConfirmationDialog();
+    }
+
+    private void showOrderConfirmationDialog() {
+        LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.layout_confirm_order,
+                null,
+                false);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
+        alertDialogBuilder.setCancelable(false);
+        alertDialog = alertDialogBuilder.create();
+
+        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.amountToBePaid.getText().toString()));
+        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.getCartViewModel().getProductQuantitiesString()));
+        alertDialog.show();
+
+        confirmOrderBinding.successAnimation.setVisibility(View.GONE);
+
+        confirmOrderBinding.confirmBtn.setOnClickListener(n -> {
+            confirmOrderBinding.lottieAnimationView2.playAnimation();
+            confirmOrderBinding.lottieAnimationView2.loop(true);
+            sendOrdersToDatabase(isUploaded -> {
+                if (isUploaded) {
+                    // do animation stuff here
+                    new Handler().postDelayed(() -> {
+                        confirmOrderBinding.lottieAnimationView2.setAlpha(0);
+                        confirmOrderBinding.successAnimation.setVisibility(View.VISIBLE);
+                        confirmOrderBinding.successAnimation.playAnimation();
+                        confirmOrderBinding.thankText.animate().alpha(1).setDuration(500).start();
+                        confirmOrderBinding.homeBtn.setVisibility(View.VISIBLE);
+                        confirmOrderBinding.homeBtn.setOnClickListener(v -> {
+                            alertDialog.dismiss();
+                            finish();
+                        });
+                        confirmOrderBinding.backBtn.setVisibility(View.GONE);
+                        confirmOrderBinding.confirmBtn.setVisibility(View.GONE);
+                        alertDialog.setCancelable(false);
+
+                        Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show();
+                    }, 1200);
+                } else {
+                    Log.e(CartActivity.class.getName(), "uploading........ else ");
+                    Toast.makeText(this, "error : " + "something went wrong please try again", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        confirmOrderBinding.backBtn.setOnClickListener(n -> alertDialog.dismiss());
+    }
+
+    private void sendOrdersToDatabase(UploadResult result) {
+        Map<String, Object> atomicOperation = buildOrders();
+        DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        ordersDatabaseReference.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
+            // clean up the local data base after the orders
+            // sent to the database
+            binding.getCartList().clear();
+            NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
+            binding.getCartViewModel().setCartVisible(false);
+            SharedPrefsUtils.clearCart(this);
+            result.uploaded(true);
+        }).addOnFailureListener(e -> result.uploaded(false));
+    }
+
+    private Map<String, Object> buildOrders() {
+        HashMap<String, Object> atomicOperation = new HashMap<>();
         try {
-            String deliveryTime = binding.getCartViewModel().getDeliveryTime();
-            String deliveryAddress = binding.getCartViewModel().getAddress();
-
-            if (deliveryTime == null || deliveryTime.isEmpty()) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (deliveryAddress == null || deliveryAddress.isEmpty()) {
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                Toast.makeText(this, "select delivery Address", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
             List<ProductModel> productCartList = binding.getCartList();
-            HashMap<String, Object> atomicOperation = new HashMap<>();
             for (ProductModel product : productCartList) {
                 String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
                 atomicOperation.put("OrdersDetails/" + key, new OrdersDetails(
@@ -146,86 +225,30 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         product.getQuantityCounter(),
                         product.getItemBasePrice(),
                         product.getItemCategory(),
-                        deliveryAddress,
-                        deliveryTime
+                        binding.getCartViewModel().getAddress(),
+                        binding.getCartViewModel().getDeliveryTime()
                 ));
 
                 long localTimestamp = System.currentTimeMillis();
 
-                atomicOperation.put("Orders/"+key+"/userId", FirebaseAuth.getInstance().getUid());
-                atomicOperation.put("Orders/"+key+"/orderId", key);
-                atomicOperation.put("Orders/"+key+"/orderStatus", OrderStatus.PROCESSING);
-                atomicOperation.put("Orders/"+key+"/date", localTimestamp);
+                atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
+                atomicOperation.put("Orders/" + key + "/orderId", key);
+                atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
+                atomicOperation.put("Orders/" + key + "/date", localTimestamp);
 
                 atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
                 atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
             }
-
-            showOrderConfirmationDialog(atomicOperation);
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage() + "");
         }
+
+        return atomicOperation;
     }
 
-    private void showOrderConfirmationDialog(HashMap<String, Object> atomicOperation) {
-        LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(this),
-                R.layout.layout_confirm_order,
-                null,
-                false);
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
-        alertDialog = alertDialogBuilder.create();
-
-        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.amountToBePaid.getText().toString()));
-        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.getCartViewModel().getProductQuantitiesString()));
-        alertDialog.show();
-
-        confirmOrderBinding.successAnimation.setVisibility(View.GONE);
-        confirmOrderBinding.confirmBtn.setOnClickListener(n -> {
-            confirmOrderBinding.lottieAnimationView2.playAnimation();
-            confirmOrderBinding.lottieAnimationView2.loop(true);
-
-            DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
-            ordersDatabaseReference.updateChildren(atomicOperation).addOnSuccessListener(aVoid -> {
-                binding.getCartList().clear();
-                NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
-                binding.getCartViewModel().setCartVisible(false);
-                SharedPrefsUtils.clearCart(this);
-
-                new Handler().postDelayed(() -> {
-                    confirmOrderBinding.lottieAnimationView2.setAlpha(0);
-                    confirmOrderBinding.successAnimation.setVisibility(View.VISIBLE);
-                    confirmOrderBinding.successAnimation.playAnimation();
-                    confirmOrderBinding.thankText.animate().alpha(1).setDuration(500).start();
-                    confirmOrderBinding.homeBtn.setVisibility(View.VISIBLE);
-                    confirmOrderBinding.homeBtn.setOnClickListener(v -> {
-                        alertDialog.dismiss();
-                        finish();
-                    });
-                    confirmOrderBinding.backBtn.setVisibility(View.GONE);
-                    confirmOrderBinding.confirmBtn.setVisibility(View.GONE);
-                    alertDialog.setCancelable(false);
-
-                    Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show();
-                }, 1200);
-            }).addOnFailureListener(e -> {
-                confirmOrderBinding.errorText.setVisibility(View.VISIBLE);
-                confirmOrderBinding.errorText.setText(e.getMessage());
-                Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
-        });
-
-        confirmOrderBinding.backBtn.setOnClickListener(n -> alertDialog.dismiss());
-    }
-
-    private void getShoppingCart() {
-        List<ProductModel> cartList = SharedPrefsUtils.getAllProducts(this);
-        binding.setCartList(cartList);
-        CartViewModel cartViewModel = new CartViewModel();
-        cartViewModel.setCartProducts(cartList);
-        binding.setCartViewModel(cartViewModel);
+    interface UploadResult {
+        void uploaded(boolean isUploaded);
     }
 
     @Override
@@ -243,7 +266,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         getShoppingCart();
         setTransparentStatusBar();
         CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
-        if (cartRecyclerViewAdapter != null) cartRecyclerViewAdapter.updateCartItemsList(productModel);
+        if (cartRecyclerViewAdapter != null)
+            cartRecyclerViewAdapter.updateCartItemsList(productModel);
     }
 
     public void navigateTo(String navigationTo) {
