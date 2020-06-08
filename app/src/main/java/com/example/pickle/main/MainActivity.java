@@ -32,13 +32,20 @@ import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.navigation.HomeFragment;
 import com.example.pickle.network.NetworkConnectionStateMonitor;
+import com.example.pickle.utils.Constant;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.utils.SnackbarNoSwipeBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.pickle.utils.Constant.NAVIGATION_OK;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,

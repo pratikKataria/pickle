@@ -1,22 +1,16 @@
 package com.example.pickle.binding;
 
 import android.content.Context;
-import android.media.Image;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
-
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pickle.R;
-import com.example.pickle.product.ProductsFragment;
 import com.example.pickle.utils.ResourceUtils;
-
-import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
 
 public class GlideImageBindingAdapter {
 

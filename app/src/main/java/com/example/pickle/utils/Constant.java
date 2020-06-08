@@ -4,8 +4,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
 import com.example.pickle.R;
-import com.example.pickle.product.ProductsFragment;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -23,7 +21,7 @@ public abstract class Constant {
             VEGETABLES,
             DAIRY,
             BEVERAGES,
-            PRODUCT_BUNDLE,
+            PRODUCT_TYPE,
             ORDERS_CANCELLED,
             ORDERS_DELIVERED
     })
@@ -42,7 +40,7 @@ public abstract class Constant {
     public static final String ORDERS_CANCELLED = "OrdersCancelled";
     public static final String ORDERS_DELIVERED = "OrdersDelivered";
 
-    public static final String PRODUCT_BUNDLE = "productsInfo";
+    public static final String PRODUCT_TYPE = "productsInfo";
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
@@ -80,5 +78,7 @@ public abstract class Constant {
 
     public static final byte LIMIT = 3;
     public static final byte ONGOING_LIMIT = 35;
+
+    public static final int NAVIGATION_OK = 3242;
 
 }

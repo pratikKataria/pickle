@@ -23,7 +23,7 @@
 
         <variable
             name="activity"
-            type="android.app.Activity" />
+            type="com.example.pickle.cart.CartActivity" />
 
         <variable
             name="dateString"
@@ -133,7 +133,7 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{() -> cartViewModel.navigateTo(context, Constant.VEGETABLES)}"
+                        android:onClick="@{() -> activity.navigateTo(Constant.VEGETABLES)}"
                         android:text="Vegitables"
                         android:textColor="@color/black"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
@@ -148,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Fruits"
-                        android:onClick="@{() -> cartViewModel.navigateTo(context,  Constant.FRUITS)}"
+                        android:onClick="@{() -> activity.navigateTo(Constant.FRUITS)}"
                         android:textColor="@color/black"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
@@ -163,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:text="Diary"
                         android:textColor="@color/black"
-                        android:onClick="@{() -> cartViewModel.navigateTo(context,  Constant.DAIRY)}"
+                        android:onClick="@{() -> activity.navigateTo(Constant.DAIRY)}"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
                         app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
@@ -177,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:text="Beverages"
                         android:textColor="@color/black"
-                        android:onClick="@{() -> cartViewModel.navigateTo(context,  Constant.BEVERAGES)}"
+                        android:onClick="@{() -> activity.navigateTo(Constant.BEVERAGES)}"
                         app:chipBackgroundColor="@color/bg_color_search_filter"
                         app:chipCornerRadius="4dp"
                         app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"

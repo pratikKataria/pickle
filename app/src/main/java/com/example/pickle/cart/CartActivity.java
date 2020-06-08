@@ -11,12 +11,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
 import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
@@ -24,8 +22,6 @@ import com.example.pickle.adapters.CartRecyclerViewAdapter;
 import com.example.pickle.databinding.ActivityCartViewBinding;
 import com.example.pickle.databinding.LayoutConfirmOrderBinding;
 import com.example.pickle.interfaces.IMainActivity;
-import com.example.pickle.interfaces.INavigation;
-import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.NotifyRecyclerItems;
@@ -40,13 +36,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.List;
+import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
-import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
-
-public class CartActivity extends AppCompatActivity implements IMainActivity, INavigation {
+public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     private ActivityCartViewBinding binding;
     private AlertDialog alertDialog;
@@ -252,9 +246,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, IN
         if (cartRecyclerViewAdapter != null) cartRecyclerViewAdapter.updateCartItemsList(productModel);
     }
 
-    @Override
     public void navigateTo(String navigationTo) {
-        startActivity(new Intent(this, MainActivity.class).putExtra(PRODUCT_BUNDLE, navigationTo));
+        Intent intent = new Intent();
+        intent.putExtra(PRODUCT_TYPE, navigationTo);
+        setResult(1, intent);
         finish();
     }
 

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,8 +21,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
-import com.example.pickle.BaseFragment;
 import com.example.pickle.R;
 import com.example.pickle.carousel.CarouselImage;
 import com.example.pickle.cart.CartActivity;
@@ -44,18 +41,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
+import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends BaseFragment implements IFragmentCb {
+public class HomeFragment extends Fragment implements IFragmentCb {
 
     private FragmentHomeBinding binding;
     private List<CarouselImage> imageList;
@@ -70,6 +65,7 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
     private static int itemCount;
     private static final int LIMIT = 2;
 
+    private final int REQUEST_CODE = 0x88;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -105,11 +101,20 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
         return binding.getRoot();
     }
 
-    public void navigateToProductFragment(String type) {
-        NavController _navController = NavHostFragment.findNavController(this);
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1 && data != null && data.getExtras() != null) {
+            navigateToProductFragment(data.getExtras().getString(PRODUCT_TYPE));
+        }
+    }
+
+    public void navigateToProductFragment(@Nullable String type) {
+        if (type == null) return;
+        NavController navController = NavHostFragment.findNavController(this);
         Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_BUNDLE, type);
-        _navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+        bundle.putString(PRODUCT_TYPE, type);
+        navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
     }
 
     private void getImageList() {
@@ -227,7 +232,7 @@ public class HomeFragment extends BaseFragment implements IFragmentCb {
                     ((MainActivity) (getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
-                startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                startActivityForResult(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY), REQUEST_CODE);
                 break;
             case R.id.menu_main_search_btn:
                 startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));

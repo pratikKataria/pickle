@@ -138,11 +138,6 @@ public class CartViewModel extends BaseObservable {
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
 
-    public void navigateTo(Context context, String navigateTo) {
-        INavigation iNavigation = (INavigation) context;
-        iNavigation.navigateTo(navigateTo);
-    }
-
     public void getDatabaseAddress() {
         Log.e(CartViewModel.class.getName(), "load address ");
         if (FirebaseAuth.getInstance().getUid() != null) {

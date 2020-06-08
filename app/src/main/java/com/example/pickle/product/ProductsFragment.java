@@ -40,7 +40,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import static com.example.pickle.utils.Constant.PRODUCT;
-import static com.example.pickle.utils.Constant.PRODUCT_BUNDLE;
+import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +72,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
         Bundle bundle = getArguments();
-        String childReference = bundle != null && bundle.containsKey(PRODUCT_BUNDLE) ? bundle.getString(PRODUCT_BUNDLE) : " ";
+        String childReference = bundle != null && bundle.containsKey(PRODUCT_TYPE) ? bundle.getString(PRODUCT_TYPE) : " ";
         productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(childReference != null ? childReference : " ");
 
         productsArrayList = new ArrayList<>();
