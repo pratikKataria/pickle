@@ -32,6 +32,7 @@ import com.example.pickle.interfaces.IMainActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.navigation.HomeFragment;
 import com.example.pickle.network.NetworkConnectionStateMonitor;
+import com.example.pickle.ui.ExitAppBottomSheetDialog;
 import com.example.pickle.utils.Constant;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.example.pickle.utils.SnackbarNoSwipeBehavior;
@@ -49,7 +50,7 @@ import static com.example.pickle.utils.Constant.NAVIGATION_OK;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        IMainActivity, IFragmentCb {
+        IMainActivity, IFragmentCb, ExitAppBottomSheetDialog.BottomSheetOnButtonClickListener {
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -176,5 +177,10 @@ public class MainActivity extends AppCompatActivity implements
             IFragmentCb iFragmentCb = (IFragmentCb) fragment;
             iFragmentCb.updateIconItems();
         }
+    }
+
+    @Override
+    public void onExit() {
+       finish();
     }
 }

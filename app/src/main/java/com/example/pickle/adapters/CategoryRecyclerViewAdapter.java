@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.pickle.databinding.CardviewEmptyOrderBinding;
+
 import com.example.pickle.databinding.LayoutEmptyBinding;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
-import com.example.pickle.ui.SearchViewBottomSheetDialog;
+import com.example.pickle.ui.ProductDetailsBottomSheetDialog;
 import java.util.ArrayList;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -107,8 +107,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         private void showDialog(ProductModel product) {
-            SearchViewBottomSheetDialog searchViewBottomSheetDialog = new SearchViewBottomSheetDialog(product);
-            searchViewBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
+            ProductDetailsBottomSheetDialog productDetailsBottomSheetDialog = new ProductDetailsBottomSheetDialog(product);
+            productDetailsBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
      }
 

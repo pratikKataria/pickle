@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+
 import com.example.pickle.R;
 import com.example.pickle.carousel.CarouselImage;
 import com.example.pickle.cart.CartActivity;
@@ -29,6 +32,7 @@ import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ProductModel;
+import com.example.pickle.ui.ExitAppBottomSheetDialog;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.NotifyRecyclerItems;
 import com.example.pickle.utils.SharedPrefsUtils;
@@ -41,7 +45,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +56,7 @@ import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements IFragmentCb {
+public class HomeFragment extends Fragment implements IFragmentCb{
 
     private FragmentHomeBinding binding;
     private List<CarouselImage> imageList;
@@ -284,5 +290,19 @@ public class HomeFragment extends Fragment implements IFragmentCb {
             itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
             getActivity().invalidateOptionsMenu();
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ExitAppBottomSheetDialog exitAppBottomSheetDialog = new ExitAppBottomSheetDialog();
+                exitAppBottomSheetDialog.show(getChildFragmentManager(), null);
+                return;
+            }
+        });
     }
 }

@@ -10,7 +10,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewSearchItemBinding;
-import com.example.pickle.ui.SearchViewBottomSheetDialog;
+import com.example.pickle.ui.ProductDetailsBottomSheetDialog;
 
 public class ProductViewHolder extends  RecyclerView.ViewHolder {
 
@@ -43,7 +43,7 @@ public class ProductViewHolder extends  RecyclerView.ViewHolder {
     }
 
     private void showBottomSheet(ProductModel product) {
-        SearchViewBottomSheetDialog bottomSheetDialog = new SearchViewBottomSheetDialog(product);
+        ProductDetailsBottomSheetDialog bottomSheetDialog = new ProductDetailsBottomSheetDialog(product);
         bottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "searchViewBottomSheet");
     }
 }
