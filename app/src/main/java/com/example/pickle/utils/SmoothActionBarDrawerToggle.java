@@ -1,4 +1,4 @@
-package com.example.pickle;
+package com.example.pickle.utils;
 
 import android.app.Activity;
 import android.view.View;

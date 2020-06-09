@@ -23,9 +23,9 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
-import com.example.pickle.SmoothActionBarDrawerToggle;
 import com.example.pickle.cart.CartActivity;
 import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.interfaces.IMainActivity;
@@ -33,20 +33,14 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.navigation.HomeFragment;
 import com.example.pickle.network.NetworkConnectionStateMonitor;
 import com.example.pickle.ui.ExitAppBottomSheetDialog;
-import com.example.pickle.utils.Constant;
 import com.example.pickle.utils.SharedPrefsUtils;
+import com.example.pickle.utils.SmoothActionBarDrawerToggle;
 import com.example.pickle.utils.SnackbarNoSwipeBehavior;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.example.pickle.utils.Constant.NAVIGATION_OK;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -134,6 +128,9 @@ public class MainActivity extends AppCompatActivity implements
                 } catch (Exception xe) {
                     Log.e("MainActivity", xe.getMessage());
                 }
+                break;
+            case R.id.nav_menu_sub_address_book:
+                startActivity(new Intent(this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

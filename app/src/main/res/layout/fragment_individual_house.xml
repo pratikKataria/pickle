@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name*"
-            android:textColor="@android:color/darker_gray" />
+            android:textColor="@android:color/holo_red_light" />
 
         <EditText
             android:id="@+id/cd_et_userName"
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/darker_gray"
+                    android:textColor="@android:color/holo_red_light"
                     android:text="Area code / Pin code*" />
 
                 <EditText
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@android:color/holo_red_light"
             android:text="Address*" />
 
         <EditText

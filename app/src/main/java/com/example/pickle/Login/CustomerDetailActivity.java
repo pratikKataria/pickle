@@ -70,7 +70,6 @@ public class CustomerDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        startActivity(new Intent(this, CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
         finish();
     }
 }
