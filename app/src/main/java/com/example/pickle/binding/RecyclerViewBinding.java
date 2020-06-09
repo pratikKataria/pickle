@@ -42,7 +42,7 @@ public class RecyclerViewBinding {
     }
 
     @BindingAdapter("productList")
-    public static void categoryRecyclerViewAdapter(RecyclerView recyclerView, List<ProductModel> productList) {
+    public static void productFragmentRecyclerViewAdapter(RecyclerView recyclerView, List<ProductModel> productList) {
         if (productList == null) {
             return;
         }

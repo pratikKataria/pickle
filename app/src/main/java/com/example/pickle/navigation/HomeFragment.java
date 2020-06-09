@@ -65,8 +65,6 @@ public class HomeFragment extends Fragment implements IFragmentCb {
     private static int itemCount;
     private static final int LIMIT = 2;
 
-    private final int REQUEST_CODE = 0x88;
-
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -226,6 +224,7 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int REQUEST_CODE = 0x88;
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (getActivity() != null)
@@ -273,8 +272,7 @@ public class HomeFragment extends Fragment implements IFragmentCb {
 
 
     @Override
-    public void play() {
-    }
+    public void play() { }
 
     @Override
     public void updateIconItems() {

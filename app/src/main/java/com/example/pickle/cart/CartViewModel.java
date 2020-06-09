@@ -16,7 +16,6 @@ import androidx.databinding.Bindable;
 
 import com.example.pickle.BR;
 import com.example.pickle.LocationTracker;
-import com.example.pickle.interfaces.INavigation;
 import com.example.pickle.models.Address;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.PermissionUtils;

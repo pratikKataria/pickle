@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.pickle.databinding.CardviewEmptyOrderBinding;
+import com.example.pickle.databinding.LayoutEmptyBinding;
 import com.example.pickle.product.ProductViewModel;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.databinding.CardViewCategoryProductBinding;
@@ -34,7 +35,7 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         RecyclerView.ViewHolder holder;
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         if (viewType == EMPTY_VIEW) {
-            CardviewEmptyOrderBinding view = CardviewEmptyOrderBinding.inflate(layoutInflater, parent, false);
+            LayoutEmptyBinding view = LayoutEmptyBinding.inflate(layoutInflater, parent, false);
             holder = new EmptyView(view.getRoot());
         } else {
             CardViewCategoryProductBinding view = CardViewCategoryProductBinding.inflate(layoutInflater, parent, false);

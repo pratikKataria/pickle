@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-
-import com.airbnb.lottie.L;
 import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
