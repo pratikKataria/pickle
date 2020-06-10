@@ -131,9 +131,12 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_address_book:
                 try {
-                    //todo check for Auth
-                    smoothActionBarDrawerToggle.runWhenIdle(() -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
-                    drawerLayout.closeDrawers();
+                    if (FirebaseAuth.getInstance().getUid() != null) {
+                        smoothActionBarDrawerToggle.runWhenIdle(() -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
+                        drawerLayout.closeDrawers();
+                    } else {
+                        startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                    }
                 } catch (Exception xe) {
                     Log.e("MainActivity", xe.getMessage() + "");
                 }
