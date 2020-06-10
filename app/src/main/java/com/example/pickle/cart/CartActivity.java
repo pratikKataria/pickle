@@ -132,7 +132,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private void checkDeliveryTimeAndAddress() {
         BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         String deliveryTime = binding.getCartViewModel().getDeliveryTime();
-        String deliveryAddress = binding.getCartViewModel().getAddress();
+        String deliveryAddress = binding.getCartViewModel().getFirebaseDatabaseAddress();
 
         if (deliveryTime == null || deliveryTime.isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -223,7 +223,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         product.getQuantityCounter(),
                         product.getItemBasePrice(),
                         product.getItemCategory(),
-                        binding.getCartViewModel().getAddress(),
+                        binding.getCartViewModel().getFirebaseDatabaseAddress(),
                         binding.getCartViewModel().getDeliveryTime()
                 ));
 

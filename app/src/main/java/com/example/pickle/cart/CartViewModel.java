@@ -34,9 +34,9 @@ public class CartViewModel extends BaseObservable {
     private List<ProductModel> cartProducts = new ArrayList<>();
     private boolean isCartVisible;
     private boolean currentLocationFound;
-    private String address;
+    private String displayAddress;
+    private String firebaseDatabaseAddress;
     private String deliveryTime;
-    DatabaseReference reference;
 
     @Bindable
     public List<ProductModel> getCartProducts() {
@@ -61,15 +61,15 @@ public class CartViewModel extends BaseObservable {
     }
 
     @Bindable
-    public void setAddress(String address) {
-        this.address = address;
-        Log.e(CartActivity.class.getName(), "address: " + address);
-        notifyPropertyChanged(BR.address);
+    public void setDisplayAddress(String displayAddress) {
+        this.displayAddress = displayAddress;
+        Log.e(CartActivity.class.getName(), "address: " + displayAddress);
+        notifyPropertyChanged(BR.displayAddress);
     }
 
     @Bindable
-    public String getAddress() {
-        return address;
+    public String getDisplayAddress() {
+        return displayAddress;
     }
 
     @Bindable
@@ -146,13 +146,19 @@ public class CartViewModel extends BaseObservable {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Address newAddress = dataSnapshot.getValue(Address.class);
-                    if (newAddress != null)
-                        setAddress(newAddress.toString());
+                    if (newAddress != null && newAddress.getGpsLocation() != null) {
+                        setFirebaseDatabaseAddress(newAddress.getGpsLocation());
+                    }
+
+                    if (newAddress != null) {
+                        setDisplayAddress(newAddress.toString());
+                        setFirebaseDatabaseAddress(newAddress.toString());
+                    }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    setAddress(databaseError.getMessage());
+                    setDisplayAddress(databaseError.getMessage());
                 }
             });
         }
@@ -204,11 +210,20 @@ public class CartViewModel extends BaseObservable {
             Log.e("Location manager", "Location manage");
             if (latitude > 0 && longitude> 0) {
                 Log.e("Location manager", "Location manage");
-                setAddress(latitude +","+longitude);
+                setFirebaseDatabaseAddress(latitude +","+longitude);
+                setDisplayAddress(latitude +","+longitude);
                 setCurrentLocationFound(true);
             }
         }else  {
             locationTrack.showSettingsAlert();
         }
+    }
+
+    public String getFirebaseDatabaseAddress() {
+        return firebaseDatabaseAddress;
+    }
+
+    public void setFirebaseDatabaseAddress(String firebaseDatabaseAddress) {
+        this.firebaseDatabaseAddress = firebaseDatabaseAddress;
     }
 }

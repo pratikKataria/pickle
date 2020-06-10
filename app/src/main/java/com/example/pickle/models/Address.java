@@ -1,7 +1,5 @@
 package com.example.pickle.models;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Address {
     private String apartmentSociety;
     private String areaPin;
@@ -51,8 +49,6 @@ public class Address {
     }
 
     //address current;
-
-
     public Address(String gpsLocation) {
         this.gpsLocation = gpsLocation;
     }
@@ -122,17 +118,30 @@ public class Address {
     }
 
 
-    @NotNull
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(apartmentSociety != null ? apartmentSociety + "\n" : "").append(areaPin).append("\n")
-                .append(flatHouseNo != null ? flatHouseNo + "\n" : "")
-                .append(address != null ? address + "\n" :"")
-                .append(landmark != null ? landmark + "\n" :"")
-                .append(houseNoPlotno != null? houseNoPlotno + "\n":"")
-                .append(floors!=null? floors : "");
 
-        return stringBuilder.toString();
+        if (gpsLocation != null) {
+            return gpsLocationAddressFormatter();
+        } else {
+            return buildAddress();
+        }
+    }
+
+    private String gpsLocationAddressFormatter() {
+        return "current location is stored in database \nYou can update it by going to -> Address in navigation";
+    }
+
+    ;
+
+    private String buildAddress() {
+        return "Address:\n" +
+                (apartmentSociety == null ? "" : apartmentSociety) + " " +
+                "["+(areaPin == null ? "" : areaPin) + "] " +
+                (flatHouseNo == null ? "" : flatHouseNo) + " " +
+                (address == null ? "" : address) + " " +
+                (landmark == null ? "" : landmark) + " " +
+                (houseNoPlotno == null ? "" : houseNoPlotno) + " " +
+                (floors == null ? "" : floors) + " ";
     }
 }
