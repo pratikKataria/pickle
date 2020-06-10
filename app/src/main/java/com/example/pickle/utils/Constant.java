@@ -79,6 +79,6 @@ public abstract class Constant {
     public static final byte LIMIT = 3;
     public static final byte ONGOING_LIMIT = 35;
 
-    public static final int NAVIGATION_OK = 3242;
-
+    public static final int APARTMENT= 1223;
+    public static final int INDIVIDUAL = 2341;
 }

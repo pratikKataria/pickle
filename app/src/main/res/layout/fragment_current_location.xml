@@ -1,74 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Login.viewpager.CurrentLocationFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lottie_current_location"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="25dp"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="location_anim.json"/>
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="updateAddress"
+            type="boolean" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/quantityTextView"
+        android:orientation="vertical"
+        tools:context=".Login.viewpager.CurrentLocationFragment">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieAnimation"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="25dp"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="location_anim.json" />
+
+        <EditText
+            android:id="@+id/cd_et_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/act_customer_detail_padding"
+            android:hint="username"
+            android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
+            android:textSize="@dimen/act_customer_detail_et"
+            android:singleLine="true"
+            android:background="@drawable/bg_border" />
+        
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Finding Location"
-            android:layout_marginTop="15dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/black"
             android:layout_gravity="center"
-            android:textColor="@android:color/darker_gray"/>
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
 
-        <TextView
-            android:id="@+id/location_found"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/updateBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="0"
-            android:visibility="gone"
-            android:layout_marginTop="15dp"
-            android:text="Location Found"/>
+            android:backgroundTint="@color/colorAccent"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="14dp"
+            android:text="Request Permission/Enable Location"
+            android:textAllCaps="false"
+            android:layout_gravity="center" />
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/cd_et_userName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_border"
-        android:hint="username"
-        android:padding="14dp"
-        android:singleLine="true" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:indeterminateTint="@color/black"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:visibility="gone"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/updateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
-        android:text="Update"
-        android:alpha="0"
-        android:layout_marginTop="14dp"
-        android:textAllCaps="false"
-        android:layout_gravity="center"/>
-    
-
-</LinearLayout>
+</layout>

@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".Login.viewpager.ApartmentFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="com.example.pickle.utils.Constant" />
+
+        <variable
+            name="updateAddress"
+            type="boolean" />
+
+        <variable
+            name="type"
+            type="int" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context=".Login.viewpager.ApartmentFragment">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name*"
+            android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
             android:textSize="@dimen/act_customer_detail_tv"
             android:textColor="@android:color/holo_red_light" />
 
@@ -20,6 +36,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/act_customer_detail_padding"
             android:hint="username"
+            android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
             android:textSize="@dimen/act_customer_detail_et"
             android:singleLine="true"
             android:background="@drawable/bg_border" />
@@ -28,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:visibility="@{type == Constant.APARTMENT ? View.VISIBLE : View.GONE}"
             android:textSize="@dimen/act_customer_detail_tv"
             android:textColor="@android:color/darker_gray"
             android:text="Apartment / Society" />
@@ -36,6 +54,7 @@
             android:id="@+id/cd_et_apartment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="@{type == Constant.APARTMENT ? View.VISIBLE : View.GONE}"
             android:padding="@dimen/act_customer_detail_padding"
             android:textSize="@dimen/act_customer_detail_et"
             android:hint="e.g. new apolo tower"
@@ -147,7 +166,7 @@
             android:layout_gravity="center"
             android:indeterminate="true"
             android:indeterminateTint="@color/black"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cd_mb_save"
@@ -160,5 +179,6 @@
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:cornerRadius="8dp"
-            android:backgroundTint="@color/colorAccent"/>
-</LinearLayout>
+            android:backgroundTint="@color/colorAccent" />
+    </LinearLayout>
+</layout>

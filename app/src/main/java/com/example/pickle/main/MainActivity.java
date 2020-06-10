@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements
         smoothActionBarDrawerToggle = new SmoothActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(smoothActionBarDrawerToggle);
 
-        drawerLayout.setOnClickListener( n -> {
+        drawerLayout.setOnClickListener(n -> {
             startActivity(new Intent(MainActivity.this, CartActivity.class));
         });
 
@@ -126,11 +126,17 @@ public class MainActivity extends AppCompatActivity implements
                     smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
                     drawerLayout.closeDrawers();
                 } catch (Exception xe) {
-                    Log.e("MainActivity", xe.getMessage());
+                    Log.e("MainActivity", xe.getMessage() + "");
                 }
                 break;
             case R.id.nav_menu_sub_address_book:
-                startActivity(new Intent(this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                try {
+                    //todo check for Auth
+                    smoothActionBarDrawerToggle.runWhenIdle(() -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
+                    drawerLayout.closeDrawers();
+                } catch (Exception xe) {
+                    Log.e("MainActivity", xe.getMessage() + "");
+                }
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

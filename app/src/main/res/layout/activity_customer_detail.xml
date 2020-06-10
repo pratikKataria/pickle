@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="-25dp"
     android:orientation="vertical"
-    android:background="@color/lightWeightGrey"
     tools:context=".Login.CustomerDetailActivity">
 
     <ImageView
@@ -34,9 +33,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.37">
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -46,7 +42,7 @@
                 android:paddingBottom="25dp">
 
                 <RadioGroup
-                    android:id="@+id/radioGroup_outer"
+                    android:id="@+id/radioGroup_apartment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -86,10 +82,11 @@
                     android:id="@+id/radioGroup_inner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView15">
+                    app:layout_constraintTop_toBottomOf="@+id/text2">
 
                     <com.example.pickle.ui.MyRadioButton
                         android:id="@+id/individualHouse"
@@ -132,22 +129,39 @@
                     android:layout_height="wrap_content"
                     android:text="@string/customer_details_note"
                     android:textSize="10dp"
+                    android:textColor="@android:color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager2"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:text="Fields mark in RED are compulsory"
+                    app:layout_constraintStart_toStartOf="@+id/textView15"
+                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:fillViewport="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup_outer" />
+                    app:layout_constraintTop_toBottomOf="@+id/radioGroup_apartment">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radioGroup_apartment" />
+                </androidx.core.widget.NestedScrollView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

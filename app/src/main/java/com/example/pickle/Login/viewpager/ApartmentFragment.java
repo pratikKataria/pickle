@@ -1,24 +1,21 @@
 package com.example.pickle.Login.viewpager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.example.pickle.R;
-import com.example.pickle.cart.CartActivity;
+import com.example.pickle.databinding.FragmentApartmentBinding;
+import com.example.pickle.models.Address;
 import com.example.pickle.models.ApartmentDataModel;
 import com.example.pickle.models.Customer;
+import com.example.pickle.models.IndividualHouseDataModel;
 import com.example.pickle.models.PersonalInformation;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,24 +25,28 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.example.pickle.utils.Constant.APARTMENT;
+import static com.example.pickle.utils.Constant.INDIVIDUAL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 
 public class ApartmentFragment extends Fragment {
 
-    ProgressBar progressBar;
+    private FragmentApartmentBinding binding;
 
     public ApartmentFragment() {
         // Required empty public constructor
     }
 
-    public static ApartmentFragment newInstance(Integer counter) {
-        ApartmentFragment fragment = new ApartmentFragment();
+    public static ApartmentFragment newInstance(int type, boolean updateAddress) {
+        ApartmentFragment apartmentFragment = new ApartmentFragment();
         Bundle args = new Bundle();
-        args.putInt("ARG_COUNT", counter);
-        fragment.setArguments(args);
-        return fragment;
+        args.putBoolean("UPDATE_ADDRESS", updateAddress);
+        args.putInt("ADDRESS_TYPE", type);
+        apartmentFragment.setArguments(args);
+        return apartmentFragment;
     }
 
 
@@ -53,93 +54,105 @@ public class ApartmentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_apartment, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_apartment, container, false);
+        boolean updateAddress = getArguments().getBoolean("UPDATE_ADDRESS", false);
+        int addressType = getArguments().getInt("ADDRESS_TYPE", APARTMENT);
+        binding.setUpdateAddress(updateAddress);
+        binding.setType(addressType);
 
-        EditText etName = view.findViewById(R.id.cd_et_userName);
-        EditText etApartment = view.findViewById(R.id.cd_et_apartment);
-        EditText pincode = view.findViewById(R.id.cd_et_pin_code);
-        EditText etFlat = view.findViewById(R.id.cd_et_flat_house_no);
-        EditText landmark = view.findViewById(R.id.cd_et_instruction);
-        EditText editTextAddress = view.findViewById(R.id.cd_et_address);
-        progressBar = view.findViewById(R.id.progressBar);
-
-        MaterialButton materialButton = view.findViewById(R.id.cd_mb_save);
-
-        materialButton.setOnClickListener(n -> {
-
-            if (etName.getText().toString().isEmpty()) {
-                etName.setError("should not be empty");
-                etName.requestFocus();
-            }
-
-            if (!(pincode.getText().toString().length() == 6)) {
-                pincode.setError("incorrect number");
-                pincode.requestFocus();
-            }
-
-            if (editTextAddress.getText().toString().isEmpty()) {
-                editTextAddress.setError("should not be empty");
-                editTextAddress.requestFocus();
+        binding.cdMbSave.setOnClickListener(n -> {
+            if (!updateAddress && binding.cdEtUserName.getText().toString().trim().isEmpty()) {
+                binding.cdEtUserName.setError("should not be empty");
+                binding.cdEtUserName.requestFocus();
                 return;
             }
 
-            Customer customer = new Customer(
-                    new PersonalInformation(
-                            etName.getText().toString(),
-                            FirebaseAuth.getInstance().getUid(),
-                            FirebaseInstanceId.getInstance().getToken(),
-                            new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                            FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
-                    );
-            ApartmentDataModel apartmentDataModel;
-            if (etFlat.getText().toString().isEmpty() && landmark.getText().toString().isEmpty()) {
-                apartmentDataModel = new ApartmentDataModel(
-                        etApartment.getText().toString(),
-                        editTextAddress.getText().toString(),
-                        "apartment or gated society");
-            } else {
-                apartmentDataModel = new ApartmentDataModel(
-                        etApartment.getText().toString(),
-                        pincode.getText().toString(),
-                        etFlat.getText().toString(),
-                        editTextAddress.getText().toString(),
-                        landmark.getText().toString(),
-                        "apartment or gated society");
+            if (!(binding.cdEtPinCode.getText().toString().trim().length() == 6)) {
+                binding.cdEtPinCode.setError("incorrect number");
+                binding.cdEtPinCode.requestFocus();
+                return;
             }
 
-            atomicUpdate(customer, apartmentDataModel);
+            if (binding.cdEtAddress.getText().toString().trim().isEmpty()) {
+                binding.cdEtAddress.setError("should not be empty");
+                binding.cdEtAddress.requestFocus();
+                return;
+            }
+
+            if (updateAddress)
+                atomicUpdate(buildAddress());
+            else
+                atomicUpdate(buildCustomerData(), buildAddress());
         });
 
-        return view;
+        return binding.getRoot();
     }
 
-    private void atomicUpdate(Customer customer, ApartmentDataModel apartmentDataModel) {
-        progressBar.setVisibility(View.VISIBLE);
+    private Address buildAddress() {
+        Address address = null;
+        int addressType = getArguments().getInt("ADDRESS_TYPE");
+
+        if (addressType == APARTMENT) {
+            address = new ApartmentDataModel(
+                    binding.cdEtApartment.getText().toString(),
+                    binding.cdEtPinCode.getText().toString(),
+                    binding.cdEtFlatHouseNo.getText().toString(),
+                    binding.cdEtAddress.getText().toString(),
+                    binding.cdEtInstruction.getText().toString(),
+                    "apartment or gated society");
+        } else if (addressType == INDIVIDUAL) {
+            address = new IndividualHouseDataModel(
+                    binding.cdEtPinCode.getText().toString(),
+                    binding.cdEtAddress.getText().toString(),
+                    binding.cdEtInstruction.getText().toString(),
+                    binding.cdEtFlatHouseNo.getText().toString(),
+                    "individualHouse");
+        }
+
+        return address;
+    }
+
+    private Customer buildCustomerData() {
+        return new Customer(new PersonalInformation(
+                binding.cdEtUserName.getText().toString(),
+                FirebaseAuth.getInstance().getUid(),
+                FirebaseInstanceId.getInstance().getToken(),
+                new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
+                FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()));
+    }
+
+    private void atomicUpdate(Address apartmentDataModel) {
+        binding.progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, Object> update = new HashMap<>();
-        String uid = FirebaseAuth.getInstance().getUid();
-//        String uid = "ddEk1gOv0hUFZVinEWzzdZNlBtF3";
-
-        update.put("Customers/" + uid, customer);
-        update.put("Addresses/"+ uid+"/slot1", apartmentDataModel);
+        update.put("Addresses/" + FirebaseAuth.getInstance().getUid() + "/slot1", apartmentDataModel);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
-
-            progressBar.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             getActivity().finish();
-
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
         });
     }
 
+    private void atomicUpdate(Customer customer, Address apartmentDataModel) {
+        binding.progressBar.setVisibility(View.VISIBLE);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("Customers/" + FirebaseAuth.getInstance().getUid(), customer);
+        update.put("Addresses/" + FirebaseAuth.getInstance().getUid() + "/slot1", apartmentDataModel);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
+            binding.progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            binding.progressBar.setVisibility(View.GONE);
+        });
     }
 }

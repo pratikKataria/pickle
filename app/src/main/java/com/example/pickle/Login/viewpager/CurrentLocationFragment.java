@@ -1,285 +1,266 @@
 package com.example.pickle.Login.viewpager;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.pickle.LocationTracker;
 import com.example.pickle.R;
-import com.example.pickle.cart.CartActivity;
+import com.example.pickle.databinding.FragmentCurrentLocationBinding;
 import com.example.pickle.models.CurrentAddress;
 import com.example.pickle.models.Customer;
 import com.example.pickle.models.PersonalInformation;
-import com.example.pickle.utils.CurrentLocationUtils;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import static android.content.Context.LOCATION_SERVICE;
+import mumayank.com.airlocationlibrary.AirLocation;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentLocationFragment extends Fragment implements LocationListener, ValueAnimator.AnimatorUpdateListener {
+public class CurrentLocationFragment extends Fragment {
 
-
-    private TextView textView;
-    private TextView locationFound;
-    private ObjectAnimator animationY;
-    private AnimatorSet bouncer;
-    private ObjectAnimator animationX;
-    private ObjectAnimator fadeOut;
-    private ObjectAnimator fadeIn;
-    private LottieAnimationView lottie;
-    private AnimatorSet newAnimSet;
-    private MaterialButton updateBtn;
-    private CurrentLocationUtils currentLocationUtils;
-    private LocationTracker locationTracker;
-    private ProgressBar progressBar;
-
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private String location;
-    private EditText username;
-
+    private AirLocation airLocation;
+    private AlertDialog alertDialog;
+    private FragmentCurrentLocationBinding currentLocationBinding;
 
     public CurrentLocationFragment() {
         // Required empty public constructor
+    }
+
+    public static CurrentLocationFragment newInstance(boolean updateAddress) {
+        CurrentLocationFragment currentLocationFragment = new CurrentLocationFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("UPDATE_ADDRESS", updateAddress);
+        currentLocationFragment.setArguments(args);
+        return currentLocationFragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_current_location, container, false);
+        currentLocationBinding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_current_location,
+                container,
+                false
+        );
+        currentLocationBinding.setUpdateAddress(getArguments().getBoolean("UPDATE_ADDRESS", false));
+        showDialogWhenUserDeniedPermissionAndSelectedNeverShow();
+        currentLocationBinding.lottieAnimation.setMaxProgress(.50F);
+        currentLocationBinding.lottieAnimation.playAnimation();
 
-        lottie = view.findViewById(R.id.lottie_current_location);
-        locationFound = view.findViewById(R.id.location_found);
-        textView = view.findViewById(R.id.quantityTextView);
-        updateBtn = view.findViewById(R.id.updateBtn);
-
-        username = view.findViewById(R.id.cd_et_userName);
-        progressBar = view.findViewById(R.id.progressBar);
-
-        locationTracker = new LocationTracker(getActivity());
-
-        if(!locationTracker.canGetLocation())
-            locationTracker.showSettingsAlert();
-        updateBtn.animate().alphaBy(1).translationY(-25).setDuration(1000).start();
-        updateBtn.setOnClickListener(n -> {
-            lottie.playAnimation();
-            lottie.addAnimatorUpdateListener(this);
-            lottie.setSpeed(2);
-            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                }
-                locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER,
-                        MIN_TIME_BW_UPDATES,
-                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-
-                if (locationManager != null) {
-                    Location loc;
-                    loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if (loc != null) {
-                        location = loc.getLatitude() + "," + loc.getLongitude();
-                        Log.e("new Location ", location);
-                        if (username.getText().toString().isEmpty()) {
-                            username.setError("should not be empty");
-                            username.requestFocus();
-                            return;
+        if (getActivity() != null) {
+            airLocation = new AirLocation(getActivity(), new AirLocation.Callback() {
+                @Override
+                public void onSuccess(@NotNull ArrayList<Location> arrayList) {
+                    for (Location location : arrayList) {
+                        if (location.getLatitude() != 0 && location.getLongitude() != 0) {
+                            currentLocationBinding.lottieAnimation.setMinAndMaxProgress(0.60F, 0.75F);
+                            currentLocationBinding.lottieAnimation.playAnimation();
+                            uploadLocation(location.getLatitude(), location.getLongitude());
+                        } else {
+                            Toast.makeText(getActivity(), "unable to find location : press Request/Update", Toast.LENGTH_LONG).show();
                         }
-                        updateBtn.setText("Updating");
-                        if (loc.getLatitude() > 0 && loc.getLongitude() > 0) {
-                            uploadLocation();
-                        } else
-                            Toast.makeText(getActivity(), "updating... retry", Toast.LENGTH_SHORT).show();
-                        playLottieAnimation();
-                    } else
-                        Toast.makeText(getActivity(), "updating... retry", Toast.LENGTH_SHORT).show();
-                    playLottieAnimation();
-                } else
-                    Toast.makeText(getActivity(), "updating... retry", Toast.LENGTH_SHORT).show();
-                playLottieAnimation();
-            } else {
-                updateBtn.setText("Retry");
-                playLottieAnimation();
-                locationTracker.showSettingsAlert();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull AirLocation.LocationFailedEnum locationFailedEnum) {
+
+                }
+            }, true, 500, "permission is required to get the current location");
+        }
+
+        currentLocationBinding.updateBtn.setOnClickListener(n -> {
+            showDialogWhenUserDeniedPermissionAndSelectedNeverShow();
+            if (isLocationEnabled()) {
+                currentLocationBinding.updateBtn.setText("Request/Update");
             }
-
+            airLocation.start();
         });
-
-        return view;
+        return currentLocationBinding.getRoot();
     }
 
-    private void uploadLocation() {
+    private void uploadLocation(double latitude, double longitude) {
+        boolean updateAddress = getArguments().getBoolean("UPDATE_ADDRESS", false);
+        CurrentAddress currentAddress = buildCurrentAddress(latitude, longitude);
+        if (updateAddress) {
+            atomicUpdate(currentAddress);
+        } else {
 
-        Customer customer = new Customer(
+            if (currentLocationBinding.cdEtUserName.getText().toString().trim().isEmpty()) {
+                currentLocationBinding.cdEtUserName.setError("should not be empty");
+                currentLocationBinding.cdEtUserName.requestFocus();
+                return;
+            }
+            atomicUpdate(buildCustomerDetails(), currentAddress);
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private Customer buildCustomerDetails() {
+        return new Customer(
                 new PersonalInformation(
-                        username.getText().toString(),
+                        currentLocationBinding.cdEtUserName.getText().toString(),
                         FirebaseAuth.getInstance().getUid(),
                         FirebaseInstanceId.getInstance().getToken(),
                         new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                        FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()
-                )
+                        FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
         );
+    }
 
-        progressBar.setVisibility(View.VISIBLE);
-        CurrentAddress currentAddress = new CurrentAddress(location);
+    private CurrentAddress buildCurrentAddress(double latitude, double longitude) {
+        String latitudeLongitude = latitude + "," + longitude;
+        return new CurrentAddress(latitudeLongitude);
+    }
 
-        atomicUpdate(customer, currentAddress);
+    private void atomicUpdate(CurrentAddress currentAddress) {
+        currentLocationBinding.progressBar.setVisibility(View.VISIBLE);
+
+        HashMap<String, Object> update = new HashMap<>();
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        update.put("Addresses/" + uid + "/slot1", currentAddress);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
+            currentLocationBinding.progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "location updated", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            currentLocationBinding.progressBar.setVisibility(View.GONE);
+        });
     }
 
     private void atomicUpdate(Customer customer, CurrentAddress currentAddress) {
-        progressBar.setVisibility(View.VISIBLE);
+        currentLocationBinding.progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
 
         update.put("Customers/" + uid, customer);
-        update.put("Addresses/"+ uid+"/slot1", currentAddress);
+        update.put("Addresses/" + uid + "/slot1", currentAddress);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
 
-            progressBar.setVisibility(View.GONE);
-            Toast.makeText(getActivity(), "details updated", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            currentLocationBinding.progressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "location updated", Toast.LENGTH_SHORT).show();
             getActivity().finish();
 
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
+            currentLocationBinding.progressBar.setVisibility(View.GONE);
         });
     }
 
-    private void playLottieAnimation() {
-        lottie.playAnimation();
-        lottie.addAnimatorUpdateListener(this);
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        airLocation.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1101) {
+            for (int i = 0; i < permissions.length; i++) {
+                boolean isLocationPermissionGranted = permissions[i].equals(Manifest.permission.ACCESS_FINE_LOCATION) && grantResults[i] == PackageManager.PERMISSION_GRANTED;
+                if (!isLocationPermissionGranted) {
+                    if (!shouldShowRequestPermissionRationale(permissions[i])) {
+                        showAlertDialog();
+                    }
+                }
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        airLocation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void showDialogWhenUserDeniedPermissionAndSelectedNeverShow() {
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1101);
+    }
+
+    public void showAlertDialog() {
+        if (alertDialog != null && alertDialog.isShowing())
+            return;
+
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+        materialAlertDialogBuilder
+                .setTitle("Permission Required")
+                .setMessage("This Permission is required to the get the current location, please open the setting app to grant permission")
+                .setPositiveButton("Open", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                }).setNegativeButton("Cancel", ((dialog, which) -> {
+        }));
+        alertDialog = materialAlertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public boolean isLocationEnabled() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            LocationManager locationManager = getActivity().getSystemService(LocationManager.class);
+            return locationManager != null && locationManager.isLocationEnabled();
+        } else {
+            int mode = 0;
+            try {
+                mode = Settings.Secure.getInt(getActivity().getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+            return (mode != Settings.Secure.LOCATION_MODE_OFF);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        animationY = ObjectAnimator.ofFloat(textView, "translationY", -50f);
-        animationY.setInterpolator(new AccelerateInterpolator());
-        animationY.setDuration(1000);
-
-        animationX = ObjectAnimator.ofFloat(textView, "translationX", -125f);
-        animationX.setDuration(1000);
-
-        fadeOut = ObjectAnimator.ofFloat(textView, "alpha", 1f, 0f);
-        fadeOut.setDuration(2000);
-
-        fadeIn = ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f);
-        fadeIn.setDuration(2000);
-
-        bouncer = new AnimatorSet();
-        bouncer.play(animationY).before(animationX);
-        bouncer.setTarget(textView);
-        bouncer.play(animationX).after(11000).with(fadeOut);
-        bouncer.start();
-
-        playLottieAnimation();
-
-        bouncer.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                Log.e("current location fragment ", "" + animation.getDuration());
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                locationFound.setVisibility(View.VISIBLE);
-                newAnimSet = new AnimatorSet();
-                newAnimSet.play(animationY.setDuration(0));
-                newAnimSet.play(animationX.setDuration(1000)).with(fadeIn);
-                newAnimSet.setTarget(locationFound);
-                newAnimSet.start();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-
+        if (isLocationEnabled()) {
+            currentLocationBinding.updateBtn.setText("Request/Update");
+        } else {
+            currentLocationBinding.updateBtn.setText("Request Permission/Enable Location");
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        updateBtn.setText("update");
-        Log.e("onpause" , "paused........... ");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    @Override
-    public void onAnimationUpdate(ValueAnimator animation) {
-        int progress = (int) (Float.parseFloat(animation.getAnimatedValue().toString()) * 100);
-        if (progress > 75) {
-            lottie.pauseAnimation();
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+            alertDialog = null;
         }
     }
 }
