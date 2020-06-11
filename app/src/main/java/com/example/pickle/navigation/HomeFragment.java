@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -63,7 +64,35 @@ public class HomeFragment extends Fragment implements IFragmentCb{
     private ArrayList<ProductModel> productModelArrayList;
 
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
-    private ChildEventListener carouselImageChildEventListener;
+    private ChildEventListener carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Log.e(HomeFragment.class.getName(), "image loaded");
+            imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+            NotifyRecyclerItems.notifyDataSetChanged(binding.rvScroll);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
+            NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+        }
+    });;
 
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
     private ValueEventListener productCategoriesValueEventListener;
@@ -80,21 +109,18 @@ public class HomeFragment extends Fragment implements IFragmentCb{
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
         productModelArrayList = new ArrayList<>();
-        imageList = new ArrayList<>();
         addProduct();
-        getImageList();
+        imageList = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (binding == null)
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
         setUpToolbar();
-
         binding.setProductList(productModelArrayList);
         binding.setCarouselImage(imageList);
         binding.setHomeFragment(HomeFragment.this);
@@ -121,38 +147,6 @@ public class HomeFragment extends Fragment implements IFragmentCb{
         navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
     }
 
-    private void getImageList() {
-        carouselImagesDatabaseReference.keepSynced(true);
-        carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-                if (imageList.size() - 1 >= 0)
-                    NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, imageList.size() - 1);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
-                NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void setUpToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.fragmentOrderToolbar);
@@ -262,6 +256,12 @@ public class HomeFragment extends Fragment implements IFragmentCb{
                 product.setQuantityCounter(0);
             NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(product));
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
     }
 
     @Override

@@ -170,6 +170,7 @@
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
+                        android:checked="true"
                         android:text="@{cartView.displayAddress}"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />

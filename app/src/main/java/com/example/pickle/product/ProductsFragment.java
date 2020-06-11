@@ -76,7 +76,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(childReference != null ? childReference : " ");
 
         productsArrayList = new ArrayList<>();
-        new Handler().postDelayed(this::populateList, 800);
+        new Handler().postDelayed(this::populateList, 400);
 
         productBinding.setProductList(productsArrayList);
         productBinding.setActivity(getActivity());

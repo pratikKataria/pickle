@@ -4,16 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pickle.adapters.viewholders.ProductViewHolder;
+import com.example.pickle.databinding.CardViewProductSuggestionBinding;
 import com.example.pickle.databinding.CardViewProductSuggestionLoadingBinding;
-import com.example.pickle.databinding.CardviewEmptyOrderBinding;
+import com.example.pickle.databinding.CardViewSearchItemBinding;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.product.ProductViewModel;
-import com.example.pickle.databinding.CardViewProductSuggestionBinding;
-import com.example.pickle.databinding.CardViewSearchItemBinding;
-import com.example.pickle.adapters.viewholders.ProductViewHolder;
+
 import java.util.ArrayList;
 
 public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -59,19 +60,21 @@ public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<Recycler
             } else {
                 productViewHolder.setCardViewSuggestionBinding(productViewModel);
             }
-        }else {
+        } else {
             EmptyView emptyView = (EmptyView) holder;
 
         }
 
     }
 
+
+
     @Override
     public int getItemCount() {
         if (productModelArrayList.size() == 0) {
             return 1;
-        }
-        return productModelArrayList.size() ;
+        } else
+            return productModelArrayList.size();
     }
 
     @Override

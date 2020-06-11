@@ -8,7 +8,9 @@ import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
 import com.example.pickle.R;
 import com.example.pickle.utils.ResourceUtils;
 

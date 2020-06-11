@@ -167,9 +167,7 @@ public class CartViewModel extends BaseObservable {
     public void getCurrentLocation(Context context) {
         boolean hasPerm = PermissionUtils.hasPermission((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION) && PermissionUtils.hasPermission((Activity) context, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (!hasPerm) {
-            Log.e("has perm ", "else ");
             if (!PermissionUtils.shouldShowRational((Activity)context, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Log.e("rational ", "else ");
                 showMessageOKCancel(
                         "These permissions are mandatory for the application. Please allow access.",
                          (dialog, which) -> {
