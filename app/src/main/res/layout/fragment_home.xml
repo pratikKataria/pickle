@@ -7,6 +7,7 @@
     <data>
         <import type="com.example.pickle.models.ProductModel"/>
         <import type="com.example.pickle.utils.Constant"/>
+        <import type="android.view.View"/>
 
         <variable
             name="productList"
@@ -23,6 +24,10 @@
         <variable
             name="homeFragment"
             type="com.example.pickle.navigation.HomeFragment" />
+
+        <variable
+            name="isLoading"
+            type="androidx.databinding.ObservableBoolean" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -293,16 +298,24 @@
                 android:id="@+id/suggestionRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:viewType="@{1}"
-                app:list="@{productList}"
-                android:overScrollMode="never"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="100dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                android:overScrollMode="never"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintEnd_toStartOf="@+id/progressBar"
+                app:layout_constraintStart_toStartOf="@+id/guideline5"
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                app:list="@{productList}"
+                app:viewType="@{1}" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:visibility="@{isLoading? View.VISIBLE: View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/suggestionRecyclerView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/suggestionRecyclerView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

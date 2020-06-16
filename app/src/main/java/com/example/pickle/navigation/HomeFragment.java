@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -74,6 +75,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private ArrayList<String> carouselImage;
     private ArrayList<ProductModel> productModelArrayList;
     private HashMap<String, String> paginationProductKeyMap;
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
     private boolean isScrolling;
 
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
@@ -124,6 +126,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         binding.carouselView.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
         binding.carouselView.setSliderTransformDuration(800, new LinearInterpolator());
         binding.carouselView.setDuration(3000);
+        binding.setIsLoading(isLoading);
         initRecyclerView();
         return binding.getRoot();
     }
@@ -153,10 +156,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                 if (isScrolling && (visibleItemCount + pastVisibleItems) == totalItemCount) {
                     isScrolling = false;
                         if (dx > 0) {
+                            isLoading.set(true);
                             addNewProduct();
                         }
                 }
 
+                if (dx < 0) isLoading.set(false);
             }
         });
     }
