@@ -47,7 +47,7 @@ public class CarouselAdapter extends RecyclerView.Adapter<CarouselAdapter.ViewHo
         }
 
         void setBinding(CarouselImage image) {
-            binding.setImageView(image);
+
         }
     }
 }

@@ -25,16 +25,15 @@ import com.example.pickle.models.Operation;
 import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.NotifyRecyclerItems;
-import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 
 import java.util.ArrayList;
 
-import static com.example.pickle.utils.OrderStatus.CANCEL;
 import static com.example.pickle.utils.Constant.ADD;
 import static com.example.pickle.utils.Constant.LIMIT;
 import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.REMOVE;
+import static com.example.pickle.utils.OrderStatus.CANCEL;
 
 
 /**
@@ -188,7 +187,13 @@ public class OrdersPlacedFragment extends Fragment {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);
-        } else if (ordersList.size() == 2) {
+            ordersList.add(LoadingModel.getInstance());
+            NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, ordersList.indexOf(LoadingModel.getInstance()));
+        } else if (ordersList.size() == 3) {
+            LoadingModel loadingModel = LoadingModel.getInstance();
+            int indexOfLoadingModel = ordersList.indexOf(loadingModel);
+            ordersList.remove(loadingModel);
+            NotifyRecyclerItems.notifyItemRemovedAt(binding.recyclerView, indexOfLoadingModel);
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);

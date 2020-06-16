@@ -93,7 +93,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         if (productDatabaseReference == null)
             productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT);
 
-        Query query = productDatabaseReference.orderByChild("itemName").limitToLast(15);
+        Query query = productDatabaseReference.orderByChild("itemName");
         productChildEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {

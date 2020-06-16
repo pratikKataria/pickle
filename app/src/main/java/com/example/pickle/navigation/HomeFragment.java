@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -25,14 +25,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.daimajia.slider.library.Indicators.PagerIndicator;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.example.pickle.R;
 import com.example.pickle.carousel.CarouselImage;
 import com.example.pickle.cart.CartActivity;
 import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.interfaces.IFragmentCb;
+import com.example.pickle.interfaces.ImageUrlListener;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.main.MainActivity;
 import com.example.pickle.models.ProductModel;
+import com.example.pickle.ui.CarouselSliderView;
 import com.example.pickle.ui.ExitAppBottomSheetDialog;
 import com.example.pickle.utils.BadgeDrawableUtils;
 import com.example.pickle.utils.NotifyRecyclerItems;
@@ -57,42 +62,15 @@ import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements IFragmentCb{
+public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener {
 
     private FragmentHomeBinding binding;
     private List<CarouselImage> imageList;
+    private ArrayList<String> carouselImage;
     private ArrayList<ProductModel> productModelArrayList;
 
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
-    private ChildEventListener carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Log.e(HomeFragment.class.getName(), "image loaded");
-            imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-            NotifyRecyclerItems.notifyDataSetChanged(binding.rvScroll);
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
-            NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    });;
+    private ChildEventListener carouselImageChildEventListener;
 
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
     private ValueEventListener productCategoriesValueEventListener;
@@ -109,24 +87,34 @@ public class HomeFragment extends Fragment implements IFragmentCb{
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
         productModelArrayList = new ArrayList<>();
-        addProduct();
         imageList = new ArrayList<>();
+        carouselImage = new ArrayList<>();
+        addProduct();
+        getImageList();
     }
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        if (binding == null)
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
         setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
         setUpToolbar();
+
         binding.setProductList(productModelArrayList);
         binding.setCarouselImage(imageList);
         binding.setHomeFragment(HomeFragment.this);
         if (getActivity() != null)
             binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
         updateToolbarCartIconCounter();
+
+        binding.carouselView.setPresetTransformer(SliderLayout.Transformer.Default);
+        binding.carouselView.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        binding.carouselView.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
+        binding.carouselView.setSliderTransformDuration(800, new LinearInterpolator());
+        binding.carouselView.setDuration(3000);
 
         return binding.getRoot();
     }
@@ -147,6 +135,40 @@ public class HomeFragment extends Fragment implements IFragmentCb{
         navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
     }
 
+    private void getImageList() {
+        carouselImagesDatabaseReference.keepSynced(true);
+        carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                carouselImage.add(dataSnapshot.getValue(String.class));
+                updateImage(dataSnapshot.getValue(String.class));
+                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
+                if (imageList.size() - 1 >= 0)
+                    NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, imageList.size() - 1);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
+                NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void setUpToolbar() {
         ((AppCompatActivity) getActivity()).setSupportActionBar(binding.fragmentOrderToolbar);
@@ -259,12 +281,6 @@ public class HomeFragment extends Fragment implements IFragmentCb{
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         if (carouselImageChildEventListener != null) {
@@ -304,5 +320,20 @@ public class HomeFragment extends Fragment implements IFragmentCb{
                 return;
             }
         });
+    }
+
+    @Override
+    public void updateImage(String url) {
+        CarouselSliderView textSliderView = new CarouselSliderView(getActivity());
+        textSliderView.image(url)
+                .setScaleType(BaseSliderView.ScaleType.Fit)
+                .setOnSliderClickListener(this);
+
+        binding.carouselView.addSlider(textSliderView);
+    }
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        Toast.makeText(getActivity(), "Offers will be shown", Toast.LENGTH_SHORT).show();
     }
 }
