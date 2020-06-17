@@ -50,8 +50,7 @@ public abstract class Constant {
             DAIRY_IMG_RES
     })
 
-    public @interface ImageResourceInterface {
-    }
+    public @interface ImageResourceInterface { }
 
     public static final int FRUIT_IMG_RES = R.drawable.ic_fruits;
     public static final int VEGETABLE_IMG_RES = R.drawable.ic_vegetable;
@@ -81,4 +80,6 @@ public abstract class Constant {
 
     public static final int APARTMENT= 1223;
     public static final int INDIVIDUAL = 2341;
+
+    public  static final  int PRODUCT_CAT_COUNT = 4;
 }

@@ -45,6 +45,7 @@ import com.example.pickle.models.ProductModel;
 import com.example.pickle.ui.CarouselSliderView;
 import com.example.pickle.ui.ExitAppBottomSheetDialog;
 import com.example.pickle.utils.BadgeDrawableUtils;
+import com.example.pickle.utils.Constant;
 import com.example.pickle.utils.NotifyRecyclerItems;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -61,8 +62,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
+import static com.example.pickle.utils.Constant.PRODUCT_CAT_COUNT;
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
 /**
@@ -153,12 +156,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                 visibleItemCount = layoutManager.getChildCount();
                 totalItemCount   = layoutManager.getItemCount();
                 pastVisibleItems = layoutManager.findFirstCompletelyVisibleItemPosition();
-                if (isScrolling && (visibleItemCount + pastVisibleItems) == totalItemCount) {
+                if (isScrolling && !isLoading.get() && ((visibleItemCount + pastVisibleItems) == totalItemCount)) {
                     isScrolling = false;
-                        if (dx > 0) {
-                            isLoading.set(true);
-                            addNewProduct();
-                        }
+                    if (dx > 0) {
+                        isLoading.set(true);
+                        addNewProduct();
+                    }
                 }
 
                 if (dx < 0) isLoading.set(false);
@@ -269,43 +272,59 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     }
 
     private void addNewProduct() {
-        Query productCategoryQuery = productCategoriesDatabaseReference.orderByKey();
-        productCategoriesValueEventListener = productCategoryQuery.addValueEventListener(new ValueEventListener() {
+        productCategoriesDatabaseReference.keepSynced(true);
+        productCategoriesDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot productCategorySnapshot) {
+                for (DataSnapshot dataSnapshotChild : productCategorySnapshot.getChildren()) {
+
                     DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
-                    String key = paginationProductKeyMap.containsKey(dataSnapshotChild.getValue(String.class)) ? paginationProductKeyMap.get(dataSnapshotChild.getValue(String.class)) : " ";
-                    Log.e(HomeFragment.class.getName(), key);
-                    Query query = productDatabaseReference.orderByKey().startAt(key).limitToFirst(3);
+                    String productCategory = dataSnapshotChild.getValue(String.class);
+                    String productStartKey = paginationProductKeyMap.containsKey(productCategory) ? paginationProductKeyMap.get(productCategory) : " ";
+                    Query query = productDatabaseReference.orderByKey().startAt(productStartKey).limitToFirst(3);
+
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            ProductModel currentProduct;
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                currentProduct = snapshot.getValue(ProductModel.class);
-                                if (currentProduct == null) return;
+                        public void onDataChange(@NonNull DataSnapshot productsSnapshot) {
+                            if (productsSnapshot.exists()) {
 
-                                //update product if available in to cart
-                                String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), currentProduct.getItemId(), 0);
-                                ProductModel cartProduct = new Gson().fromJson(savedProductString, ProductModel.class);
-                                if (currentProduct.equals(cartProduct))
-                                    currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+                                Iterator<DataSnapshot> iterator = productsSnapshot.getChildren().iterator();
 
-                                if (!productModelArrayList.contains(currentProduct)) {
+                                //skip First item
+                                if (iterator.hasNext()) {
+                                    iterator.next();
+                                }
+
+                                while (iterator.hasNext()) {
+                                    DataSnapshot snapshot = iterator.next();
+                                    ProductModel currentProduct = snapshot.getValue(ProductModel.class);
+                                    paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
+
+                                    //update product quantity if available in to cart
+                                    String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), currentProduct.getItemId(), 0);
+                                    ProductModel cartProduct = new Gson().fromJson(savedProductString, ProductModel.class);
+                                    if (currentProduct.equals(cartProduct))
+                                        currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+
                                     productModelArrayList.add(currentProduct);
                                     NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                    isLoading.set(true);
                                 }
-                                paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
+
+                                if ((productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() == 1)){
+                                    Toast.makeText(getActivity(), "No more item", Toast.LENGTH_SHORT).show();
+                                    isLoading.set(false);
+                                } else if (productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() > 1) {
+                                    isLoading.set(false);
+                                }
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            isLoading.set(false);
                         }
                     });
-
                 }
             }
 
