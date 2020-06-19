@@ -3,6 +3,7 @@ package com.example.pickle.main;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -76,13 +77,13 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
-                    Query query = reference.orderByChild("itemName").startAt(search).endAt(search + "\uf8ff").limitToFirst(15);
+                    Query query = reference.orderByChild("itemName").startAt(search).endAt(search + "\uf8ff").limitToFirst(50);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                Log.e(FirebaseSearchActivity.class.getName(), snapshot + " ");
                                 if (snapshot.exists()) {
                                     ProductModel newProduct = snapshot.getValue(ProductModel.class);
                                     if (!searchList.contains(newProduct)) {
