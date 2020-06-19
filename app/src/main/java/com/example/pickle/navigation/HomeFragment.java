@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,8 +63,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
-import static com.example.pickle.utils.Constant.PRODUCT_CAT_COUNT;
+;
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
 /**
@@ -85,7 +83,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private ChildEventListener carouselImageChildEventListener;
 
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
-    private ValueEventListener productCategoriesValueEventListener;
 
     private static int itemCount;
     private static final int LIMIT = 2;
@@ -229,13 +226,15 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     }
 
     private void addProduct() {
-        Query productCategoryQuery = productCategoriesDatabaseReference.orderByKey();
-        productCategoriesValueEventListener = productCategoryQuery.addValueEventListener(new ValueEventListener() {
+        productCategoriesDatabaseReference.keepSynced(true);
+        productCategoriesDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
+
                     DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
                     Query query = productDatabaseReference.limitToFirst(LIMIT);
+
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

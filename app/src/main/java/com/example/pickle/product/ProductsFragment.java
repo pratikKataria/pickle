@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -25,6 +27,7 @@ import com.example.pickle.interfaces.IFragmentCb;
 import com.example.pickle.main.FirebaseSearchActivity;
 import com.example.pickle.models.ProductModel;
 import com.example.pickle.utils.NotifyRecyclerItems;
+import com.example.pickle.utils.RecyclerScrollListener;
 import com.example.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.database.ChildEventListener;
@@ -33,11 +36,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static com.example.pickle.utils.Constant.PRODUCT;
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
@@ -45,10 +50,13 @@ import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductsFragment extends Fragment implements IFragmentCb {
+public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerScrollListener.LastItemVisibleListener {
 
     private FragmentProductsBinding productBinding;
     private ArrayList<ProductModel> productsArrayList;
+
+    private int LIMIT = 10;
+    private ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private DatabaseReference productDatabaseReference;
     private ChildEventListener productChildEventListener;
@@ -83,6 +91,8 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         productBinding.setType(childReference);
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.icCart.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        productBinding.recyclerView.addOnScrollListener(new RecyclerScrollListener(this));
+        productBinding.setIsLoading(isLoading);
 
         changeStatusBarColor();
 
@@ -93,7 +103,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
         if (productDatabaseReference == null)
             productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT);
 
-        Query query = productDatabaseReference.orderByChild("itemName");
+        Query query = productDatabaseReference.orderByChild("itemName_itemId").limitToFirst(LIMIT);
         productChildEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -192,5 +202,72 @@ public class ProductsFragment extends Fragment implements IFragmentCb {
     }
 
     @Override
-    public void updateIconItems() {}
+    public void updateIconItems() {
+    }
+
+    @Override
+    public void loadMoreItems() {
+        int currentListSize = productsArrayList.size();
+
+        //if already loading
+        if (!isLoading.get()) {
+            isLoading.set(true);
+            productDatabaseReference.orderByChild("itemName_itemId")
+                    .startAt(productsArrayList.get(Math.max(productsArrayList.size() - 1, 0)).getItemName_itemId())
+                    .limitToFirst(LIMIT)
+                    .addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    Log.e(ProductsFragment.class.getName(), dataSnapshot.getChildrenCount() + " child count ");
+
+                                    if (dataSnapshot.exists()) {
+                                        Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+
+                                        //skip firstItem
+                                        if (iterator.hasNext()) {
+                                            iterator.next();
+                                        }
+
+                                        while (iterator.hasNext()) {
+                                            ProductModel currentProduct = iterator.next().getValue(ProductModel.class);
+
+                                            String cartProductString = SharedPrefsUtils.getStringPreference(getActivity(), currentProduct.getItemId(), 0);
+                                            ProductModel productModel = new Gson().fromJson(cartProductString, ProductModel.class);
+
+                                            if (currentProduct.equals(productModel)) {
+                                                currentProduct.setQuantityCounter(productModel.getQuantityCounter());
+                                            }
+
+                                            if (!productsArrayList.contains(currentProduct))
+                                                productsArrayList.add(currentProduct);
+
+                                            NotifyRecyclerItems.notifyItemInsertedAt(productBinding.recyclerView, productsArrayList.size());
+
+                                            if (productsArrayList.size() - currentListSize == dataSnapshot.getChildrenCount() - 1) {
+                                                isLoading.set(false);
+                                            }
+                                        }
+
+                                        if (dataSnapshot.getChildrenCount() == 1) {
+                                            isLoading.set(false);
+                                            Toast.makeText(getActivity(), "you have reached to last", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            }
+                    );
+        }
+    }
+
+    @Override
+    public void stopLoading() {
+        isLoading.set(false);
+    }
 }

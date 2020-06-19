@@ -86,7 +86,7 @@ dependencies {
 
     implementation 'com.github.mumayank:AirLocation:2.3'
     //firebase files
-    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.4.3'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.google.firebase:firebase-storage:19.1.1'
     implementation 'com.google.firebase:firebase-database:19.3.0'

@@ -2,7 +2,7 @@ package com.example.pickle.models;
 
 import androidx.annotation.Nullable;
 
-import java.util.Date;
+import com.google.firebase.database.Exclude;
 
 public class ProductModel {
     String itemName;
@@ -10,7 +10,6 @@ public class ProductModel {
     int itemBasePrice;
     int itemSellPrice;
     int itemMaxQtyPerUser;
-    String itemOffers;
     int itemQty;
 
     String qtyType;
@@ -19,11 +18,11 @@ public class ProductModel {
 
     String itemId;
     int itemUnits;
-    Date date;
+    long date;
     boolean itemAvailability;
 
-    String itemImageUrl;
     String itemThumbImage;
+    String itemName_itemId;
 
     int quantityCounter;
 
@@ -34,13 +33,12 @@ public class ProductModel {
         this.itemBasePrice = itemBasePrice;
     }
 
-    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, String itemOffers, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, Date date, boolean itemAvailability, String itemImageUrl, String itemThumbImage) {
+    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId) {
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.itemBasePrice = itemBasePrice;
         this.itemSellPrice = itemSellPrice;
         this.itemMaxQtyPerUser = itemMaxQtyPerUser;
-        this.itemOffers = itemOffers;
         this.itemQty = itemQty;
         this.qtyType = qtyType;
         this.itemType = itemType;
@@ -49,8 +47,8 @@ public class ProductModel {
         this.itemUnits = itemUnits;
         this.date = date;
         this.itemAvailability = itemAvailability;
-        this.itemImageUrl = itemImageUrl;
         this.itemThumbImage = itemThumbImage;
+        this.itemName_itemId = itemName_itemId;
     }
 
     public boolean showAddButton() {
@@ -97,13 +95,6 @@ public class ProductModel {
         this.itemMaxQtyPerUser = itemMaxQtyPerUser;
     }
 
-    public String getItemOffers() {
-        return itemOffers;
-    }
-
-    public void setItemOffers(String itemOffers) {
-        this.itemOffers = itemOffers;
-    }
 
     public int getItemQty() {
         return itemQty;
@@ -153,11 +144,11 @@ public class ProductModel {
         this.itemUnits = itemUnits;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -169,13 +160,6 @@ public class ProductModel {
         this.itemAvailability = itemAvailability;
     }
 
-    public String getItemImageUrl() {
-        return itemImageUrl;
-    }
-
-    public void setItemImageUrl(String itemImageUrl) {
-        this.itemImageUrl = itemImageUrl;
-    }
 
     public String getItemThumbImage() {
         return itemThumbImage;
@@ -185,10 +169,12 @@ public class ProductModel {
         this.itemThumbImage = itemThumbImage;
     }
 
+    @Exclude
     public int getQuantityCounter() {
         return quantityCounter;
     }
 
+    @Exclude
     public void setQuantityCounter(int quantityCounter) {
         this.quantityCounter = quantityCounter;
     }
@@ -209,7 +195,6 @@ public class ProductModel {
                 ", itemBasePrice=" + itemBasePrice +
                 ", itemSellPrice=" + itemSellPrice +
                 ", itemMaxQtyPerUser=" + itemMaxQtyPerUser +
-                ", itemOffers='" + itemOffers + '\'' +
                 ", itemQty=" + itemQty +
                 ", qtyType='" + qtyType + '\'' +
                 ", itemType='" + itemType + '\'' +
@@ -218,9 +203,16 @@ public class ProductModel {
                 ", itemUnits=" + itemUnits +
                 ", date=" + date +
                 ", itemAvailability=" + itemAvailability +
-                ", itemImageUrl='" + itemImageUrl + '\'' +
                 ", itemThumbImage='" + itemThumbImage + '\'' +
                 ", quantityCounter=" + quantityCounter +
                 '}';
+    }
+
+    public String getItemName_itemId() {
+        return itemName_itemId;
+    }
+
+    public void setItemName_itemId(String itemName_itemId) {
+        this.itemName_itemId = itemName_itemId;
     }
 }

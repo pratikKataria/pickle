@@ -31,7 +31,6 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 import id.zelory.compressor.Compressor;
 
@@ -287,7 +286,6 @@ public class AddNewItemActivity extends AppCompatActivity {
                         Integer.parseInt(_itemBasePrice.getText().toString()),
                         Integer.parseInt(_itemSellPrice.getText().toString()),
                         Integer.parseInt(_itemMaxQtyPerUser.getText().toString()),
-                        _itemOffers.getText().toString(),
                         Integer.parseInt(_itemQty.getText().toString()),
 
                         defQtyType[0],
@@ -296,11 +294,10 @@ public class AddNewItemActivity extends AppCompatActivity {
 
                         pushKey,
                         Integer.parseInt(_itemUnits.getText().toString()),
-                        new Date(),
+                        System.currentTimeMillis(),
                         true,
-                        "image uri",
-                        thumbImageUri
-                )
+                        thumbImageUri,
+                        _itemName.getText().toString()+"_"+pushKey)
         ).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(AddNewItemActivity.this, "upload successful", Toast.LENGTH_SHORT).show();

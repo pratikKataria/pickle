@@ -8,6 +8,7 @@
       <import type="java.util.List"/>
       <import type="com.example.pickle.models.ProductModel"/>
       <import type="android.app.Activity" />
+      <import type="android.view.View"/>
 
       <variable
           name="activity"
@@ -24,6 +25,11 @@
       <variable
           name="type"
           type="String" />
+
+      <variable
+          name="isLoading"
+          type="androidx.databinding.ObservableBoolean" />
+
    </data>
 
    <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -178,13 +184,22 @@
          </androidx.constraintlayout.widget.ConstraintLayout>
       </com.google.android.material.appbar.AppBarLayout>
 
-         <androidx.recyclerview.widget.RecyclerView
+      <androidx.recyclerview.widget.RecyclerView
              android:id="@+id/recyclerView"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             android:layout_marginBottom="95dp"
+             android:layout_marginBottom="?attr/actionBarSize"
              app:productList="@{productList}"
              app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+
+      <ProgressBar
+          android:layout_width="24dp"
+          android:layout_height="24dp"
+          app:layout_anchor="@id/recyclerView"
+          app:layout_anchorGravity="bottom|center"
+          android:layout_marginTop="12dp"
+          android:layout_marginBottom="?attr/actionBarSize"
+          android:visibility="@{isLoading? View.VISIBLE : View.INVISIBLE}"/>
 
    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

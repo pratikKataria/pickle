@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements
         snackBarLayout = findViewById(R.id.coordinatorLayout);
         bottomNavigationView.setItemIconTintList(null);
 
+        findViewById(R.id.activity_main_fab_add_item).setOnClickListener(n -> {
+            startActivity(new Intent(this, AddNewItemActivity.class));
+        });
+
         smoothActionBarDrawerToggle = new SmoothActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(smoothActionBarDrawerToggle);
 
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
+
+
     }
 
     @Override
