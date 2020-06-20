@@ -24,7 +24,7 @@ import static com.example.pickle.utils.Constant.MODIFIED;
 import static com.example.pickle.utils.Constant.ORDERS;
 import static com.example.pickle.utils.Constant.ORDERS_DETAILS;
 
-public class OrdersFirebaseQueryLiveData extends LiveData<Operation> {
+public class OrdersFirebaseQueryLiveData extends LiveData<Operation>  {
 
     private Query ordersFirebaseQuery;
     private final MyChildEventListener listener = new MyChildEventListener();

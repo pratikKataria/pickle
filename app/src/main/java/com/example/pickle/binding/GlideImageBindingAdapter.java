@@ -8,9 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.transition.DrawableCrossFadeTransition;
 import com.example.pickle.R;
 import com.example.pickle.utils.ResourceUtils;
 
@@ -18,7 +16,6 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customBackgroundColor")
     public static void productFragmentCustomCardViewBackground(CardView cardView, String type) {
-        Log.e(GlideImageBindingAdapter.class.getName(), "custom backgound " + type);
         if (type == null) {
             return;
         }
@@ -36,7 +33,6 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageBackgroundS")
     public static void productFragmentCustomImageBackground(ImageView imageview, String type) {
-        Log.e(GlideImageBindingAdapter.class.getName(), "custom  img backgound " + type);
         if (type == null) {
             return;
         }
@@ -54,7 +50,6 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customLayoutBackground")
     public static void setCustomBackground(View view, int colorRes) {
-        Log.e(GlideImageBindingAdapter.class.getName(), "custom  lay backgound " + colorRes);
         try {
             view.setBackground(view.getContext().getResources().getDrawable(colorRes));
         } catch (Exception xe) {
@@ -64,7 +59,6 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customBackgroundColor")
     public static void productFragmentCustomCardViewBackground(CardView cardView, int resource) {
-        Log.e(GlideImageBindingAdapter.class.getName(), "custom int backgound " + resource);
         cardView.setCardBackgroundColor(
                     cardView.getContext()
                             .getResources()
@@ -76,7 +70,6 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageBackgroundI")
     public static void productFragmentCustomImageBackground(ImageView imageview, int resource) {
-        Log.e(GlideImageBindingAdapter.class.getName(), "custom int  img backgound " + resource);
         if (resource == 0)
                 return;
 

@@ -79,4 +79,8 @@
     <color name="icVegetableBg">#EFF8F0</color>
     <color name="icDairyBg">#F9F4ED</color>
     <color name="icBeveragesBg">#F9E8D8</color>
+    
+    <color name="jungleGreen">#29AB87</color>
+    <color name="seaGreen">#2E8B57</color>
+
 </resources>

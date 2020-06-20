@@ -2,6 +2,7 @@ package com.example.pickle.orders;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,10 +154,10 @@ public class OrdersPlacedFragment extends Fragment {
         }
     }
 
-    private void addOrders(OrdersDetails addedOrdersDetails) {
-        if (!ordersList.contains(addedOrdersDetails)) {
-            ordersList.add(addedOrdersDetails);
-            NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, ordersList.size());
+    private void addOrders(OrdersDetails addOrdersDetails) {
+        if (!ordersList.contains(addOrdersDetails)) {
+            ordersList.add(addOrdersDetails);
+            NotifyRecyclerItems.notifyItemRemovedAt(binding.recyclerView, ordersList.indexOf(addOrdersDetails));
         }
     }
 
@@ -187,13 +188,16 @@ public class OrdersPlacedFragment extends Fragment {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);
+
             ordersList.add(LoadingModel.getInstance());
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, ordersList.indexOf(LoadingModel.getInstance()));
+
         } else if (ordersList.size() == 3) {
             LoadingModel loadingModel = LoadingModel.getInstance();
             int indexOfLoadingModel = ordersList.indexOf(loadingModel);
             ordersList.remove(loadingModel);
             NotifyRecyclerItems.notifyItemRemovedAt(binding.recyclerView, indexOfLoadingModel);
+
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);

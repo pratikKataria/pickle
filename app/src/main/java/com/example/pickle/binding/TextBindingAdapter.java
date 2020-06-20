@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.example.pickle.R;
 import com.example.pickle.utils.OrderStatus;
 
 import static com.example.pickle.utils.Constant.BEVERAGES;
@@ -43,11 +44,11 @@ public class TextBindingAdapter {
                 break;
             case OrderStatus.DELIVERED:
                 textView.setText("Delivered");
-                textView.setTextColor(Color.GREEN);
+                textView.setTextColor(textView.getContext().getResources().getColor(R.color.seaGreen));
                 break;
             case OrderStatus.ORDERED:
                 textView.setText("Ordered");
-                textView.setTextColor(Color.YELLOW);
+                textView.setTextColor(textView.getContext().getResources().getColor(R.color.jungleGreen));
                 break;
         }
     }
