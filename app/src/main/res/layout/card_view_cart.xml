@@ -8,6 +8,7 @@
 
         <import type="android.view.View"/>  
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="com.example.pickle.utils.StringUtils"/>
 
         <variable
             name="productViewModel"
@@ -122,7 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@{productViewModel.product.itemName}"
+                android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_product_image"
                 app:layout_constraintTop_toTopOf="@+id/card_view_iv_product_image" />
 

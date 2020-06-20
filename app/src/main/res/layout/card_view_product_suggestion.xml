@@ -7,6 +7,7 @@
 
         <import type="android.view.View"/>
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="com.example.pickle.utils.StringUtils"/>
 
         <variable
             name="iMainActivity"
@@ -132,15 +133,23 @@
 
 
             <TextView
+                android:id="@+id/card_view_iv_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{productViewModel.product.itemQty + ` ` + productViewModel.product.qtyType}"
+                app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_base_price" />
+
+            <TextView
                 android:id="@+id/card_view_tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
-                android:padding="4dp"
-                android:text="@{productViewModel.product.itemName}"
+                android:padding="2dp"
+                android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
                 app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_base_price" />
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity" />
 
             <TextView
                 android:id="@+id/card_view_iv_base_price"

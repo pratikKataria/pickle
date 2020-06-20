@@ -281,7 +281,7 @@ public class AddNewItemActivity extends AppCompatActivity {
     private void uploadData(String thumbImageUri, DatabaseReference reference, String pushKey) {
         reference.child(defItemCategory[0] + "/" + pushKey).setValue(
                 new ProductModel(
-                        _itemName.getText().toString(),
+                        _itemName.getText().toString().toLowerCase(),
                         _itemDesc.getText().toString(),
                         Integer.parseInt(_itemBasePrice.getText().toString()),
                         Integer.parseInt(_itemSellPrice.getText().toString()),

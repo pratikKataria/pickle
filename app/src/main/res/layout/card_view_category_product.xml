@@ -8,6 +8,7 @@
         
         <import type="android.view.View"/>
         <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="com.example.pickle.utils.StringUtils"/>
 
         <variable
             name="productViewModel"
@@ -46,8 +47,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
-                android:padding="4dp"
-                android:text="@{productViewModel.product.itemName}"
+                android:padding="2dp"
+                android:paddingStart="0dp"
+                android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_product_image"
@@ -62,6 +64,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
                 android:text="@{productViewModel.product.itemDesc}"
+                android:visibility="@{productViewModel.product.itemDesc.empty? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_product_image"
@@ -74,7 +77,7 @@
                 android:padding="4dp"
                 android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
                 app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_tv_desc"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity"
                 app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}" />
 
             <TextView
@@ -88,6 +91,16 @@
                 app:layout_constraintBottom_toBottomOf="@+id/card_view_iv_base_price"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
                 app:layout_constraintTop_toTopOf="@+id/card_view_iv_base_price" />
+
+
+            <TextView
+                android:id="@+id/card_view_iv_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{productViewModel.product.itemQty + ` ` + productViewModel.product.qtyType}"
+                app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_tv_desc" />
+
 
             <FrameLayout
                 android:id="@+id/frameLayout2"
