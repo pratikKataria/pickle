@@ -85,7 +85,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     private static int itemCount;
     private static final int LIMIT = 2;
-    private int currentIndex = 1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -115,16 +114,14 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         if (getActivity() != null)
             binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
         updateToolbarCartIconCounter();
+        initCarouselView();
 
-        binding.carouselView.setPresetTransformer(SliderLayout.Transformer.Default);
-        binding.carouselView.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        binding.carouselView.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
-        binding.carouselView.setSliderTransformDuration(800, new LinearInterpolator());
-        binding.carouselView.setDuration(3000);
         binding.setIsLoading(isLoading);
         initRecyclerView();
         return binding.getRoot();
     }
+
+
     int visibleItemCount;
     int totalItemCount;
     int pastVisibleItems;
@@ -161,6 +158,24 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         });
     }
 
+    private void initCarouselView() {
+        binding.carouselView.setPresetTransformer(SliderLayout.Transformer.Default);
+        binding.carouselView.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        binding.carouselView.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
+        binding.carouselView.setSliderTransformDuration(800, new LinearInterpolator());
+        binding.carouselView.setDuration(3000);
+
+
+        //add the default layout only if the carousel images list is empty
+        if (carouselImage.isEmpty()) {
+            CarouselSliderView textSliderView = new CarouselSliderView(getActivity());
+            textSliderView.image(R.drawable.img_loading).setScaleType(BaseSliderView.ScaleType.Fit);
+            binding.carouselView.addSlider(textSliderView);
+            binding.carouselView.addSlider(textSliderView);
+        }
+
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -184,6 +199,11 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                //when previous is loaded first time remove default layout
+                if (carouselImage.isEmpty()) {
+                    binding.carouselView.removeAllSliders();
+                }
+
                 String url = dataSnapshot.getValue(String.class);
                 if (!carouselImage.contains(url)) {
                     carouselImage.add(url);
