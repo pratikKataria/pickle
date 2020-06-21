@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}"
-                android:text="@{String.valueOf(productViewModel.product.itemBasePrice)}"
+                android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
                 app:layout_constraintStart_toStartOf="@+id/card_view_iv_sell_price"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_iv_sell_price" />
 

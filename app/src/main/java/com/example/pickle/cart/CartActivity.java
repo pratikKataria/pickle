@@ -222,6 +222,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         product.getItemThumbImage(),
                         product.getQuantityCounter(),
                         product.getItemBasePrice(),
+                        product.getItemSellPrice(),
                         product.getItemCategory(),
                         binding.getCartViewModel().getFirebaseDatabaseAddress(),
                         binding.getCartViewModel().getDeliveryTime()

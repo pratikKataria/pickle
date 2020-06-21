@@ -11,6 +11,7 @@ public class OrdersDetails implements Visitable {
     private String itemThumbImage;
     private int itemQty;
     private int itemBasePrice;
+    private int itemSellPrice;
     private String itemCategory;
     private String address;
     private String deliveryTime;
@@ -20,11 +21,12 @@ public class OrdersDetails implements Visitable {
     public transient int status;
     public transient long date;
 
-    public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, String itemCategory, String address, String deliveryTime) {
+    public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, int itemSellPrice, String itemCategory, String address, String deliveryTime) {
         this.itemId = itemId;
         this.itemThumbImage = itemThumbImage;
         this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
+        this.itemSellPrice = itemSellPrice;
         this.itemCategory = itemCategory;
         this.address = address;
         this.deliveryTime = deliveryTime;
@@ -119,5 +121,13 @@ public class OrdersDetails implements Visitable {
             return ordersDetails.orderId.equals(orderId);
         }
         return false;
+    }
+
+    public int getItemSellPrice() {
+        return itemSellPrice;
+    }
+
+    public void setItemSellPrice(int itemSellPrice) {
+        this.itemSellPrice = itemSellPrice;
     }
 }

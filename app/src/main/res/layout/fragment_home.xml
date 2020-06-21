@@ -14,10 +14,6 @@
             type="java.util.List&lt;ProductModel>" />
 
         <variable
-            name="carouselImage"
-            type="java.util.List&lt;com.example.pickle.carousel.CarouselImage>" />
-
-        <variable
             name="typeface"
             type="android.graphics.Typeface" />
 
@@ -253,14 +249,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline5"
                 app:layout_constraintTop_toBottomOf="@+id/carouselView" />
-
-            <com.yarolegovich.discretescrollview.DiscreteScrollView
-                android:id="@+id/rvScroll"
-                android:layout_width="match_parent"
-                android:layout_height="164dp"
-                app:carouselList="@{carouselImage}"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar" />
 
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/carouselView"

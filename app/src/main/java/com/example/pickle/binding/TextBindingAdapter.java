@@ -44,11 +44,11 @@ public class TextBindingAdapter {
                 break;
             case OrderStatus.DELIVERED:
                 textView.setText("Delivered");
-                textView.setTextColor(textView.getContext().getResources().getColor(R.color.seaGreen));
+                textView.setTextColor(textView.getContext().getResources().getColor(R.color.jungleGreen));
                 break;
             case OrderStatus.ORDERED:
                 textView.setText("Ordered");
-                textView.setTextColor(textView.getContext().getResources().getColor(R.color.jungleGreen));
+                textView.setTextColor(textView.getContext().getResources().getColor(R.color.chartIdealBar));
                 break;
         }
     }

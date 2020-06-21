@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +34,6 @@ import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.example.pickle.R;
-import com.example.pickle.carousel.CarouselImage;
 import com.example.pickle.cart.CartActivity;
 import com.example.pickle.databinding.FragmentHomeBinding;
 import com.example.pickle.interfaces.IFragmentCb;
@@ -62,9 +62,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-;
+
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
+
+;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +73,6 @@ import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener {
 
     private FragmentHomeBinding binding;
-    private List<CarouselImage> imageList;
     private ArrayList<String> carouselImage;
     private ArrayList<ProductModel> productModelArrayList;
     private HashMap<String, String> paginationProductKeyMap;
@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private boolean isScrolling;
 
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
-    private ChildEventListener carouselImageChildEventListener;
 
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
 
@@ -97,11 +96,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
         productModelArrayList = new ArrayList<>();
-        imageList = new ArrayList<>();
         carouselImage = new ArrayList<>();
         paginationProductKeyMap = new HashMap<>();
-        addProduct();
-        getImageList();
     }
 
     @Override
@@ -115,7 +111,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         setUpToolbar();
 
         binding.setProductList(productModelArrayList);
-        binding.setCarouselImage(imageList);
         binding.setHomeFragment(HomeFragment.this);
         if (getActivity() != null)
             binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
@@ -182,22 +177,27 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
     }
 
-    private void getImageList() {
-        carouselImagesDatabaseReference.keepSynced(true);
+
+    private ChildEventListener carouselImageChildEventListener;
+
+    private ChildEventListener getImageList() {
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                carouselImage.add(dataSnapshot.getValue(String.class));
-                updateImage(dataSnapshot.getValue(String.class));
-                imageList.add(new CarouselImage(dataSnapshot.getValue(String.class)));
-                if (imageList.size() - 1 >= 0)
-                    NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, imageList.size() - 1);
+                String url = dataSnapshot.getValue(String.class);
+                if (!carouselImage.contains(url)) {
+                    carouselImage.add(url);
+                    updateImage(url);
+                }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                imageList.add(0, new CarouselImage(dataSnapshot.getValue(String.class)));
-                NotifyRecyclerItems.notifyItemInsertedAt(binding.rvScroll, 0);
+                String url = dataSnapshot.getValue(String.class);
+                if (!carouselImage.contains(url)) {
+                    carouselImage.add(url);
+                    updateImage(url);
+                }
             }
 
             @Override
@@ -215,6 +215,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
             }
         });
+
+        return carouselImageChildEventListener;
     }
 
     private void setUpToolbar() {
@@ -248,8 +250,10 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                                 if (currentProduct.equals(cartProduct))
                                     currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
 
-                                productModelArrayList.add(currentProduct);
-                                NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                if (!productModelArrayList.contains(currentProduct)) {
+                                    productModelArrayList.add(currentProduct);
+                                    NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                }
 
                                 paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
                             }
@@ -396,15 +400,26 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (productModelArrayList.size() <= LIMIT+1) {
+            addProduct();
+        }
+        if (carouselImageChildEventListener == null) {
+            Log.e(HomeFragment.class.getName(), " null ll ll ll l ");
+            carouselImageChildEventListener = getImageList();
+            carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-//        if (carouselImageChildEventListener != null) {
-//            carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
-//        }
-//
-//        if (productCategoriesValueEventListener != null) {
-//            productCategoriesDatabaseReference.removeEventListener(productCategoriesValueEventListener);
-//        }
+        Log.e(HomeFragment.class.getName(), "onStop() ");
+        if (carouselImageChildEventListener != null) {
+            carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
+        }
+
     }
 
 

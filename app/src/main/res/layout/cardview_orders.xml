@@ -89,22 +89,40 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:textSize="10dp"
-                            android:fontFamily="@font/avenir_next_bold"
+                            android:fontFamily="@font/avenir_next_demi_bold"
                             android:textAlignment="center"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/card_view_iv_base_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
-                        app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
-                        app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
-                        tools:text="base price" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/card_view_iv_base_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
+                            app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
+                            app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
+                            app:strikeThrough="@{orderDetails.itemSellPrice > 0}"
+                            tools:text="base price" />
+
+                        <TextView
+                            android:id="@+id/card_view_iv_sell_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="4dp"
+                            android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
+                            app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
+                            app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
+                            android:visibility="@{orderDetails.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
+                            tools:text="sell price" />
+                    </LinearLayout>
+
+
 
                     <TextView
                         android:id="@+id/card_view_tv_qty"

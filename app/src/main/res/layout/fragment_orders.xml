@@ -112,11 +112,23 @@
                 android:orientation="vertical">
 
                 <include layout="@layout/cart_notice_layout" />
+                <include layout="@layout/layout_order_delivery_summery"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginEnd="22dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/dash_hrztl_line" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ongoing orders"
+                    android:layout_marginTop="8dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                 <androidx.recyclerview.widget.RecyclerView
