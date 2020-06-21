@@ -65,11 +65,6 @@ import java.util.Iterator;
 
 import static com.example.pickle.utils.Constant.PRODUCT_TYPE;
 
-;
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener {
 
     private FragmentHomeBinding binding;
@@ -94,8 +89,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     public void onCreate(@Nullable Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        productModelArrayList = new ArrayList<>();
         carouselImage = new ArrayList<>();
+        productModelArrayList = new ArrayList<>();
         paginationProductKeyMap = new HashMap<>();
     }
 
@@ -103,21 +98,22 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if (binding == null)
+        if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
-        setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
-        setUpToolbar();
+            setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
+            setUpToolbar();
 
-        binding.setProductList(productModelArrayList);
-        binding.setHomeFragment(HomeFragment.this);
-        if (getActivity() != null)
-            binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
-        updateToolbarCartIconCounter();
-        initCarouselView();
+            binding.setProductList(productModelArrayList);
+            binding.setHomeFragment(HomeFragment.this);
+            if (getActivity() != null)
+                binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
+            updateToolbarCartIconCounter();
+            initCarouselView();
 
-        binding.setIsLoading(isLoading);
-        initRecyclerView();
+            binding.setIsLoading(isLoading);
+            initRecyclerView();
+        }
         return binding.getRoot();
     }
 
@@ -126,7 +122,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     int totalItemCount;
     int pastVisibleItems;
     private void initRecyclerView() {
-        binding.suggestionRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        RecyclerView recyclerView = binding.suggestionRecyclerView;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -248,50 +249,53 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     }
 
     private void addProduct() {
-        productCategoriesDatabaseReference.keepSynced(true);
-        productCategoriesDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
+        if (productModelArrayList.isEmpty()) {
+            productCategoriesDatabaseReference.keepSynced(true);
+            productCategoriesDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
 
-                    DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
-                    Query query = productDatabaseReference.limitToFirst(LIMIT);
+                        DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
+                        Query query = productDatabaseReference.limitToFirst(LIMIT);
 
-                    query.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            ProductModel currentProduct;
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                currentProduct = snapshot.getValue(ProductModel.class);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                ProductModel currentProduct;
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                    currentProduct = snapshot.getValue(ProductModel.class);
 
-                                //update product if available in to cart
-                                String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), currentProduct.getItemId(), 0);
-                                ProductModel cartProduct = new Gson().fromJson(savedProductString, ProductModel.class);
-                                if (currentProduct.equals(cartProduct))
-                                    currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
+                                    //update product if available in to cart
+                                    String savedProductString = SharedPrefsUtils.getStringPreference(getActivity(), currentProduct.getItemId(), 0);
+                                    ProductModel cartProduct = new Gson().fromJson(savedProductString, ProductModel.class);
+                                    if (currentProduct.equals(cartProduct))
+                                        currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
 
-                                if (!productModelArrayList.contains(currentProduct)) {
-                                    productModelArrayList.add(currentProduct);
-                                    NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                    if (!productModelArrayList.contains(currentProduct)) {
+                                        productModelArrayList.add(currentProduct);
+                                        NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                    }
+
+                                    paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
                                 }
-
-                                paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
                             }
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                        }
-                    });
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                            }
+                        });
+
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getActivity(), "error: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void addNewProduct() {
@@ -329,12 +333,14 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                                     if (currentProduct.equals(cartProduct))
                                         currentProduct.setQuantityCounter(cartProduct.getQuantityCounter());
 
-                                    productModelArrayList.add(currentProduct);
-                                    NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
-                                    isLoading.set(true);
+                                    if (!productModelArrayList.contains(currentProduct)) {
+                                        productModelArrayList.add(currentProduct);
+                                        NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
+                                        isLoading.set(true);
+                                    }
                                 }
 
-                                if ((productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() == 1)){
+                                if ((productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() == 1)) {
                                     Toast.makeText(getActivity(), "No more item", Toast.LENGTH_SHORT).show();
                                     isLoading.set(false);
                                 } else if (productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() > 1) {
@@ -405,18 +411,19 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     public void onResume() {
         super.onResume();
 
-        //update cart icon on resume
+
+//        update cart icon on resume
         updateToolbarCartIconCounter();
 
-        ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
-        for (ProductModel product : productModelArrayList) {
-            if (refreshList.contains(product)) {
-                ProductModel newProduct = refreshList.get(refreshList.indexOf(product));
-                product.setQuantityCounter(newProduct.getQuantityCounter());
-            } else
-                product.setQuantityCounter(0);
-            NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(product));
-        }
+//        for (ProductModel productModel : refreshList) {
+//            int indexOfProduct = productModelArrayList.indexOf(productModel);
+//            if (indexOfProduct != -1) {
+//                ProductModel newProduct = productModelArrayList.get(indexOfProduct);
+//                newProduct.setQuantityCounter(productModel.getQuantityCounter());
+//                NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, indexOfProduct);
+//            }
+//        }
+
     }
 
     @Override
@@ -426,7 +433,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             addProduct();
         }
         if (carouselImageChildEventListener == null) {
-            Log.e(HomeFragment.class.getName(), " null ll ll ll l ");
             carouselImageChildEventListener = getImageList();
             carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
         }
@@ -435,7 +441,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(HomeFragment.class.getName(), "onStop() ");
+        productModelArrayList.clear();
         if (carouselImageChildEventListener != null) {
             carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
         }

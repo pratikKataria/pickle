@@ -43,6 +43,7 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
         binding.setOrderDetails(element);
         setName(element.getItemCategory(), element.getItemId());
         binding.cancelButtonMb.setOnClickListener(n -> showAlertDialog());
+        binding.executePendingBindings();
     }
 
     private void setName(String productCategory, String productId) {

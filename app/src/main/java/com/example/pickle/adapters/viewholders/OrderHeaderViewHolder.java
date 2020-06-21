@@ -26,5 +26,6 @@ public class OrderHeaderViewHolder extends  AbstractViewHolder<EmptyState>{
     @Override
     public void bind(EmptyState element) {
         binding.setEmptyOrders(element);
+        binding.executePendingBindings();
     }
 }

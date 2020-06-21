@@ -36,10 +36,12 @@ public class ProductViewHolder extends  RecyclerView.ViewHolder {
 
     public void setCardViewSearchBinding(ProductViewModel productViewModel) {
         searchViewBinding.setProductViewModel(productViewModel);
+        searchViewBinding.executePendingBindings();
     }
 
     public void setCardViewSuggestionBinding(ProductViewModel productViewModel) {
         suggestionBinding.setProductViewModel(productViewModel);
+        suggestionBinding.executePendingBindings();
     }
 
     private void showBottomSheet(ProductModel product) {
