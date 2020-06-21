@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_menu_sub_address_book:
                 try {
                     if (FirebaseAuth.getInstance().getUid() != null) {
-                        smoothActionBarDrawerToggle.runWhenIdle(() -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
+                        smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_addressBookFragment));
                         drawerLayout.closeDrawers();
                     } else {
                         startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_nav_menu_sub_orders"
             app:destination="@id/nav_menu_sub_orders" />
+        <action
+            android:id="@+id/action_homeFragment_to_addressBookFragment"
+            app:destination="@id/addressBookFragment" />
     </fragment>
 
     <fragment
@@ -36,4 +39,8 @@
         android:label="fragment_orders_placed"
         app:popUpTo="@+id/homeFragment"
         tools:layout="@layout/fragment_orders" />
+    <fragment
+        android:id="@+id/addressBookFragment"
+        android:name="com.example.pickle.address_book.AddressBookFragment"
+        android:label="AddressBookFragment" />
 </navigation>
