@@ -67,9 +67,11 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme);
         materialAlertDialogBuilder.setTitle("Would like to cancel the order?");
         materialAlertDialogBuilder.setMessage("Canceling the order would take some time to and notifies after a while.");
-        materialAlertDialogBuilder.setPositiveButton("Cancel Order", (dialog, which) -> {
-                cancelOrder(binding.getOrderDetails().orderId);
-        }).setNegativeButton("Back", (dialog, which) -> { });
+        materialAlertDialogBuilder.setPositiveButton("Back", (dialog, which) -> {
+                ;
+        }).setNegativeButton("Cancel Order", (dialog, which) -> {
+            cancelOrder(binding.getOrderDetails().orderId);
+        });
 
         alertDialog = materialAlertDialogBuilder.create();
         alertDialog.show();
