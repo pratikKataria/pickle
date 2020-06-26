@@ -26,285 +26,297 @@
             type="androidx.databinding.ObservableBoolean" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:overScrollMode="never"
         android:background="@color/mainActColor"
+        android:orientation="vertical"
         tools:context=".navigation.HomeFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:id="@+id/ll1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/ll2"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="379dp">
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewFruits"
-                    android:layout_width="85dp"
-                    android:layout_height="100dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/icFruitBg"
-                    android:clickable="true"
-                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.FRUITS)}"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
-                        android:id="@+id/grid_view_iv_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/ic_fruits" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:text="Fruits" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/ll2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/ll3"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ll1"
-                tools:layout_editor_absoluteY="379dp">
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewVegetables"
-                    android:layout_width="85dp"
-                    android:layout_height="100dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/icVegetableBg"
-                    android:clickable="true"
-                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.VEGETABLES)}"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:scaleX="1.2"
-                        android:scaleY="1.2"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_vegetable" />
-
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Vegetables" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toStartOf="@+id/ll4"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ll2"
-                tools:layout_editor_absoluteY="379dp">
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDairy"
-                    android:layout_width="85dp"
-                    android:layout_height="100dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/icDairyBg"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.DAIRY)}">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_dairy" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:text="Dairy" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/ll4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ll3"
-                tools:layout_editor_absoluteY="379dp">
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewBeverages"
-                    android:layout_width="85dp"
-                    android:layout_height="100dp"
-                    android:background="@color/white"
-                    android:backgroundTint="@color/icBeveragesBg"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.BEVERAGES)}">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="4dp"
-                        android:src="@drawable/ic_beverages" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
-                    android:text="Beverages" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_arrow_right"
-                android:drawableTint="#929292"
-                android:fontFamily="@font/avenir_next_demi_bold"
-                android:text="Product you may like"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView" />
-
+            android:layout_height="?attr/actionBarSize">
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/fragment_order_toolbar"
                 style="@style/ToolbarTheme"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
-                app:layout_collapseMode="pin"
                 app:title=" "
+                android:background="@color/white"
+                android:elevation="4dp"
+                collapseMode="pin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:menu="@menu/tool_bar_navigation"
                 app:titleMargin="18dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Pickle India"
-                    android:typeface="@{typeface}"
-                    android:paddingBottom="8dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:layout_marginStart="18dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pickle "
+                        android:typeface="@{typeface}" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:scaleX="2"
+                        android:scaleY="2"
+                        android:src="@mipmap/ic_launcher_foreground" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" India"
+                        android:typeface="@{typeface}" />
+                </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
 
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <androidx.constraintlayout.helper.widget.Flow
-                android:id="@+id/flow3"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                app:constraint_referenced_ids="ll1,ll2,ll3,ll4"
-                app:flow_horizontalGap="8dp"
-                app:flow_horizontalStyle="spread"
-                app:flow_verticalGap="16dp"
-                app:flow_wrapMode="aligned"
-                app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toBottomOf="@+id/carouselView" />
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            android:overScrollMode="never">
 
-            <com.daimajia.slider.library.SliderLayout
-                android:id="@+id/carouselView"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                app:layout_constraintTop_toBottomOf="@+id/fragment_order_toolbar" />
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/ll1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/ll2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="379dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewFruits"
+                        android:layout_width="85dp"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/icFruitBg"
+                        android:clickable="true"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.FRUITS)}"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/grid_view_iv_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_fruits" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:text="Fruits" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/ll3"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ll1"
+                    tools:layout_editor_absoluteY="379dp">
 
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewVegetables"
+                        android:layout_width="85dp"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/icVegetableBg"
+                        android:clickable="true"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.VEGETABLES)}"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp">
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_end="17dp" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitCenter"
+                            android:scaleX="1.2"
+                            android:scaleY="1.2"
+                            android:layout_margin="4dp"
+                            android:src="@drawable/ic_vegetable" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Vegetables" />
 
 
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="product you my like         \u2192"
-                app:layout_constraintEnd_toStartOf="@+id/guideline6"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toBottomOf="@+id/flow3" />
+                </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/suggestionRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="100dp"
-                android:overScrollMode="never"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/progressBar"
-                app:layout_constraintStart_toStartOf="@+id/guideline5"
-                app:layout_constraintTop_toBottomOf="@+id/textView10"
-                app:list="@{productList}"
-                app:viewType="@{1}" />
+                <LinearLayout
+                    android:id="@+id/ll3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@+id/ll4"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ll2"
+                    tools:layout_editor_absoluteY="379dp">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:visibility="@{isLoading? View.VISIBLE: View.GONE}"
-                app:layout_constraintBottom_toBottomOf="@+id/suggestionRecyclerView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/suggestionRecyclerView" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewDairy"
+                        android:layout_width="85dp"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/icDairyBg"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.DAIRY)}">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:src="@drawable/ic_dairy" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:text="Dairy" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ll3"
+                    tools:layout_editor_absoluteY="379dp">
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardViewBeverages"
+                        android:layout_width="85dp"
+                        android:layout_height="100dp"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/icBeveragesBg"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.BEVERAGES)}">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="4dp"
+                            android:src="@drawable/ic_beverages" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="4dp"
+                        android:text="Beverages" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.helper.widget.Flow
+                    android:id="@+id/flow3"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    app:constraint_referenced_ids="ll1,ll2,ll3,ll4"
+                    app:flow_horizontalGap="8dp"
+                    app:flow_horizontalStyle="spread"
+                    app:flow_verticalGap="16dp"
+                    app:flow_wrapMode="aligned"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/carouselView" />
+
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/carouselView"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="16dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="17dp" />
+
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="product you my like         \u2192"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/flow3" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/suggestionRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="100dp"
+                    android:overScrollMode="never"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/progressBar"
+                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10"
+                    app:list="@{productList}"
+                    app:viewType="@{1}" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:visibility="@{isLoading? View.VISIBLE: View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/suggestionRecyclerView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/suggestionRecyclerView" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

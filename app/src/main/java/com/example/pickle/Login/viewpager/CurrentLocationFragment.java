@@ -116,7 +116,6 @@ public class CurrentLocationFragment extends Fragment {
         if (updateAddress) {
             atomicUpdate(currentAddress);
         } else {
-
             if (currentLocationBinding.cdEtUserName.getText().toString().trim().isEmpty()) {
                 currentLocationBinding.cdEtUserName.setError("should not be empty");
                 currentLocationBinding.cdEtUserName.requestFocus();

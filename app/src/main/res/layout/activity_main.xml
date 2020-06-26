@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:visibility="gone"
             android:background="@android:drawable/ic_input_add"
             android:backgroundTint="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"

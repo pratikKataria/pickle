@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
+import com.example.pickle.cart.CartActivity
 import com.example.pickle.main.MainActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 

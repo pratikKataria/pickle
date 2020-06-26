@@ -424,7 +424,8 @@
             <include
                 android:id="@+id/includeLayout"
                 layout="@layout/bottom_sheet_place_order"
-                bind:cartView="@{cartViewModel}"/>
+                bind:cartView="@{cartViewModel}"
+                bind:activity="@{activity}"/>
 
 
 

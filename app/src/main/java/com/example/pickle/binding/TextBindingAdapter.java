@@ -1,9 +1,13 @@
 package com.example.pickle.binding;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
 
 import com.example.pickle.R;
@@ -76,5 +80,21 @@ public class TextBindingAdapter {
 
     }
 
+    @BindingAdapter("locationText")
+    public static void setLocationText(TextView textView, String type) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            boolean checkPermission = textView.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+            //if true then permission is granted
+            if (checkPermission) {
+                textView.setText("Request Location Update");
+            } else {
+                textView.setText("Request Location Permission");
+            }
+        } else {
+
+        }
+
+    }
 
 }

@@ -10,6 +10,10 @@
         <variable
             name="cartView"
             type="com.example.pickle.cart.CartViewModel" />
+
+        <variable
+            name="activity"
+            type="com.example.pickle.cart.CartActivity"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -102,8 +106,8 @@
                 android:layout_height="53dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                android:onClick="@{() -> cartView.getCurrentLocation(context)}"
-                android:text="current Location"
+                android:onClick="@{() -> activity.getCurrentLocation()}"
+                app:locationText="@{`location`}"
                 android:textColor="@color/secondaryColorDark"
                 app:chipBackgroundColor="@color/white"
                 app:chipCornerRadius="4dp"
@@ -184,7 +188,7 @@
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Add New Address"
+                        android:text="currently unavailable"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
@@ -197,7 +201,7 @@
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Add New Address"
+                        android:text="currently unavailable"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
@@ -210,7 +214,7 @@
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Add New Address"
+                        android:text="currently unavailable"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
@@ -223,7 +227,7 @@
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:text="Add New Address"
+                        android:text="currently unavailable"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
                 </RadioGroup>

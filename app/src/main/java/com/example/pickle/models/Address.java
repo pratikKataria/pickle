@@ -120,7 +120,6 @@ public class Address {
 
     @Override
     public String toString() {
-
         if (gpsLocation != null) {
             return gpsLocationAddressFormatter();
         } else {

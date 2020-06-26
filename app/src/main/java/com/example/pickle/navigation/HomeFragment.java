@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -108,7 +107,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             binding.setHomeFragment(HomeFragment.this);
             if (getActivity() != null)
                 binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
-            updateToolbarCartIconCounter();
+            itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
+            getActivity().invalidateOptionsMenu();
             initCarouselView();
 
             binding.setIsLoading(isLoading);
@@ -123,7 +123,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     int pastVisibleItems;
     private void initRecyclerView() {
         RecyclerView recyclerView = binding.suggestionRecyclerView;
-        recyclerView.setHasFixedSize(true);
         recyclerView.setItemViewCacheSize(20);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
@@ -274,7 +273,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
                                     if (!productModelArrayList.contains(currentProduct)) {
                                         productModelArrayList.add(currentProduct);
-                                        NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.size());
                                     }
 
                                     paginationProductKeyMap.put(currentProduct.getItemCategory(), currentProduct.getItemId());
@@ -413,16 +411,31 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
 
 //        update cart icon on resume
-        updateToolbarCartIconCounter();
+        ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+        if (getActivity() != null) {
+            itemCount = refreshList.size();
+            getActivity().invalidateOptionsMenu();
+        }
 
-//        for (ProductModel productModel : refreshList) {
-//            int indexOfProduct = productModelArrayList.indexOf(productModel);
-//            if (indexOfProduct != -1) {
-//                ProductModel newProduct = productModelArrayList.get(indexOfProduct);
-//                newProduct.setQuantityCounter(productModel.getQuantityCounter());
-//                NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, indexOfProduct);
-//            }
-//        }
+        for (ProductModel productModel : productModelArrayList) {
+            int cartItemIndex = refreshList.indexOf(productModel);
+            if (cartItemIndex != -1) {
+                productModel.setQuantityCounter(refreshList.get(cartItemIndex).getQuantityCounter());
+                NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(productModel));
+            } else if (productModel.getQuantityCounter() != 0) {
+                productModel.setQuantityCounter(0);
+                NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(productModel));
+            }
+        }
+
+        for (ProductModel productModel : refreshList) {
+            int indexOfProduct = productModelArrayList.indexOf(productModel);
+            if (indexOfProduct != -1) {
+                ProductModel newProduct = productModelArrayList.get(indexOfProduct);
+                newProduct.setQuantityCounter(productModel.getQuantityCounter());
+                NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, indexOfProduct);
+            }
+        }
 
     }
 
@@ -454,15 +467,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     @Override
     public void updateIconItems() {
-        updateToolbarCartIconCounter();
-    }
-
-    private void updateToolbarCartIconCounter() {
         if (getActivity() != null) {
             itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
             getActivity().invalidateOptionsMenu();
         }
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
