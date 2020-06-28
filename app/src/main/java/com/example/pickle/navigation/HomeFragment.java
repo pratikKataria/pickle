@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.AbsListView;
 import android.widget.Toast;
 
@@ -338,10 +336,10 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                                     }
                                 }
 
-                                if ((productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() == 1)) {
+                                if ((productCategory != null && productCategory.equals(Constant.CAT_TWO) && productsSnapshot.getChildrenCount() == 1)) {
                                     Toast.makeText(getActivity(), "No more item", Toast.LENGTH_SHORT).show();
                                     isLoading.set(false);
-                                } else if (productCategory != null && productCategory.equals(Constant.VEGETABLES) && productsSnapshot.getChildrenCount() > 1) {
+                                } else if (productCategory != null && productCategory.equals(Constant.CAT_TWO) && productsSnapshot.getChildrenCount() > 1) {
                                     isLoading.set(false);
                                 }
                             }
@@ -397,9 +395,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                 break;
             case R.id.menu_main_cart_btn:
                 productModelArrayList.clear();
+                NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
                 startActivityForResult(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY), REQUEST_CODE);
                 break;
             case R.id.menu_main_search_btn:
+                productModelArrayList.clear();
+                NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
                 startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 break;
         }
@@ -409,8 +410,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onResume() {
         super.onResume();
-
-
 //        update cart icon on resume
         ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
         if (getActivity() != null) {
@@ -425,6 +424,13 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         if (productModelArrayList.size() <= LIMIT+1) {
             addProduct();
         }
+
+        if (carouselImage.isEmpty()) {
+            carouselImageChildEventListener = getImageList();
+            carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
+            return;
+        }
+
         if (carouselImageChildEventListener == null) {
             carouselImageChildEventListener = getImageList();
             carouselImagesDatabaseReference.addChildEventListener(carouselImageChildEventListener);
@@ -434,7 +440,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onStop() {
         super.onStop();
-        NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
         if (carouselImageChildEventListener != null) {
             carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
         }

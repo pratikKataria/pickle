@@ -128,7 +128,7 @@
                         android:id="@+id/card_view_tv_qty"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{` Qty:`+orderDetails.itemQty}"
+                        android:text="@{`Qty:`+orderDetails.itemQty}"
                         app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
                         app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
                         tools:text=" Qty: 323" />
@@ -148,21 +148,15 @@
                     <TextView
                         android:id="@+id/card_view_order_id"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
+                        android:layout_height="match_parent"
                         android:layout_marginBottom="8dp"
-                        android:layout_toEndOf="@+id/card_view_iv_product_image"
+                        android:textSize="12sp"
                         android:text="@{`Order ID:`+orderDetails.orderId}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/cancel_button_mb"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="@+id/card_view_tv_date"
-                        app:layout_constraintTop_toBottomOf="@+id/card_view_tv_date"
-                        tools:text="order id" />
+                        tools:text="order id"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/cancel_button_mb"
-                        android:layout_width="77dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="42dp"
                         android:layout_gravity="end"
                         android:layout_marginEnd="8dp"

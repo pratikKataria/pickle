@@ -17,10 +17,10 @@ public abstract class Constant {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
             PRODUCT,
-            FRUITS,
-            VEGETABLES,
-            DAIRY,
-            BEVERAGES,
+            CAT_ONE,
+            CAT_TWO,
+            CAT_THREE,
+            CAT_FOUR,
             PRODUCT_TYPE,
             ORDERS_CANCELLED,
             ORDERS_DELIVERED
@@ -31,10 +31,10 @@ public abstract class Constant {
 
     public static final String ROOT = "pickle-8bac6";
     public static final String PRODUCT = "Products";
-    public static final String FRUITS = "Fruits";
-    public static final String VEGETABLES = "Vegetables";
-    public static final String DAIRY = "Dairy";
-    public static final String BEVERAGES = "Beverages";
+    public static final String CAT_ONE = "Fruits";
+    public static final String CAT_TWO = "Vegetables";
+    public static final String CAT_THREE = "Dairy";
+    public static final String CAT_FOUR = "Grocery";
     public static final String ORDERS = "Orders";
     public static final String ORDERS_DETAILS = "OrdersDetails";
     public static final String ORDERS_CANCELLED = "OrdersCancelled";

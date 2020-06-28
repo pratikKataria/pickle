@@ -90,7 +90,7 @@
                         android:background="@color/white"
                         android:backgroundTint="@color/icFruitBg"
                         android:clickable="true"
-                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.FRUITS)}"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_ONE)}"
                         android:foreground="?attr/selectableItemBackground"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp">
@@ -128,7 +128,7 @@
                         android:background="@color/white"
                         android:backgroundTint="@color/icVegetableBg"
                         android:clickable="true"
-                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.VEGETABLES)}"
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_TWO)}"
                         android:foreground="?attr/selectableItemBackground"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp">
@@ -174,7 +174,7 @@
                         android:foreground="?attr/selectableItemBackground"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.DAIRY)}">
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_THREE)}">
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                         android:foreground="?attr/selectableItemBackground"
                         app:cardCornerRadius="8dp"
                         app:cardElevation="0dp"
-                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.BEVERAGES)}">
+                        android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_FOUR)}">
 
                         <ImageView
                             android:layout_width="match_parent"

@@ -7,16 +7,15 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.BindingAdapter;
 
 import com.example.pickle.R;
 import com.example.pickle.utils.OrderStatus;
 
-import static com.example.pickle.utils.Constant.BEVERAGES;
-import static com.example.pickle.utils.Constant.DAIRY;
-import static com.example.pickle.utils.Constant.FRUITS;
-import static com.example.pickle.utils.Constant.VEGETABLES;
+import static com.example.pickle.utils.Constant.CAT_FOUR;
+import static com.example.pickle.utils.Constant.CAT_THREE;
+import static com.example.pickle.utils.Constant.CAT_ONE;
+import static com.example.pickle.utils.Constant.CAT_TWO;
 
 public class TextBindingAdapter {
 
@@ -64,17 +63,17 @@ public class TextBindingAdapter {
         }
 
         switch (type) {
-            case FRUITS:
-                textView.setText(FRUITS);
+            case CAT_ONE:
+                textView.setText(CAT_ONE);
                 break;
-            case VEGETABLES:
-                textView.setText(VEGETABLES);
+            case CAT_TWO:
+                textView.setText(CAT_TWO);
                 break;
-            case BEVERAGES:
-                textView.setText(BEVERAGES);
+            case CAT_FOUR:
+                textView.setText(CAT_FOUR);
                 break;
-            case DAIRY:
-                textView.setText(DAIRY);
+            case CAT_THREE:
+                textView.setText(CAT_THREE);
                 break;
         }
 
