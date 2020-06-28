@@ -172,8 +172,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         alertDialogBuilder.setCancelable(false);
         alertDialog = alertDialogBuilder.create();
 
-        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.amountToBePaid.getText().toString()));
-        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.getCartViewModel().getProductQuantitiesString()));
+        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
+        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.amountToBePaid.getText().toString()));
         alertDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);

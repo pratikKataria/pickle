@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
 import com.example.pickle.R
-import com.example.pickle.cart.CartActivity
 import com.example.pickle.main.MainActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -30,19 +29,15 @@ class SplashActivity : AppCompatActivity() {
     private val PERMISSION_ALL = 110
 
     private val permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.SEND_SMS,
-        Manifest.permission.READ_SMS,
-        Manifest.permission.INTERNET,
-        Manifest.permission.CAMERA,
-        Manifest.permission.READ_CONTACTS
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.INTERNET
     )
 
-    private val required_permission = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION,
-        Manifest.permission.SEND_SMS,
-        Manifest.permission.READ_SMS
+    private val requiredPermission = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
 
@@ -54,18 +49,20 @@ class SplashActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("permissions", 0)
         if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
             startActivity(
-                Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(
-                    Intent.FLAG_ACTIVITY_NEW_TASK
-                ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                    ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
             )
             sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply()
             finish()
+            return
+        }
+
+
+        if (hasPermissions(this, requiredPermission)) {
+            startActivityMain(false)
         } else {
-            if (hasPermissions(this, required_permission)) {
-                startActivityMain()
-            } else {
-                ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
-            }
+            ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         }
 
 
@@ -76,7 +73,7 @@ class SplashActivity : AppCompatActivity() {
                 addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     decorView.systemUiVisibility =
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 } else {
                     decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 }
@@ -111,14 +108,14 @@ class SplashActivity : AppCompatActivity() {
 
             var allImportantPermissionGranted = true
             for (index in permissions.indices) {
-                for (reqIndex in required_permission.indices) {
-                    if (grantResults.isNotEmpty() && permissions[index] == required_permission[reqIndex] && grantResults[index] == PackageManager.PERMISSION_DENIED) {
+                for (reqIndex in requiredPermission.indices) {
+                    if (grantResults.isNotEmpty() && permissions[index] == requiredPermission[reqIndex] && grantResults[index] == PackageManager.PERMISSION_DENIED) {
                         allImportantPermissionGranted = false
                     }
                 }
             }
             if (allImportantPermissionGranted)
-                startActivityMain()
+                startActivityMain(true)
             else
                 displayNeverAskAgainDialog()
         }
@@ -127,8 +124,7 @@ class SplashActivity : AppCompatActivity() {
     private fun displayNeverAskAgainDialog() {
         val build: AlertDialog.Builder = AlertDialog.Builder(this)
         build.setMessage(
-            "we need get location and send SMS for performing necessary task. Please permit the permission through " +
-                    "Setting screen. \n\n Select Permission -> Enable permission"
+                R.string.locationDenied
         )
         build.setCancelable(false)
         build.setPositiveButton("Permit Manually") { _: DialogInterface, _: Int ->
@@ -136,25 +132,34 @@ class SplashActivity : AppCompatActivity() {
             intent.action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             val uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
-            startActivity(intent)
+            startActivityForResult(intent, 1001)
         }
         build.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (hasPermissions(this, requiredPermission)) {
+            startActivityMain(true)
+        } else {
+            displayNeverAskAgainDialog();
+        }
     }
 
     private fun hasPermissions(context: Context, permissions: Array<String>):
             Boolean = permissions.all { ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
 
-    private fun startActivityMain() {
+    private fun startActivityMain(instantStart: Boolean) {
+        val delay = if (instantStart) {
+            1000L
+        } else {
+            1500L
+        }
+
         Handler().postDelayed({
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            finish();
-        }, 1500)
+            finish()
+        }, delay)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (hasPermissions(this, required_permission)) {
-            startActivityMain()
-        }
-    }
 }

@@ -8,6 +8,8 @@
     <string name="close">close</string>
     <string name="customer_details_note">Note: We make deliveries before 8AM. This Information helps us leave the package at the right door</string>
 
+    <string name="locationDenied">we need get location and send SMS for performing necessary task. Please permit the permission through " +
+                    "Setting screen. \n\n Select Permission -> Enable permission</string>
     <string-array name="type">
         <item>solid</item>
         <item>liquid</item>

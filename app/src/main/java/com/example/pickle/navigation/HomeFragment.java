@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -162,8 +163,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         binding.carouselView.setPresetTransformer(SliderLayout.Transformer.Default);
         binding.carouselView.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         binding.carouselView.setIndicatorVisibility(PagerIndicator.IndicatorVisibility.Visible);
-        binding.carouselView.setSliderTransformDuration(800, new LinearInterpolator());
-        binding.carouselView.setDuration(3000);
+        binding.carouselView.setDuration(2500);
 
 
         //add the default layout only if the carousel images list is empty
@@ -396,6 +396,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                     ((MainActivity) (getActivity())).openDrawer();
                 break;
             case R.id.menu_main_cart_btn:
+                productModelArrayList.clear();
                 startActivityForResult(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY), REQUEST_CODE);
                 break;
             case R.id.menu_main_search_btn:
@@ -416,27 +417,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             itemCount = refreshList.size();
             getActivity().invalidateOptionsMenu();
         }
-
-        for (ProductModel productModel : productModelArrayList) {
-            int cartItemIndex = refreshList.indexOf(productModel);
-            if (cartItemIndex != -1) {
-                productModel.setQuantityCounter(refreshList.get(cartItemIndex).getQuantityCounter());
-                NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(productModel));
-            } else if (productModel.getQuantityCounter() != 0) {
-                productModel.setQuantityCounter(0);
-                NotifyRecyclerItems.notifyItemInsertedAt(binding.suggestionRecyclerView, productModelArrayList.indexOf(productModel));
-            }
-        }
-
-        for (ProductModel productModel : refreshList) {
-            int indexOfProduct = productModelArrayList.indexOf(productModel);
-            if (indexOfProduct != -1) {
-                ProductModel newProduct = productModelArrayList.get(indexOfProduct);
-                newProduct.setQuantityCounter(productModel.getQuantityCounter());
-                NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, indexOfProduct);
-            }
-        }
-
     }
 
     @Override
@@ -454,7 +434,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onStop() {
         super.onStop();
-        productModelArrayList.clear();
+        NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
         if (carouselImageChildEventListener != null) {
             carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
         }

@@ -11,7 +11,7 @@
 
     <dimen name="mtrl_btn_inc_width">28dp</dimen>
     <dimen name="mtrl_btn_inc_padding">8dp</dimen>
-    <dimen name="mtrl_btn_width">68dp</dimen>
+    <dimen name="mtrl_btn_width">72dp</dimen>
     <dimen name="mtrl_btn_height">42dp</dimen>
 
 <!--    car view activity -->

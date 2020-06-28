@@ -45,9 +45,9 @@
 
          <androidx.constraintlayout.widget.ConstraintLayout
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             app:layout_collapseMode="parallax"
+             android:layout_height="270dp"
              android:background="@color/colorGrey50"
+             app:layout_collapseMode="parallax"
              app:layout_scrollFlags="scroll|enterAlways|snap">
 
 
@@ -55,10 +55,10 @@
                 android:id="@+id/searchCardview"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                app:cardCornerRadius="8dp"
                 android:layout_margin="8dp"
-                app:cardElevation="0dp"
                 android:backgroundTint="@color/colorGrey100"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageButton4"
@@ -88,11 +88,12 @@
                 android:layout_margin="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="16dp"
+                android:backgroundTint="@color/colorGrey100"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
-                android:backgroundTint="@color/colorGrey100"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                <ImageButton
                    android:id="@+id/imageButton3"
                    android:layout_width="45dp"
@@ -108,9 +109,9 @@
                 android:layout_height="100dp"
                 android:layout_margin="12dp"
                 android:clickable="true"
-                app:customBackgroundColor="@{type}"
                 android:foreground="?attr/selectableItemBackground"
                 app:cardElevation="0dp"
+                app:customBackgroundColor="@{type}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageButton4"
@@ -129,58 +130,59 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                tools:text="Fruits"
-                app:productText="@{type}"
-                android:textColor="@color/black"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
-                app:layout_constraintTop_toTopOf="@+id/cardViewFruits" />
+                app:layout_constraintTop_toTopOf="@+id/cardViewFruits"
+                app:productText="@{type}"
+                tools:text="Fruits" />
 
             <TextView
                 android:id="@+id/countFruits"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="24 items"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/textView16"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/cart_anim"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_margin="8dp"
-                android:layout_marginBottom="12dp"
-                android:scaleX="1.2"
-                android:scaleY="1.2"
-                app:lottie_speed="1.5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:lottie_fileName="cart_added_animation.json"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView16"
+                tools:text="24 items" />
 
             <TextView
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
-                android:text="Cart"
+                android:text="CHECKOUT"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/cart_anim"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="@+id/cart_anim"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icCart" />
 
-            <ImageButton
+            <androidx.cardview.widget.CardView
                 android:id="@+id/icCart"
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:stateListAnimator="@animator/card_animator"
                 android:clickable="true"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:layout_constraintBottom_toBottomOf="@+id/cart_anim"
-                app:layout_constraintEnd_toEndOf="@+id/cart_anim"
-                app:layout_constraintStart_toStartOf="@+id/cart_anim"
-                app:layout_constraintTop_toTopOf="@+id/cart_anim" />
+                app:cardCornerRadius="12dp"
+                app:layout_constraintEnd_toEndOf="@+id/textView26"
+                app:layout_constraintStart_toStartOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewFruits">
+               <com.airbnb.lottie.LottieAnimationView
+                   android:id="@+id/cart_anim"
+                   android:layout_width="55dp"
+                   android:layout_height="55dp"
+                   android:scaleX="1.2"
+                   android:scaleY="1.2"
+                   app:layout_constraintBottom_toBottomOf="@+id/icCart"
+                   app:layout_constraintEnd_toEndOf="@+id/icCart"
+                   app:layout_constraintStart_toStartOf="@+id/icCart"
+                   app:layout_constraintTop_toTopOf="@+id/icCart"
+                   app:lottie_fileName="cart_added_animation.json"
+                   app:lottie_speed="1.5" />
+            </androidx.cardview.widget.CardView>
+
+
          </androidx.constraintlayout.widget.ConstraintLayout>
       </com.google.android.material.appbar.AppBarLayout>
 
