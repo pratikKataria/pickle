@@ -15,6 +15,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
 import com.example.pickle.adapters.VisitorForList;
 import com.example.pickle.databinding.FragmentOrdersBinding;
@@ -27,6 +28,7 @@ import com.example.pickle.models.Orders;
 import com.example.pickle.models.OrdersDetails;
 import com.example.pickle.utils.NotifyRecyclerItems;
 import com.google.android.material.transition.MaterialSharedAxis;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 

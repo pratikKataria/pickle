@@ -129,7 +129,12 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_orders:
                 try {
-                    smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
+                    if (FirebaseAuth.getInstance().getUid() == null) {
+                        startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                        Toast.makeText(this, "Login first", Toast.LENGTH_SHORT).show();
+                    } else {
+                        smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
+                    }
                     drawerLayout.closeDrawers();
                 } catch (Exception xe) {
                     Log.e("MainActivity", xe.getMessage() + "");
