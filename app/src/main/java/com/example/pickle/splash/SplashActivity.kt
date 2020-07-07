@@ -88,7 +88,7 @@ class SplashActivity : AppCompatActivity() {
         view.post {
 
             Handler().postDelayed({
-                var hText = logoText;
+                val hText = logoText;
                 hText.animateText(" pickle kare so aaj kar")
             }, 800)
 

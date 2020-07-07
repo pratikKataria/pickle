@@ -25,6 +25,10 @@
             <item
                 android:id="@+id/nav_menu_sub_help"
                 android:title="Help"/>
+
+            <item
+                android:id="@+id/nav_menu_sub_refer_link"
+                android:title="Refer"/>
         </menu>
     </item>
 

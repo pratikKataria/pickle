@@ -3,6 +3,7 @@ package com.example.pickle.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,7 +24,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.pickle.Login.CustomerDetailActivity;
 import com.example.pickle.Login.LoginActivity;
 import com.example.pickle.R;
 import com.example.pickle.cart.CartActivity;
@@ -40,6 +40,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements
@@ -151,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements
                 } catch (Exception xe) {
                     Log.e("MainActivity", xe.getMessage() + "");
                 }
+                break;
+            case R.id.nav_menu_sub_refer_link:
+//                createReferLink();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

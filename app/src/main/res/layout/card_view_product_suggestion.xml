@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <import type="android.view.View"/>
-        <import type="com.example.pickle.utils.PriceFormatUtils"/>
-        <import type="com.example.pickle.utils.StringUtils"/>
+        <import type="android.view.View" />
+
+        <import type="com.example.pickle.utils.PriceFormatUtils" />
+
+        <import type="com.example.pickle.utils.StringUtils" />
 
         <variable
             name="iMainActivity"
@@ -21,15 +23,15 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="165dp"
+        android:layout_height="306dp"
         android:layout_margin="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:minHeight="289dp"
-            android:layout_margin="8dp">
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:layout_height="match_parent"
+            android:minHeight="289dp">
 
             <FrameLayout
                 android:id="@+id/frameLayout"
@@ -141,13 +143,13 @@
                 android:id="@+id/card_view_tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
-                android:padding="2dp"
+                android:ellipsize="end"
+                android:maxLength="48"
                 android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity"/>
 
             <TextView
                 android:id="@+id/card_view_iv_base_price"
