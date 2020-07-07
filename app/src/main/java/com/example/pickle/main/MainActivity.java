@@ -3,7 +3,6 @@ package com.example.pickle.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,9 +39,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements
@@ -125,43 +121,36 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
-                Toast.makeText(this, "logout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
             case R.id.nav_menu_sub_orders:
-                try {
-                    if (FirebaseAuth.getInstance().getCurrentUser() == null || FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-                        startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-                        Toast.makeText(this, "Login first", Toast.LENGTH_SHORT).show();
-                    } else {
-                        smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
-                    }
-                    drawerLayout.closeDrawers();
-                } catch (Exception xe) {
-                    Log.e("MainActivity", xe.getMessage() + "");
-                }
+                smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
+                drawerLayout.closeDrawers();
                 break;
             case R.id.nav_menu_sub_address_book:
-                try {
-                    if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-                        smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_addressBookFragment));
-                        drawerLayout.closeDrawers();
-                    } else {
-                        startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
-                    }
-                } catch (Exception xe) {
-                    Log.e("MainActivity", xe.getMessage() + "");
-                }
+                smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_addressBookFragment));
+                drawerLayout.closeDrawers();
                 break;
             case R.id.nav_menu_sub_refer_link:
-                Log.e("MainActivity", FirebaseAuth.getInstance().getCurrentUser().isAnonymous() + " anonymous "  + FirebaseAuth.getInstance().getUid());
+                Log.e("MainActivity", FirebaseAuth.getInstance().getCurrentUser().isAnonymous() + " anonymous " + FirebaseAuth.getInstance().getUid());
 //                createReferLink();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void checkAuthAndNavigate(int id) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
+        } else {
+            if (id != navController.getCurrentDestination().getId())
+                navController.navigate(id);
+        }
     }
 
     @Override
