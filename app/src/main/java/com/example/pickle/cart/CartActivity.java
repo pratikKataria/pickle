@@ -109,7 +109,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     //check if user is login or not
     private boolean checkFirebaseAuth() {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
             return false;
@@ -122,8 +122,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private void checkAddress() {
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getUid() != null) {
-            userAddressDatabaseReference.child(FirebaseAuth.getInstance().getUid())
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+            userAddressDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -139,6 +139,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
+        } else {
+            Toast.makeText(this, "unable to find address: try login and update", Toast.LENGTH_SHORT).show();
         }
     }
 

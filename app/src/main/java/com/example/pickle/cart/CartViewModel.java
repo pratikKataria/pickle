@@ -129,7 +129,7 @@ public class CartViewModel extends BaseObservable {
     }
 
     public void getDatabaseAddress() {
-        if (FirebaseAuth.getInstance().getUid() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
             reference.keepSynced(true);
             reference.child("slot1").addListenerForSingleValueEvent(new ValueEventListener() {

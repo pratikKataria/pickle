@@ -9,6 +9,7 @@ import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.example.pickle.utils.HorizontalFlipTransformation
@@ -16,6 +17,7 @@ import com.example.pickle.R
 import com.example.pickle.adapters.SliderAdapter
 import com.example.pickle.Login.LoginActivity
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 
 
 class OnBoardingActivity : AppCompatActivity() {
@@ -84,8 +86,14 @@ class OnBoardingActivity : AppCompatActivity() {
                     objectAnimator.start()
 
                     getStartedBtn.setOnClickListener {
-                        startActivity(Intent(this@OnBoardingActivity, SplashActivity::class.java))
-                        finish()
+                        FirebaseAuth.getInstance().signInAnonymously().addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                startActivity(Intent(this@OnBoardingActivity, SplashActivity::class.java))
+                                finish()
+                            } else {
+                                Toast.makeText(this@OnBoardingActivity, it.exception!!.message, Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     }
 
                 } else {

@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_orders:
                 try {
-                    if (FirebaseAuth.getInstance().getUid() == null) {
+                    if (FirebaseAuth.getInstance().getCurrentUser() == null || FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
                         startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                         Toast.makeText(this, "Login first", Toast.LENGTH_SHORT).show();
                     } else {
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_address_book:
                 try {
-                    if (FirebaseAuth.getInstance().getUid() != null) {
+                    if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
                         smoothActionBarDrawerToggle.runWhenIdle(() -> navController.navigate(R.id.action_homeFragment_to_addressBookFragment));
                         drawerLayout.closeDrawers();
                     } else {
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
                 break;
             case R.id.nav_menu_sub_refer_link:
+                Log.e("MainActivity", FirebaseAuth.getInstance().getCurrentUser().isAnonymous() + " anonymous "  + FirebaseAuth.getInstance().getUid());
 //                createReferLink();
                 break;
         }
