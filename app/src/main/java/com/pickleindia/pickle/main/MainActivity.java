@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements
                 deepLink = pendingDynamicLinkData.getLink();
             }
 
-            if (deepLink != null) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null && user.isAnonymous() && deepLink != null && deepLink.getBooleanQueryParameter("invitedby", false) && deepLink.getBooleanQueryParameter("value", false)) {
                 Log.i("MainActivity ", "Here's the deep link URL:\n" + deepLink.toString());
                 String currentPage = deepLink.getQueryParameter("invitedby");
                 String offerValue = deepLink.getQueryParameter("value");
@@ -145,7 +146,6 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void checkAuthAndNavigate(int id) {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
         } else {
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void createReferLink() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null && user.isAnonymous()) {
+        if (user == null) {
             startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
         } else {

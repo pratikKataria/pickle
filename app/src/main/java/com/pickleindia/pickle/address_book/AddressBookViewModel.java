@@ -17,7 +17,7 @@ public class AddressBookViewModel extends ViewModel {
     MutableLiveData<Address> userAddressMutableLiveData = new MutableLiveData<>();
 
     void getAddressFromFirebaseDatabase() {
-        if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Addresses").child(FirebaseAuth.getInstance().getUid()).child("slot1");
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override

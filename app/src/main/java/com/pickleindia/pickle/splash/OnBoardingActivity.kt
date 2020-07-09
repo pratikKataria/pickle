@@ -86,14 +86,8 @@ class OnBoardingActivity : AppCompatActivity() {
                     objectAnimator.start()
 
                     getStartedBtn.setOnClickListener {
-                        FirebaseAuth.getInstance().signInAnonymously().addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                startActivity(Intent(this@OnBoardingActivity, SplashActivity::class.java))
-                                finish()
-                            } else {
-                                Toast.makeText(this@OnBoardingActivity, it.exception!!.message, Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                        startActivity(Intent(this@OnBoardingActivity, SplashActivity::class.java))
+                        finish()
                     }
 
                 } else {
