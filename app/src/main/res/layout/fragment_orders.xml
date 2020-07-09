@@ -7,11 +7,11 @@
 
         <variable
             name="visitor"
-            type="com.example.pickle.interfaces.Visitor" />
+            type="com.pickleindia.pickle.interfaces.Visitor" />
 
         <variable
             name="orderPlaced"
-            type="com.example.pickle.models.OrdersDetails" />
+            type="com.pickleindia.pickle.models.OrdersDetails" />
 
         <variable
             name="ordersList"

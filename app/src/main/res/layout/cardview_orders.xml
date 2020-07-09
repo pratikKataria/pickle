@@ -6,10 +6,10 @@
     <data>
 
         <import type="android.view.View"/>
-        <import type="com.example.pickle.utils.PriceFormatUtils"/>
-        <import type="com.example.pickle.models.OrdersDetails"/>
-        <import type="com.example.pickle.utils.DateUtils"/>
-        <import type="com.example.pickle.utils.OrderStatus"/>
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
+        <import type="com.pickleindia.pickle.models.OrdersDetails"/>
+        <import type="com.pickleindia.pickle.utils.DateUtils"/>
+        <import type="com.pickleindia.pickle.utils.OrderStatus"/>
 
         <variable
             name="orderDetails"

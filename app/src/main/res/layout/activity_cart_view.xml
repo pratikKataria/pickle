@@ -6,12 +6,12 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.example.pickle.utils.Constant"/>
-        <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="com.pickleindia.pickle.utils.Constant"/>
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
 
         <variable
             name="priceFormatter"
-            type="com.example.pickle.utils.PriceFormatUtils" />
+            type="com.pickleindia.pickle.utils.PriceFormatUtils" />
 
         <variable
             name="cartList"
@@ -19,11 +19,11 @@
 
         <variable
             name="cartViewModel"
-            type="com.example.pickle.cart.CartViewModel" />
+            type="com.pickleindia.pickle.cart.CartViewModel" />
 
         <variable
             name="activity"
-            type="com.example.pickle.cart.CartActivity" />
+            type="com.pickleindia.pickle.cart.CartActivity" />
 
         <variable
             name="dateString"

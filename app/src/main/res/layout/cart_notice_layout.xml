@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-       <import type="com.example.pickle.utils.DateUtils"/>
+       <import type="com.pickleindia.pickle.utils.DateUtils"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

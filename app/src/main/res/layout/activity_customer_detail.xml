@@ -51,7 +51,7 @@
                     app:layout_constraintStart_toStartOf="@+id/textView15"
                     app:layout_constraintTop_toBottomOf="@+id/radioGroup_inner">
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/apartment"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                         android:text="Appartment or Society"
                         android:textSize="12dp" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/blank"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text2">
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/individualHouse"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                         android:text="Individual House"
                         android:textSize="12dp" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/currentAddress"
                         style="@style/CustomerDetailRadioButton"
                         android:layout_width="wrap_content"

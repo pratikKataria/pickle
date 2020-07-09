@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.example.pickle.utils.Constant" />
+        <import type="com.pickleindia.pickle.utils.Constant" />
 
         <variable
             name="updateAddress"

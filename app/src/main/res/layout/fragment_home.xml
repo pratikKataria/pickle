@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.pickle.models.ProductModel"/>
-        <import type="com.example.pickle.utils.Constant"/>
+        <import type="com.pickleindia.pickle.models.ProductModel"/>
+        <import type="com.pickleindia.pickle.utils.Constant"/>
         <import type="android.view.View"/>
 
         <variable
@@ -19,7 +19,7 @@
 
         <variable
             name="homeFragment"
-            type="com.example.pickle.navigation.HomeFragment" />
+            type="com.pickleindia.pickle.navigation.HomeFragment" />
 
         <variable
             name="isLoading"

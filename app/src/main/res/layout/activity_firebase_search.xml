@@ -5,10 +5,10 @@
 
     <data>
 
-        <import type="com.example.pickle.models.ProductModel"/>
+        <import type="com.pickleindia.pickle.models.ProductModel"/>
         <import type="java.util.List"/>
         <import type="android.app.Activity"/>
-        <import type="com.example.pickle.adapters.AutoCompleteAdapter"/>
+        <import type="com.pickleindia.pickle.adapters.AutoCompleteAdapter"/>
 
         <variable
             name="productModelList"

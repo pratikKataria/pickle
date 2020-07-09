@@ -9,11 +9,11 @@
 
         <variable
             name="cartView"
-            type="com.example.pickle.cart.CartViewModel" />
+            type="com.pickleindia.pickle.cart.CartViewModel" />
 
         <variable
             name="activity"
-            type="com.example.pickle.cart.CartActivity"/>
+            type="com.pickleindia.pickle.cart.CartActivity"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,7 +165,7 @@
 
                     <!-- Our custom radios here. One for male one for female -->
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_1"
                         style="@style/MyCustomRadioButton"
                         android:layout_width="175dp"
@@ -179,7 +179,7 @@
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_2"
                         style="@style/MyCustomRadioButtonAddNew"
                         android:layout_width="175dp"
@@ -192,7 +192,7 @@
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_3"
                         style="@style/MyCustomRadioButtonAddNew"
                         android:layout_width="175dp"
@@ -205,7 +205,7 @@
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_4"
                         style="@style/MyCustomRadioButtonAddNew"
                         android:layout_width="175dp"
@@ -218,7 +218,7 @@
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
 
-                    <com.example.pickle.ui.MyRadioButton
+                    <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_5"
                         style="@style/MyCustomRadioButtonAddNew"
                         android:layout_width="175dp"

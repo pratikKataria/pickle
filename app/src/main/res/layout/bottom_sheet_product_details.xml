@@ -5,12 +5,12 @@
 
     <data>
 
-        <import type="com.example.pickle.utils.PriceFormatUtils"/>
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
         <import type="android.view.View"/>
 
         <variable
             name="product"
-            type="com.example.pickle.models.ProductModel" />
+            type="com.pickleindia.pickle.models.ProductModel" />
 
     </data>
 
