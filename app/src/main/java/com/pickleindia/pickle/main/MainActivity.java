@@ -3,6 +3,7 @@ package com.pickleindia.pickle.main;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,12 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.gson.Gson;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartActivity;
@@ -35,11 +42,6 @@ import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -79,13 +81,33 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
+    }
 
+    private void checkForDynamicLink() {
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
+            Log.i("MainActivity ", "we have dynamic link ");
 
+            Uri deepLink = null;
+            if (pendingDynamicLinkData != null) {
+                deepLink = pendingDynamicLinkData.getLink();
+            }
+
+            if (deepLink != null) {
+                Log.i("MainActivity ", "Here's the deep link URL:\n" + deepLink.toString());
+                String currentPage = deepLink.getQueryParameter("currPage");
+                int currPage = Integer.parseInt(currentPage);
+                Toast.makeText(this, "curr page " + currPage, Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "Oops, we couldn't fetch details", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        checkForDynamicLink();
+
         NetworkConnectionStateMonitor networkConnectionStateMonitor = new NetworkConnectionStateMonitor(this);
         Snackbar snackbar = Snackbar.make(snackBarLayout, "cannot connect to internet", Snackbar.LENGTH_INDEFINITE).setAction("Action", null);
         networkConnectionStateMonitor.observe(this, isAvailable -> {

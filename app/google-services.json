@@ -15,10 +15,55 @@
       },
       "oauth_client": [
         {
-          "client_id": "584596078135-7lp85g3igpd859tr1d4dqbbch8r0h84h.apps.googleusercontent.com",
+          "client_id": "584596078135-6ruvagqrhbfcmir8kpib8c85rgpauk9r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.pickle",
+            "certificate_hash": "535fc0eaa9f67f7d6f3bd93f8c02966af3c41e3c"
+          }
+        },
+        {
+          "client_id": "584596078135-un913mktlshi4v4382vbr3krp3diccdd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pickle",
+            "certificate_hash": "53ec80ba1c05846dcdda000185bf4cc092c71dfe"
+          }
+        },
+        {
+          "client_id": "584596078135-9ntsikaru8fk53gqur30u4j462c21m2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlzLmi8rd81AjvthiQag4kET9VWUGxO0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584596078135-9ntsikaru8fk53gqur30u4j462c21m2f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584596078135:android:e9229778e2e5519bcfc9b2",
+        "android_client_info": {
+          "package_name": "com.pickleindia.pickle"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584596078135-83a7h2q3rcf1kq4s9e0ge1dbga48at3p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pickleindia.pickle",
             "certificate_hash": "535fc0eaa9f67f7d6f3bd93f8c02966af3c41e3c"
           }
         },
