@@ -82,7 +82,7 @@ public class ApartmentFragment extends Fragment {
             if (updateAddress)
                 atomicUpdate(buildAddress());
             else
-                atomicUpdate(buildCustomerData(), buildAddress());
+                atomicUpdate(binding.cdEtUserName.getText().toString(), buildAddress());
         });
 
         return binding.getRoot();
@@ -112,14 +112,6 @@ public class ApartmentFragment extends Fragment {
         return address;
     }
 
-    private Customer buildCustomerData() {
-        return new Customer(new PersonalInformation(
-                binding.cdEtUserName.getText().toString(),
-                FirebaseAuth.getInstance().getUid(),
-                FirebaseInstanceId.getInstance().getToken(),
-                new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()));
-    }
 
     private void atomicUpdate(Address apartmentDataModel) {
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -138,11 +130,11 @@ public class ApartmentFragment extends Fragment {
         });
     }
 
-    private void atomicUpdate(Customer customer, Address apartmentDataModel) {
+    private void atomicUpdate(String customerName, Address apartmentDataModel) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, Object> update = new HashMap<>();
-        update.put("Customers/" + FirebaseAuth.getInstance().getUid(), customer);
+        update.put("Customers/" + FirebaseAuth.getInstance().getUid()+"/personalInformation/username", customerName);
         update.put("Addresses/" + FirebaseAuth.getInstance().getUid() + "/slot1", apartmentDataModel);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();

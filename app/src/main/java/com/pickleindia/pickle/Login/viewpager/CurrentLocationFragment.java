@@ -120,20 +120,8 @@ public class CurrentLocationFragment extends Fragment {
                 currentLocationBinding.cdEtUserName.requestFocus();
                 return;
             }
-            atomicUpdate(buildCustomerDetails(), currentAddress);
+            atomicUpdate(currentLocationBinding.cdEtUserName.getText().toString(), currentAddress);
         }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private Customer buildCustomerDetails() {
-        return new Customer(
-                new PersonalInformation(
-                        currentLocationBinding.cdEtUserName.getText().toString(),
-                        FirebaseAuth.getInstance().getUid(),
-                        FirebaseInstanceId.getInstance().getToken(),
-                        new SimpleDateFormat("dd : MM : YYYY ").format(new Date()),
-                        FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())
-        );
     }
 
     private CurrentAddress buildCurrentAddress(double latitude, double longitude) {
@@ -159,13 +147,13 @@ public class CurrentLocationFragment extends Fragment {
         });
     }
 
-    private void atomicUpdate(Customer customer, CurrentAddress currentAddress) {
+    private void atomicUpdate(String customerName, CurrentAddress currentAddress) {
         currentLocationBinding.progressBar.setVisibility(View.VISIBLE);
 
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
 
-        update.put("Customers/" + uid, customer);
+        update.put("Customers/" + uid +"/personalInformation/username", customerName);
         update.put("Addresses/" + uid + "/slot1", currentAddress);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();

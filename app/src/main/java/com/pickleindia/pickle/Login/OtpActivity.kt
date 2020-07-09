@@ -3,21 +3,19 @@ package com.pickleindia.pickle.Login
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.View.GONE
+import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.pickleindia.pickle.R
-import com.pickleindia.pickle.cart.CartActivity
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
+import com.pickleindia.pickle.R
+import com.pickleindia.pickle.cart.CartActivity
 import kotlinx.android.synthetic.main.activity_otp.*
 
 class OtpActivity : AppCompatActivity() {
@@ -39,7 +37,7 @@ class OtpActivity : AppCompatActivity() {
 
         initFields()
 
-        val AuthCredential : String = intent.getStringExtra("AuthCredentials")
+        val authCredential : String = intent.getStringExtra("AuthCredentials")
 
         activity_otp_mb_submit_otp.setOnClickListener {
             if (editTextOtp.text.isEmpty()) {
@@ -54,114 +52,78 @@ class OtpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             activity_otp_progress.visibility = VISIBLE
-            val credential  = PhoneAuthProvider.getCredential(AuthCredential, editTextOtp.text.toString())
+            val credential  = PhoneAuthProvider.getCredential(authCredential, editTextOtp.text.toString())
             signInWithPhoneAuthCredential(credential)
         }
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    checkDoc()
-                } else {
-                    // Sign in failed, display a message and update the UI
-//                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        activity_otp_progress.visibility = GONE
-                        Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseAuthInvalidCredentialsException).message}", Toast.LENGTH_SHORT).show()
+                .addOnSuccessListener {
+                    val isNew = it.additionalUserInfo?.isNewUser
+                    if (isNew != null && isNew) {
+                        updateAccountDetails()
                     } else {
-                        activity_otp_progress.visibility = GONE
-                        Toast.makeText(this@OtpActivity, "error: ${(task.exception as FirebaseException).message}",Toast.LENGTH_SHORT).show()
+                        updateDeviceTokenForOldAccount()
                     }
+                }.addOnFailureListener {
+                    Log.e(OtpActivity::class.java.name, it.message as String)
                 }
-            }
     }
 
-    private fun checkDoc() {
+    private fun updateAccountDetails() {
         val reference = FirebaseDatabase.getInstance().getReference("Customers")
-            .child(FirebaseAuth.getInstance().uid!!)
-            .child("personalInformation")
-            .child("username/")
-            reference.keepSynced(true)
-            reference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Get Post object and use the values to update the UI
-                if (dataSnapshot.exists()) {
-                    setDeviceToken()
-                } else {
-                    Handler().postDelayed( {
-                        activity_otp_progress.visibility = GONE
-                        startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java))
-                        finish()
-                    }, 1200)
-                }
-            }
+                .child(FirebaseAuth.getInstance().uid!!)
+                .child("personalInformation")
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                // ...
-            }
-        })
+        val data: MutableMap<String, Any> = mutableMapOf()
+        data["creationDate"] = ServerValue.TIMESTAMP
+        data["deviceToken"] = FirebaseInstanceId.getInstance().token as String
+        data["userId"] = FirebaseAuth.getInstance().uid as String
+        data["userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
+        data["username"] = " "
+
+        reference.setValue(data).addOnSuccessListener {
+            startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finish()
+        }
+
     }
 
-    private fun setDeviceToken() {
-        if (FirebaseAuth.getInstance().uid != null) {
-            val ref = FirebaseDatabase.getInstance().getReference("Customers")
+    private fun updateDeviceTokenForOldAccount() {
+        val tokenDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers")
                 .child(FirebaseAuth.getInstance().uid!!)
                 .child("personalInformation")
                 .child("deviceToken")
-            ref.keepSynced(true)
-            ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        val token = dataSnapshot.value
 
-                        activity_otp_progress.visibility = GONE
-                        ref.setValue(FirebaseInstanceId.getInstance().token) { _: DatabaseError?, _: DatabaseReference? ->
-                                activity_otp_progress.visibility = GONE
-                                checkAddress()
-                        }
-                    }
-                }
-
-                override fun onCancelled(databaseError: DatabaseError) {
-                    activity_otp_progress.visibility = GONE
-                    Toast.makeText(this@OtpActivity, "error ${databaseError.message}", Toast.LENGTH_SHORT).show()
-                }
-            })
+        tokenDatabaseReference.setValue(FirebaseInstanceId.getInstance().token as String).addOnSuccessListener {
+            checkAddress()
+        }.addOnFailureListener {
+            Log.e("OtpActivity", it.message as String);
         }
     }
 
     private fun checkAddress() {
         var databaseReference = FirebaseDatabase.getInstance().getReference("Addresses")
-        if (FirebaseAuth.getInstance().uid != null) {
-            databaseReference.child(FirebaseAuth.getInstance().uid!!).child("slot1");
-            databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(p0: DataSnapshot) {
-                    if (p0.exists()) {
-                        sendUserToHome()
-                    } else {
-                        startActivity(
-                            Intent(
-                                this@OtpActivity,
-                                CustomerDetailActivity::class.java
-                            ).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        )
-                        finish()
+        databaseReference.child(FirebaseAuth.getInstance().uid!!).child("slot1")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            sendUserToHome()
+                        } else {
+                            startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                            finish()
+                        }
                     }
-                }
-
-                override fun onCancelled(p0: DatabaseError) {
-                    Toast.makeText(this@OtpActivity, "error: " + p0.message, Toast.LENGTH_SHORT)
-                        .show();
-                }
-            })
-
-        }
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Toast.makeText(this@OtpActivity, "error: " + databaseError.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
     }
 
 
@@ -172,7 +134,6 @@ class OtpActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
             return
