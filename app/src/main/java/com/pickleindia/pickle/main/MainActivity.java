@@ -28,6 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 import com.pickleindia.pickle.Login.LoginActivity;
@@ -94,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements
 
             if (deepLink != null) {
                 Log.i("MainActivity ", "Here's the deep link URL:\n" + deepLink.toString());
-                String currentPage = deepLink.getQueryParameter("currPage");
-                int currPage = Integer.parseInt(currentPage);
-                Toast.makeText(this, "curr page " + currPage, Toast.LENGTH_SHORT).show();
+                String currentPage = deepLink.getQueryParameter("invitedby");
+                String offerValue = deepLink.getQueryParameter("value");
+                Toast.makeText(this, "curr page " + currentPage + " offer value " + offerValue, Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "Oops, we couldn't fetch details", Toast.LENGTH_SHORT).show();
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_refer_link:
                 Log.e("MainActivity", FirebaseAuth.getInstance().getCurrentUser().isAnonymous() + " anonymous " + FirebaseAuth.getInstance().getUid());
-//                createReferLink();
+                createReferLink();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -173,6 +175,35 @@ public class MainActivity extends AppCompatActivity implements
             if (id != navController.getCurrentDestination().getId())
                 navController.navigate(id);
         }
+    }
+
+    public void createReferLink() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && user.isAnonymous()) {
+            startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
+        } else {
+            String uid = user.getUid();
+            String link = "https://officialpickleindia.com/?invidedby=" + uid+ "&value="+"50 ";
+            DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse(link))
+                    .setDomainUriPrefix("https://officialpickleindia.page.link")
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.pickleindia.pickle").build())
+                    .buildDynamicLink();
+
+            Uri dynamicLinkUri = dynamicLink.getUri();
+            buildInvitation(dynamicLinkUri);
+        }
+    }
+
+    public void buildInvitation(Uri dynamicLinkUri) {
+        String referrerUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String msg = String.format("download PickleIndia via link %s to get exciting offer \n link: %s", referrerUid, dynamicLinkUri.toString());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+        startActivity(Intent.createChooser(intent, "Share using"));
+
     }
 
     @Override
