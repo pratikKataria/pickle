@@ -15,11 +15,11 @@
 
         <variable
             name="ordersList"
-            type="java.util.List&lt;com.example.pickle.interfaces.Visitable>" />
+            type="java.util.List&lt;com.pickleindia.pickle.interfaces.Visitable>" />
 
         <variable
             name="pastOrdersList"
-            type="java.util.List&lt;com.example.pickle.interfaces.Visitable>"/>
+            type="java.util.List&lt;com.pickleindia.pickle.interfaces.Visitable>"/>
 
         <variable
             name="activity"

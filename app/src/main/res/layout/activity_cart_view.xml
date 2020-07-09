@@ -15,7 +15,7 @@
 
         <variable
             name="cartList"
-            type="java.util.List&lt;com.example.pickle.models.ProductModel>" />
+            type="java.util.List&lt;com.pickleindia.pickle.models.ProductModel>" />
 
         <variable
             name="cartViewModel"

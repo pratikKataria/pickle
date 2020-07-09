@@ -22,7 +22,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.databinding.FragmentCurrentLocationBinding;
+ import com.pickleindia.pickle.databinding.FragmentCurrentLocationBinding;
 import com.pickleindia.pickle.models.CurrentAddress;
 import com.pickleindia.pickle.models.Customer;
 import com.pickleindia.pickle.models.PersonalInformation;
