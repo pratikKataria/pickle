@@ -2,6 +2,7 @@ package com.pickleindia.pickle.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +25,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.android.gms.common.util.SharedPreferencesUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -147,6 +149,8 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
                 FirebaseAuth.getInstance().signOut();
+                SharedPrefsUtils.clearCart(this);
+                updateIconItems();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
