@@ -184,8 +184,13 @@ public class MainActivity extends AppCompatActivity implements
             startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
             Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
         } else {
-            if (id != navController.getCurrentDestination().getId())
+
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+            Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+
+            if (fragment instanceof HomeFragment) {
                 navController.navigate(id);
+            }
         }
     }
 
