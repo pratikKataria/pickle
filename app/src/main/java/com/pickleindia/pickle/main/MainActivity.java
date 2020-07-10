@@ -2,7 +2,6 @@ package com.pickleindia.pickle.main;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -45,8 +44,6 @@ import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
-
-import static com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -172,6 +169,10 @@ public class MainActivity extends AppCompatActivity implements
                 break;
             case R.id.nav_menu_sub_refer_link:
                 createReferLink();
+                break;
+            case R.id.nav_menu_sub_reward:
+                smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_rewardFragment));
+                drawerLayout.closeDrawers();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

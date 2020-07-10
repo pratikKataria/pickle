@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_addressBookFragment"
             app:destination="@id/addressBookFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_rewardFragment"
+            app:destination="@id/rewardFragment" />
     </fragment>
 
     <fragment
@@ -43,4 +46,8 @@
         android:id="@+id/addressBookFragment"
         android:name="com.pickleindia.pickle.address_book.AddressBookFragment"
         android:label="AddressBookFragment" />
+    <fragment
+        android:id="@+id/rewardFragment"
+        android:name="com.pickleindia.pickle.reward.RewardFragment"
+        android:label="RewardFragment" />
 </navigation>

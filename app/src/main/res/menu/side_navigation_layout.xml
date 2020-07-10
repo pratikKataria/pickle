@@ -29,6 +29,9 @@
             <item
                 android:id="@+id/nav_menu_sub_refer_link"
                 android:title="Refer"/>
+
+            <item android:id="@+id/nav_menu_sub_reward"
+                android:title="Reward"/>
         </menu>
     </item>
 
