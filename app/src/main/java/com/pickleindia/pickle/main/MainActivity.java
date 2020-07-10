@@ -25,7 +25,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.common.util.SharedPreferencesUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -46,6 +45,8 @@ import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
+
+import static com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void checkForDynamicLink() {
         FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent()).addOnSuccessListener(pendingDynamicLinkData -> {
-            Log.i("MainActivity ", "we have dynamic link ");
+            Log.e("MainActivity ", "we have dynamic link ");
 
             Uri deepLink = null;
             if (pendingDynamicLinkData != null) {
@@ -97,15 +98,21 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            if (user != null && user.isAnonymous() && deepLink != null && deepLink.getBooleanQueryParameter("invitedby", false) && deepLink.getBooleanQueryParameter("value", false)) {
-                Log.i("MainActivity ", "Here's the deep link URL:\n" + deepLink.toString());
-                String currentPage = deepLink.getQueryParameter("invitedby");
-                String offerValue = deepLink.getQueryParameter("value");
-                Toast.makeText(this, "curr page " + currentPage + " offer value " + offerValue, Toast.LENGTH_SHORT).show();
+            if (user == null && deepLink != null && deepLink.getBooleanQueryParameter("referredBy", false) && deepLink.getBooleanQueryParameter("value", false)) {
+                Log.e("MainActivity ", "Here's the deep link URL:\n" + deepLink.toString());
+                String referredBy = deepLink.getQueryParameter("referredBy");
+//                String offerValue = deepLink.getQueryParameter("value");
+//                editor.putString("offerValue", offerValue);
+
+                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+                if (navHostFragment != null) {
+                    Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+                    if (fragment instanceof HomeFragment) {
+                        ((HomeFragment) fragment).open(referredBy);
+                    }
+                }
             }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(this, "Oops, we couldn't fetch details", Toast.LENGTH_SHORT).show();
-        });
+        }).addOnFailureListener(e -> Toast.makeText(this, "Oops, we couldn't fetch details", Toast.LENGTH_SHORT).show());
     }
 
     @Override
@@ -121,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements
                 snackbar.setBehavior(new SnackbarNoSwipeBehavior());
                 snackbar.show();
             } else {
+                checkForDynamicLink();
                 snackbar.dismiss();
             }
         });
@@ -163,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements
                 drawerLayout.closeDrawers();
                 break;
             case R.id.nav_menu_sub_refer_link:
-                Log.e("MainActivity", FirebaseAuth.getInstance().getCurrentUser().isAnonymous() + " anonymous " + FirebaseAuth.getInstance().getUid());
                 createReferLink();
                 break;
         }
@@ -188,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
         } else {
             String uid = user.getUid();
-            String link = "https://officialpickleindia.com/?invidedby=" + uid+ "&value="+"50 ";
+            String link = "https://officialpickleindia.com/?referredBy=" + uid + "&value=" + "50 ";
             DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
                     .setLink(Uri.parse(link))
                     .setDomainUriPrefix("https://officialpickleindia.page.link")

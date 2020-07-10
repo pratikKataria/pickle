@@ -81,5 +81,5 @@ public abstract class Constant {
     public static final int APARTMENT= 1223;
     public static final int INDIVIDUAL = 2341;
 
-    public  static final  int PRODUCT_CAT_COUNT = 4;
+    public static final String PERMISSION_PREFS_KEY = "permissions";
 }

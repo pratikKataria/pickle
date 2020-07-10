@@ -3,6 +3,7 @@ package com.pickleindia.pickle.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -31,21 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
-import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.cart.CartActivity;
-import com.pickleindia.pickle.databinding.FragmentHomeBinding;
-import com.pickleindia.pickle.interfaces.IFragmentCb;
-import com.pickleindia.pickle.interfaces.ImageUrlListener;
-import com.pickleindia.pickle.main.FirebaseSearchActivity;
-import com.pickleindia.pickle.main.MainActivity;
-import com.pickleindia.pickle.models.ProductModel;
-import com.pickleindia.pickle.ui.CarouselSliderView;
-import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
-import com.pickleindia.pickle.utils.BadgeDrawableUtils;
-import com.pickleindia.pickle.utils.Constant;
-import com.pickleindia.pickle.utils.NotifyRecyclerItems;
-import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +42,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.pickleindia.pickle.Login.LoginActivity;
+import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.cart.CartActivity;
+import com.pickleindia.pickle.databinding.FragmentHomeBinding;
+import com.pickleindia.pickle.interfaces.IFragmentCb;
+import com.pickleindia.pickle.interfaces.ImageUrlListener;
+import com.pickleindia.pickle.interfaces.ReferralBottomSheetListener;
+import com.pickleindia.pickle.main.FirebaseSearchActivity;
+import com.pickleindia.pickle.main.MainActivity;
+import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.ui.CarouselSliderView;
+import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
+import com.pickleindia.pickle.ui.ReferralRewardBottomSheet;
+import com.pickleindia.pickle.utils.BadgeDrawableUtils;
+import com.pickleindia.pickle.utils.Constant;
+import com.pickleindia.pickle.utils.NotifyRecyclerItems;
+import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -61,9 +66,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
-public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener {
+public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener, ReferralBottomSheetListener {
 
     private FragmentHomeBinding binding;
     private ArrayList<String> carouselImage;
@@ -78,6 +84,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     private static int itemCount;
     private static final int LIMIT = 2;
+    private ReferralRewardBottomSheet referralRewardBottomSheet;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -486,5 +493,24 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onSliderClick(BaseSliderView slider) {
         Toast.makeText(getActivity(), "Offers will be shown", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void open(String referredBy) {
+        referralRewardBottomSheet = new ReferralRewardBottomSheet(() -> {
+            if (FirebaseAuth.getInstance().getCurrentUser() == null && getActivity() != null) {
+                SharedPreferences sharedPrefsUtils = getActivity().getSharedPreferences(PERMISSION_PREFS_KEY, 0);
+                SharedPreferences.Editor editor = sharedPrefsUtils.edit();
+                editor.putString("referredBy", referredBy);
+                editor.apply();
+
+                startActivity(new Intent(getActivity(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                referralRewardBottomSheet.dismiss();
+            } else {
+                Toast.makeText(getActivity(), "referral only works for new user", Toast.LENGTH_LONG).show();
+                referralRewardBottomSheet.dismiss();
+            }
+        });
+        referralRewardBottomSheet.show(getActivity().getSupportFragmentManager(), "referralRewardBottomSheet");
     }
 }

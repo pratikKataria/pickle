@@ -1,6 +1,7 @@
 package com.pickleindia.pickle.Login
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -16,6 +17,7 @@ import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
+import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 
 class OtpActivity : AppCompatActivity() {
@@ -64,6 +66,14 @@ class OtpActivity : AppCompatActivity() {
                     if (isNew != null && isNew) {
                         updateAccountDetails()
                     } else {
+                        // if user is old user and has stored referral then this code invoked
+                        val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
+                        val referredBy = sharedPreferences.getString("referredBy", "")
+                        if (referredBy!!.isNotEmpty()) {
+                            Toast.makeText(this@OtpActivity, "Referral only works for new user", Toast.LENGTH_LONG).show()
+                            sharedPreferences.edit().remove("referredBy").apply()
+                        }
+
                         updateDeviceTokenForOldAccount()
                     }
                 }.addOnFailureListener {
@@ -83,7 +93,17 @@ class OtpActivity : AppCompatActivity() {
         data["userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
         data["username"] = " "
 
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
+        val referredBy = sharedPreferences.getString("referredBy", "")
+
+        if (referredBy!!.isEmpty()) {
+            data["referredBy"] = "NaN"
+        } else {
+            data["referredBy"] = referredBy
+        }
+
         reference.setValue(data).addOnSuccessListener {
+            sharedPreferences.edit().remove("referredBy").apply()
             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
