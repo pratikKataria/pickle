@@ -7,21 +7,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.transition.MaterialContainerTransform;
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.databinding.FragmentRewardBinding;
+import com.pickleindia.pickle.main.MainActivity;
 
 public class RewardFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        FragmentRewardBinding fragmentRewardBinding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_reward,
+                container,
+                false
+        );
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.Z, true));
 
-        return inflater.inflate(R.layout.fragment_reward, container, false);
+
+        fragmentRewardBinding.inviteMaterialButton.setOnClickListener(n -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).createReferLink();
+            }
+        });
+
+        return fragmentRewardBinding.getRoot();
     }
 
     @Override
