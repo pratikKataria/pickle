@@ -8,8 +8,11 @@ import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -17,6 +20,7 @@ import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
+import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 
@@ -111,15 +115,35 @@ class OtpActivity : AppCompatActivity() {
 
 
         reference.setValue(dataSet).addOnSuccessListener {
+            showRewardGivenDialog(sharedPreferences)
+        }
+
+    }
+
+    private fun showRewardGivenDialog(sharedPreferences: SharedPreferences) {
+        var alertDialog: AlertDialog? = null
+        val alertDialogBuilder = MaterialAlertDialogBuilder(this)
+        val binding: LayoutRewardGrantedAlertdialogBinding = DataBindingUtil.inflate(
+                layoutInflater,
+                R.layout.layout_reward_granted_alertdialog,
+                null,
+                false
+        )
+        alertDialogBuilder.setView(binding.root)
+        binding.nextBtn.setOnClickListener {
             sharedPreferences.edit().remove("referredBy").apply()
             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()
+            if (alertDialog != null)
+                alertDialog!!.dismiss()
         }
 
+        alertDialog = alertDialogBuilder.show()
     }
+
 
     private fun updateDeviceTokenForOldAccount() {
         val tokenDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers")
@@ -130,7 +154,7 @@ class OtpActivity : AppCompatActivity() {
         tokenDatabaseReference.setValue(FirebaseInstanceId.getInstance().token as String).addOnSuccessListener {
             checkAddress()
         }.addOnFailureListener {
-            Log.e("OtpActivity", it.message as String);
+            Log.e("OtpActivity", it.message as String)
         }
     }
 
