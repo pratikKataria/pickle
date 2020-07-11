@@ -84,25 +84,33 @@ class OtpActivity : AppCompatActivity() {
     private fun updateAccountDetails() {
         val reference = FirebaseDatabase.getInstance().getReference("Customers")
                 .child(FirebaseAuth.getInstance().uid!!)
-                .child("personalInformation")
 
-        val data: MutableMap<String, Any> = mutableMapOf()
-        data["creationDate"] = ServerValue.TIMESTAMP
-        data["deviceToken"] = FirebaseInstanceId.getInstance().token as String
-        data["userId"] = FirebaseAuth.getInstance().uid as String
-        data["userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
-        data["username"] = " "
+        val personalInformation: MutableMap<String, Any> = mutableMapOf()
+        personalInformation["creationDate"] = ServerValue.TIMESTAMP
+        personalInformation["deviceToken"] = FirebaseInstanceId.getInstance().token as String
+        personalInformation["userId"] = FirebaseAuth.getInstance().uid as String
+        personalInformation["userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
+        personalInformation["username"] = " "
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
         val referredBy = sharedPreferences.getString("referredBy", "")
 
+        val referralReward = mutableMapOf<String, Int>()
+
         if (referredBy!!.isEmpty()) {
-            data["referredBy"] = "NaN"
+            personalInformation["referredBy"] = "NaN"
+            referralReward["pcoins"] = 0
         } else {
-            data["referredBy"] = referredBy
+            personalInformation["referredBy"] = referredBy
+            referralReward["pcoins"] = 20
         }
 
-        reference.setValue(data).addOnSuccessListener {
+        val dataSet = mutableMapOf<String, Any>();
+        dataSet["personalInformation"] = personalInformation
+        dataSet["referralReward"] = referralReward
+
+
+        reference.setValue(dataSet).addOnSuccessListener {
             sharedPreferences.edit().remove("referredBy").apply()
             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
