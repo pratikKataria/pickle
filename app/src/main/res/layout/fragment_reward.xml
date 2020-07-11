@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="rewardEarned"
+            type="androidx.databinding.ObservableInt" />
     </data>
 
     <LinearLayout
@@ -67,16 +69,23 @@
                     android:layout_marginTop="12dp"
                     android:textColor="@android:color/black"
                     android:layout_gravity="center"
-                    android:text="\u20b9 42"/>
+                    android:text="@{`\u20b9 ` +rewardEarned/2}"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@android:color/black"
+                    android:layout_gravity="center"
+                    android:text="Reward earned"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@android:color/black"
-                    android:layout_gravity="center"
-                    android:text="Reward earned"/>
+                    android:text="@{`Total pcoins earned = ` + rewardEarned+`pts`}"
+                    android:layout_gravity="center"/>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
