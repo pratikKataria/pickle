@@ -44,76 +44,63 @@
             android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}">
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:id="@+id/imageView12"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/empty_cart_bg_image_height"
                 android:scaleType="fitXY"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="16:9"
+                android:src="@drawable/ic_bg_empty_cart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/empty_cart_img" />
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="175dp"
-                android:background="@drawable/ic_round_rect"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{() -> activity.finish()}"
+                android:src="@drawable/empty_cart_btn"
+                app:layout_constraintEnd_toEndOf="@+id/textView6"
+                app:layout_constraintStart_toStartOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Looks like you haven't made your choice yet"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_bold"
+                android:text="Your Cart is Empty"
+                android:textSize="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageView4">
+                app:layout_constraintTop_toBottomOf="@+id/imageView12" />
 
-                <ImageButton
-                    android:id="@+id/imageButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="@{() -> activity.finish()}"
-                    android:src="@drawable/empty_cart_btn"
-                    app:layout_constraintEnd_toEndOf="@+id/textView6"
-                    app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Looks like you haven't made your choice yet"
-                    android:textAlignment="center"
-                    app:layout_constraintEnd_toEndOf="@+id/textView5"
-                    app:layout_constraintHorizontal_bias="0.503"
-                    app:layout_constraintStart_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:fontFamily="@font/avenir_next_bold"
-                    android:text="Your Cart is Empty"
-                    android:textSize="24dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.503"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenir_next_bold"
-                    android:gravity="center"
-                    android:text="GO HOME"
-                    android:onClick="@{() -> activity.finish()}"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                    app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-                    app:layout_constraintStart_toStartOf="@+id/imageButton2"
-                    app:layout_constraintTop_toTopOf="@+id/imageButton2"
-                    app:layout_constraintVertical_bias="0.3" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenir_next_bold"
+                android:gravity="center"
+                android:text="GO HOME"
+                android:textColor="@color/white"
+                android:onClick="@{() -> activity.finish()}"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
+                app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+                app:layout_constraintStart_toStartOf="@+id/imageButton2"
+                app:layout_constraintTop_toTopOf="@+id/imageButton2"
+                app:layout_constraintVertical_bias="0.3" />
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipGroup"
@@ -184,15 +171,15 @@
                         app:chipStrokeWidth="1dp"
                         app:rippleColor="@color/chipColorSearchFilterUnselected" />
                 </com.google.android.material.chip.ChipGroup>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!--        second layout-->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/cartView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            tools:visibility="gone"
             android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
 
             <androidx.core.widget.NestedScrollView

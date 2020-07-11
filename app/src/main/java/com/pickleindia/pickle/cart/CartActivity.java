@@ -82,7 +82,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_view);
         getShoppingCart();
-        setTransparentStatusBar();
 
         binding.setActivity(this);
         binding.getCartViewModel().getDatabaseAddress();

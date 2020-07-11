@@ -2,4 +2,5 @@
 <resources>
 <!--    <dimen name="crd_view_empty_orders_width"></dimen>-->
     <dimen name="crd_view_empty_orders_height">125dp</dimen>
+    <dimen name="empty_cart_bg_image_height">311dp</dimen>
 </resources>
