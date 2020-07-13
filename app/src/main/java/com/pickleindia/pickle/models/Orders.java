@@ -3,26 +3,34 @@ package com.pickleindia.pickle.models;
 import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.interfaces.Visitor;
 
-import java.util.ArrayList;
-
 public class Orders implements Visitable {
     private long date;
     private String orderDetailsIds;
     private String orderId;
     private int orderStatus;
-    private int pCoinsSpent;
     private String userId;
+    private int subTotal;
+    private int pcoinsSpent;
+    private String paymentMethod;
+    private String deliveryTime;
+    private String address;
+    private int shipping;
 
     public boolean isPastOrder;
     public int totalProduct;
 
-    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pCoinsSpent, String userId) {
+    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pcoinsSpent, String userId, int subTotal, String paymentMethod, String deliveryTime, String address, int shipping) {
         this.date = date;
         this.orderDetailsIds = orderDetailsIds;
         this.orderId = orderId;
         this.orderStatus = orderStatus;
-        this.pCoinsSpent = pCoinsSpent;
+        this.pcoinsSpent = pcoinsSpent;
         this.userId = userId;
+        this.subTotal = subTotal;
+        this.paymentMethod = paymentMethod;
+        this.deliveryTime = deliveryTime;
+        this.address = address;
+        this.shipping = shipping;
     }
 
     public Orders() {}
@@ -59,12 +67,12 @@ public class Orders implements Visitable {
         this.orderStatus = orderStatus;
     }
 
-    public int getpCoinsSpent() {
-        return pCoinsSpent;
+    public int getPcoinsSpent() {
+        return pcoinsSpent;
     }
 
-    public void setpCoinsSpent(int pCoinsSpent) {
-        this.pCoinsSpent = pCoinsSpent;
+    public void setPcoinsSpent(int pcoinsSpent) {
+        this.pcoinsSpent = pcoinsSpent;
     }
 
     public String getUserId() {
@@ -78,5 +86,45 @@ public class Orders implements Visitable {
     @Override
     public int accept(Visitor visitor) {
         return visitor.type(this);
+    }
+
+    public int getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(int subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(int shipping) {
+        this.shipping = shipping;
     }
 }

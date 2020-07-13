@@ -61,6 +61,14 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         orderBinding.setVisitor(new VisitorForList());
         orderBinding.setOrders(orders);
 
+        int calcFinalTotal = (orders.getSubTotal() + orders.getShipping()) - orders.getPcoinsSpent();
+
+        if (calcFinalTotal > 0) {
+            orderBinding.finalTotalAmount.setText(String.valueOf(calcFinalTotal));
+        } else {
+            orderBinding.finalTotalAmount.setText("invalid");
+        }
+
         databaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS).child(orderId);
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

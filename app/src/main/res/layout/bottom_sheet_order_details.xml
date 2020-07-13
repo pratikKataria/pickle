@@ -143,27 +143,6 @@
                             tools:text="date" />
 
                         <TextView
-                            android:id="@+id/textView38"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@{`Total amount: `}"
-                            app:layout_constraintStart_toStartOf="@+id/textView34"
-                            app:layout_constraintTop_toBottomOf="@+id/textView34"
-                            tools:text="Total " />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:text="@{`Total amount: `}"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView38"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView34"
-                            app:layout_constraintVertical_bias="1.0"
-                            tools:text="Total " />
-
-                        <TextView
                             android:id="@+id/textView40"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -171,17 +150,60 @@
                             android:layout_marginStart="16dp"
                             android:text="@{orders.totalProduct+1> 1?`Total products: `:`Total product`}"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView38"
+                            app:layout_constraintTop_toBottomOf="@+id/textView34"
                             tools:text="Total products " />
+
+                        <TextView
+                            android:id="@+id/textView37"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@{``+orders.totalProduct}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView40"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView40"
+                            tools:text="Total products " />
+
+                        <TextView
+                            android:id="@+id/textView41"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_marginStart="16dp"
+                            android:text="Delivery Time: "
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView40"
+                            tools:text="Delivery Time: " />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{``+orders.totalProduct}"
+                            android:text="@{orders.deliveryTime}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView41"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView38"
-                            tools:text="Total products " />
+                            app:layout_constraintTop_toTopOf="@+id/textView41"
+                            tools:text="delivery Time " />
+
+                        <TextView
+                            android:id="@+id/textView42"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_marginStart="16dp"
+                            android:text="Address: "
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView41"
+                            tools:text="Address: " />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="@{orders.address}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView42"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView42" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,7 +229,7 @@
                     app:layout_constraintStart_toStartOf="@+id/textViews"
                     app:layout_constraintTop_toBottomOf="@+id/textViews">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -218,33 +240,109 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView32">
 
                         <TextView
+                            android:id="@+id/textView45"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{`Order id: ` +orders.orderId}"
-                            tools:text="orderId" />
+                            android:text="Payment Mode: "
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
-                            android:id="@+id/asdfasdfas"
+                            android:id="@+id/textView48"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{orders.isPastOrder ? `Date: `+ DateUtils.getServerDate(orders.date): `Date: `+DateUtils.currentDate}"
-                            tools:text="date" />
+                            android:text="Cash on delivery"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView45"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView45" />
+
+                        <TextView
+                            android:id="@+id/textView38"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="Sub Total"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView45" />
+
+                        <TextView
+                            android:id="@+id/textView49"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{``+ orders.subTotal}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView38"
+                            app:layout_constraintEnd_toEndOf="@+id/textView48"
+                            app:layout_constraintTop_toTopOf="@+id/textView38"
+                            app:layout_constraintVertical_bias="1.0"
+                            tools:text="Total " />
+
+                        <TextView
+                            android:id="@+id/textView50"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="Shipping: "
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView38" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{`Total amount: `}" />
+                            android:text="@{orders.shipping > 0?`+`+orders.shipping:``+orders.shipping}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView50"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView38" />
+
+                        <TextView
+                            android:id="@+id/textView51"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="44dp"
+                            android:text="PCoins Spent: "
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{`Total products: `}" />
+                            android:text="@{orders.pcoinsSpent > 0?`-`+orders.pcoinsSpent:` `+orders.pcoinsSpent}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView51"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView51"
+                            tools:text="pcoins" />
 
-                    </LinearLayout>
+                        <ImageView
+                            android:id="@+id/imageView14"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:src="@drawable/dash_hrztl_line"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/textView48"
+                            app:layout_constraintTop_toBottomOf="@+id/textView51" />
+
+                        <TextView
+                            android:id="@+id/textView43"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total: "
+                            app:layout_constraintStart_toStartOf="@+id/textView51"
+                            app:layout_constraintTop_toBottomOf="@+id/imageView14" />
+
+                        <TextView
+                            android:id="@+id/final_total_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView43" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
                 <TextView

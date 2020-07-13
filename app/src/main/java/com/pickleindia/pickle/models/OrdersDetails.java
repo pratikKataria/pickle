@@ -12,35 +12,26 @@ public class OrdersDetails implements Visitable {
     private int itemBasePrice;
     private int itemSellPrice;
     private String itemCategory;
-    private String address;
-    private String deliveryTime;
+    private String itemName;
 
     public transient boolean isPastOrder;
     public transient String orderId;
     public transient int status;
     public transient long date;
 
-    public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, int itemSellPrice, String itemCategory, String address, String deliveryTime) {
+    public OrdersDetails(String itemId, String itemThumbImage, int itemQty, int itemBasePrice, int itemSellPrice, String itemCategory, String itemName) {
         this.itemId = itemId;
         this.itemThumbImage = itemThumbImage;
         this.itemQty = itemQty;
         this.itemBasePrice = itemBasePrice;
         this.itemSellPrice = itemSellPrice;
         this.itemCategory = itemCategory;
-        this.address = address;
-        this.deliveryTime = deliveryTime;
+        this.itemName = itemName;
     }
 
 
     public OrdersDetails() { }
 
-    public String getDeliveryTime() {
-        return deliveryTime;
-    }
-
-    public void setDeliveryTime(String deliveryTime) {
-        this.deliveryTime = deliveryTime;
-    }
 
     public String getItemId() {
         return itemId;
@@ -66,15 +57,6 @@ public class OrdersDetails implements Visitable {
         this.itemCategory = itemCategory;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-
     public String getItemThumbImage() {
         return itemThumbImage;
     }
@@ -95,8 +77,6 @@ public class OrdersDetails implements Visitable {
                 ", itemQty=" + itemQty +
                 ", itemBasePrice=" + itemBasePrice +
                 ", itemCategory='" + itemCategory + '\'' +
-                ", address='" + address + '\'' +
-                ", deliveryTime='" + deliveryTime + '\'' +
                 ", status ='" + status + '\'' +' ' +  + '}';
     }
 
@@ -120,5 +100,13 @@ public class OrdersDetails implements Visitable {
 
     public void setItemSellPrice(int itemSellPrice) {
         this.itemSellPrice = itemSellPrice;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 }

@@ -1,7 +1,6 @@
 package com.pickleindia.pickle.adapters.viewholders;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
@@ -19,6 +18,7 @@ import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.CardviewOrdersBinding;
 import com.pickleindia.pickle.models.Orders;
 import com.pickleindia.pickle.ui.OrderDetailsBottomSheet;
+
 import static com.pickleindia.pickle.utils.Constant.ORDERS_DETAILS;
 
 public class OrdersViewHolder extends AbstractViewHolder<Orders> {
@@ -77,6 +77,5 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
             }
         }
     }
-
 
 }

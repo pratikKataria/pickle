@@ -229,6 +229,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         HashMap<String, Object> atomicOperation = new HashMap<>();
         try {
             List<ProductModel> productCartList = binding.getCartList();
+            int calcTotal = 0;
             String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
             StringBuilder orderDetailsIds = new StringBuilder();
             for (ProductModel product : productCartList) {
@@ -239,10 +240,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         product.getItemBasePrice(),
                         product.getItemSellPrice(),
                         product.getItemCategory(),
-                        binding.getCartViewModel().getFirebaseDatabaseAddress(),
-                        binding.getCartViewModel().getDeliveryTime()
+                        product.getItemName()
                 ));
                 orderDetailsIds.append(product.getItemId()).append(" ");
+                if (product.getItemSellPrice() > 0) {
+                    calcTotal += product.getItemSellPrice();
+                } else {
+                    calcTotal += product.getItemBasePrice();
+                }
             }
 
             long localTimestamp = System.currentTimeMillis();
@@ -252,6 +257,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
+            atomicOperation.put("Orders/" + key + "/pcoinsSpent", 0);
+            atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
+            atomicOperation.put("Orders/" + key + "/shipping", 0);
+            atomicOperation.put("Orders/" + key + "/deliveryTime", binding.getCartViewModel().getDeliveryTime());
+            atomicOperation.put("Orders/" + key + "/address", binding.getCartViewModel().getFirebaseDatabaseAddress());
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
