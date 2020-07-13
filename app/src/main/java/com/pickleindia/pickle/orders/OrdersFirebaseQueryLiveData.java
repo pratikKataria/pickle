@@ -7,10 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
-import com.pickleindia.pickle.models.Operation;
-import com.pickleindia.pickle.models.Orders;
-import com.pickleindia.pickle.models.OrdersDetails;
-import com.pickleindia.pickle.utils.DateUtils;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +14,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.pickleindia.pickle.models.Operation;
+import com.pickleindia.pickle.models.Orders;
+import com.pickleindia.pickle.utils.DateUtils;
+
+import java.util.Random;
 
 import static com.pickleindia.pickle.utils.Constant.ADD;
 import static com.pickleindia.pickle.utils.Constant.MODIFIED;
@@ -51,38 +52,24 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation>  {
         @SuppressLint("LongLogTag")
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
             String key = dataSnapshot.getKey();
-            Log.e("TAG ", key);
 
             DatabaseReference orderDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS).child(key);
             Query orderQuery = orderDatabaseReference.orderByChild("date");
             orderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot ordersDataSnapshot) {
+                    String ids = ordersDataSnapshot.child("orderDetailsIds").getValue(String.class);
+
+                    if (ids == null) return;
+
                     Orders orders = ordersDataSnapshot.getValue(Orders.class);
+                    if (orders != null && orders.getOrderId() != null && ordersDataSnapshot.exists()) {
+                        orders.isPastOrder = !DateUtils.isEqual(orders.getDate());
+                        Operation<Orders> operation = new Operation<>(orders, ADD);
+                        setValue(operation);
+                    }
 
-                    DatabaseReference orderDetailsDatabaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS).child(key);
-                    orderDetailsDatabaseReference.keepSynced(true);
-                    orderDetailsDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot orderDetailsDataSnapshot) {
-                                if (orders != null && orders.getOrderId() != null && orderDetailsDataSnapshot.exists()) {
-                                    OrdersDetails ordersDetails = orderDetailsDataSnapshot.getValue(OrdersDetails.class);
-                                    ordersDetails.date = orders.getDate();
-                                    ordersDetails.isPastOrder =  !DateUtils.isEqual(orders.getDate());
-                                    ordersDetails.status = orders.getOrderStatus();
-                                    ordersDetails.orderId = orders.getOrderId();
-                                    Operation<OrdersDetails> operation = new Operation<>(ordersDetails, ADD);
-                                    setValue(operation);
-                                }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
                 }
 
                 @Override

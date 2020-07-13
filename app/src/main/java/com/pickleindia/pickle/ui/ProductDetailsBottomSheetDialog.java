@@ -22,6 +22,7 @@ public class ProductDetailsBottomSheetDialog extends BottomSheetDialogFragment {
 
     private ProductModel productModel;
 
+
     public ProductDetailsBottomSheetDialog() {
 
     }

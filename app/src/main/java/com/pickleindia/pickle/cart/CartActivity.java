@@ -23,6 +23,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.pickleindia.pickle.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
@@ -35,15 +44,6 @@ import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -173,8 +173,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         alertDialogBuilder.setCancelable(false);
         alertDialog = alertDialogBuilder.create();
 
-        confirmOrderBinding.totalPriceTextView.setText(String.format("total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
-        confirmOrderBinding.quantityTextView.setText(String.format("total price %s", binding.amountToBePaid.getText().toString()));
+        confirmOrderBinding.totalPriceTextView.setText(String.format("Total price %s", binding.amountToBePaid.getText().toString()));
+        confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
         alertDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
@@ -229,9 +229,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         HashMap<String, Object> atomicOperation = new HashMap<>();
         try {
             List<ProductModel> productCartList = binding.getCartList();
+            String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
+            StringBuilder orderDetailsIds = new StringBuilder();
             for (ProductModel product : productCartList) {
-                String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
-                atomicOperation.put("OrdersDetails/" + key, new OrdersDetails(
+                atomicOperation.put("OrdersDetails/" + key + "/" + product.getItemId(), new OrdersDetails(
                         product.getItemId(),
                         product.getItemThumbImage(),
                         product.getQuantityCounter(),
@@ -241,17 +242,19 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         binding.getCartViewModel().getFirebaseDatabaseAddress(),
                         binding.getCartViewModel().getDeliveryTime()
                 ));
-
-                long localTimestamp = System.currentTimeMillis();
-
-                atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
-                atomicOperation.put("Orders/" + key + "/orderId", key);
-                atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
-                atomicOperation.put("Orders/" + key + "/date", localTimestamp);
-
-                atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
-                atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
+                orderDetailsIds.append(product.getItemId()).append(" ");
             }
+
+            long localTimestamp = System.currentTimeMillis();
+
+            atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
+            atomicOperation.put("Orders/" + key + "/orderId", key);
+            atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
+            atomicOperation.put("Orders/" + key + "/date", localTimestamp);
+            atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
+
+            atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
+            atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage() + "");

@@ -6,7 +6,6 @@ import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.interfaces.Visitor;
 
 public class OrdersDetails implements Visitable {
-    private String userId;
     private String itemId;
     private String itemThumbImage;
     private int itemQty;
@@ -75,13 +74,6 @@ public class OrdersDetails implements Visitable {
         this.address = address;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getItemThumbImage() {
         return itemThumbImage;
@@ -98,7 +90,6 @@ public class OrdersDetails implements Visitable {
     @Override
     public String toString() {
         return "OrdersDetails{" +
-                "userId='" + userId + '\'' +
                 ", itemId='" + itemId + '\'' +
                 ", date='" + itemThumbImage + '\'' +
                 ", itemQty=" + itemQty +
@@ -118,7 +109,7 @@ public class OrdersDetails implements Visitable {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof OrdersDetails) {
             OrdersDetails ordersDetails = (OrdersDetails) obj;
-            return ordersDetails.orderId.equals(orderId);
+            return ordersDetails.itemId.equals(itemId);
         }
         return false;
     }

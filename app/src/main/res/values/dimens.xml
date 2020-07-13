@@ -23,4 +23,6 @@
     <dimen name="crd_view_empty_orders_height">150dp</dimen>
     <dimen name="empty_cart_bg_image_height">311dp</dimen>
 
+    <dimen name="orderCardThumbImage">55dp</dimen>
+
 </resources>

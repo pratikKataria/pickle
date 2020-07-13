@@ -1,27 +1,44 @@
 package com.pickleindia.pickle.models;
 
-public class Orders {
-    private String userId;
+import com.pickleindia.pickle.interfaces.Visitable;
+import com.pickleindia.pickle.interfaces.Visitor;
+
+import java.util.ArrayList;
+
+public class Orders implements Visitable {
+    private long date;
+    private String orderDetailsIds;
     private String orderId;
     private int orderStatus;
-    private long date;
+    private int pCoinsSpent;
+    private String userId;
+    public boolean isPastOrder;
+
+    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pCoinsSpent, String userId) {
+        this.date = date;
+        this.orderDetailsIds = orderDetailsIds;
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        this.pCoinsSpent = pCoinsSpent;
+        this.userId = userId;
+    }
 
     public Orders() {}
 
+    public long getDate() {
+        return date;
+    }
 
-    public Orders(String userId, String orderId, int orderStatus, long date) {
-        this.userId = userId;
-        this.orderId = orderId;
-        this.orderStatus = orderStatus;
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getOrderDetailsIds() {
+        return orderDetailsIds;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setOrderDetailsIds(String orderDetailsIds) {
+        this.orderDetailsIds = orderDetailsIds;
     }
 
     public String getOrderId() {
@@ -40,21 +57,24 @@ public class Orders {
         this.orderStatus = orderStatus;
     }
 
-    public long getDate() {
-        return date;
+    public int getpCoinsSpent() {
+        return pCoinsSpent;
     }
 
-    public void setDate(long date) {
-        this.date = date;
+    public void setpCoinsSpent(int pCoinsSpent) {
+        this.pCoinsSpent = pCoinsSpent;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @Override
-    public String toString() {
-        return "Orders{" +
-                "userId='" + userId + '\'' +
-                ", orderId='" + orderId + '\'' +
-                ", orderStatus=" + orderStatus +
-                ", date=" + date +
-                '}';
+    public int accept(Visitor visitor) {
+        return visitor.type(this);
     }
 }

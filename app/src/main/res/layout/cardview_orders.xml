@@ -7,13 +7,13 @@
 
         <import type="android.view.View"/>
         <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
-        <import type="com.pickleindia.pickle.models.OrdersDetails"/>
+        <import type="com.pickleindia.pickle.models.Orders" />
         <import type="com.pickleindia.pickle.utils.DateUtils"/>
         <import type="com.pickleindia.pickle.utils.OrderStatus"/>
 
         <variable
             name="orderDetails"
-            type="OrdersDetails"/>
+            type="Orders" />
 
         <variable
             name="name"
@@ -24,8 +24,8 @@
         android:id="@+id/cardViewOrders"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="2dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="8dp"
@@ -44,137 +44,95 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
 
-            <ImageView
-                android:id="@+id/card_view_iv_product_image"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/image2"
+                    android:layout_width="@dimen/orderCardThumbImage"
+                    android:layout_height="@dimen/orderCardThumbImage"
+                    app:layout_constraintStart_toEndOf="@+id/image1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/image3"
+                    android:layout_width="@dimen/orderCardThumbImage"
+                    android:layout_height="@dimen/orderCardThumbImage"
+                    app:layout_constraintStart_toStartOf="@+id/image1"
+                    app:layout_constraintTop_toBottomOf="@+id/image1" />
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="@dimen/orderCardThumbImage"
+                    android:layout_height="@dimen/orderCardThumbImage"
+                    app:layout_constraintEnd_toEndOf="@+id/image2"
+                    app:layout_constraintStart_toEndOf="@+id/image3"
+                    app:layout_constraintTop_toBottomOf="@+id/image2" />
+
+                <ImageView
+                    android:id="@+id/image1"
+                    android:layout_width="@dimen/orderCardThumbImage"
+                    android:layout_height="@dimen/orderCardThumbImage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="8dp"
-                app:imageResourceAdapter="@{orderDetails.itemThumbImage}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintDimensionRatio="h,1:1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:text="@{`Order id: ` +orderDetails.orderId}"
+                    android:layout_margin="4dp"
+                    tools:text="orderId" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{orderDetails.isPastOrder ? `Date: `+ DateUtils.getServerDate(orderDetails.date): `Date: `+DateUtils.currentDate}"
+                    tools:text="date" />
 
-                        <TextView
-                            android:id="@+id/card_view_tv_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toEndOf="@+id/card_view_iv_product_image"
-                            android:padding="4dp"
-                            android:text="@{name}"
-                            android:layout_weight="1"
-                            app:layout_constraintEnd_toStartOf="@+id/orderStatusTv"
-                            app:layout_constraintStart_toEndOf="@+id/card_view_iv_product_image"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="name" />
+                <TextView
+                    android:id="@+id/total_amount_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{`Total amount: `}" />
 
-                        <TextView
-                            android:id="@+id/orderStatusTv"
-                            orderStatusText="@{orderDetails.status}"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:textSize="10dp"
-                            android:fontFamily="@font/avenir_next_demi_bold"
-                            android:textAlignment="center"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="@{`Total products: `}" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/card_view_iv_base_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
-                            app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
-                            app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
-                            app:strikeThrough="@{orderDetails.itemSellPrice > 0}"
-                            tools:text="base price" />
-
-                        <TextView
-                            android:id="@+id/card_view_iv_sell_price"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="4dp"
-                            android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
-                            app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
-                            app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
-                            android:visibility="@{orderDetails.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
-                            tools:text="sell price" />
-                    </LinearLayout>
-
-
-
-                    <TextView
-                        android:id="@+id/card_view_tv_qty"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{`Qty:`+orderDetails.itemQty}"
-                        app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
-                        app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
-                        tools:text=" Qty: 323" />
-
-                    <TextView
-                        android:id="@+id/card_view_tv_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_toEndOf="@+id/card_view_iv_product_image"
-                        android:text="@{orderDetails.isPastOrder ?  DateUtils.getServerDate(orderDetails.date): DateUtils.currentDate}"
-                        app:layout_constraintEnd_toStartOf="@+id/cancel_button_mb"
-                        app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
-                        app:layout_constraintTop_toBottomOf="@+id/card_view_iv_base_price"
-                        tools:text="dat" />
-
-                    <TextView
-                        android:id="@+id/card_view_order_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:textSize="12sp"
-                        android:text="@{`Order ID:`+orderDetails.orderId}"
-                        tools:text="order id"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/cancel_button_mb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="42dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:includeFontPadding="false"
-                        android:backgroundTint="@color/secondaryColorLight"
-                        android:text="cancel"
-                        android:textColor="@color/secondaryColorDark"
-                        android:textSize="10sp"
-                        android:visibility="@{orderDetails.isPastOrder || orderDetails.status ==  OrderStatus.DELIVERED || orderDetails.status ==  OrderStatus.CANCEL ?View.GONE:View.VISIBLE}"
-                        app:cornerRadius="4dp"
-                        app:elevation="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                </LinearLayout>
-
+            </LinearLayout>
         </LinearLayout>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            android:layout_gravity="bottom|center"
+            android:text="tap to view products" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:layout_gravity="end|bottom"
+            android:fontFamily="@font/avenir_next_bold"
+            app:orderStatusText="@{orderDetails.orderStatus}" />
     </androidx.cardview.widget.CardView>
 </layout>

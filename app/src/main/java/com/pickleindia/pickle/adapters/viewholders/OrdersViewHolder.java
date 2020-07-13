@@ -1,30 +1,26 @@
 package com.pickleindia.pickle.adapters.viewholders;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.Toast;
+import android.widget.ImageView;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.ObservableInt;
 
-import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.databinding.CardviewOrdersBinding;
-import com.pickleindia.pickle.models.OrdersDetails;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import java.util.HashMap;
-import java.util.Map;
-import static com.pickleindia.pickle.utils.Constant.ORDERS;
-import static com.pickleindia.pickle.utils.Constant.ORDERS_CANCELLED;
-import static com.pickleindia.pickle.utils.Constant.PRODUCT;
-import static com.pickleindia.pickle.utils.OrderStatus.CANCEL;
+import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.databinding.CardviewOrdersBinding;
+import com.pickleindia.pickle.models.Orders;
+import com.pickleindia.pickle.ui.OrderDetailsBottomSheet;
+import static com.pickleindia.pickle.utils.Constant.ORDERS_DETAILS;
 
-public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
+public class OrdersViewHolder extends AbstractViewHolder<Orders> {
     @LayoutRes
     public static final int LAYOUT = R.layout.cardview_orders;
 
@@ -38,62 +34,40 @@ public class OrdersViewHolder extends AbstractViewHolder<OrdersDetails> {
     }
 
     @Override
-    public void bind(OrdersDetails element) {
+    public void bind(Orders element) {
         binding.setOrderDetails(element);
-        setName(element.getItemCategory(), element.getItemId());
-        binding.cancelButtonMb.setOnClickListener(n -> showAlertDialog());
+        loadThumbImage(element.getOrderDetailsIds(), element.getOrderId());
+
+        binding.cardViewOrders.setOnClickListener(n -> {
+            OrderDetailsBottomSheet orderDetailsBottomSheet = new OrderDetailsBottomSheet(element.getOrderId(), element);
+            orderDetailsBottomSheet.show(((AppCompatActivity)context).getSupportFragmentManager(), "orderDetails");
+            orderDetailsBottomSheet.setCancelable(false);
+        });
+
         binding.executePendingBindings();
     }
 
-    private void setName(String productCategory, String productId) {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(PRODUCT +"/"+ productCategory+"/"+productId+"/itemName");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.getValue(String.class);
-                binding.setName(name);
+    private void loadThumbImage(String ids, String key) {
+        String[] id = ids.split(" ");
+        ImageView[] thumbImage = {binding.image1, binding.image2, binding.image3, binding.image4};
+        final ObservableInt index = new ObservableInt(0);
+        for (int i = 0; i < 4; i++) {
+            if (i <= id.length-1) {
+                DatabaseReference imagesLoader = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS).child(key).child(id[i]).child("itemThumbImage");
+                ValueEventListener valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot imageSnapshot) {
+                        Glide.with(context).load(imageSnapshot.getValue(String.class)).into(thumbImage[index.get()]);
+                        index.set(index.get() + 1);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                };
+                imagesLoader.addListenerForSingleValueEvent(valueEventListener);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void showAlertDialog() {
-        AlertDialog alertDialog = null;
-        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme);
-        materialAlertDialogBuilder.setTitle("Would like to cancel the order?");
-        materialAlertDialogBuilder.setMessage("Canceling the order would take some time to and notifies after a while.");
-        materialAlertDialogBuilder.setPositiveButton("Back", (dialog, which) -> {
-                ;
-        }).setNegativeButton("Cancel Order", (dialog, which) -> {
-            cancelOrder(binding.getOrderDetails().orderId);
-        });
-
-        alertDialog = materialAlertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void cancelOrder(String ordersId) {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        Map<String, Object> atomicUpdate = new HashMap<>();
-        atomicUpdate.put(ORDERS + "/" + ordersId + "/" + "orderStatus", CANCEL);
-        atomicUpdate.put(ORDERS_CANCELLED + "/" + ordersId + "/" + "orderId", ordersId);
-        atomicUpdate.put(ORDERS_CANCELLED + "/" + ordersId + "/" + "date", ServerValue.TIMESTAMP);
-
-        databaseReference.updateChildren(atomicUpdate).addOnSuccessListener(task -> {
-            Toast.makeText(context, "order cancel successfully", Toast.LENGTH_SHORT).show();
-            binding.orderStatusTv.setText("processing cancellation");
-            binding.getOrderDetails().status = CANCEL;
-            binding.cancelButtonMb.setVisibility(View.GONE);
-            binding.progressBar.setVisibility(View.GONE);
-        }).addOnFailureListener(taskFailed -> {
-            Toast.makeText(context, "failed to cancel order", Toast.LENGTH_SHORT).show();
-            binding.progressBar.setVisibility(View.GONE);
-        });
+        }
     }
 }

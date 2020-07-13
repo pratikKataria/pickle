@@ -108,8 +108,8 @@ public class OrdersPlacedFragment extends Fragment {
                             if (!pastOrdersList.contains(loadingModel) && pastOrdersList.size() >= 2) {
                                 addLoadingView();
 
-                                OrdersDetails ordersDateOrderId = (OrdersDetails) pastOrdersList.get(pastOrdersList.size() - 2);
-                                ordersViewModel.loadMoreOrders(ordersDateOrderId.date + "_" + ordersDateOrderId.orderId).observe(getViewLifecycleOwner(), operation -> {
+                                Orders ordersDateOrderId = (Orders) pastOrdersList.get(pastOrdersList.size() - 2);
+                                ordersViewModel.loadMoreOrders(ordersDateOrderId.getDate() + "_" + ordersDateOrderId.getOrderId()).observe(getViewLifecycleOwner(), operation -> {
                                     addOrdersToType(operation);
                                     if ((pastOrdersList.size() - pastOrdersList.indexOf(loadingModel)) - 1 == LIMIT - 1) {
                                         removeLoadingView();
@@ -139,7 +139,7 @@ public class OrdersPlacedFragment extends Fragment {
     private void addOrdersToType(Operation operation) {
         switch (operation.mode) {
             case ADD:
-                OrdersDetails newOrdersDetails = (OrdersDetails) operation.aClass;
+                Orders newOrdersDetails = (Orders) operation.aClass;
                 if (newOrdersDetails.isPastOrder) addPastOrders(newOrdersDetails);
                 else addOrders(newOrdersDetails);
                 break;
@@ -153,14 +153,14 @@ public class OrdersPlacedFragment extends Fragment {
         }
     }
 
-    private void addOrders(OrdersDetails addOrdersDetails) {
+    private void addOrders(Orders addOrdersDetails) {
         if (!ordersList.contains(addOrdersDetails)) {
             ordersList.add(addOrdersDetails);
             NotifyRecyclerItems.notifyItemRemovedAt(binding.recyclerView, ordersList.indexOf(addOrdersDetails));
         }
     }
 
-    private void addPastOrders(OrdersDetails pastOrderDetails) {
+    private void addPastOrders(Orders pastOrderDetails) {
         if (!pastOrdersList.contains(pastOrderDetails)) {
             pastOrdersList.add(pastOrderDetails);
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerViewPastOrders, pastOrdersList.size());
