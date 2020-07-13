@@ -29,7 +29,6 @@
             name="intent"
             type="android.content.Intent" />
     </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -91,78 +90,82 @@
                         android:layout_height="45dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_arrow_left"
-                        android:onClick="@{() -> activity.onBackPressed()}"/>
+                        android:onClick="@{() -> activity.onBackPressed()}" />
                 </androidx.cardview.widget.CardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeToRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <include layout="@layout/cart_notice_layout" />
-                <include layout="@layout/layout_order_delivery_summery"/>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="22dp"
-                    android:layout_marginEnd="22dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/dash_hrztl_line" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ongoing orders"
-                    android:layout_marginTop="8dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:clipToPadding="false"
-                    orderPlacedList="@{ordersList}"
-                    visitor="@{visitor}"/>
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Past orders"
-                    android:layout_marginTop="16dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                    <include layout="@layout/cart_notice_layout" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewPastOrders"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="52dp"
-                    android:clipToPadding="false"
-                    android:layout_marginTop="8dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:nestedScrollingEnabled="false"
-                    app:pastOrdersList="@{pastOrdersList}"
-                    visitor="@{visitor}"/>
+                    <include layout="@layout/layout_order_delivery_summery" />
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="22dp"
+                        android:layout_marginEnd="22dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/dash_hrztl_line" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ongoing orders"
+                        android:layout_marginTop="8dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:clipToPadding="false"
+                        orderPlacedList="@{ordersList}"
+                        visitor="@{visitor}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Past orders"
+                        android:layout_marginTop="16dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewPastOrders"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="52dp"
+                        android:clipToPadding="false"
+                        android:layout_marginTop="8dp"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                        android:nestedScrollingEnabled="false"
+                        app:pastOrdersList="@{pastOrdersList}"
+                        visitor="@{visitor}" />
+
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
 </layout>

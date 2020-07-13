@@ -66,6 +66,7 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
                     public void onDataChange(@NonNull DataSnapshot imageSnapshot) {
                         Glide.with(context).load(imageSnapshot.getValue(String.class)).into(thumbImage[index.get()]);
                         index.set(index.get() + 1);
+                        binding.executePendingBindings();
                     }
 
                     @Override

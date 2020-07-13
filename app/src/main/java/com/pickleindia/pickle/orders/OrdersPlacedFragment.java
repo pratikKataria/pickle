@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.VisitorForList;
@@ -77,15 +78,33 @@ public class OrdersPlacedFragment extends Fragment {
         initRecyclerViewScrollListener();
 
         ordersViewModel = new ViewModelProvider(this).get(OrdersViewModel.class);
+
+        loadOrders();
+
+        updateHeaderView();
+
+        binding.swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ordersList.clear();
+                updateHeaderView();
+                loadOrders();
+            }
+        });
+
+        return binding.getRoot();
+    }
+
+    private void loadOrders() {
         LiveData<Operation> firebaseQueryLiveData = ordersViewModel.orders();
 
         firebaseQueryLiveData.observe(getViewLifecycleOwner(), operation -> {
             updateHeaderView();
             addOrdersToType(operation);
+            if (binding.swipeToRefresh.isRefreshing()) {
+                binding.swipeToRefresh.setRefreshing(false);
+            }
         });
-
-        updateHeaderView();
-        return binding.getRoot();
     }
 
     private void initRecyclerViewScrollListener() {
@@ -106,15 +125,15 @@ public class OrdersPlacedFragment extends Fragment {
                         if (firstVisibleProductPosition + visibleProductCount == totalProductCount) {
                             LoadingModel loadingModel = LoadingModel.getInstance();
                             if (!pastOrdersList.contains(loadingModel) && pastOrdersList.size() >= 2) {
-                                addLoadingView();
+//                                addLoadingView();
 
-                                Orders ordersDateOrderId = (Orders) pastOrdersList.get(pastOrdersList.size() - 2);
-                                ordersViewModel.loadMoreOrders(ordersDateOrderId.getDate() + "_" + ordersDateOrderId.getOrderId()).observe(getViewLifecycleOwner(), operation -> {
-                                    addOrdersToType(operation);
-                                    if ((pastOrdersList.size() - pastOrdersList.indexOf(loadingModel)) - 1 == LIMIT - 1) {
-                                        removeLoadingView();
-                                    }
-                                });
+//                                Orders ordersDateOrderId = (Orders) pastOrdersList.get(pastOrdersList.size() - 2);
+//                                ordersViewModel.loadMoreOrders(ordersDateOrderId.getDate() + "_" + ordersDateOrderId.getOrderId()).observe(getViewLifecycleOwner(), operation -> {
+//                                    addOrdersToType(operation);
+//                                    if ((pastOrdersList.size() - pastOrdersList.indexOf(loadingModel)) - 1 == LIMIT - 1) {
+//                                        removeLoadingView();
+//                                    }
+//                                });
                             }
                         }
                     }
@@ -186,11 +205,8 @@ public class OrdersPlacedFragment extends Fragment {
     private void updateHeaderView() {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
-            NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);
-
             ordersList.add(LoadingModel.getInstance());
-            NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, ordersList.indexOf(LoadingModel.getInstance()));
-
+            NotifyRecyclerItems.notifyDataSetChanged(binding.recyclerView);
         } else if (ordersList.size() == 3) {
             LoadingModel loadingModel = LoadingModel.getInstance();
             int indexOfLoadingModel = ordersList.indexOf(loadingModel);
