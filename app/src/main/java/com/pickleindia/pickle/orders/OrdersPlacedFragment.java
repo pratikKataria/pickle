@@ -87,6 +87,7 @@ public class OrdersPlacedFragment extends Fragment {
             @Override
             public void onRefresh() {
                 ordersList.clear();
+                binding.recyclerView.getRecycledViewPool().clear();
                 updateHeaderView();
                 loadOrders();
             }
