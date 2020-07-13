@@ -48,8 +48,8 @@
             android:layout_marginBottom="16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_margin="8dp"
                 android:layout_gravity="center">
 
@@ -57,28 +57,30 @@
                     android:id="@+id/image2"
                     android:layout_width="@dimen/orderCardThumbImage"
                     android:layout_height="@dimen/orderCardThumbImage"
-                    app:layout_constraintStart_toEndOf="@+id/image1"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/image3"
                     android:layout_width="@dimen/orderCardThumbImage"
                     android:layout_height="@dimen/orderCardThumbImage"
-                    app:layout_constraintStart_toStartOf="@+id/image1"
-                    app:layout_constraintTop_toBottomOf="@+id/image1" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/image1" />
 
                 <ImageView
                     android:id="@+id/image4"
                     android:layout_width="@dimen/orderCardThumbImage"
                     android:layout_height="@dimen/orderCardThumbImage"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/image2"
-                    app:layout_constraintStart_toEndOf="@+id/image3"
-                    app:layout_constraintTop_toBottomOf="@+id/image2" />
+                    app:layout_constraintStart_toEndOf="@+id/image3" />
 
                 <ImageView
                     android:id="@+id/image1"
-                    android:layout_width="@dimen/orderCardThumbImage"
-                    android:layout_height="@dimen/orderCardThumbImage"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/image3"
+                    app:layout_constraintEnd_toStartOf="@+id/image2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

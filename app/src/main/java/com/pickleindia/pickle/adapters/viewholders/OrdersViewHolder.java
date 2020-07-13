@@ -1,11 +1,14 @@
 package com.pickleindia.pickle.adapters.viewholders;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.ObservableInt;
 
 import com.bumptech.glide.Glide;
@@ -56,6 +59,15 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
     private void loadThumbImage(String ids, String key) {
         String[] id = ids.split(" ");
         ImageView[] thumbImage = {binding.image1, binding.image2, binding.image3, binding.image4};
+
+        if (id.length == 1) {
+            thumbImage[0].setScaleX(0.80F);
+            thumbImage[0].setScaleY(0.80F);
+            thumbImage[1].setVisibility(View.GONE);
+            thumbImage[2].setVisibility(View.GONE);
+            thumbImage[3].setVisibility(View.GONE);
+        }
+
         final ObservableInt index = new ObservableInt(0);
         for (int i = 0; i < 4; i++) {
             if (i <= id.length-1) {
