@@ -48,7 +48,6 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
         binding.cardViewOrders.setOnClickListener(n -> {
             OrderDetailsBottomSheet orderDetailsBottomSheet = new OrderDetailsBottomSheet(element.getOrderId(), element);
             orderDetailsBottomSheet.show(((AppCompatActivity)context).getSupportFragmentManager(), "orderDetails");
-            orderDetailsBottomSheet.setCancelable(false);
         });
 
         binding.executePendingBindings();
