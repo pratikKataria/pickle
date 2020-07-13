@@ -169,7 +169,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_marginStart="16dp"
-                            android:text="@{`Total products: `}"
+                            android:text="@{orders.totalProduct+1> 1?`Total products: `:`Total product`}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView38"
                             tools:text="Total products " />
@@ -178,7 +178,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{`Total products: `}"
+                            android:text="@{``+orders.totalProduct}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView38"
                             tools:text="Total products " />

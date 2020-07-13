@@ -1,6 +1,7 @@
 package com.pickleindia.pickle.adapters.viewholders;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.widget.ImageView;
 
 import androidx.annotation.LayoutRes;
@@ -38,6 +39,12 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
         binding.setOrderDetails(element);
         loadThumbImage(element.getOrderDetailsIds(), element.getOrderId());
 
+        final int  totalProductsInt= element.getOrderDetailsIds().split(" ").length;
+        String totalProducts = totalProductsInt > 1? "Total products: "+ totalProductsInt : "Total product: "+ totalProductsInt;
+        binding.totalProducts.setText(totalProducts);
+
+        element.totalProduct = totalProductsInt;
+
         binding.cardViewOrders.setOnClickListener(n -> {
             OrderDetailsBottomSheet orderDetailsBottomSheet = new OrderDetailsBottomSheet(element.getOrderId(), element);
             orderDetailsBottomSheet.show(((AppCompatActivity)context).getSupportFragmentManager(), "orderDetails");
@@ -70,4 +77,6 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
             }
         }
     }
+
+
 }

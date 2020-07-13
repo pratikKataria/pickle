@@ -12,7 +12,9 @@ public class Orders implements Visitable {
     private int orderStatus;
     private int pCoinsSpent;
     private String userId;
+
     public boolean isPastOrder;
+    public int totalProduct;
 
     public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pCoinsSpent, String userId) {
         this.date = date;
