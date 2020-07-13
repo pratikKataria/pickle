@@ -244,9 +244,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 ));
                 orderDetailsIds.append(product.getItemId()).append(" ");
                 if (product.getItemSellPrice() > 0) {
-                    calcTotal += product.getItemSellPrice();
+                    calcTotal += (product.getItemSellPrice()*product.getQuantityCounter());
                 } else {
-                    calcTotal += product.getItemBasePrice();
+                    calcTotal += (product.getItemBasePrice()*product.getQuantityCounter());
                 }
             }
 
