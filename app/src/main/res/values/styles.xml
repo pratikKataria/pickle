@@ -116,4 +116,8 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="progressDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
 </resources>

@@ -24,7 +24,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.pickleindia.pickle.Login.OtpActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity
             android:name="com.pickleindia.pickle.Login.CustomerDetailActivity"
             android:screenOrientation="portrait">
@@ -33,6 +35,10 @@
             android:name="com.pickleindia.pickle.main.MainActivity"
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

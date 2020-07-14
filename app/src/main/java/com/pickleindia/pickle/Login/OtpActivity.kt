@@ -1,15 +1,19 @@
 package com.pickleindia.pickle.Login
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View.VISIBLE
 import android.widget.EditText
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,12 +27,17 @@ import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
+import java.util.*
+import kotlin.concurrent.timerTask
 
 class OtpActivity : AppCompatActivity() {
 
     private var mAuth = FirebaseAuth.getInstance()
     private lateinit var editTextOtp: EditText
     private lateinit var verifyBtn: MaterialButton
+
+    private lateinit var timer: Timer
+    private lateinit var progressDialog: ProgressDialog
 
     private var doubleBackToExitPressedOnce = false
 
@@ -58,7 +67,7 @@ class OtpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             activity_otp_progress.visibility = VISIBLE
-            val credential  = PhoneAuthProvider.getCredential(authCredential, editTextOtp.text.toString())
+            val credential= PhoneAuthProvider.getCredential(authCredential, editTextOtp.text.toString())
             signInWithPhoneAuthCredential(credential)
         }
     }
@@ -68,7 +77,7 @@ class OtpActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     val isNew = it.additionalUserInfo?.isNewUser
                     if (isNew != null && isNew) {
-                        updateAccountDetails()
+                        createUser()
                     } else {
                         // if user is old user and has stored referral then this code invoked
                         val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
@@ -85,9 +94,45 @@ class OtpActivity : AppCompatActivity() {
                 }
     }
 
-    private fun updateAccountDetails() {
-        val reference = FirebaseDatabase.getInstance().getReference("Customers")
+    private fun createUser() {
+        val updateData = userPersonalInformation()
 
+        val referredBy = getReferral()
+
+        progressDialog = ProgressDialog(this)
+        progressDialog.show()
+        progressDialog.setMessage("please wait while verifying...")
+        progressDialog.setCancelable(false)
+        progressDialog.setProgressStyle(R.style.progressDialog)
+        val drawable = ProgressBar(this).indeterminateDrawable.mutate()
+        drawable.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+        progressDialog.setIndeterminateDrawable(drawable)
+
+        timer = Timer()
+        val timerTask = timerTask {
+            run {
+                timer.cancel()
+                progressDialog.dismiss()
+
+                runOnUiThread { showAlertDialog() }
+            }
+        }
+        timer.schedule(timerTask, 15000L)
+
+        if (referredBy.isEmpty()) {
+            updateDataTimeOut(updateData, false)
+            return
+        }
+
+        getReferrerPCoins(referredBy, object : ReferrerCoinListener {
+            override fun received(coins: Int) {
+                updateData["$referredBy/referralReward/pcoins"] = coins
+                updateDataTimeOut(updateData, true)
+            }
+        })
+    }
+
+    private fun userPersonalInformation(): MutableMap<String, Any> {
         val updateData: MutableMap<String, Any> = mutableMapOf()
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/creationDate"] = ServerValue.TIMESTAMP
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/deviceToken"] = FirebaseInstanceId.getInstance().token as String
@@ -95,52 +140,73 @@ class OtpActivity : AppCompatActivity() {
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/username"] = " "
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
-        val referredBy = sharedPreferences.getString("referredBy", "")
-
-        if (referredBy!!.isEmpty()) {
+        val referredBy = getReferral()
+        if (referredBy.isEmpty()) {
             updateData["${FirebaseAuth.getInstance().uid}/personalInformation/referredBy"] = "NaN"
             updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 0
-
-            reference.updateChildren(updateData).addOnSuccessListener {
-                sharedPreferences.edit().remove("referredBy").apply()
-                startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                finish()
-            }.addOnFailureListener {
-                Log.e("OtpActivity", it.message + " ")
-            }
         } else {
             updateData["${FirebaseAuth.getInstance().uid}/personalInformation/referredBy"] = referredBy
             updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 20
+        }
 
-            val referredByDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers").child(referredBy).child("referralReward").child("pcoins")
-            referredByDatabaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val pcoinsInt = if (snapshot.exists()) {
-                        (snapshot.value as Long).toInt() + 20
-                    } else {
-                        20
-                    }
+        return updateData;
+    }
 
-                    updateData["${referredBy}/referralReward/pcoins"] = pcoinsInt
-                    reference.updateChildren(updateData).addOnSuccessListener {
-                        showRewardGivenDialog(sharedPreferences)
-                    }.addOnFailureListener {
-                        Log.e("OtpActivity", it.message + " ")
-                    }
+    private fun getReferral(): String {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
+        return sharedPreferences.getString("referredBy", "").toString()
+    }
+
+    private fun getReferrerPCoins(referredBy: String, referreCoinListener: ReferrerCoinListener) {
+        val referredByDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers").child(referredBy).child("referralReward").child("pcoins")
+        referredByDatabaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.e("OtpActivity", "$snapshot ")
+                val pcoins = if (snapshot.exists()) {
+                    (snapshot.value as Long).toInt() + 20
+                } else {
+                    20
                 }
+                referreCoinListener.received(pcoins)
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e(OtpActivity::class.java.name, error.message);
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                Log.e(OtpActivity::class.java.name, error.message);
+            }
+        })
+    }
+
+    interface ReferrerCoinListener {
+        fun received(coins: Int)
+    }
+
+    private fun updateDataTimeOut(data: MutableMap<String, Any>, isNewUser: Boolean) {
+        val reference = FirebaseDatabase.getInstance().getReference("Customers")
+
+        reference.updateChildren(data).addOnSuccessListener {
+            timer.cancel()
+            progressDialog.dismiss()
+            if (isNewUser) {
+                showRewardGivenDialog()
+            } else {
+                startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
+            }
+        }.addOnFailureListener {
+            Log.e("OtpActivity", it.message + " ")
         }
     }
 
-    private fun showRewardGivenDialog(sharedPreferences: SharedPreferences) {
+    private fun showAlertDialog() {
+        val alertDialog = MaterialAlertDialogBuilder(this)
+        alertDialog.setTitle("Failed to upload ").setMessage("please check your internet connection and retry to login").setPositiveButton("Retry") { _, _ ->
+            createUser()
+        }
+        alertDialog.setCancelable(false)
+        alertDialog.show()
+    }
+
+    private fun showRewardGivenDialog() {
         var alertDialog: AlertDialog? = null
         val alertDialogBuilder = MaterialAlertDialogBuilder(this)
         val binding: LayoutRewardGrantedAlertdialogBinding = DataBindingUtil.inflate(
@@ -151,6 +217,7 @@ class OtpActivity : AppCompatActivity() {
         )
         alertDialogBuilder.setView(binding.root)
         binding.nextBtn.setOnClickListener {
+            val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
             sharedPreferences.edit().remove("referredBy").apply()
             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
