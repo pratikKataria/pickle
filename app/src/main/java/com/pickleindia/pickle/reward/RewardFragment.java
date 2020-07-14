@@ -59,10 +59,14 @@ public class RewardFragment extends Fragment {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e(RewardFragment.class.getName(), snapshot+"");
-                int rewardPrice = snapshot.getValue(Integer.class);
-                rewardPriceObserver.set(rewardPrice);
-                fragmentRewardBinding.executePendingBindings();
+                if (snapshot.exists()) {
+                    Log.d(RewardFragment.class.getName(), snapshot+"");
+                    int rewardPrice = snapshot.getValue(Integer.class);
+                    rewardPriceObserver.set(rewardPrice);
+                    fragmentRewardBinding.executePendingBindings();
+                } else {
+                    databaseReference.setValue(0).addOnSuccessListener(success-> rewardPriceObserver.set(0));
+                }
             }
 
             @Override
