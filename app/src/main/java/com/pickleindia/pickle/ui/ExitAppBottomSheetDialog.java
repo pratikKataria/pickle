@@ -21,6 +21,10 @@ public class ExitAppBottomSheetDialog extends BottomSheetDialogFragment {
 
     private BottomSheetOnButtonClickListener bottomSheetOnButtonClickListener;
 
+    public ExitAppBottomSheetDialog() {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

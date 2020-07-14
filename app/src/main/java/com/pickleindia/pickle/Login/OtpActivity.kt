@@ -87,37 +87,57 @@ class OtpActivity : AppCompatActivity() {
 
     private fun updateAccountDetails() {
         val reference = FirebaseDatabase.getInstance().getReference("Customers")
-                .child(FirebaseAuth.getInstance().uid!!)
 
-        val personalInformation: MutableMap<String, Any> = mutableMapOf()
-        personalInformation["creationDate"] = ServerValue.TIMESTAMP
-        personalInformation["deviceToken"] = FirebaseInstanceId.getInstance().token as String
-        personalInformation["userId"] = FirebaseAuth.getInstance().uid as String
-        personalInformation["userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
-        personalInformation["username"] = " "
+        val updateData: MutableMap<String, Any> = mutableMapOf()
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/creationDate"] = ServerValue.TIMESTAMP
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/deviceToken"] = FirebaseInstanceId.getInstance().token as String
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/userId"] = FirebaseAuth.getInstance().uid as String
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/username"] = " "
 
         val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
         val referredBy = sharedPreferences.getString("referredBy", "")
 
-        val referralReward = mutableMapOf<String, Int>()
-
         if (referredBy!!.isEmpty()) {
-            personalInformation["referredBy"] = "NaN"
-            referralReward["pcoins"] = 0
+            updateData["${FirebaseAuth.getInstance().uid}/personalInformation/referredBy"] = "NaN"
+            updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 0
+
+            reference.updateChildren(updateData).addOnSuccessListener {
+                sharedPreferences.edit().remove("referredBy").apply()
+                startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                finish()
+            }.addOnFailureListener {
+                Log.e("OtpActivity", it.message + " ")
+            }
         } else {
-            personalInformation["referredBy"] = referredBy
-            referralReward["pcoins"] = 20
+            updateData["${FirebaseAuth.getInstance().uid}/personalInformation/referredBy"] = referredBy
+            updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 20
+
+            val referredByDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers").child(referredBy).child("referralReward").child("pcoins")
+            referredByDatabaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val pcoinsInt = if (snapshot.exists()) {
+                        (snapshot.value as Long).toInt() + 20
+                    } else {
+                        20
+                    }
+
+                    updateData["${referredBy}/referralReward/pcoins"] = pcoinsInt
+                    reference.updateChildren(updateData).addOnSuccessListener {
+                        showRewardGivenDialog(sharedPreferences)
+                    }.addOnFailureListener {
+                        Log.e("OtpActivity", it.message + " ")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e(OtpActivity::class.java.name, error.message);
+                }
+            })
         }
-
-        val dataSet = mutableMapOf<String, Any>();
-        dataSet["personalInformation"] = personalInformation
-        dataSet["referralReward"] = referralReward
-
-
-        reference.setValue(dataSet).addOnSuccessListener {
-            showRewardGivenDialog(sharedPreferences)
-        }
-
     }
 
     private fun showRewardGivenDialog(sharedPreferences: SharedPreferences) {

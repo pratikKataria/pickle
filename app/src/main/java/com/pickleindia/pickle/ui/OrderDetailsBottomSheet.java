@@ -40,6 +40,10 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
 
+    public OrderDetailsBottomSheet() {
+
+    }
+
     public OrderDetailsBottomSheet(String orderId, Orders orders) {
         if (orderId != null) this.orderId = orderId;
         else this.orderId = "";

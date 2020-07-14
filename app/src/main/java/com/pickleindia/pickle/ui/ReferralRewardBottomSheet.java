@@ -19,6 +19,10 @@ public class ReferralRewardBottomSheet extends BottomSheetDialogFragment {
 
     BottomSheetOnButtonClickListener bottomSheetOnButtonClickListener;
 
+    public ReferralRewardBottomSheet() {
+
+    }
+
     public ReferralRewardBottomSheet(BottomSheetOnButtonClickListener bottomSheetOnButtonClickListener) {
         this.bottomSheetOnButtonClickListener = bottomSheetOnButtonClickListener;
     }
