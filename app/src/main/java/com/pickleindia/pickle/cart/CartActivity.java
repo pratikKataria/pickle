@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableInt;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.auth.FirebaseAuth;
@@ -162,6 +163,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         showOrderConfirmationDialog();
     }
 
+    final ObservableInt pcoinsUsed = new ObservableInt(0);
+    final ObservableInt totalPcoins = new ObservableInt(0);
     private void showOrderConfirmationDialog() {
         LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
@@ -178,6 +181,55 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         alertDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
+
+        int total = 0;
+        for (ProductModel productModel : binding.getCartList()) {
+            if (productModel.getItemSellPrice() >0) {
+                total += productModel.getItemSellPrice()*productModel.getQuantityCounter();
+            } else {
+                total += productModel.getItemBasePrice()*productModel.getQuantityCounter();
+            }
+        }
+
+        final int finalTotal = total;
+        confirmOrderBinding.applyPcoins.setOnClickListener(v -> {
+
+            if (finalTotal < 100) {
+                Toast.makeText(this, "pcoins or reward points only on order 100 or above", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Customers").child(FirebaseAuth.getInstance().getUid()).child("referralReward").child("pcoins");
+            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists() && snapshot.getValue() != null) {
+                        int pcoins = snapshot.getValue(Long.class).intValue();
+                        totalPcoins.set(pcoins);
+                        int priceToBeCutOff = (finalTotal/10);
+
+                        confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
+
+                        if (finalTotal > 100) {
+                            if (pcoins < priceToBeCutOff) {
+                                pcoinsUsed.set(pcoins);
+                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal +" - " +pcoins + " = " + (finalTotal - pcoins));
+                                confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
+                            } else if (pcoins > priceToBeCutOff) {
+                                pcoinsUsed.set(priceToBeCutOff);
+                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal +" - " +priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
+                                confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
 
         confirmOrderBinding.confirmBtn.setOnClickListener(n -> {
             confirmOrderBinding.lottieAnimationView2.playAnimation();
@@ -208,7 +260,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             });
         });
 
-        confirmOrderBinding.backBtn.setOnClickListener(n -> alertDialog.dismiss());
+        confirmOrderBinding.backBtn.setOnClickListener(n -> {
+            alertDialog.dismiss();
+            binding.includeLayout.chipGroup2.clearCheck();
+            pcoinsUsed.set(0);
+
+        });
     }
 
     private void sendOrdersToDatabase(UploadResult result) {
@@ -257,7 +314,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
-            atomicOperation.put("Orders/" + key + "/pcoinsSpent", 0);
+            atomicOperation.put("Orders/" + key + "/pcoinsSpent", pcoinsUsed.get());
             atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
             atomicOperation.put("Orders/" + key + "/shipping", 0);
             atomicOperation.put("Orders/" + key + "/deliveryTime", binding.getCartViewModel().getDeliveryTime());
@@ -265,6 +322,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
+
+            if (pcoinsUsed.get() > 0)
+            atomicOperation.put("Customers/" + FirebaseAuth.getInstance().getUid() +"/" + "referralReward" +"/"+ "pcoins", totalPcoins.get() - pcoinsUsed.get());
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage() + "");

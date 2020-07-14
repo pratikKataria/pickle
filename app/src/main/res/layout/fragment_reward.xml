@@ -69,7 +69,7 @@
                     android:layout_marginTop="12dp"
                     android:textColor="@android:color/black"
                     android:layout_gravity="center"
-                    android:text="@{`\u20b9 ` +rewardEarned/2}"/>
+                    android:text="@{`\u20b9 ` +rewardEarned}"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -78,13 +78,6 @@
                     android:textColor="@android:color/black"
                     android:layout_gravity="center"
                     android:text="Reward earned"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:text="@{`Total pcoins earned = ` + rewardEarned+`pts`}"
-                    android:layout_gravity="center"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>

@@ -146,7 +146,7 @@ class OtpActivity : AppCompatActivity() {
             updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 0
         } else {
             updateData["${FirebaseAuth.getInstance().uid}/personalInformation/referredBy"] = referredBy
-            updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 20
+            updateData["${FirebaseAuth.getInstance().uid}/referralReward/pcoins"] = 10
         }
 
         return updateData;
@@ -163,9 +163,9 @@ class OtpActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.e("OtpActivity", "$snapshot ")
                 val pcoins = if (snapshot.exists()) {
-                    (snapshot.value as Long).toInt() + 20
+                    (snapshot.value as Long).toInt() + 10
                 } else {
-                    20
+                    10
                 }
                 referreCoinListener.received(pcoins)
             }

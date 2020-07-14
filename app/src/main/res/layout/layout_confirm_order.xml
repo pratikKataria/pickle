@@ -45,15 +45,57 @@
             app:layout_constraintTop_toBottomOf="@+id/quantityTextView"
             tools:text="price" />
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp"
+            android:background="@drawable/dashed_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView">
+
+            <TextView
+                android:id="@+id/priceAfterPcoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/apply_pcoins" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/apply_pcoins"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply PCoins"
+                android:textColor="@color/black" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/pcoins_alert_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="you can only avail upto 10% on order 100 or above"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieAnimationView2"
             android:layout_width="match_parent"
             android:layout_height="175dp"
-            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView"
+            app:layout_constraintTop_toBottomOf="@+id/pcoins_alert_text"
             app:lottie_fileName="confirm_order_loading.json" />
 
         <com.airbnb.lottie.LottieAnimationView
@@ -64,9 +106,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView12"
-            app:layout_constraintVertical_bias="1.0"
-            app:lottie_fileName="confirm_order_success.json"/>
+            app:layout_constraintTop_toBottomOf="@+id/apply_pcoins"
+            app:lottie_fileName="confirm_order_success.json" />
 
         <TextView
             android:id="@+id/thankText"
@@ -97,12 +138,12 @@
             android:id="@+id/confirmBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="28dp"
             android:text="Confirm"
             android:textAllCaps="false"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.687"
+            app:layout_constraintHorizontal_bias="0.695"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView2" />
 
