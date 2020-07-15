@@ -423,6 +423,17 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             itemCount = refreshList.size();
             getActivity().invalidateOptionsMenu();
         }
+
+        for (ProductModel productModel : refreshList) {
+            int indexOf = productModelArrayList.indexOf(productModel);
+            if (indexOf != -1) {
+                ProductModel listProduct = productModelArrayList.get(indexOf);
+                listProduct.setQuantityCounter(productModel.getQuantityCounter());
+                productModelArrayList.remove(indexOf);
+                productModelArrayList.add(indexOf, listProduct);
+                NotifyRecyclerItems.notifyItemChangedAt(binding.suggestionRecyclerView, indexOf);
+            }
+        }
     }
 
     @Override
