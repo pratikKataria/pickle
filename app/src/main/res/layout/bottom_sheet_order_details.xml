@@ -136,7 +136,7 @@
                             android:id="@+id/textView39"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{orders.isPastOrder ? `Date: `+ DateUtils.getServerDate(orders.date): `Date: `+DateUtils.currentDate}"
+                            android:text="@{orders.isPastOrder ? + DateUtils.getServerDate(orders.date): DateUtils.currentDate}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView34"
                             app:layout_constraintEnd_toEndOf="@+id/textView36"
                             app:layout_constraintTop_toTopOf="@+id/textView34"

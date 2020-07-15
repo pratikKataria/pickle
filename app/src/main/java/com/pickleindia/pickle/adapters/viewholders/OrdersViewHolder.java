@@ -66,6 +66,12 @@ public class OrdersViewHolder extends AbstractViewHolder<Orders> {
             thumbImage[1].setVisibility(View.GONE);
             thumbImage[2].setVisibility(View.GONE);
             thumbImage[3].setVisibility(View.GONE);
+        } else {
+            thumbImage[0].setScaleX(1F);
+            thumbImage[0].setScaleY(1F);
+            thumbImage[1].setVisibility(View.VISIBLE);
+            thumbImage[2].setVisibility(View.VISIBLE);
+            thumbImage[3].setVisibility(View.VISIBLE);
         }
 
         final ObservableInt index = new ObservableInt(0);
