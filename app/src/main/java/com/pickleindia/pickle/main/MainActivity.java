@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements
                 FirebaseAuth.getInstance().signOut();
                 SharedPrefsUtils.clearCart(this);
                 updateIconItems();
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                 finish();
                 break;
             case R.id.nav_menu_sub_orders:
@@ -266,5 +266,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onExit() {
        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.e("MainActivity ", requestCode +" " + requestCode);
     }
 }

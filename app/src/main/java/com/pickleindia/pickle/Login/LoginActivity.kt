@@ -10,13 +10,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.pickleindia.pickle.R
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.pickleindia.pickle.R
+import com.pickleindia.pickle.cart.CartActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import java.util.concurrent.TimeUnit
 
@@ -24,13 +25,13 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var mCallBacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
-    private lateinit var phoneNumber : EditText
-    private lateinit var countryCode : EditText
+    private lateinit var phoneNumber: EditText
+    private lateinit var countryCode: EditText
     private lateinit var progressBar: ProgressBar
     private lateinit var countDownTimer: TextView
-    private lateinit var sendOtpButton : MaterialButton
-    private lateinit var timer : CountDownTimer
-    
+    private lateinit var sendOtpButton: MaterialButton
+    private lateinit var timer: CountDownTimer
+
     private fun initFields() {
         progressBar = findViewById(R.id.activity_login_pb_counter)
         countryCode = findViewById(R.id.activity_login_et_country_code)
@@ -45,7 +46,7 @@ class LoginActivity : AppCompatActivity() {
 
         initFields()
 
-            timer = object : CountDownTimer(60000, 1000) {
+        timer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 countDownTimer.text = "" + millisUntilFinished / 1000
             }
@@ -80,11 +81,11 @@ class LoginActivity : AppCompatActivity() {
             val completePhoneNumber = countryCode.text.toString() + phoneNumber.text.toString()
 
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                completePhoneNumber,
-                60,
-                TimeUnit.SECONDS,
-                this,
-                mCallBacks
+                    completePhoneNumber,
+                    60,
+                    TimeUnit.SECONDS,
+                    this,
+                    mCallBacks
             )
 
             timer.start()
@@ -129,8 +130,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onCodeSent(
-                verificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken
             ) {
                 // The SMS verification code has been sent to the provided phone number, we
                 // now need to ask the user to enter the code and then construct a credential
@@ -143,16 +144,21 @@ class LoginActivity : AppCompatActivity() {
 
                 sendOtpButton.isEnabled = false
                 Handler().postDelayed(
-                    {
-                        val otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
-                        otpIntent.putExtra("AuthCredentials", verificationId)
-                        startActivity(otpIntent)
+                        {
+                            val otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
+                            otpIntent.putExtra("AuthCredentials", verificationId)
 
-                    }, 1500
+                            val bundle = intent.extras
+                            if (bundle != null && bundle.containsKey(CartActivity::class.java.name)) {
+                                otpIntent.putExtra(CartActivity::class.java.name, "cart")
+                            }
+
+                            startActivity(otpIntent)
+
+                        }, 1500
                 )
                 Toast.makeText(this@LoginActivity, "otp sent", Toast.LENGTH_SHORT).show()
             }
         }
     }
-
 }

@@ -25,6 +25,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
+import com.pickleindia.pickle.main.MainActivity
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 import java.util.*
@@ -267,8 +268,13 @@ class OtpActivity : AppCompatActivity() {
 
 
     private fun sendUserToHome() {
-        val homeIntent = Intent(this@OtpActivity, CartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-        startActivity(homeIntent)
+        val bundle = intent.extras
+        val intent = if (bundle != null && bundle.containsKey(CartActivity::class.java.name)) {
+            Intent(this@OtpActivity, CartActivity::class.java)
+        } else {
+            Intent(this@OtpActivity, MainActivity::class.java)
+        }
+        startActivity(intent)
         finish()
     }
 
