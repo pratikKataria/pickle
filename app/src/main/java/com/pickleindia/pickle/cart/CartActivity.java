@@ -10,7 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +29,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableInt;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +47,7 @@ import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.OrdersDetails;
 import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
@@ -122,7 +128,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private void checkAddress() {
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getCurrentUser()!= null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
             userAddressDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -135,6 +141,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                 startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                             }
                         }
+
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
@@ -184,10 +191,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         int total = 0;
         for (ProductModel productModel : binding.getCartList()) {
-            if (productModel.getItemSellPrice() >0) {
-                total += productModel.getItemSellPrice()*productModel.getQuantityCounter();
+            if (productModel.getItemSellPrice() > 0) {
+                total += productModel.getItemSellPrice() * productModel.getQuantityCounter();
             } else {
-                total += productModel.getItemBasePrice()*productModel.getQuantityCounter();
+                total += productModel.getItemBasePrice() * productModel.getQuantityCounter();
             }
         }
 
@@ -206,18 +213,18 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     if (snapshot.exists() && snapshot.getValue() != null) {
                         int pcoins = snapshot.getValue(Long.class).intValue();
                         totalPcoins.set(pcoins);
-                        int priceToBeCutOff = (finalTotal/10);
+                        int priceToBeCutOff = (finalTotal / 10);
 
                         confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
 
                         if (finalTotal > 100) {
                             if (pcoins < priceToBeCutOff) {
                                 pcoinsUsed.set(pcoins);
-                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal +" - " +pcoins + " = " + (finalTotal - pcoins));
+                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + pcoins + " = " + (finalTotal - pcoins));
                                 confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
                             } else if (pcoins > priceToBeCutOff) {
                                 pcoinsUsed.set(priceToBeCutOff);
-                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal +" - " +priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
+                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
                                 confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
                             }
                         }
@@ -264,8 +271,48 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             alertDialog.dismiss();
             binding.includeLayout.chipGroup2.clearCheck();
             pcoinsUsed.set(0);
-
+            binding.getCartViewModel().setDeliveryTime("");
         });
+
+        Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
+
+        if (chip == null) {
+            return;
+        }
+        String selectedDeliveryTime = chip.getText().toString();
+        if (selectedDeliveryTime.equals("7:00 AM ~ 9:00AM")) {
+            if (DateUtils.currentTimeIsAfter("7:00 AM")) {
+                String text = "You have selected morning slot (" + selectedDeliveryTime + ") this order will be deliver next morning (" + DateUtils.getNextDate() + ")";
+                SpannableString spannableString = new SpannableString(text);
+                int startIndexOf = text.indexOf("(");
+                int endIndexOf = text.indexOf(")");
+                spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), startIndexOf, endIndexOf, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), text.indexOf("(", startIndexOf + 1), text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                confirmOrderBinding.deliveryNote.setText(spannableString);
+            } else {
+                confirmOrderBinding.deliveryNote.setText("Your order will be delivered by today");
+                confirmOrderBinding.deliveryNote.setGravity(Gravity.CENTER);
+            }
+        } else if (selectedDeliveryTime.equals("4:00 PM ~ 6:00PM")) {
+            if (DateUtils.currentTimeIsAfter("4:00 PM")) {
+                String text = "You have selected evening slot (" + selectedDeliveryTime + ") this order will be deliver next evening (" + DateUtils.getNextDate() + ")";
+                SpannableString spannableString = new SpannableString(text);
+                int startIndexOf = text.indexOf("(");
+                int endIndexOf = text.indexOf(")");
+                spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), startIndexOf, endIndexOf, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), text.indexOf("(", startIndexOf + 1), text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                confirmOrderBinding.deliveryNote.setText(spannableString);
+            } else {
+                confirmOrderBinding.deliveryNote.setText("Your order will be delivered by today evening");
+                confirmOrderBinding.deliveryNote.setGravity(Gravity.CENTER);
+            }
+        }
+        binding.executePendingBindings();
+        confirmOrderBinding.executePendingBindings();
     }
 
     private void sendOrdersToDatabase(UploadResult result) {

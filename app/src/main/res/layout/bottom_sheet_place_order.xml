@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -66,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> cartView.setDeliveryTime(`7:00AM`)}"
-                    android:text="7:00 AM"
+                    android:text="7:00 AM ~ 9:00AM"
                     android:textColor="@color/chip_text_color_state"
                     app:checkedIcon="@drawable/ic_clock"
                     app:checkedIconEnabled="true"
@@ -79,7 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> cartView.setDeliveryTime(`7:00AM`)}"
-                    android:text="5:00 PM"
+                    android:text="4:00 PM ~ 6:00PM"
                     android:textColor="@color/chip_text_color_state"
                     app:checkedIcon="@drawable/ic_clock"
                     app:checkedIconEnabled="true"
@@ -148,12 +147,11 @@
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
                 android:scrollbarSize="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView14">
+                app:layout_constraintTop_toBottomOf="@+id/syncAddress">
 
                 <RadioGroup
                     android:id="@+id/radioGroup"
@@ -171,10 +169,10 @@
                         android:layout_width="175dp"
                         android:layout_height="175dp"
                         android:layout_marginEnd="12dp"
+                        android:checked="true"
                         android:padding="16dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
-                        android:checked="true"
                         android:text="@{cartView.displayAddress}"
                         android:textAlignment="viewStart"
                         android:textColor="@color/chip_text_color_state" />
@@ -233,18 +231,25 @@
                 </RadioGroup>
             </HorizontalScrollView>
 
-            <ImageButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/syncAddress"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:drawableEnd="@drawable/ic__refresh"
+                android:drawablePadding="8dp"
                 android:onClick="@{() -> cartView.getDatabaseAddress()}"
                 android:src="@drawable/ic_sync_black_24dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView14"
-                app:layout_constraintStart_toEndOf="@+id/textView14"
-                app:layout_constraintTop_toTopOf="@+id/textView14"
-                app:layout_constraintVertical_bias="0.50" />
+                android:text="Refresh Address"
+                android:textColor="@color/secondaryColorDark"
+                app:icon="@drawable/ic__refresh"
+                app:iconTint="@color/secondaryColorDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+                app:layout_constraintTop_toBottomOf="@+id/textView14"
+                app:rippleColor="@color/secondaryColorLight"
+                app:strokeColor="@color/secondaryColorLight" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

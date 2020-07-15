@@ -230,7 +230,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/cart_margin_start"
                         android:layout_marginEnd="@dimen/cart_margin_end"
-                        layout="@layout/cart_notice_layout"/>
+                        layout="@layout/layout_cart_notice"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -389,7 +389,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            layout="@layout/cart_view_bottom_template"/>
+                            layout="@layout/layout_cart_view_bottom_template"/>
 
                         <ImageView
                             android:layout_width="match_parent"
