@@ -163,17 +163,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/card_view_iv_product_image"
                 app:strikeThrough="@{productViewModel.product.itemSellPrice>0}" />
 
+            <include
+                android:id="@+id/include"
+                layout="@layout/layout_out_of_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{productViewModel.product.itemAvailability? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+                app:layout_constraintStart_toStartOf="@+id/frameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="tap to view more info"
                 android:textAlignment="center"
                 android:textSize="10dp"
-                app:layout_constraintEnd_toEndOf="@+id/card_view_iv_product_image"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="@+id/card_view_iv_product_image"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+                app:layout_constraintStart_toStartOf="@+id/frameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/include" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"

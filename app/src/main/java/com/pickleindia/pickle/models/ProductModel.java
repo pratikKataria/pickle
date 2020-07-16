@@ -5,28 +5,29 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.Exclude;
 
 public class ProductModel {
-    String itemName;
-    String itemDesc;
-    int itemBasePrice;
-    int itemSellPrice;
-    int itemMaxQtyPerUser;
-    int itemQty;
+    private String itemName;
+    private String itemDesc;
+    private int itemBasePrice;
+    private int itemSellPrice;
+    private int itemMaxQtyPerUser;
+    private int itemQty;
 
-    String qtyType;
-    String itemType;
-    String itemCategory;
+    private String qtyType;
+    private String itemType;
+    private String itemCategory;
 
-    String itemId;
-    int itemUnits;
-    long date;
-    boolean itemAvailability;
+    private String itemId;
+    private int itemUnits;
+    private long date;
+    private boolean itemAvailability;
 
-    String itemThumbImage;
-    String itemName_itemId;
+    private String itemThumbImage;
+    private String itemName_itemId;
 
-    int quantityCounter;
+    private int quantityCounter;
 
-    public ProductModel() {}
+    public ProductModel() {
+    }
 
     public ProductModel(String itemName, int itemBasePrice) {
         this.itemName = itemName;

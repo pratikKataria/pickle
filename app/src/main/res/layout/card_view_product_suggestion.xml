@@ -109,6 +109,16 @@
                     app:strokeColor="@color/white" />
             </FrameLayout>
 
+            <include
+                android:id="@+id/include"
+                layout="@layout/layout_out_of_stock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{productViewModel.product.itemAvailability? View.GONE : View.VISIBLE}"
+                app:layout_constraintEnd_toEndOf="@+id/frameLayout"
+                app:layout_constraintStart_toStartOf="@+id/frameLayout"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+
             <ImageView
                 android:id="@+id/card_view_iv_product_image"
                 android:layout_width="95dp"
@@ -173,7 +183,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/card_view_iv_product_image"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="@+id/card_view_iv_product_image"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/include" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
