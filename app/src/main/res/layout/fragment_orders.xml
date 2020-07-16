@@ -106,7 +106,8 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:overScrollMode="never">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -145,6 +146,13 @@
                         orderPlacedList="@{ordersList}"
                         visitor="@{visitor}"/>
 
+                    <ProgressBar
+                        android:id="@+id/orderProgressBar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/black"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,7 +164,6 @@
                         android:id="@+id/recyclerViewPastOrders"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginBottom="52dp"
                         android:clipToPadding="false"
                         android:layout_marginTop="8dp"
                         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -164,6 +171,24 @@
                         app:pastOrdersList="@{pastOrdersList}"
                         visitor="@{visitor}" />
 
+                    <ProgressBar
+                        android:id="@+id/pastOrderProgress"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/black"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/loadMoreOrders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="52dp"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        app:strokeColor="@color/colorAccent"
+                        android:text="Load Orders"/>
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

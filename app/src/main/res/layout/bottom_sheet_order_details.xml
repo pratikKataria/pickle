@@ -79,6 +79,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:visibility="gone"
+                    android:indeterminateTint="@color/black"
                     android:layout_marginStart="4dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cancel_material_button"
                     app:layout_constraintStart_toEndOf="@+id/cancel_material_button"

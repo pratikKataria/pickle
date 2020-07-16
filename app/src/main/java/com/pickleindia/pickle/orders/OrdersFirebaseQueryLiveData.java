@@ -65,7 +65,7 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation>  {
 
                     Orders orders = ordersDataSnapshot.getValue(Orders.class);
                     if (orders != null && orders.getOrderId() != null && ordersDataSnapshot.exists()) {
-                        orders.isPastOrder = !DateUtils.isEqual(orders.getDate());
+                        orders.isPastOrder = DateUtils.isPastOrder(orders.getDate());
                         Operation<Orders> operation = new Operation<>(orders, ADD);
                         setValue(operation);
                     }
@@ -82,10 +82,10 @@ public class OrdersFirebaseQueryLiveData extends LiveData<Operation>  {
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Orders ordersChanged = dataSnapshot.getValue(Orders.class);
-            Operation<Orders> ordersOperation = new Operation<>(ordersChanged, MODIFIED);
-            Log.e("OrdersFirebaseQata",  "changed ");
-            setValue(ordersOperation);
+//            Orders ordersChanged = dataSnapshot.getValue(Orders.class);
+//            Operation<Orders> ordersOperation = new Operation<>(ordersChanged, MODIFIED);
+//            Log.e("OrdersFirebaseQata",  "changed ");
+//            setValue(ordersOperation);
         }
 
         @Override

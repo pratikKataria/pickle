@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
-//        navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders);
+        navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders);
     }
 
     private void checkForDynamicLink() {

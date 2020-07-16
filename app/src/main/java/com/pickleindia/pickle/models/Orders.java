@@ -1,5 +1,7 @@
 package com.pickleindia.pickle.models;
 
+import androidx.annotation.Nullable;
+
 import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.interfaces.Visitor;
 
@@ -126,5 +128,14 @@ public class Orders implements Visitable {
 
     public void setShipping(int shipping) {
         this.shipping = shipping;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof  Orders) {
+            Orders orders = (Orders) obj;
+            return orders.getOrderId().equals(orderId);
+        }
+        return false;
     }
 }

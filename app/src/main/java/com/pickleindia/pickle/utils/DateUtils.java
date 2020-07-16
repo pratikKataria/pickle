@@ -31,6 +31,18 @@ public class DateUtils {
         }
     }
 
+    public static boolean isPastOrder(long timestamp) {
+        Date date = new Date(timestamp);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        int databaseDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        Log.e("DateUtils ", databaseDay + " " + currentDay);
+        return currentDay > databaseDay;
+    }
+
     /*
      * used to set date in include layout
      */

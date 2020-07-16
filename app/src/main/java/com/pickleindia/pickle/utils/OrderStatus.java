@@ -21,5 +21,5 @@ public abstract class OrderStatus {
     public static final int ORDERED = 243;
     public static final int DELIVERED = 324;
     public static final int CANCEL = 398;
-
+    public static final int DETAINED = 903;
 }
