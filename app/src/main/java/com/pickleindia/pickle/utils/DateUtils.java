@@ -13,7 +13,7 @@ public class DateUtils {
     @SuppressLint("SimpleDateFormat")
     public static String getServerDate(long timestamp) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM hh:mm a");
             return  sdf.format(new Date((long)timestamp));
         } catch (Exception xe) {
             return "date";
@@ -56,7 +56,7 @@ public class DateUtils {
             Date deliveryTime = simpleDateFormat.parse(start);
             Date orderTime = simpleDateFormat1.parse(new SimpleDateFormat("HH:mm").format(new Date()));
 
-            Log.e("DateUtils", "delivery time " +deliveryTime.toString() +" order time " + orderTime.toString() );
+            Log.e("DateUtils", "delivery time " + deliveryTime.toString() + " order time " + orderTime.toString());
 
             isAhead = orderTime.after(deliveryTime);
 
@@ -64,5 +64,45 @@ public class DateUtils {
             e.printStackTrace();
         }
         return isAhead;
+    }
+
+    /**
+     * @param orderDate
+     * @param amount
+     * @param hour
+     * @param minute
+     * @return
+     */
+    public static boolean orderDateIsBeforeCancelDate(long orderDate, int amount, int hour, int minute, int second) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date(orderDate));
+
+        calendar.add(Calendar.DATE, amount);
+
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+
+        Date currentTime = new Date();
+        Date cancelTime = calendar.getTime();
+
+        Log.e("DateUtils", currentTime.toString() + " cancel Time" + cancelTime.toString());
+        return currentTime.before(cancelTime);
+    }
+
+    public static boolean orderTimeIsAfter(long orderDate, String time) {
+        boolean isValid = false;
+        try {
+            Date date = new Date(orderDate);
+            Date orderTime = new SimpleDateFormat("hh:mm a").parse(new SimpleDateFormat("hh: mm a").format(date));
+            Date cancelTime = new SimpleDateFormat("hh:mm a").parse(time);
+
+            if (orderTime.after(cancelTime)) {
+                isValid = true;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return isValid;
     }
 }

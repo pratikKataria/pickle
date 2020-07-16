@@ -25,7 +25,6 @@
         <activity
             android:name="com.pickleindia.pickle.Login.OtpActivity"
             android:screenOrientation="portrait" >
-
         </activity>
         <activity
             android:name="com.pickleindia.pickle.Login.CustomerDetailActivity"

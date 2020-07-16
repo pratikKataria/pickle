@@ -6,6 +6,8 @@
     <data>
 
         <import type="com.pickleindia.pickle.utils.DateUtils" />
+        <import type="android.view.View"/>
+        <import type="com.pickleindia.pickle.utils.OrderStatus"/>
 
         <variable
             name="orders"
@@ -18,6 +20,10 @@
         <variable
             name="visitor"
             type="com.pickleindia.pickle.interfaces.Visitor" />
+
+        <variable
+            name="orderCancellationNote"
+            type="String" />
 
     </data>
 
@@ -55,6 +61,42 @@
                     app:layout_constraintStart_toStartOf="@+id/textView28"
                     app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancel_material_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cancel order"
+                    android:visibility="@{orders.orderStatus == OrderStatus.CANCEL || orders.orderStatus == OrderStatus.DELIVERED || !(orderCancellationNote == null)? View.GONE : View.VISIBLE}"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="@+id/textView28"
+                    app:layout_constraintStart_toStartOf="@+id/textView28"
+                    app:layout_constraintTop_toBottomOf="@+id/textView31"
+                    app:strokeColor="@color/colorAccent" />
+
+                <ProgressBar
+                    android:id="@+id/orderCancelProgressBar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:visibility="gone"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cancel_material_button"
+                    app:layout_constraintStart_toEndOf="@+id/cancel_material_button"
+                    app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+                <TextView
+                    android:id="@+id/orderCancellationNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:textColor="@color/CeriseRed"
+                    android:text="@{orderCancellationNote}"
+                    android:visibility="@{orderCancellationNote.empty? View.GONE:View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/cancel_material_button" />
+
                 <ImageView
                     android:id="@+id/closeImageButton"
                     android:layout_width="wrap_content"
@@ -71,12 +113,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="18dp"
                     android:fontFamily="@font/avenir_next_demi_bold"
                     android:text="Delivery Details"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView31" />
+                    app:layout_constraintTop_toBottomOf="@+id/orderCancellationNote" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView3"
@@ -136,7 +178,7 @@
                             android:id="@+id/textView39"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{orders.isPastOrder ? + DateUtils.getServerDate(orders.date): DateUtils.currentDate}"
+                            android:text="@{DateUtils.getServerDate(orders.date)}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView34"
                             app:layout_constraintEnd_toEndOf="@+id/textView36"
                             app:layout_constraintTop_toTopOf="@+id/textView34"
@@ -356,17 +398,28 @@
                     app:layout_constraintStart_toStartOf="@+id/textViews"
                     app:layout_constraintTop_toBottomOf="@+id/cardViesa" />
 
+                <ProgressBar
+                    android:id="@+id/ordersLoadingProgressBar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView33" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:layout_marginTop="8dp"
                     android:clipToPadding="false"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
                     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView33"
+                    app:layout_constraintTop_toBottomOf="@+id/ordersLoadingProgressBar"
                     app:orderPlacedList="@{ordersList}"
                     app:visitor="@{visitor}" />
 

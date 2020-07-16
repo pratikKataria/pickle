@@ -1,23 +1,31 @@
 package com.pickleindia.pickle.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.firebase.database.ChildEventListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.VisitorForList;
@@ -25,11 +33,18 @@ import com.pickleindia.pickle.databinding.BottomSheetOrderDetailsBinding;
 import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.models.Orders;
 import com.pickleindia.pickle.models.OrdersDetails;
+import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.pickleindia.pickle.utils.Constant.ORDERS;
+import static com.pickleindia.pickle.utils.Constant.ORDERS_CANCELLED;
 import static com.pickleindia.pickle.utils.Constant.ORDERS_DETAILS;
+import static com.pickleindia.pickle.utils.OrderStatus.CANCEL;
+import static com.pickleindia.pickle.utils.OrderStatus.DELIVERED;
 
 public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
 
@@ -39,6 +54,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
 
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
+    private BottomSheetOrderDetailsBinding orderBinding;
 
     public OrderDetailsBottomSheet() {
 
@@ -54,7 +70,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        BottomSheetOrderDetailsBinding orderBinding = DataBindingUtil.inflate(inflater,
+        orderBinding = DataBindingUtil.inflate(inflater,
                 R.layout.bottom_sheet_order_details,
                 container,
                 false);
@@ -95,6 +111,31 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
             getDialog().dismiss();
         });
 
+        if (orders != null && (orders.getOrderStatus() != CANCEL || orders.getOrderStatus() != DELIVERED)) {
+            if (orders.getDeliveryTime().equals(getString(R.string.morningDeliveryTime))) {
+                if (DateUtils.orderDateIsBeforeCancelDate(orders.getDate(), 1, 0, 0, 0)) {
+                    Log.d("OrderDetails", "order Date is before");
+                } else {
+                    orderBinding.setOrderCancellationNote("morning order cannot be canceled after 12 AM");
+                }
+            } else if (orders.getDeliveryTime().equals(getString(R.string.eveningDeliveryTime))) {
+                int hour = 15, minute = 30, second = 0;
+                if (DateUtils.orderDateIsBeforeCancelDate(orders.getDate(), 0, hour, minute, 0)) {
+                    Log.d("OrderDetails", "order Date is before");
+                } else if (DateUtils.orderTimeIsAfter(orders.getDate(), "4:00 PM") && DateUtils.orderDateIsBeforeCancelDate(orders.getDate(), 1, hour, minute, second)) {
+                    Log.d("OrderDetails", "order Date is before");
+                } else {
+                    orderBinding.setOrderCancellationNote("evening order cannot be canceled after " + Math.abs(hour - 12) + ":" + minute + " PM");
+                }
+            }
+        }
+
+        orderBinding.cancelMaterialButton.setOnClickListener(v -> {
+            getDialog().setCancelable(false);
+            showAlertDialog();
+        });
+
+        orderBinding.executePendingBindings();
         return orderBinding.getRoot();
     }
 
@@ -109,6 +150,42 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
                 frameLayout.setBackground(null);
             });
         }
+    }
+
+    private void showAlertDialog() {
+        AlertDialog alertDialog = null;
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogTheme);
+        materialAlertDialogBuilder.setTitle("Would like to cancel the order?");
+        materialAlertDialogBuilder.setMessage("Canceling the order would take some time to and notifies after a while.");
+        materialAlertDialogBuilder.setPositiveButton("Back", (dialog, which) -> {
+            ;
+        }).setNegativeButton("Cancel Order", (dialog, which) -> cancelOrder());
+
+        alertDialog = materialAlertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void cancelOrder() {
+        orderBinding.orderCancelProgressBar.setVisibility(View.VISIBLE);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        Map<String, Object> atomicUpdate = new HashMap<>();
+        atomicUpdate.put(ORDERS + "/" + orders.getOrderId() + "/" + "orderStatus", CANCEL);
+        atomicUpdate.put(ORDERS_CANCELLED + "/" + orders.getOrderId() + "/" + "orderId", orders.getOrderId());
+        atomicUpdate.put(ORDERS_CANCELLED + "/" + orders.getOrderId() + "/" + "date", ServerValue.TIMESTAMP);
+
+        databaseReference.updateChildren(atomicUpdate).addOnSuccessListener(task -> {
+            orderBinding.orderCancelProgressBar.setVisibility(View.GONE);
+            Toast.makeText(getActivity(), "order cancel successfully", Toast.LENGTH_SHORT).show();
+            orderBinding.cancelMaterialButton.setVisibility(View.GONE);
+            if (getDialog() != null)
+                getDialog().setCancelable(true);
+        }).addOnFailureListener(taskFailed -> {
+            Toast.makeText(getActivity(), "failed to cancel order", Toast.LENGTH_SHORT).show();
+            if (getDialog() != null)
+                getDialog().setCancelable(true);
+            orderBinding.orderCancelProgressBar.setVisibility(View.GONE);
+        });
     }
 
     @Override

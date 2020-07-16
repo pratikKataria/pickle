@@ -34,4 +34,9 @@
         <item>Dairy</item>
     </string-array>
 
+    <string name="eveningDeliveryTime">4:00 PM ~ 6:00PM</string>
+
+    <string name="morningDeliveryTime">7:00 AM ~ 9:00AM</string>
+
+
 </resources>
