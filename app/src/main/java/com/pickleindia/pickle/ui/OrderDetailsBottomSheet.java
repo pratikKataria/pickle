@@ -90,6 +90,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         }
 
         databaseReference = FirebaseDatabase.getInstance().getReference(ORDERS_DETAILS).child(orderId);
+        orderBinding.ordersLoadingProgressBar.setVisibility(View.VISIBLE);
         valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -98,6 +99,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
                     orderedProductList.add(ordersDetails);
                     NotifyRecyclerItems.notifyItemInsertedAt(orderBinding.recyclerView, orderedProductList.indexOf(ordersDetails));
                 }
+                orderBinding.ordersLoadingProgressBar.setVisibility(View.GONE);
             }
 
             @Override
