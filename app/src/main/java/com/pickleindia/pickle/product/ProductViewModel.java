@@ -31,22 +31,22 @@ public class ProductViewModel extends BaseObservable {
 
     public void addToCart(Context context) {
         ProductModel newProduct = getProduct();
+        if (newProduct != null && newProduct.isItemAvailability()) {
+            IMainActivity iMainActivity = (IMainActivity) context;
+            iMainActivity.updateQuantity(newProduct, 1);
 
-        IMainActivity iMainActivity = (IMainActivity) context;
-        iMainActivity.updateQuantity(newProduct, 1);
+            newProduct.setQuantityCounter(1);
+            setProduct(newProduct);
 
-        newProduct.setQuantityCounter(1);
-        setProduct(newProduct);
-
-        try {
-            NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
-            Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
-            IFragmentCb iFragmentCb = (IFragmentCb) fragment;
-            iFragmentCb.play();
-        } catch (Exception xe) {
-            Log.e(ProductViewModel.class.getName(), xe.getMessage());
+            try {
+                NavHostFragment navFragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+                Fragment fragment = navFragment.getChildFragmentManager().getFragments().get(0);
+                IFragmentCb iFragmentCb = (IFragmentCb) fragment;
+                iFragmentCb.play();
+            } catch (Exception xe) {
+                Log.e(ProductViewModel.class.getName(), xe.getMessage());
+            }
         }
-
     }
 
     public void increaseQuantity(Context context) {
