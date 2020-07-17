@@ -46,10 +46,23 @@ public class CartRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         return cartList.size();
     }
 
-    public void updateCartItemsList(ProductModel product) {
+    public void deleteItemFromCart(ProductModel product) {
+        if (product == null) return;
+
         int indexOfItemRemoved = cartList.indexOf(product);
-        cartList.remove(product);
-        notifyItemRemoved(indexOfItemRemoved);
+        if (indexOfItemRemoved != -1) {
+            cartList.remove(product);
+            notifyItemRemoved(indexOfItemRemoved);
+        }
+    }
+
+    public void updateItemInCart(ProductModel productModel) {
+        int indexOfItem = cartList.indexOf(productModel);
+        if (indexOfItem != -1) {
+            cartList.remove(productModel);
+            cartList.add(indexOfItem, productModel);
+            notifyItemChanged(indexOfItem);
+        }
     }
 
     static class CartProductViewHolder extends RecyclerView.ViewHolder {

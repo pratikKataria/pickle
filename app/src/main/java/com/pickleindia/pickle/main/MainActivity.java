@@ -34,6 +34,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.interfaces.IMainActivity;
@@ -83,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
-        navController.navigate(R.id.action_homeFragment_to_nav_menu_sub_orders);
+
+        startActivity(new Intent(this, CartActivity.class));
     }
 
     private void checkForDynamicLink() {

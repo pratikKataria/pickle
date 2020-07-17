@@ -134,8 +134,7 @@ public class Address {
     ;
 
     private String buildAddress() {
-        return "Address:\n" +
-                (apartmentSociety == null ? "" : apartmentSociety) + " " +
+        return (apartmentSociety == null ? "" : apartmentSociety) + " " +
                 "["+(areaPin == null ? "" : areaPin) + "] " +
                 (flatHouseNo == null ? "" : flatHouseNo) + " " +
                 (address == null ? "" : address) + " " +

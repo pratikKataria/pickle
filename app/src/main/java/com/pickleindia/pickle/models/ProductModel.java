@@ -1,8 +1,11 @@
 package com.pickleindia.pickle.models;
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.annotations.NotNull;
 
 public class ProductModel {
     private String itemName;
@@ -215,5 +218,15 @@ public class ProductModel {
 
     public void setItemName_itemId(String itemName_itemId) {
         this.itemName_itemId = itemName_itemId;
+    }
+
+    public boolean isPriceSame(@NotNull ProductModel productModel) {
+        boolean same = true;
+        if (productModel.getItemId().equals(itemId)) {
+            if (productModel.getItemBasePrice() != itemBasePrice || productModel.getItemSellPrice() != itemSellPrice)
+                same = false;
+        }
+
+        return same;
     }
 }

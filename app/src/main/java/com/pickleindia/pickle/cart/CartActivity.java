@@ -26,10 +26,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,6 +54,7 @@ import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
+import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -111,6 +115,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         CartViewModel cartViewModel = new CartViewModel();
         cartViewModel.setCartProducts(cartList);
         binding.setCartViewModel(cartViewModel);
+        binding.executePendingBindings();
     }
 
     //check if user is login or not
@@ -126,6 +131,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     //check address in database and place order
     private void checkAddress() {
+        binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
         Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
         DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
         if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
@@ -135,7 +141,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                checkDeliveryTimeAndAddress();
+                                isAllProductsValid();
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
@@ -151,10 +157,148 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         }
     }
 
+
+
+    private void isAllProductsValid() {
+        Log.e("CartActivity ", "isAllProductsValid();");
+        final List<ProductModel> cartProductList = SharedPrefsUtils.getAllProducts(this);
+        List<ProductModel> newProductsList = new ArrayList<>();
+        check(new ProductCheckListener() {
+            @Override
+            public void onReceived(int index, ProductModel productModel) {
+
+                if (productModel != null)
+                    newProductsList.add(productModel);
+
+                if (index < cartProductList.size()) {
+                    ProductModel product = cartProductList.get(index);
+                    getNext(product.getItemCategory(), product.getItemId(), index);
+                }
+            }
+
+            @Override
+            public void onCompleted() {
+                binding.includeLayout.progressCircular.setVisibility(View.GONE);
+                boolean isOutOfStock = true;
+                boolean isPriceSame = true;
+                for (ProductModel newProduct : newProductsList) {
+                    int cartItemIndex = cartProductList.indexOf(newProduct);
+                    if (cartItemIndex != -1) {
+                        newProduct.setQuantityCounter(cartProductList.get(cartItemIndex).getQuantityCounter());
+                        String newProductModel = new Gson().toJson(newProduct);
+                        SharedPrefsUtils.setStringPreference(CartActivity.this, newProduct.getItemId(), newProductModel);
+
+                        if (binding.cartRecyclerView.getAdapter() != null) {
+                            CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
+                            cartRecyclerViewAdapter.updateItemInCart(newProduct);
+                        }
+
+                        if (!newProduct.isItemAvailability()) {
+                            isOutOfStock = false;
+                        }
+
+                        Log.e("Cartactivity ", cartProductList.get(cartItemIndex).getItemBasePrice() + " ");
+                        if (!newProduct.isPriceSame(cartProductList.get(cartItemIndex))) {
+                            isPriceSame = false;
+                        }
+
+                    }//if new index
+                } //for loop
+                getShoppingCart();
+
+                final boolean finalIsPriceSame = isPriceSame;
+                Snackbar outOfStockAlert = Snackbar.make(binding.cartView, "Some products are out of stock, remove to proceed", Snackbar.LENGTH_INDEFINITE);
+                outOfStockAlert.setBehavior(new SnackbarNoSwipeBehavior());
+                outOfStockAlert.setActionTextColor(getResources().getColor(R.color.chartIdealBar));
+                outOfStockAlert.setAction("remove", n -> {
+                    Snackbar removeMessage = Snackbar.make(binding.cartView, "removing products", Snackbar.LENGTH_SHORT);
+                    removeMessage.show();
+
+                    for (ProductModel productModel : cartProductList) {
+                        CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
+                        if (cartRecyclerViewAdapter != null && !productModel.isItemAvailability()) {
+                            cartRecyclerViewAdapter.deleteItemFromCart(productModel);
+                            SharedPrefsUtils.removeValuePreference(CartActivity.this, productModel.getItemId());
+                        }
+                    }
+
+                    getShoppingCart();
+
+                    if (!finalIsPriceSame) {
+                        showPriceChangeDialog();
+                    } else {
+                        checkDeliveryTimeAndAddress();
+                    }
+
+                });
+
+                if (!isOutOfStock) {
+                    outOfStockAlert.show();
+                } else if (!isPriceSame) {
+                    showPriceChangeDialog();
+                } else {
+                    checkDeliveryTimeAndAddress();
+                }
+
+                getShoppingCart();
+            }
+
+            private void getNext(String cat, String itemId, int index) {
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products").child(cat).child(itemId);
+                reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists() && snapshot.getValue() != null) {
+                            ProductModel productModel = snapshot.getValue(ProductModel.class);
+                            onReceived(index + 1, productModel);
+                            if (index + 1 == cartProductList.size()) {
+                                onCompleted();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+    }
+
+    private void showPriceChangeDialog() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(CartActivity.this);
+        materialAlertDialogBuilder.setTitle("Product Price Alert");
+        materialAlertDialogBuilder.setCancelable(false);
+        materialAlertDialogBuilder.setMessage("Its look like that prices of products in your cart has been update, Please recheck the price before proceeding");
+        materialAlertDialogBuilder.setPositiveButton("Next", (dialog, which) -> {
+            checkDeliveryTimeAndAddress();
+        });
+        materialAlertDialogBuilder.setNegativeButton("back", (dialog, which) -> {
+
+        });
+        materialAlertDialogBuilder.show();
+    }
+
+    private void check(ProductCheckListener productCheckListener) {
+        productCheckListener.onReceived(0, null);
+    }
+
+    private interface ProductCheckListener {
+        void onReceived(int index, ProductModel productModel);
+
+        void onCompleted();
+    }
+
     private void checkDeliveryTimeAndAddress() {
         BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
-        String deliveryTime = binding.getCartViewModel().getDeliveryTime();
+        String deliveryTime = null;
+        Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
+
         String deliveryAddress = binding.getCartViewModel().getFirebaseDatabaseAddress();
+        if (chip != null) {
+            deliveryTime = chip.getText().toString();
+        }
 
         if (deliveryTime == null || deliveryTime.isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -163,7 +307,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         }
         if (deliveryAddress == null || deliveryAddress.isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            Toast.makeText(this, "select delivery Address", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Refresh delivery address", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -172,6 +316,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     final ObservableInt pcoinsUsed = new ObservableInt(0);
     final ObservableInt totalPcoins = new ObservableInt(0);
+
     private void showOrderConfirmationDialog() {
         LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this),
@@ -400,7 +545,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         setTransparentStatusBar();
         CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
         if (cartRecyclerViewAdapter != null)
-            cartRecyclerViewAdapter.updateCartItemsList(productModel);
+            cartRecyclerViewAdapter.deleteItemFromCart(productModel);
     }
 
     public void navigateTo(String navigationTo) {
