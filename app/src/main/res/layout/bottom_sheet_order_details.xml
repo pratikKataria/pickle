@@ -8,6 +8,7 @@
         <import type="com.pickleindia.pickle.utils.DateUtils" />
         <import type="android.view.View"/>
         <import type="com.pickleindia.pickle.utils.OrderStatus"/>
+        <import type="com.pickleindia.pickle.utils.Constant"/>
 
         <variable
             name="orders"
@@ -24,7 +25,6 @@
         <variable
             name="orderCancellationNote"
             type="String" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -243,9 +243,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:text="@{orders.address}"
+                            android:text="@{orders.address.matches(Constant.GPS_CORD_RE)? `current location` : orders.address}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView42"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toEndOf="@+id/textView42"
                             app:layout_constraintTop_toTopOf="@+id/textView42" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

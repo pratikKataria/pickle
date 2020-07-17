@@ -8,8 +8,4 @@
         android:title="Home"
         android:icon="@drawable/ic_home_state" />
 
-    <item android:id="@+id/offerFragment"
-        android:title="Scheduling"
-        android:icon="@drawable/ic_scheduling_state" />
-
 </menu>
