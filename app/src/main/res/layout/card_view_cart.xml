@@ -137,26 +137,38 @@
                 app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name" />
 
+
             <TextView
                 android:id="@+id/card_view_iv_sell_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:visibility="@{productViewModel.product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
+                android:layout_marginStart="4dp"
+                android:padding="4dp"
                 android:text="@{productViewModel.product.itemSellPrice > 0 ? PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemSellPrice) : `NaN`}"
-                app:layout_constraintStart_toStartOf="@+id/card_view_tv_desc"
+                android:visibility="@{productViewModel.product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@+id/card_view_iv_base_price"
+                app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
+                app:layout_constraintTop_toTopOf="@+id/card_view_iv_base_price"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/card_view_iv_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@{productViewModel.product.itemQty + ` ` + productViewModel.product.qtyType}"
+                app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_tv_desc" />
 
             <TextView
                 android:id="@+id/card_view_iv_base_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}"
+                android:padding="4dp"
                 android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
-                app:layout_constraintStart_toStartOf="@+id/card_view_iv_sell_price"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_sell_price" />
-
+                app:layout_constraintStart_toStartOf="@+id/card_view_tv_desc"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity"
+                app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}" />
 
             <ImageButton
                 android:id="@+id/imageButtonDelete"

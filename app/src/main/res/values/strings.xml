@@ -30,7 +30,7 @@
     <string-array name="ProductCategory">
         <item>Fruits</item>
         <item>Vegetables</item>
-        <item>Beverages</item>
+        <item>Grocery</item>
         <item>Dairy</item>
     </string-array>
 

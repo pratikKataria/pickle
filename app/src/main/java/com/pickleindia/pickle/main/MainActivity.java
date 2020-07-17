@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void buildInvitation(Uri dynamicLinkUri) {
         String referrerUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        String msg = String.format("download PickleIndia via link %s to get exciting offer \n link: %s", referrerUid, dynamicLinkUri.toString());
+        String msg = String.format("Download PickleIndia via link %s to get exciting offer \n link: %s", referrerUid, dynamicLinkUri.toString());
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_TEXT, msg);

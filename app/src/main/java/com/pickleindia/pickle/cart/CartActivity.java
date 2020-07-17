@@ -132,6 +132,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 if (!observableAddress.get().isEmpty() && observableAddress.get().matches(GPS_CORD_RE)) {
                     binding.includeLayout.currentAddressAlert.setVisibility(View.VISIBLE);
                 } else {
+                    binding.includeLayout.btmSheetCipCurrentLocation.setText("CURRENT LOCATION");
                     binding.includeLayout.currentAddressAlert.setVisibility(View.GONE);
                 }
                 Log.e("CartActivity ", sender.toString() +" " + propertyId);
@@ -169,8 +170,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     //check address in database and place order
     private void checkAddress() {
-        binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
 
+        if (FirebaseAuth.getInstance().getUid() == null)
+            return;
+
+        binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
         if (observableAddress.get().isEmpty()) {
             Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
             DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");

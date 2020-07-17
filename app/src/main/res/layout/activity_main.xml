@@ -31,11 +31,12 @@
             android:id="@+id/activity_main_fab_add_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"
+            android:backgroundTint="@color/colorAccent"
+            app:borderWidth="0dp"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="32dp"
+            android:src="@drawable/ic_add_black_24dp"
             android:background="@android:drawable/ic_input_add"
-            android:backgroundTint="@color/black"
             app:layout_constraintBottom_toTopOf="@+id/activity_main_cnb_bottom_nav"
             app:layout_constraintEnd_toEndOf="parent" />
 
