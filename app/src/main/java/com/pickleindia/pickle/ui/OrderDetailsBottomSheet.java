@@ -1,12 +1,7 @@
 package com.pickleindia.pickle.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +128,8 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         }
 
         orderBinding.cancelMaterialButton.setOnClickListener(v -> {
-            getDialog().setCancelable(false);
+            if (getDialog() != null)
+                getDialog().setCancelable(false);
             showAlertDialog();
         });
 
@@ -160,7 +156,9 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         materialAlertDialogBuilder.setTitle("Would like to cancel the order?");
         materialAlertDialogBuilder.setMessage("Canceling the order would take some time to and notifies after a while.");
         materialAlertDialogBuilder.setPositiveButton("Back", (dialog, which) -> {
-            ;
+            if (getDialog() != null) {
+                getDialog().setCancelable(true);
+            }
         }).setNegativeButton("Cancel Order", (dialog, which) -> cancelOrder());
 
         alertDialog = materialAlertDialogBuilder.create();

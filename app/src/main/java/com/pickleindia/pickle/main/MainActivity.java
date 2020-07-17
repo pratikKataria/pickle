@@ -84,8 +84,6 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
-
-        startActivity(new Intent(this, CartActivity.class));
     }
 
     private void checkForDynamicLink() {
