@@ -38,5 +38,6 @@
 
     <string name="morningDeliveryTime">7:00 AM ~ 9:00AM</string>
 
+    <string name="gpsText">"current location is stored in database \nYou can update it by going to -> Address in navigation"</string>
 
 </resources>

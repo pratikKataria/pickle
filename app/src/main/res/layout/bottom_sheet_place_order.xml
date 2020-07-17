@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="com.pickleindia.pickle.utils.Constant"/>
 
         <variable
             name="cartView"
@@ -14,6 +15,11 @@
         <variable
             name="activity"
             type="com.pickleindia.pickle.cart.CartActivity"/>
+
+        <variable
+            name="observableAddress"
+            type="androidx.databinding.ObservableField&lt;String>" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +84,6 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> cartView.setDeliveryTime(`7:00 AM ~ 9:00AM`)}"
                     android:text="7:00 AM ~ 9:00AM"
                     android:textColor="@color/chip_text_color_state"
                     app:checkedIcon="@drawable/ic_clock"
@@ -91,7 +96,6 @@
                     style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> cartView.setDeliveryTime(`4:00 PM ~ 6:00PM`)}"
                     android:text="4:00 PM ~ 6:00PM"
                     android:textColor="@color/chip_text_color_state"
                     app:checkedIcon="@drawable/ic_clock"
@@ -117,9 +121,9 @@
                 android:id="@+id/btm_sheet_cip_current_location"
                 android:layout_width="wrap_content"
                 android:layout_height="53dp"
-                android:layout_gravity="center"
                 android:layout_marginTop="8dp"
                 android:onClick="@{() -> activity.getCurrentLocation()}"
+                android:text="CURRENT ADDRESS"
                 android:textColor="@color/secondaryColorDark"
                 app:chipBackgroundColor="@color/white"
                 app:chipCornerRadius="4dp"
@@ -131,18 +135,19 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView11"
-                app:locationText="@{`location`}"
                 app:rippleColor="@color/secondaryColorLight" />
 
             <TextView
-                android:id="@+id/totalPriceTextView"
+                android:id="@+id/currentAddressAlert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:text="unable to detect (tap try again)"
-                android:visibility="@{cartView.currentLocationFound ? View.GONE : View.VISIBLE}"
+                android:drawableEnd="@drawable/ic_notification"
+                android:drawablePadding="8dp"
+                android:text="you have selected current location for delivery"
+                android:textColor="#FF0012"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.493"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btm_sheet_cip_current_location" />
 
@@ -153,9 +158,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
                 android:text="OR"
-                app:layout_constraintEnd_toEndOf="@+id/totalPriceTextView"
-                app:layout_constraintStart_toStartOf="@+id/totalPriceTextView"
-                app:layout_constraintTop_toBottomOf="@+id/totalPriceTextView" />
+                app:layout_constraintEnd_toEndOf="@+id/btm_sheet_cip_current_location"
+                app:layout_constraintStart_toStartOf="@+id/btm_sheet_cip_current_location"
+                app:layout_constraintTop_toBottomOf="@+id/currentAddressAlert" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -171,8 +176,7 @@
                     android:id="@+id/radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:layout_marginBottom="16dp"
+                    android:padding="12dp"
                     android:orientation="horizontal">
 
                     <!-- Our custom radios here. One for male one for female -->
@@ -183,13 +187,11 @@
                         android:layout_width="175dp"
                         android:layout_height="175dp"
                         android:layout_marginEnd="12dp"
-                        android:padding="16dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="@{cartView.displayAddress.empty || cartView.displayAddress == null? `try to Refresh Address` : cartView.displayAddress}"
-                        android:textAlignment="viewStart"
-                        android:textAllCaps="@{cartView.displayAddress.empty || cartView.displayAddress == null}"
-                        android:textColor="@color/black" />
+                        android:layout_marginBottom="32dp"
+                        android:checked="true"
+                        android:text="@{observableAddress.empty ? `try to Refresh Address` : observableAddress.matches(Constant.GPS_CORD_RE) ? @string/gpsText : observableAddress}"
+                        android:textAllCaps="@{observableAddress.empty}"
+                        android:textColor="@color/radio_text_color_state" />
 
                     <com.pickleindia.pickle.ui.MyRadioButton
                         android:id="@+id/address_slot_2"
@@ -250,17 +252,17 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
                 android:drawableEnd="@drawable/ic__refresh"
                 android:drawablePadding="8dp"
-                android:onClick="@{() -> cartView.getDatabaseAddress()}"
+                android:onClick="@{() -> activity.refreshAddress()}"
                 android:src="@drawable/ic_sync_black_24dp"
                 android:text="Refresh Address"
                 android:textColor="@color/secondaryColorDark"
                 app:icon="@drawable/ic__refresh"
                 app:iconTint="@color/secondaryColorDark"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+                app:layout_constraintEnd_toEndOf="@+id/btm_sheet_cip_current_location"
+                app:layout_constraintStart_toStartOf="@+id/btm_sheet_cip_current_location"
                 app:layout_constraintTop_toBottomOf="@+id/textView14"
                 app:rippleColor="@color/secondaryColorLight"
                 app:strokeColor="@color/secondaryColorLight" />

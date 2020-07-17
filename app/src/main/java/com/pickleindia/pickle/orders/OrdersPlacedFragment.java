@@ -55,7 +55,12 @@ public class OrdersPlacedFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     if (!firstRun) {
                         binding.orderProgressBar.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "No current orders or swipe to refresh", Toast.LENGTH_SHORT).show();
+                        binding.pastOrderProgress.setVisibility(View.GONE);
+                        if (ordersList.isEmpty())
+                            Toast.makeText(getActivity(), "No current orders or swipe to refresh", Toast.LENGTH_SHORT).show();
+                        if (pastOrdersList.isEmpty()) {
+                            Toast.makeText(getActivity(), "No past orders or swipe to refresh", Toast.LENGTH_SHORT).show();
+                        }
                         timer.cancel();
                     }
                     firstRun = false;
@@ -129,7 +134,7 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void addNewOrders() {
         binding.pastOrderProgress.setVisibility(View.VISIBLE);
-        if (!pastOrdersList.isEmpty()) {
+        if (!pastOrdersList.isEmpty() && pastOrdersList.get(pastOrdersList.size()-1) instanceof Orders) {
             Orders orders = (Orders) pastOrdersList.get(pastOrdersList.size() -1);
             ordersViewModel.loadMoreOrders(orders.getDate()+"_"+orders.getOrderId()).observe(getViewLifecycleOwner(), operation -> {
                 addOrdersToType(operation);

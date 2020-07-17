@@ -28,6 +28,10 @@
         <variable
             name="dateString"
             type="String" />
+
+        <variable
+            name="observableAddress"
+            type="androidx.databinding.ObservableField&lt;String>" />
     </data>
 
 
@@ -412,7 +416,8 @@
                 android:id="@+id/includeLayout"
                 layout="@layout/bottom_sheet_place_order"
                 bind:cartView="@{cartViewModel}"
-                bind:activity="@{activity}"/>
+                bind:activity="@{activity}"
+                bind:observableAddress="@{observableAddress}"/>
 
 
 

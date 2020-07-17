@@ -24,10 +24,6 @@ import java.util.List;
 public class CartViewModel extends BaseObservable {
     private List<ProductModel> cartProducts = new ArrayList<>();
     private boolean isCartVisible;
-    private boolean currentLocationFound;
-    private String displayAddress;
-    private String firebaseDatabaseAddress;
-    private String deliveryTime;
 
     @Bindable
     public List<ProductModel> getCartProducts() {
@@ -51,43 +47,12 @@ public class CartViewModel extends BaseObservable {
         return isCartVisible;
     }
 
-    @Bindable
-    public void setDisplayAddress(String displayAddress) {
-        this.displayAddress = displayAddress;
-        Log.e(CartActivity.class.getName(), "address: " + displayAddress);
-        notifyPropertyChanged(BR.displayAddress);
-    }
-
-    @Bindable
-    public String getDisplayAddress() {
-        return displayAddress;
-    }
 
     @Bindable
     public boolean isCartVisible() {
         return isCartVisible;
     }
 
-    @Bindable
-    public void  setCurrentLocationFound(boolean currentLocationFound) {
-        this.currentLocationFound = currentLocationFound;
-        Log.e(CartViewModel.class.getName(), "current found " + currentLocationFound);
-        notifyPropertyChanged(BR.currentLocationFound);
-    }
-
-    @Bindable
-    public boolean isCurrentLocationFound() {
-        return currentLocationFound;
-    }
-
-    @Bindable
-    public void setDeliveryTime(String deliveryTime) {
-        this.deliveryTime = deliveryTime;
-        notifyPropertyChanged(BR.deliveryTime);
-    }
-
-    @Bindable
-    public String getDeliveryTime() {return deliveryTime;}
 
     public String getProductQuantitiesString() {
         int totalItems = 0;
@@ -127,46 +92,4 @@ public class CartViewModel extends BaseObservable {
         }
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
-
-    public void getDatabaseAddress() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Addresses/" + FirebaseAuth.getInstance().getUid());
-            reference.keepSynced(true);
-            reference.child("slot1").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Address newAddress = dataSnapshot.getValue(Address.class);
-                    if (newAddress != null && newAddress.getGpsLocation() != null) {
-                        setDisplayAddress(newAddress.toString());
-                        setFirebaseDatabaseAddress(newAddress.getGpsLocation());
-                        return;
-                    }
-
-                    if (newAddress != null) {
-                        setDisplayAddress(newAddress.toString());
-                        setFirebaseDatabaseAddress(newAddress.toString());
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    setDisplayAddress(databaseError.getMessage());
-                }
-            });
-        }
-    }
-
-    public String getFirebaseDatabaseAddress() {
-        return firebaseDatabaseAddress;
-    }
-
-    public void setFirebaseDatabaseAddress(String firebaseDatabaseAddressString) {
-        this.firebaseDatabaseAddress = firebaseDatabaseAddressString;
-    }
-
-    public void setCurrentLocation(String currentLocationString) {
-        setDisplayAddress("Current Location set");
-        setFirebaseDatabaseAddress(currentLocationString);
-    }
-
 }

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.Observable;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableInt;
 
@@ -48,8 +50,10 @@ import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
+import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OrdersDetails;
 import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.ui.MyRadioButton;
 import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
@@ -65,12 +69,15 @@ import java.util.Map;
 
 import mumayank.com.airlocationlibrary.AirLocation;
 
+import static com.pickleindia.pickle.utils.Constant.GPS_CORD_RE;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     private ActivityCartViewBinding binding;
     private AlertDialog alertDialog;
+    private final ObservableField<String> observableAddress = new ObservableField<>("");
+    private final ObservableField<String> displayAddress = new ObservableField<>("");
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -95,7 +102,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         getShoppingCart();
 
         binding.setActivity(this);
-        binding.getCartViewModel().getDatabaseAddress();
+        binding.setObservableAddress(displayAddress);
 
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         behavior.addBottomSheetCallback(bottomSheetCallback);
@@ -107,6 +114,37 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             //check if user address is present
             checkAddress();
         });
+
+        binding.includeLayout.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.includeLayout.addressSlot1.getId()) {
+                if (observableAddress.get().matches(GPS_CORD_RE) && displayAddress.get().isEmpty()) {
+                    observableAddress.set("");
+                    checkAddress();
+                } else {
+                    observableAddress.set(displayAddress.get());
+                }
+            }
+        });
+
+        observableAddress.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (!observableAddress.get().isEmpty() && observableAddress.get().matches(GPS_CORD_RE)) {
+                    binding.includeLayout.currentAddressAlert.setVisibility(View.VISIBLE);
+                } else {
+                    binding.includeLayout.currentAddressAlert.setVisibility(View.GONE);
+                }
+                Log.e("CartActivity ", sender.toString() +" " + propertyId);
+            }
+        });
+    }
+
+    public void refreshAddress() {
+        if (displayAddress.get().isEmpty()) {
+            checkAddress();
+        } else {
+            observableAddress.set(displayAddress.get());
+        }
     }
 
     private void getShoppingCart() {
@@ -132,16 +170,28 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     //check address in database and place order
     private void checkAddress() {
         binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
-        Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
-        DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
-        if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+
+        if (observableAddress.get().isEmpty()) {
+            Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
+            DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
             userAddressDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("slot1")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                                isAllProductsValid();
+                                Address address = dataSnapshot.getValue(Address.class);
+                                if (address != null) {
+                                    if (address.getGpsLocation() != null) {
+                                        observableAddress.set(address.getGpsLocation());
+                                        displayAddress.set(address.getGpsLocation());
+                                    }
+                                    else {
+                                        observableAddress.set(address.toString());
+                                        displayAddress.set(address.toString());
+                                    }
+                                    isAllProductsValid();
+                                }
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(CartActivity.this, CustomerDetailActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
@@ -153,11 +203,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         }
                     });
         } else {
-            Toast.makeText(this, "unable to find address: try login and update", Toast.LENGTH_SHORT).show();
+            isAllProductsValid();
         }
     }
-
-
 
     private void isAllProductsValid() {
         Log.e("CartActivity ", "isAllProductsValid();");
@@ -295,7 +343,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         String deliveryTime = null;
         Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
 
-        String deliveryAddress = binding.getCartViewModel().getFirebaseDatabaseAddress();
         if (chip != null) {
             deliveryTime = chip.getText().toString();
         }
@@ -305,9 +352,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (deliveryAddress == null || deliveryAddress.isEmpty()) {
+        if (observableAddress.get().isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             Toast.makeText(this, "Refresh delivery address", Toast.LENGTH_SHORT).show();
+            checkAddress();
             return;
         }
 
@@ -357,21 +405,25 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists() && snapshot.getValue() != null) {
                         int pcoins = snapshot.getValue(Long.class).intValue();
-                        totalPcoins.set(pcoins);
-                        int priceToBeCutOff = (finalTotal / 10);
+                        if(pcoins > 0) {
+                            totalPcoins.set(pcoins);
+                            int priceToBeCutOff = (finalTotal / 10);
 
-                        confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
+                            confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
 
-                        if (finalTotal > 100) {
-                            if (pcoins < priceToBeCutOff) {
-                                pcoinsUsed.set(pcoins);
-                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + pcoins + " = " + (finalTotal - pcoins));
-                                confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
-                            } else if (pcoins > priceToBeCutOff) {
-                                pcoinsUsed.set(priceToBeCutOff);
-                                confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
-                                confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
+                            if (finalTotal > 100) {
+                                if (pcoins < priceToBeCutOff) {
+                                    pcoinsUsed.set(pcoins);
+                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + pcoins + " = " + (finalTotal - pcoins));
+                                    confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
+                                } else if (pcoins > priceToBeCutOff) {
+                                    pcoinsUsed.set(priceToBeCutOff);
+                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
+                                    confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
+                                }
                             }
+                        } else {
+                            Toast.makeText(CartActivity.this, "not have enough pcoins", Toast.LENGTH_SHORT);
                         }
                     }
                 }
@@ -416,7 +468,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             alertDialog.dismiss();
             binding.includeLayout.chipGroup2.clearCheck();
             pcoinsUsed.set(0);
-            binding.getCartViewModel().setDeliveryTime("");
         });
 
         Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
@@ -509,14 +560,18 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/pcoinsSpent", pcoinsUsed.get());
             atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
             atomicOperation.put("Orders/" + key + "/shipping", 0);
-            atomicOperation.put("Orders/" + key + "/deliveryTime", binding.getCartViewModel().getDeliveryTime());
-            atomicOperation.put("Orders/" + key + "/address", binding.getCartViewModel().getFirebaseDatabaseAddress());
+            atomicOperation.put("Orders/" + key + "/address", observableAddress.get());
+
+            Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
+            if (chip != null)
+                atomicOperation.put("Orders/" + key + "/deliveryTime", chip.getText().toString());
+
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
 
             if (pcoinsUsed.get() > 0)
-            atomicOperation.put("Customers/" + FirebaseAuth.getInstance().getUid() +"/" + "referralReward" +"/"+ "pcoins", totalPcoins.get() - pcoinsUsed.get());
+                atomicOperation.put("Customers/" + FirebaseAuth.getInstance().getUid() + "/" + "referralReward" + "/" + "pcoins", totalPcoins.get() - pcoinsUsed.get());
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage() + "");
@@ -586,15 +641,16 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     AirLocation airLocation;
     public void getCurrentLocation() {
+        binding.includeLayout.radioGroup.clearCheck();
         airLocation = new AirLocation(CartActivity.this, new AirLocation.Callback() {
             @Override
             public void onSuccess(@NotNull ArrayList<Location> arrayList) {
                 for (Location location : arrayList) {
                     if (location.getLatitude() != 0 && location.getLatitude() != 0) {
+                        binding.includeLayout.btmSheetCipCurrentLocation.setText("Location Found");
                         Toast.makeText(CartActivity.this, "location found", Toast.LENGTH_SHORT).show();
                         if (binding.getCartViewModel() != null) {
-                            binding.includeLayout.btmSheetCipCurrentLocation.setText("Location Found");
-                            binding.getCartViewModel().setCurrentLocation(location.getLatitude() +" , " + location.getLongitude());
+                            observableAddress.set(location.getLatitude() +"," + location.getLongitude());
                         }
                     }
                 }
@@ -617,7 +673,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             } else {
                 binding.includeLayout.btmSheetCipCurrentLocation.setText("Request Permission");
             }
-            return;
         }
 
         if (requestCode == 1243 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {

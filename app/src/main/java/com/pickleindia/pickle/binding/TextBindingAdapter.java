@@ -79,21 +79,4 @@ public class TextBindingAdapter {
 
     }
 
-    @BindingAdapter("locationText")
-    public static void setLocationText(TextView textView, String type) {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean checkPermission = textView.getContext().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-            //if true then permission is granted
-            if (checkPermission) {
-                textView.setText("Request Location Update");
-            } else {
-                textView.setText("Request Location Permission");
-            }
-        } else {
-
-        }
-
-    }
-
 }
