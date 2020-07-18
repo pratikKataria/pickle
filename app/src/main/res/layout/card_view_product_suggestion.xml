@@ -176,7 +176,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="tap to view more info"
+                android:text="@string/tapToMore"
                 android:textAlignment="center"
                 android:textSize="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

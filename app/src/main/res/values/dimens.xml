@@ -25,4 +25,7 @@
 
     <dimen name="orderCardThumbImage">55dp</dimen>
 
+    <dimen name="card_view_category_width">100dp</dimen>
+    <dimen name="card_view_category_height">120dp</dimen>
+
 </resources>

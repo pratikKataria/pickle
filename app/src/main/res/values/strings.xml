@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">pickle</string>
+    <string name="app_name">Pickle</string>
     <string name="sharedPreferences">permissions</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -39,5 +39,16 @@
     <string name="morningDeliveryTime">7:00 AM ~ 9:00AM</string>
 
     <string name="gpsText">"current location is stored in database \nYou can update it by going to -> Address in navigation"</string>
+
+    <string name="tapToMore">Tap to view more</string>
+
+<!--    CAT_ONE = "Fruits";-->
+<!--    CAT_TWO = "Vegetables";-->
+<!--    CAT_THREE = "Dairy";-->
+<!--    CAT_FOUR = "Grocery";-->
+    <string name="CAT_ONE">FRUITS</string>
+    <string name="CAT_TWO">VEGETABLES</string>
+    <string name="CAT_THREE">DAIRY</string>
+    <string name="CAT_FOUR">GROCERY</string>
 
 </resources>

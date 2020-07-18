@@ -120,4 +120,12 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="Widget.MyApp.TextView.Product.Name" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    </style>
+
+    <style name="Widget.MyApp.TextView.Product.Desc" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
 </resources>

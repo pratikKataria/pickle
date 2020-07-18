@@ -86,8 +86,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardViewFruits"
-                        android:layout_width="85dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/card_view_category_width"
+                        android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
                         android:backgroundTint="@color/icFruitBg"
                         android:clickable="true"
@@ -108,7 +108,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
-                        android:text="Fruits" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:text="@string/CAT_ONE" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,8 +125,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardViewVegetables"
-                        android:layout_width="85dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/card_view_category_width"
+                        android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
                         android:backgroundTint="@color/icVegetableBg"
                         android:clickable="true"
@@ -149,7 +150,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Vegetables" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:text="@string/CAT_TWO" />
 
 
                 </LinearLayout>
@@ -167,8 +169,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardViewDairy"
-                        android:layout_width="85dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/card_view_category_width"
+                        android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
                         android:backgroundTint="@color/icDairyBg"
                         android:clickable="true"
@@ -189,7 +191,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
-                        android:text="Dairy" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:text="@string/CAT_THREE" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -205,8 +208,8 @@
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardViewBeverages"
-                        android:layout_width="85dp"
-                        android:layout_height="100dp"
+                        android:layout_width="@dimen/card_view_category_width"
+                        android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
                         android:backgroundTint="@color/icVegetableBg"
                         android:clickable="true"
@@ -227,7 +230,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="4dp"
-                        android:text="Grocery" />
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:text="@string/CAT_FOUR" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.helper.widget.Flow
@@ -270,7 +274,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="product you my like         \u2192"
+                    android:text="Products you my like         \u2192"
                     app:layout_constraintEnd_toStartOf="@+id/guideline6"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/guideline5"

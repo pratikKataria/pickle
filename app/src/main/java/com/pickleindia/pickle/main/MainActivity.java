@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements
                 FirebaseAuth.getInstance().signOut();
                 SharedPrefsUtils.clearCart(this);
                 updateIconItems();
-                startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;
             case R.id.nav_menu_sub_orders:

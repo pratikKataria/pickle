@@ -46,7 +46,6 @@ public abstract class Constant {
     @IntDef({
             FRUIT_IMG_RES,
             VEGETABLE_IMG_RES,
-            BEVERAGE_IMG_RES,
             DAIRY_IMG_RES
     })
 
@@ -54,7 +53,6 @@ public abstract class Constant {
 
     public static final int FRUIT_IMG_RES = R.drawable.ic_fruits;
     public static final int VEGETABLE_IMG_RES = R.drawable.ic_vegetable;
-    public static final int BEVERAGE_IMG_RES = R.drawable.ic_beverages;
     public static final int DAIRY_IMG_RES = R.drawable.ic_dairy;
 
     @IntDef({

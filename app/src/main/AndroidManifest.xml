@@ -15,6 +15,11 @@
             android:name="com.pickleindia.pickle.splash.SplashActivity"
             android:screenOrientation="portrait">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity
             android:name="com.pickleindia.pickle.splash.OnBoardingActivity"
@@ -35,18 +40,7 @@
             android:screenOrientation="portrait"
             android:hardwareAccelerated="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -71,11 +65,6 @@
             android:name="com.pickleindia.pickle.cart.CartActivity"
             android:noHistory="true"
             android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="com.pickleindia.pickle.main.AddNewItemActivity"
             android:screenOrientation="portrait"/>
