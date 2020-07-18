@@ -46,9 +46,9 @@
 <!--    CAT_TWO = "Vegetables";-->
 <!--    CAT_THREE = "Dairy";-->
 <!--    CAT_FOUR = "Grocery";-->
-    <string name="CAT_ONE">FRUITS</string>
-    <string name="CAT_TWO">VEGETABLES</string>
-    <string name="CAT_THREE">DAIRY</string>
-    <string name="CAT_FOUR">GROCERY</string>
+    <string name="CAT_ONE">Fruits</string>
+    <string name="CAT_TWO">Vegetables</string>
+    <string name="CAT_THREE">Dairy</string>
+    <string name="CAT_FOUR">Grocery</string>
 
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <group
         android:id="@+id/group_1"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:id="@+id/navigation_menu_about"
             android:title="About"/>
@@ -23,10 +23,6 @@
                 android:title="Address Manager"/>
 
             <item
-                android:id="@+id/nav_menu_sub_help"
-                android:title="Help"/>
-
-            <item
                 android:id="@+id/nav_menu_sub_refer_link"
                 android:title="Refer"/>
 
@@ -41,8 +37,17 @@
 
     <group
         android:id="@+id/group_2"
-        android:checkableBehavior="single"
+        android:checkableBehavior="none"
         android:menuCategory="alternative">
+
+        <item
+            android:id="@+id/nav_menu_sub_help"
+            android:title="Help"/>
+
+        <item
+            android:id="@+id/navigation_menu_login"
+            android:title="Login"/>
+
         <item
             android:id="@+id/navigation_menu_logout"
             android:title="Logout" />

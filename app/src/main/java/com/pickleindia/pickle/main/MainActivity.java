@@ -175,6 +175,16 @@ public class MainActivity extends AppCompatActivity implements
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_rewardFragment));
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.navigation_menu_login:
+                smoothActionBarDrawerToggle.runWhenIdle(() ->{
+                    if (FirebaseAuth.getInstance().getUid() == null) {
+                        startActivity(new Intent(this, LoginActivity.class));
+                    } else {
+                        Toast.makeText(this, "already logged in", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                drawerLayout.closeDrawers();
+                break;                
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
