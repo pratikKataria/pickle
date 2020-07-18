@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,7 +52,6 @@ import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OrdersDetails;
 import com.pickleindia.pickle.models.ProductModel;
-import com.pickleindia.pickle.ui.MyRadioButton;
 import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
@@ -82,6 +80,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                if (binding != null &&  binding.includeLayout.chipDeliveryTime3.isChecked()) {
+                    setDeliveryChargeAlert();
+                }
+            }
         }
 
         @Override
@@ -135,9 +138,28 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     binding.includeLayout.btmSheetCipCurrentLocation.setText("CURRENT LOCATION");
                     binding.includeLayout.currentAddressAlert.setVisibility(View.GONE);
                 }
-                Log.e("CartActivity ", sender.toString() +" " + propertyId);
+                Log.e("CartActivity ", sender.toString() + " " + propertyId);
             }
         });
+
+        binding.includeLayout.chipGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == binding.includeLayout.chipDeliveryTime3.getId()) {
+                setDeliveryChargeAlert();
+            } else {
+                binding.includeLayout.deliveryChargeAlert.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setDeliveryChargeAlert() {
+        if (binding.getCartViewModel().getTotalCostInt() >= 500) {
+            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "0", "above", "500"));
+            binding.includeLayout.deliveryChargeAlert.setTextColor(getResources().getColor(R.color.chartIdealBar));
+        } else {
+            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "39", " below ", "500"));
+            binding.includeLayout.deliveryChargeAlert.setTextColor(Color.RED);
+        }
+        binding.includeLayout.deliveryChargeAlert.setVisibility(View.VISIBLE);
     }
 
     public void refreshAddress() {
@@ -189,8 +211,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                     if (address.getGpsLocation() != null) {
                                         observableAddress.set(address.getGpsLocation());
                                         displayAddress.set(address.getGpsLocation());
-                                    }
-                                    else {
+                                    } else {
                                         observableAddress.set(address.toString());
                                         displayAddress.set(address.toString());
                                     }
@@ -409,7 +430,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists() && snapshot.getValue() != null) {
                         int pcoins = snapshot.getValue(Long.class).intValue();
-                        if(pcoins > 0) {
+                        if (pcoins > 0) {
                             totalPcoins.set(pcoins);
                             int priceToBeCutOff = (finalTotal / 10);
 
@@ -548,9 +569,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 ));
                 orderDetailsIds.append(product.getItemId()).append(" ");
                 if (product.getItemSellPrice() > 0) {
-                    calcTotal += (product.getItemSellPrice()*product.getQuantityCounter());
+                    calcTotal += (product.getItemSellPrice() * product.getQuantityCounter());
                 } else {
-                    calcTotal += (product.getItemBasePrice()*product.getQuantityCounter());
+                    calcTotal += (product.getItemBasePrice() * product.getQuantityCounter());
                 }
             }
 
@@ -562,14 +583,22 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
             atomicOperation.put("Orders/" + key + "/pcoinsSpent", pcoinsUsed.get());
-            atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
-            atomicOperation.put("Orders/" + key + "/shipping", 0);
             atomicOperation.put("Orders/" + key + "/address", observableAddress.get());
 
+            int shipping = 0;
             Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
-            if (chip != null)
+            if (chip != null) {
                 atomicOperation.put("Orders/" + key + "/deliveryTime", chip.getText().toString());
 
+                if (chip.getId() == binding.includeLayout.chipDeliveryTime3.getId()) {
+                    if (calcTotal < 500) {
+                        shipping += 39;
+                    }
+                }
+            }
+
+            atomicOperation.put("Orders/" + key + "/shipping", shipping);
+            atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
@@ -644,6 +673,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     }
 
     AirLocation airLocation;
+
     public void getCurrentLocation() {
         binding.includeLayout.radioGroup.clearCheck();
         airLocation = new AirLocation(CartActivity.this, new AirLocation.Callback() {
@@ -654,7 +684,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         binding.includeLayout.btmSheetCipCurrentLocation.setText("Location Found");
                         Toast.makeText(CartActivity.this, "location found", Toast.LENGTH_SHORT).show();
                         if (binding.getCartViewModel() != null) {
-                            observableAddress.set(location.getLatitude() +"," + location.getLongitude());
+                            observableAddress.set(location.getLatitude() + "," + location.getLongitude());
                         }
                     }
                 }

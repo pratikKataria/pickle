@@ -70,9 +70,8 @@
                 android:id="@+id/chipGroup2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_marginTop="8dp"
-                app:chipSpacing="16dp"
+                app:chipSpacingHorizontal="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +89,6 @@
                     app:checkedIconEnabled="true"
                     app:chipBackgroundColor="@color/bg_chip_state" />
 
-
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipDeliveryTime2"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -103,19 +101,45 @@
                     app:chipBackgroundColor="@color/bg_chip_state"
                     app:iconStartPadding="8dp" />
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipDeliveryTime3"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery_slot_three"
+                    android:tag="current"
+                    android:textColor="@color/chip_text_color_state"
+                    app:checkedIcon="@drawable/ic_clock"
+                    app:checkedIconEnabled="true"
+                    app:chipBackgroundColor="@color/bg_chip_state"
+                    app:iconStartPadding="8dp" />
             </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/deliveryChargeAlert"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/ic_notification"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="dddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                android:textColor="#FF0012"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
 
             <TextView
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
-                android:layout_marginTop="8dp"
                 android:text="Select Delivery Address"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chipGroup2" />
+                app:layout_constraintTop_toBottomOf="@+id/deliveryChargeAlert" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/btm_sheet_cip_current_location"

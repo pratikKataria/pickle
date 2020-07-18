@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
-        <import type="com.pickleindia.pickle.utils.Constant"/>
-        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
+
+        <import type="android.view.View" />
+
+        <import type="com.pickleindia.pickle.utils.Constant" />
+
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils" />
 
         <variable
             name="priceFormatter"
@@ -44,8 +47,8 @@
             android:id="@+id/emptyCart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:visibility="visible"
-            android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}">
+            android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}"
+            tools:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView12"
@@ -97,84 +100,84 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenir_next_bold"
                 android:gravity="center"
+                android:onClick="@{() -> activity.finish()}"
                 android:text="GO HOME"
                 android:textColor="@color/white"
-                android:onClick="@{() -> activity.finish()}"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
                 app:layout_constraintEnd_toEndOf="@+id/imageButton2"
                 app:layout_constraintStart_toStartOf="@+id/imageButton2"
                 app:layout_constraintTop_toTopOf="@+id/imageButton2"
                 app:layout_constraintVertical_bias="0.3" />
 
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroup"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                app:chipSpacing="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.511"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterVegetable"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
-                    app:chipSpacing="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.511"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-                    app:singleSelection="true">
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_TWO)}"
+                    android:text="Vegitables"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterVegetable"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{() -> activity.navigateTo(Constant.CAT_TWO)}"
-                        android:text="Vegitables"
-                        android:textColor="@color/black"
-                        app:chipBackgroundColor="@color/bg_color_search_filter"
-                        app:chipCornerRadius="4dp"
-                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                        app:chipStrokeWidth="1dp"
-                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterFruits"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_ONE)}"
+                    android:text="Fruits"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterFruits"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fruits"
-                        android:onClick="@{() -> activity.navigateTo(Constant.CAT_ONE)}"
-                        android:textColor="@color/black"
-                        app:chipBackgroundColor="@color/bg_color_search_filter"
-                        app:chipCornerRadius="4dp"
-                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                        app:chipStrokeWidth="1dp"
-                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterDiary"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_THREE)}"
+                    android:text="Diary"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterDiary"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Diary"
-                        android:textColor="@color/black"
-                        android:onClick="@{() -> activity.navigateTo(Constant.CAT_THREE)}"
-                        app:chipBackgroundColor="@color/bg_color_search_filter"
-                        app:chipCornerRadius="4dp"
-                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                        app:chipStrokeWidth="1dp"
-                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipFilterBeverages"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Beverages"
-                        android:textColor="@color/black"
-                        android:onClick="@{() -> activity.navigateTo(Constant.CAT_FOUR)}"
-                        app:chipBackgroundColor="@color/bg_color_search_filter"
-                        app:chipCornerRadius="4dp"
-                        app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
-                        app:chipStrokeWidth="1dp"
-                        app:rippleColor="@color/chipColorSearchFilterUnselected" />
-                </com.google.android.material.chip.ChipGroup>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterBeverages"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_FOUR)}"
+                    android:text="Beverages"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
+            </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!--        second layout-->
@@ -183,16 +186,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:visibility="gone"
-            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
+            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:overScrollMode="never"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                android:orientation="vertical"
                 tools:context=".activity.main.CartActivity">
 
                 <LinearLayout
@@ -213,28 +216,28 @@
                             <ImageButton
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_arrow_left"
-                                android:layout_marginStart="8dp"
                                 android:layout_gravity="center|start"
+                                android:layout_marginStart="8dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
                                 android:onClick="@{() -> activity.onBackPressed()}"
-                                android:background="?attr/selectableItemBackgroundBorderless" />
+                                android:src="@drawable/ic_arrow_left" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:layout_marginStart="8dp"
                                 android:layout_gravity="center|start"
+                                android:layout_marginStart="8dp"
+                                android:layout_weight="2"
                                 android:text="@{`total `+ cartViewModel.productQuantitiesString}" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
                     <include
+                        layout="@layout/layout_cart_notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/cart_margin_start"
-                        android:layout_marginEnd="@dimen/cart_margin_end"
-                        layout="@layout/layout_cart_notice"/>
+                        android:layout_marginEnd="@dimen/cart_margin_end" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -254,13 +257,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenir_next_medium"
-                            tools:text="(1)"
                             android:textColor="@color/black"
                             android:textSize="18sp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView25"
                             app:layout_constraintStart_toEndOf="@+id/textView25"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:text="(1)" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -268,31 +271,31 @@
                         android:id="@+id/cartRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:overScrollMode="never"
                         android:layout_marginStart="@dimen/cart_margin_start"
                         android:layout_marginEnd="@dimen/cart_margin_end"
+                        android:overScrollMode="never"
                         app:carProductList="@{cartList}"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Subscription orders(0)"
                         android:layout_marginStart="@dimen/cart_margin_start"
                         android:layout_marginTop="16dp"
+                        android:fontFamily="@font/avenir_next_medium"
+                        android:text="Subscription orders(0)"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:fontFamily="@font/avenir_next_medium" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_border"
-                        android:padding="8dp"
-                        android:textSize="10sp"
-                        android:fontFamily="@font/avenir_next_regular"
                         android:layout_marginStart="@dimen/cart_margin_start"
-                        android:text="Get your products on the daily basis with subscription" />
+                        android:background="@drawable/bg_border"
+                        android:fontFamily="@font/avenir_next_regular"
+                        android:padding="8dp"
+                        android:text="Get your products on the daily basis with subscription"
+                        android:textSize="10sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -334,28 +337,11 @@
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp">
 
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"                                    android:layout_weight="2"
-                                android:orientation="vertical">
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="10sp"
-                                    android:layout_marginBottom="4dp"
-                                    android:text="product delivery changes as per area code"/>
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="Delivery fee" />
-                            </LinearLayout>
-
                             <TextView
-                                android:id="@+id/deliveryPrice"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="\u20b90" />
+                                android:text="Delivery fee is charge only for (delivery within 1 hr slot)" />
+
                         </LinearLayout>
 
 
@@ -381,7 +367,7 @@
                                 android:id="@+id/amountToBePaid"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{cartViewModel.totalCostString}"/>
+                                android:text="@{cartViewModel.totalCostString}" />
                         </LinearLayout>
 
                         <View
@@ -390,22 +376,22 @@
                             android:background="@color/grey" />
 
                         <include
+                            layout="@layout/layout_cart_view_bottom_template"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            layout="@layout/layout_cart_view_bottom_template"/>
+                            android:layout_marginTop="16dp" />
 
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="10dp"
                             android:layout_gravity="center"
                             android:layout_marginStart="22dp"
-                            android:layout_marginEnd="22dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginEnd="22dp"
                             android:layout_marginBottom="8dp"
                             android:background="@drawable/dash_hrztl_line" />
 
-                        <include layout="@layout/layout_order_delivery_summery"/>
+                        <include layout="@layout/layout_order_delivery_summery" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -415,10 +401,9 @@
             <include
                 android:id="@+id/includeLayout"
                 layout="@layout/bottom_sheet_place_order"
-                bind:cartView="@{cartViewModel}"
                 bind:activity="@{activity}"
-                bind:observableAddress="@{observableAddress}"/>
-
+                bind:cartView="@{cartViewModel}"
+                bind:observableAddress="@{observableAddress}" />
 
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

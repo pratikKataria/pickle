@@ -92,4 +92,20 @@ public class CartViewModel extends BaseObservable {
         }
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
+
+    public int getTotalCostInt() {
+        int totalCost = 0;
+
+        for(ProductModel product : cartProducts) {
+            int productQuantity = product.getQuantityCounter();
+            int cost;
+            if (product.getItemSellPrice() > 0) {
+                cost = productQuantity * product.getItemSellPrice();
+            } else {
+                cost = productQuantity * product.getItemBasePrice();
+            }
+            totalCost += cost;
+        }
+        return totalCost;
+    }
 }
