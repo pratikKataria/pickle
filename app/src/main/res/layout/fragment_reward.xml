@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".reward.RewardFragment">
+        tools:context=".orderonphone.OrderOnPhone">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/fragment_top_header_height"
             android:backgroundTint="@color/colorAccent">
 
             <ImageView
@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_gravity="center"
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="8dp"
                 android:text="Reward"
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="-65dp"
             app:cardElevation="8dp"
             android:translationZ="8dp"
             app:cardCornerRadius="12dp">
@@ -56,11 +56,11 @@
 
                 <ImageView
                     android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_height="151dp"
+                    android:layout_gravity="center"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="12dp"
-                    android:src="@drawable/ic_reward_granted"
-                    android:layout_gravity="center"/>
+                    android:src="@drawable/ic_reward_granted" />
 
                 <TextView
                     android:layout_width="wrap_content"

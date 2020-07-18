@@ -184,7 +184,12 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
                 drawerLayout.closeDrawers();
-                break;                
+                break;
+
+            case R.id.nav_menu_sub_order_on_phone:
+                smoothActionBarDrawerToggle.runWhenIdle(() ->checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
+                drawerLayout.closeDrawers();
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

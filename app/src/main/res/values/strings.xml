@@ -42,10 +42,10 @@
 
     <string name="tapToMore">Tap to view more</string>
 
-<!--    CAT_ONE = "Fruits";-->
-<!--    CAT_TWO = "Vegetables";-->
-<!--    CAT_THREE = "Dairy";-->
-<!--    CAT_FOUR = "Grocery";-->
+    <!--    CAT_ONE = "Fruits";-->
+    <!--    CAT_TWO = "Vegetables";-->
+    <!--    CAT_THREE = "Dairy";-->
+    <!--    CAT_FOUR = "Grocery";-->
     <string name="CAT_ONE">Fruits</string>
     <string name="CAT_TWO">Vegetables</string>
     <string name="CAT_THREE">Dairy</string>

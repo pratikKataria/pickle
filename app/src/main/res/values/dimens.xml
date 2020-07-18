@@ -28,4 +28,6 @@
     <dimen name="card_view_category_width">100dp</dimen>
     <dimen name="card_view_category_height">120dp</dimen>
 
+    <dimen name="fragment_top_header_height">250dp</dimen>
+
 </resources>

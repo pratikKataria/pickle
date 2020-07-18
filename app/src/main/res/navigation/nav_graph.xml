@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_rewardFragment"
             app:destination="@id/rewardFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_orderOnPhone"
+            app:destination="@id/orderOnPhone" />
     </fragment>
 
     <fragment
@@ -50,4 +53,8 @@
         android:id="@+id/rewardFragment"
         android:name="com.pickleindia.pickle.reward.RewardFragment"
         android:label="RewardFragment" />
+    <fragment
+        android:id="@+id/orderOnPhone"
+        android:name="com.pickleindia.pickle.orderonphone.OrderOnPhone"
+        android:label="OrderOnPhone" />
 </navigation>
