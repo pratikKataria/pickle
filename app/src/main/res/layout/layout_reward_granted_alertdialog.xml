@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         app:cardCornerRadius="12dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,16 +20,17 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_reward_granted"
                 android:layout_gravity="center"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"/>
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_reward_granted" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:gravity="center"
                 android:text="you have got 20 pcoins you can spent while checkout" />
 
             <TextView
@@ -36,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp"
+                android:gravity="center"
                 android:text=" check your reward by going to rewards"
                 android:textColor="@color/grey" />
 
@@ -44,15 +47,15 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Next"
+                android:layout_gravity="center"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:layout_gravity="center"
-                app:strokeColor="@color/colorAccent"
-                app:cornerRadius="8dp"
-                android:layout_marginStart="8dp"
+                android:text="Next"
                 android:textAllCaps="false"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/colorAccent" />
 
         </LinearLayout>
 

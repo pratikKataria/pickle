@@ -81,7 +81,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                if (binding != null &&  binding.includeLayout.chipDeliveryTime3.isChecked()) {
+                if (binding != null && binding.includeLayout.chipDeliveryTime3.isChecked()) {
                     setDeliveryChargeAlert();
                 }
             }
@@ -401,26 +401,26 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         alertDialogBuilder.setCancelable(false);
         alertDialog = alertDialogBuilder.create();
 
-        confirmOrderBinding.totalPriceTextView.setText(String.format("Total price %s", binding.amountToBePaid.getText().toString()));
+        int total = getTotalCost();
+
+        int deliveryCharge = getDeliveryCharge();
+        if (deliveryCharge > 0) {
+            total += deliveryCharge;
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal %s + %s (delivery charge) = %s", binding.amountToBePaid.getText().toString(), deliveryCharge+"", total));
+        }else {
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Total price %s", binding.amountToBePaid.getText().toString()));
+        }
+
         confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
         alertDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
 
-        int total = 0;
-        for (ProductModel productModel : binding.getCartList()) {
-            if (productModel.getItemSellPrice() > 0) {
-                total += productModel.getItemSellPrice() * productModel.getQuantityCounter();
-            } else {
-                total += productModel.getItemBasePrice() * productModel.getQuantityCounter();
-            }
-        }
-
         final int finalTotal = total;
         confirmOrderBinding.applyPcoins.setOnClickListener(v -> {
 
             if (finalTotal < 100) {
-                Toast.makeText(this, "pcoins or reward points only on order 100 or above", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "pcoins or reward points used only on order 100 or above", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -536,6 +536,26 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         confirmOrderBinding.executePendingBindings();
     }
 
+    private int getDeliveryCharge() {
+        int deliveryCharge = 0;
+        if (binding != null && binding.includeLayout.chipGroup2.getCheckedChipId() == R.id.chipDeliveryTime3)
+            deliveryCharge = 39;
+
+        return deliveryCharge;
+    }
+
+    private int getTotalCost() {
+        int total = 0;
+        for (ProductModel productModel : binding.getCartList()) {
+            if (productModel.getItemSellPrice() > 0) {
+                total += productModel.getItemSellPrice() * productModel.getQuantityCounter();
+            } else {
+                total += productModel.getItemBasePrice() * productModel.getQuantityCounter();
+            }
+        }
+        return total;
+    }
+
     private void sendOrdersToDatabase(UploadResult result) {
         Map<String, Object> atomicOperation = buildOrders();
         DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -615,6 +635,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     interface UploadResult {
         void uploaded(boolean isUploaded);
+
     }
 
     @Override
