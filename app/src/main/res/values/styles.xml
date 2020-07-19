@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/darkBlue</item>
         <item name="android:fontFamily">@font/avenir_next_medium</item>
+        <item name="android:includeFontPadding">false</item>
 
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -127,5 +128,10 @@
     <style name="Widget.MyApp.TextView.Product.Desc" parent="@android:style/Widget.Material.TextView">
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle2</item>
         <item name="android:textColor">@color/grey</item>
+    </style>
+
+
+    <style name="Widget.MyApp.TextView.Subtitle" parent="@android:style/Widget.Material.TextView">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
     </style>
 </resources>

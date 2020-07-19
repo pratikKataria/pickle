@@ -579,7 +579,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
             atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
             atomicOperation.put("Orders/" + key + "/orderId", key);
-            atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.PROCESSING);
+            atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.ORDERED);
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
             atomicOperation.put("Orders/" + key + "/pcoinsSpent", pcoinsUsed.get());

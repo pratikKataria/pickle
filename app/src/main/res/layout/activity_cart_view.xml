@@ -128,7 +128,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> activity.navigateTo(Constant.CAT_TWO)}"
-                    android:text="Vegitables"
+                    android:text="Vegetables"
                     android:textColor="@color/black"
                     app:chipBackgroundColor="@color/bg_color_search_filter"
                     app:chipCornerRadius="4dp"
@@ -236,6 +236,7 @@
                         layout="@layout/layout_cart_notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_marginStart="@dimen/cart_margin_start"
                         android:layout_marginEnd="@dimen/cart_margin_end" />
 
@@ -306,12 +307,6 @@
                         android:layout_marginBottom="94dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:text="@{`total `+ cartViewModel.productQuantitiesString}" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -333,17 +328,14 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp">
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="210dp"
                                 android:layout_height="wrap_content"
-                                android:text="Delivery fee is charge only for (delivery within 1 hr slot)" />
+                                android:text="Delivery fee is charged only for delivery within 1 : 30 hr slot" />
 
                         </LinearLayout>
-
 
                         <View
                             android:layout_width="match_parent"
@@ -354,14 +346,14 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:layout_marginBottom="8dp">
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="2"
-                                android:text="Amount to pay" />
+                                android:text="Sub total: " />
 
                             <TextView
                                 android:id="@+id/amountToBePaid"
@@ -379,7 +371,7 @@
                             layout="@layout/layout_cart_view_bottom_template"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp" />
+                            android:layout_marginTop="24dp" />
 
                         <ImageView
                             android:layout_width="match_parent"
