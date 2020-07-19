@@ -36,7 +36,7 @@ class SliderAdapter : PagerAdapter {
         "Fresh Vegetables, fruits and Beverages available at your Door with quality products",
         "Delivery with fine and exact location all over indore",
         "No need to pay before, Pay When you get it, COD available at indore",
-        "Delivery within 30 min of order, with no extra coast"
+        "Fast delivery, with no extra cost "
     )
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

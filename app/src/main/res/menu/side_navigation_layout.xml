@@ -7,7 +7,7 @@
         android:checkableBehavior="none">
 
         <item
-            android:title="Welcome, To Pickle India Mart"/>
+            android:title="Welcome to Pickle"/>
 
         <item
             android:id="@+id/navigation_menu_login"

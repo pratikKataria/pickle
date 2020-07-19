@@ -156,8 +156,6 @@
                             android:layout_marginStart="4dp"
                             android:layout_marginTop="4dp"
                             android:text="@{`Order id: `}"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline16"
-                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="orderId" />
@@ -170,8 +168,6 @@
                             android:text="@{orders.orderId}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView35"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="@+id/guideline16"
                             app:layout_constraintTop_toTopOf="@+id/textView35"
                             app:layout_constraintVertical_bias="0.0"
                             tools:text="orderId" />
@@ -222,8 +218,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="Delivery Time: "
-                            app:layout_constraintEnd_toStartOf="@+id/guideline16"
-                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="@+id/textView40"
                             app:layout_constraintTop_toBottomOf="@+id/textView40"
                             tools:text="Delivery Time: " />
@@ -263,7 +257,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.30" />
+                            app:layout_constraintGuide_begin="103dp" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -146,16 +146,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView16"
                 tools:text="24 items" />
 
-            <TextView
+            <com.hanks.htextview.rainbow.RainbowTextView
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:gravity="center"
-                android:text="CHECKOUT"
+                android:layout_marginEnd="16dp"
+                android:text="Go to Cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/icCart" />
+                app:layout_constraintTop_toBottomOf="@+id/icCart"
+                app:layout_constraintVertical_bias="0.0" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/icCart"
