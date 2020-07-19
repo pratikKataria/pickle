@@ -1,6 +1,5 @@
 package com.pickleindia.pickle.Login
 
-import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -19,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
@@ -91,7 +89,6 @@ class OtpActivity : AppCompatActivity() {
                             Toast.makeText(this@OtpActivity, "Referral only works for new user", Toast.LENGTH_LONG).show()
                             sharedPreferences.edit().remove("referredBy").apply()
                         }
-
                         updateDeviceTokenForOldAccount()
                     }
                 }.addOnFailureListener {
@@ -108,13 +105,13 @@ class OtpActivity : AppCompatActivity() {
         val referredBy = getReferral()
 
         progressDialog = ProgressDialog(this)
-        progressDialog.show()
         progressDialog.setMessage("please wait while verifying...")
         progressDialog.setCancelable(false)
         progressDialog.setProgressStyle(R.style.progressDialog)
         val drawable = ProgressBar(this).indeterminateDrawable.mutate()
         drawable.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressDialog.setIndeterminateDrawable(drawable)
+        progressDialog.show()
 
         timer = Timer()
         val timerTask = timerTask {
@@ -125,17 +122,17 @@ class OtpActivity : AppCompatActivity() {
                 runOnUiThread { showAlertDialog() }
             }
         }
-        timer.schedule(timerTask, 15000L)
+        timer.schedule(timerTask, 12000)
 
         if (referredBy.isEmpty()) {
-            updateDataTimeOut(updateData, false)
+            updateDataWithTimeOut(updateData, false)
             return
         }
 
         getReferrerPCoins(referredBy, object : ReferrerCoinListener {
             override fun received(coins: Int) {
                 updateData["$referredBy/referralReward/pcoins"] = coins
-                updateDataTimeOut(updateData, true)
+                updateDataWithTimeOut(updateData, true)
             }
         })
     }
@@ -188,15 +185,16 @@ class OtpActivity : AppCompatActivity() {
         fun received(coins: Int)
     }
 
-    private fun updateDataTimeOut(data: MutableMap<String, Any>, isNewUser: Boolean) {
+    private fun updateDataWithTimeOut(data: MutableMap<String, Any>, isReferredBySomeone: Boolean) {
         val reference = FirebaseDatabase.getInstance().getReference("Customers")
 
         reference.updateChildren(data).addOnSuccessListener {
             timer.cancel()
             progressDialog.dismiss()
-            if (isNewUser) {
+            if (isReferredBySomeone) {
                 showRewardGivenDialog()
             } else {
+                setResult(1001)
                 startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
@@ -227,6 +225,7 @@ class OtpActivity : AppCompatActivity() {
         binding.nextBtn.setOnClickListener {
             val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
             sharedPreferences.edit().remove("referredBy").apply()
+            setResult(1001)
             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
                     .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
