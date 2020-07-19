@@ -158,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements
                 SharedPrefsUtils.clearCart(this);
                 updateIconItems();
                 startActivity(new Intent(this, LoginActivity.class));
-                finish();
                 break;
             case R.id.nav_menu_sub_orders:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
@@ -197,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void checkAuthAndNavigate(int id) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
+            startActivity(new Intent(this, LoginActivity.class));
             Toast.makeText(this, "Login First", Toast.LENGTH_LONG).show();
         } else {
 

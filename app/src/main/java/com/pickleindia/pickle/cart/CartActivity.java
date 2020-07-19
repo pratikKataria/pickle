@@ -182,7 +182,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     //check if user is login or not
     private boolean checkFirebaseAuth() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY).putExtra(CartActivity.class.getName(), "cart"));
+            startActivity(new Intent(this, LoginActivity.class).putExtra(CartActivity.class.getName(), "cart"));
             Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
             return false;
         } else {

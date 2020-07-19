@@ -1,5 +1,6 @@
 package com.pickleindia.pickle.Login
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -7,6 +8,7 @@ import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -17,7 +19,9 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.*
@@ -53,7 +57,7 @@ class OtpActivity : AppCompatActivity() {
 
         initFields()
 
-        val authCredential : String = intent.getStringExtra("AuthCredentials")
+        val authCredential: String = intent.getStringExtra("AuthCredentials")
 
         activity_otp_mb_submit_otp.setOnClickListener {
             if (editTextOtp.text.isEmpty()) {
@@ -68,7 +72,7 @@ class OtpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             activity_otp_progress.visibility = VISIBLE
-            val credential= PhoneAuthProvider.getCredential(authCredential, editTextOtp.text.toString())
+            val credential = PhoneAuthProvider.getCredential(authCredential, editTextOtp.text.toString())
             signInWithPhoneAuthCredential(credential)
         }
     }
@@ -91,7 +95,10 @@ class OtpActivity : AppCompatActivity() {
                         updateDeviceTokenForOldAccount()
                     }
                 }.addOnFailureListener {
+                    if (it is FirebaseAuthInvalidCredentialsException)
+                        Toast.makeText(this@OtpActivity, "error wrong otp", Toast.LENGTH_LONG).show()
                     Log.e(OtpActivity::class.java.name, it.message as String)
+                    activity_otp_progress.visibility = GONE
                 }
     }
 
@@ -229,6 +236,7 @@ class OtpActivity : AppCompatActivity() {
                 alertDialog!!.dismiss()
         }
 
+        alertDialog?.setCancelable(false)
         alertDialog = alertDialogBuilder.show()
     }
 
@@ -254,12 +262,14 @@ class OtpActivity : AppCompatActivity() {
                         if (dataSnapshot.exists()) {
                             sendUserToHome()
                         } else {
+                            setResult(1001)
                             startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                     .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                             finish()
                         }
                     }
+
                     override fun onCancelled(databaseError: DatabaseError) {
                         Toast.makeText(this@OtpActivity, "error: " + databaseError.message, Toast.LENGTH_SHORT).show()
                     }
@@ -274,6 +284,8 @@ class OtpActivity : AppCompatActivity() {
         } else {
             Intent(this@OtpActivity, MainActivity::class.java)
         }
+
+        setResult(1001)
         startActivity(intent)
         finish()
     }
@@ -287,6 +299,6 @@ class OtpActivity : AppCompatActivity() {
         this.doubleBackToExitPressedOnce = true
         Toast.makeText(this, "double tap back to exit", Toast.LENGTH_SHORT).show()
 
-        Handler().postDelayed({doubleBackToExitPressedOnce = false}, 2000)
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 }

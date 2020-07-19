@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.util.Log
 import android.view.View.*
 import android.widget.EditText
 import android.widget.ProgressBar
@@ -53,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 countDownTimer.text = ""
-                progressBar.visibility = VISIBLE
+                progressBar.visibility = INVISIBLE
                 sendOtpButton.isEnabled = true
             }
         }
@@ -142,7 +143,6 @@ class LoginActivity : AppCompatActivity() {
 //                storedVerificationId = verificationId
 //                resendToken = token
 
-                sendOtpButton.isEnabled = false
                 Handler().postDelayed(
                         {
                             val otpIntent = Intent(this@LoginActivity, OtpActivity::class.java)
@@ -153,12 +153,30 @@ class LoginActivity : AppCompatActivity() {
                                 otpIntent.putExtra(CartActivity::class.java.name, "cart")
                             }
 
-                            startActivity(otpIntent)
-
+                            startActivityForResult(otpIntent, requestCode)
+                            progressBar.visibility = GONE
+                            timer.cancel()
+                            sendOtpButton
                         }, 1500
                 )
                 Toast.makeText(this@LoginActivity, "otp sent", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    val requestCode = 1001
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode == requestCode && this != null) {
+            finish()
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
     }
 }
