@@ -404,7 +404,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         int total = getTotalCost();
 
         int deliveryCharge = getDeliveryCharge();
-        if (deliveryCharge > 0) {
+        if (deliveryCharge > 0 && total < 500) {
             total += deliveryCharge;
             confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal %s + %s (delivery charge) = %s", binding.amountToBePaid.getText().toString(), deliveryCharge+"", total));
         }else {
@@ -448,7 +448,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                 }
                             }
                         } else {
-                            Toast.makeText(CartActivity.this, "not have enough pcoins", Toast.LENGTH_SHORT);
+                            Toast.makeText(CartActivity.this, "not have enough pcoins", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
