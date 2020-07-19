@@ -50,9 +50,7 @@ class SplashActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("permissions", 0)
         if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
             startActivity(
-                    Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(
-                            Intent.FLAG_ACTIVITY_NEW_TASK
-                    )
+                    Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply()
             finish()
@@ -115,18 +113,17 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             }
-            if (allImportantPermissionGranted)
-                startActivityMain(true)
-            else
-                displayNeverAskAgainDialog()
+//            if (allImportantPermissionGranted)
+//                startActivityMain(true)
+//            else
+//                displayNeverAskAgainDialog()
+            startActivityMain(true)
         }
     }
 
     private fun displayNeverAskAgainDialog() {
         val build: AlertDialog.Builder = AlertDialog.Builder(this)
-        build.setMessage(
-                R.string.locationDenied
-        )
+        build.setMessage(R.string.locationDenied)
         build.setCancelable(false)
         build.setPositiveButton("Permit Manually") { _: DialogInterface, _: Int ->
             val intent = Intent()
