@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements
                 drawerLayout.closeDrawers();
                 break;
             case R.id.navigation_menu_login:
-                smoothActionBarDrawerToggle.runWhenIdle(() ->{
+                smoothActionBarDrawerToggle.runWhenIdle(() -> {
                     if (FirebaseAuth.getInstance().getUid() == null) {
                         startActivity(new Intent(this, LoginActivity.class));
                     } else {
@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements
                 });
                 drawerLayout.closeDrawers();
                 break;
-
             case R.id.nav_menu_sub_order_on_phone:
-                smoothActionBarDrawerToggle.runWhenIdle(() ->checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
+            case R.id.nav_menu_sub_help:
+                smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
                 drawerLayout.closeDrawers();
                 break;
         }
@@ -280,12 +280,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onExit() {
-       finish();
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("MainActivity ", requestCode +" " + requestCode);
+        Log.e("MainActivity ", requestCode + " " + requestCode);
     }
 }
