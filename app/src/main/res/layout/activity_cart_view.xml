@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView12"
@@ -177,6 +177,34 @@
                     app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
                     app:chipStrokeWidth="1dp"
                     app:rippleColor="@color/chipColorSearchFilterUnselected" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterHousehold"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_FIVE)}"
+                    android:text="Household"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipFilterPersonalCare"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> activity.navigateTo(Constant.CAT_SIX)}"
+                    android:text="Personal Care"
+                    android:textColor="@color/black"
+                    app:chipBackgroundColor="@color/bg_color_search_filter"
+                    app:chipCornerRadius="4dp"
+                    app:chipStrokeColor="@color/selectable_search_text_color_filter_stroke"
+                    app:chipStrokeWidth="1dp"
+                    app:rippleColor="@color/chipColorSearchFilterUnselected" />
             </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -187,7 +215,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
