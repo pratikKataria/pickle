@@ -223,10 +223,10 @@
                             tools:text="Delivery Time: " />
 
                         <TextView
+                            android:id="@+id/textView9"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{orders.deliveryTime}"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView41"
                             app:layout_constraintEnd_toEndOf="@+id/textView37"
                             app:layout_constraintTop_toTopOf="@+id/textView41"
                             tools:text="delivery Time " />
@@ -244,13 +244,13 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="4dp"
+                            android:layout_marginTop="4dp"
+                            android:gravity="end"
                             android:text="@{orders.address.matches(Constant.GPS_CORD_RE)? `current location` : orders.address}"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView42"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintHorizontal_bias="0.125"
                             app:layout_constraintStart_toStartOf="@+id/guideline16"
-                            app:layout_constraintTop_toTopOf="@+id/textView42" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
                         <androidx.constraintlayout.widget.Guideline
                             android:id="@+id/guideline16"

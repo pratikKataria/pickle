@@ -81,22 +81,22 @@ class SplashActivity : AppCompatActivity() {
         }
 
 
-        //handle animation
-        var constrantSet = ConstraintSet();
-        var view = splashActivity
-        view.post {
-
-            Handler().postDelayed({
-                val hText = logoText;
-                hText.animateText(" pickle kare so aaj kar")
-            }, 800)
-
-            val transition = ChangeBounds()
-            transition.interpolator = OvershootInterpolator(2.0f)
-            constrantSet.clone(this@SplashActivity, R.layout.splash_activity_off);
-            TransitionManager.beginDelayedTransition(view, transition)
-            constrantSet.applyTo(view)
-        }
+//        //handle animation
+//        var constrantSet = ConstraintSet();
+//        var view = splashActivity
+//        view.post {
+//
+//            Handler().postDelayed({
+//                val hText = logoText;
+//                hText.animateText(" pickle kare so aaj kar")
+//            }, 800)
+//
+//            val transition = ChangeBounds()
+//            transition.interpolator = OvershootInterpolator(2.0f)
+//            constrantSet.clone(this@SplashActivity, R.layout.splash_activity_off);
+//            TransitionManager.beginDelayedTransition(view, transition)
+//            constrantSet.applyTo(view)
+//        }
 
 
     }
