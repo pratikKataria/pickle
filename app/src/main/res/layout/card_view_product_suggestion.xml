@@ -157,6 +157,7 @@
                 android:ellipsize="end"
                 android:maxLength="48"
                 android:textSize="16sp"
+                android:maxLines="2"
                 android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline"

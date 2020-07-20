@@ -35,6 +35,9 @@ public abstract class Constant {
     public static final String CAT_TWO = "Vegetables";
     public static final String CAT_THREE = "Dairy";
     public static final String CAT_FOUR = "Grocery";
+    public static final String CAT_FIVE = "Household";
+    public static final String CAT_SIX = "PersonalCare";
+
     public static final String ORDERS = "Orders";
     public static final String ORDERS_DETAILS = "OrdersDetails";
     public static final String ORDERS_CANCELLED = "OrdersCancelled";

@@ -50,6 +50,8 @@
     <string name="CAT_TWO">Vegetables</string>
     <string name="CAT_THREE">Dairy</string>
     <string name="CAT_FOUR">Grocery</string>
+    <string name="CAT_FIVE">Household</string>
+    <string name="CAT_SIX">Personal Care</string>
     <string name="delivery_slot_three"> Delivery within 1 : 30 hr</string>
     <string name="delivery_charge_alert">₹%s delivery will be charged since your order is %s ₹%s</string>
 

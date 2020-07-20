@@ -33,6 +33,12 @@ public class GlideImageBindingAdapter {
 
     @BindingAdapter("customImageBackgroundS")
     public static void productFragmentCustomImageBackground(ImageView imageview, String type) {
+
+        Log.e(
+                "Glide Image Binding Adapter",
+                type
+        );
+
         if (type == null) {
             return;
         }

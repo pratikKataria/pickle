@@ -134,7 +134,7 @@
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
                 app:layout_constraintTop_toTopOf="@+id/cardViewFruits"
-                app:productText="@{type}"
+                android:text="@{type}"
                 tools:text="Fruits" />
 
             <TextView
