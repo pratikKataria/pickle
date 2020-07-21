@@ -78,11 +78,6 @@ dependencies {
     //create carousel effect in recycler view
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
 
-    //to animate text view in android
-    implementation 'com.hanks:htextview-base:0.1.6'
-    implementation "com.hanks:htextview-evaporate:0.1.6"
-    compile "com.hanks:htextview-rainbow:0.1.6"
-
     implementation 'org.apache.commons:commons-lang3:3.10'
 
     implementation 'com.github.mumayank:AirLocation:2.3'

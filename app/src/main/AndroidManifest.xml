@@ -39,7 +39,8 @@
         <activity
             android:name="com.pickleindia.pickle.main.MainActivity"
             android:screenOrientation="portrait"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

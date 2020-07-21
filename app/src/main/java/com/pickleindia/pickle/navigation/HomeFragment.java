@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,11 +76,10 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private ArrayList<String> carouselImage;
     private ArrayList<ProductModel> productModelArrayList;
     private HashMap<String, String> paginationProductKeyMap;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
     private boolean isScrolling;
 
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
-
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
 
     private static int itemCount;
@@ -102,8 +102,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if (binding == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
             setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
@@ -111,15 +109,13 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
             binding.setProductList(productModelArrayList);
             binding.setHomeFragment(HomeFragment.this);
-            if (getActivity() != null)
-                binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
+            binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
             itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
             getActivity().invalidateOptionsMenu();
             initCarouselView();
 
             binding.setIsLoading(isLoading);
             initRecyclerView();
-        }
         return binding.getRoot();
     }
 
@@ -195,11 +191,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         Bundle bundle = new Bundle();
         bundle.putString(PRODUCT_TYPE, type);
         navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+        productModelArrayList.clear();
+        NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
     }
 
 
     private ChildEventListener carouselImageChildEventListener;
-
     private ChildEventListener getImageList() {
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -424,6 +421,9 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             getActivity().invalidateOptionsMenu();
         }
 
+        for (String url : carouselImage)
+            updateImage(url);
+
         for (ProductModel productModel : refreshList) {
             int indexOf = productModelArrayList.indexOf(productModel);
             if (indexOf != -1) {
@@ -461,7 +461,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         if (carouselImageChildEventListener != null) {
             carouselImagesDatabaseReference.removeEventListener(carouselImageChildEventListener);
         }
-
     }
 
 
@@ -524,4 +523,5 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         });
         referralRewardBottomSheet.show(getActivity().getSupportFragmentManager(), "referralRewardBottomSheet");
     }
+
 }

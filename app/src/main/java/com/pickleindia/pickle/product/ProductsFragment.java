@@ -270,4 +270,10 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
     public void stopLoading() {
         isLoading.set(false);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("Product Fragment", "ON Destroy View");
+    }
 }
