@@ -84,9 +84,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toStartOf="@+id/ll2"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="379dp">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardViewFruits"
@@ -122,9 +120,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toStartOf="@+id/ll3"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ll1"
-                    tools:layout_editor_absoluteY="379dp">
+                    app:layout_constraintStart_toEndOf="@+id/ll1">
 
 
                     <androidx.cardview.widget.CardView
@@ -166,9 +162,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toStartOf="@+id/ll4"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ll2"
-                    tools:layout_editor_absoluteY="379dp">
+                    app:layout_constraintStart_toEndOf="@+id/ll2">
 
 
                     <androidx.cardview.widget.CardView
@@ -205,9 +199,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/ll3"
-                    tools:layout_editor_absoluteY="379dp">
+                    app:layout_constraintStart_toEndOf="@+id/ll3">
 
 
                     <androidx.cardview.widget.CardView
@@ -322,7 +314,7 @@
                     android:id="@+id/flow3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:layout_marginTop="16dp"
                     app:constraint_referenced_ids="ll1,ll2,ll3,ll4,ll5,ll6"
                     app:flow_horizontalGap="8dp"
                     app:flow_horizontalStyle="spread"
@@ -358,6 +350,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
                     android:text="Products you may like         \u2192"
                     app:layout_constraintEnd_toStartOf="@+id/guideline6"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -372,7 +365,7 @@
                     android:overScrollMode="never"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/progressBar"
-                    app:layout_constraintStart_toStartOf="@+id/guideline5"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView10"
                     app:list="@{productList}"
                     app:viewType="@{1}" />
