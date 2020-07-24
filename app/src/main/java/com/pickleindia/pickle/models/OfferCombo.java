@@ -101,4 +101,15 @@ public class OfferCombo implements Parcelable {
     public void setMaxQty(int maxQty) {
         this.maxQty = maxQty;
     }
+
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof OfferCombo) {
+            OfferCombo offerCombo = (OfferCombo) obj;
+            return offerCombo.getComboId().matches(comboId);
+        }
+
+        return false;
+    }
 }
