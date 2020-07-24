@@ -13,6 +13,8 @@
 
         <import type="com.pickleindia.pickle.adapters.AutoCompleteAdapter" />
 
+        <import type="android.view.View"/>
+
         <variable
             name="productModelList"
             type="List&lt;ProductModel>" />
@@ -24,6 +26,10 @@
         <variable
             name="activity"
             type="Activity" />
+
+        <variable
+            name="isFound"
+            type="androidx.databinding.ObservableBoolean" />
 
     </data>
 
@@ -109,15 +115,17 @@
                     android:src="@drawable/ic_arrow_left" />
             </androidx.cardview.widget.CardView>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="-1dp" />
+
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -125,13 +133,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="16dp" />
+            app:layout_constraintGuide_end="49dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchRecyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
+            android:visibility="@{isFound? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -140,6 +149,49 @@
             app:layout_constraintVertical_bias="1.0"
             app:list="@{productModelList}"
             app:viewType="@{0}" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{isFound? View.GONE: View.VISIBLE }"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+            <ImageView
+                android:id="@+id/imageView11"
+                android:layout_width="0dp"
+                android:layout_height="296dp"
+                android:src="@drawable/ic_not_found"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline21"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Item not found"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView11"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="@+id/guideline21"
+                app:layout_constraintTop_toTopOf="@+id/imageView11"
+                app:layout_constraintVertical_bias="0.8" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.81" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.20" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

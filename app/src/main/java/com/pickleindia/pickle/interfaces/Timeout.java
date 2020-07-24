@@ -11,6 +11,10 @@ public abstract class Timeout extends TimerTask {
         scheduleAtFixedRate();
     }
 
+    public Timeout(int tol) {
+        this.tol = tol;
+    }
+
     public void schedule() {
         timer.schedule(this, tol);
     }

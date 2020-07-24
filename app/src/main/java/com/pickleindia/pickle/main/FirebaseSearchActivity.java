@@ -9,9 +9,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableBoolean;
 
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.interfaces.IMainActivity;
+import com.pickleindia.pickle.interfaces.Timeout;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.databinding.ActivityFirebaseSearchBinding;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
@@ -33,6 +35,8 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
     ArrayList<ProductModel> searchList;
     private DatabaseReference keysRef;
     private ActivityFirebaseSearchBinding binding;
+    private final ObservableBoolean isFound = new ObservableBoolean(true);
+    private boolean isRunning;
 
 
     @Override
@@ -50,6 +54,16 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
         binding.setAutoCompleteList(searchSuggestionList);
         binding.setActivity(this);
         binding.editQuery.requestFocus();
+        binding.setIsFound(isFound);
+
+        Timeout timeout = new Timeout(3000) {
+            @Override
+            public void run() {
+                if (searchList.isEmpty()) {
+                    isFound.set(false);
+                }
+            }
+        };
 
         binding.editQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -59,6 +73,20 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 2) {
                     firebaseSearch(s.toString().toLowerCase());
+                    isFound.set(true);
+
+                    if (!searchList.isEmpty()) {
+                        searchList.clear();
+
+                        if (binding.searchRecyclerView.getAdapter() != null) {
+                            binding.searchRecyclerView.getAdapter().notifyDataSetChanged();
+                        }
+                    }
+
+                    if (!isRunning) {
+                        timeout.scheduleAtFixedRate();
+                        isRunning = true;
+                    }
                 }
             }
 
@@ -98,6 +126,7 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
                                         }
                                     }
                                 }
+                                isFound.set(true);
                             }
 
                         }
