@@ -97,11 +97,10 @@
                 android:id="@+id/textView52"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 android:text="@{`Combo price: \u20b9`+offerCombo.totalPrice}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cardView4"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintBottom_toTopOf="@+id/totalPriceCounter"
+                app:layout_constraintStart_toStartOf="@+id/cardView5"
                 tools:text="total p" />
 
             <androidx.cardview.widget.CardView
@@ -138,11 +137,13 @@
                 android:id="@+id/totalPriceCounter"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:autoSizeMaxTextSize="22sp"
+                android:autoSizeMinTextSize="12sp"
+                android:autoSizeTextType="uniform"
+                android:singleLine="true"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView4"
                 app:layout_constraintEnd_toStartOf="@+id/textView54"
                 app:layout_constraintStart_toStartOf="@+id/textView52"
-                app:layout_constraintTop_toBottomOf="@+id/textView52"
                 tools:text="total price c" />
 
             <com.google.android.material.button.MaterialButton
