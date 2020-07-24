@@ -79,6 +79,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private AlertDialog alertDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
     private final ObservableField<String> displayAddress = new ObservableField<>("");
+    private final ObservableField<String> databaseCacheAddress = new ObservableField<>("");
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -209,7 +210,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             return;
 
         binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
-        if (observableAddress.get().isEmpty()) {
+        if (databaseCacheAddress.get().isEmpty()) {
             Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
             DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
             userAddressDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -228,6 +229,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                         observableAddress.set(address.toString());
                                         displayAddress.set(address.toString());
                                     }
+                                    databaseCacheAddress.set(address.toString());
                                     isAllProductsValid();
                                 }
                             } else {
@@ -396,7 +398,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (observableAddress.get().isEmpty()) {
+        if (databaseCacheAddress.get().isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             Toast.makeText(this, "Refresh delivery address", Toast.LENGTH_SHORT).show();
             checkAddress();

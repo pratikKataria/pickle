@@ -174,7 +174,7 @@ public class CurrentLocationFragment extends Fragment {
         Snackbar snackbar = Snackbar.make(currentLocationBinding.coordinatorLayout, "Address details is mandatory with current location ", Snackbar.LENGTH_INDEFINITE);
         snackbar.setBehavior(new SnackbarNoSwipeBehavior());
         snackbar.setText("Address details is mandatory with current location");
-        snackbar.setAction("Complete Address", v -> {
+        snackbar.setAction("fill Address", v -> {
             if (getActivity() instanceof CustomerDetailActivity) {
                 ((CustomerDetailActivity) getActivity()).switchPage();
                 snackbar.dismiss();
