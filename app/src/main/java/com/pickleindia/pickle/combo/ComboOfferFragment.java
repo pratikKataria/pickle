@@ -58,8 +58,9 @@ public class ComboOfferFragment extends Fragment {
                 false
         );
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
-        binding.setOfferFragment(offerCombo);
+        binding.setOfferCombo(offerCombo);
         binding.setComboProducts(comboProductsList);
+        binding.setActivity(getActivity());
 
         String[] ids_cat = offerCombo.getProductIds_cat().split(" ");
         String[] id = new String[ids_cat.length];
@@ -101,7 +102,7 @@ public class ComboOfferFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 counter[0] = 1;
                 offerCombo.qtyCounter = counter[position];
-                binding.totalPriceCounter.setText(offerCombo.getTotalPrice()*offerCombo.qtyCounter+"");
+                binding.totalPriceCounter.setText("Your combo price: \u20b9"+ offerCombo.getTotalPrice() + "x" + offerCombo.qtyCounter + " = \u20b9"+ (offerCombo.qtyCounter*offerCombo.getTotalPrice()));
             }
 
             @Override
