@@ -189,6 +189,12 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        dismiss();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (valueEventListener != null) {
