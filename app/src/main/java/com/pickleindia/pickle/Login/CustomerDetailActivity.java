@@ -3,6 +3,7 @@ package com.pickleindia.pickle.Login;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
     private RadioGroup radioGroupApartment;
     private RadioGroup _radioGroupInner;
+    private RadioButton apartment;
     private RadioGroup.OnCheckedChangeListener checkedChangeListenerApartment;
     private RadioGroup.OnCheckedChangeListener checkedChangeListener2;
 
@@ -35,6 +37,8 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
         radioGroupApartment = findViewById(R.id.radioGroup_apartment);
         _radioGroupInner = findViewById(R.id.radioGroup_inner);
+
+        apartment = findViewById(R.id.apartment);
 
 
         checkedChangeListenerApartment = (group, checkedId) -> {
@@ -66,6 +70,14 @@ public class CustomerDetailActivity extends AppCompatActivity {
             adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         }
         return adapter;
+    }
+
+    public void switchPage() {
+        viewPager.setCurrentItem(0);
+        _radioGroupInner.setOnCheckedChangeListener(null);
+        _radioGroupInner.clearCheck();
+        _radioGroupInner.setOnCheckedChangeListener(checkedChangeListener2);
+        apartment.setChecked(true);
     }
 
     @Override

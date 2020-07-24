@@ -21,6 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.pickleindia.pickle.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.R;
  import com.pickleindia.pickle.databinding.FragmentCurrentLocationBinding;
 import com.pickleindia.pickle.models.CurrentAddress;
@@ -31,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -140,7 +143,7 @@ public class CurrentLocationFragment extends Fragment {
         ref.updateChildren(update).addOnSuccessListener(task -> {
             currentLocationBinding.progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "location updated", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            showSnackBar();
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             currentLocationBinding.progressBar.setVisibility(View.GONE);
@@ -158,14 +161,26 @@ public class CurrentLocationFragment extends Fragment {
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
-
             currentLocationBinding.progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "location updated", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            showSnackBar();
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             currentLocationBinding.progressBar.setVisibility(View.GONE);
         });
+    }
+
+    private void showSnackBar() {
+        Snackbar snackbar = Snackbar.make(currentLocationBinding.coordinatorLayout, "Address details is mandatory with current location ", Snackbar.LENGTH_INDEFINITE);
+        snackbar.setBehavior(new SnackbarNoSwipeBehavior());
+        snackbar.setText("Address details is mandatory with current location");
+        snackbar.setAction("Complete Address", v -> {
+            if (getActivity() instanceof CustomerDetailActivity) {
+                ((CustomerDetailActivity) getActivity()).switchPage();
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 
 
