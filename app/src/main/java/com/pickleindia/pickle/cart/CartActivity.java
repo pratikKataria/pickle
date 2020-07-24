@@ -86,6 +86,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                 if (binding != null && binding.includeLayout.chipDeliveryTime3.isChecked()) {
                     setDeliveryChargeAlert();
+                    if (!observableAddress.get().isEmpty()) {
+                        binding.includeLayout.progressCircular.setVisibility(View.GONE);
+                    }
                 }
             }
         }
@@ -215,6 +218,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
                                 Address address = dataSnapshot.getValue(Address.class);
+                                binding.includeLayout.progressCircular.setVisibility(View.GONE);
                                 if (address != null) {
                                     if (address.getGpsLocation() != null) {
                                         observableAddress.set(address.getGpsLocation());
@@ -244,6 +248,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         Log.e("CartActivity ", "isAllProductsValid();");
         final List<ProductModel> cartProductList = SharedPrefsUtils.getAllProducts(this);
         List<ProductModel> newProductsList = new ArrayList<>();
+        if (newProductsList.isEmpty()) {
+            checkDeliveryTimeAndAddress();
+            return;
+        }
         check(new ProductCheckListener() {
             @Override
             public void onReceived(int index, ProductModel productModel) {
@@ -428,6 +436,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         final int finalTotal = total;
         confirmOrderBinding.applyPcoins.setOnClickListener(v -> {
+
+            if (getComboPrice() <= 0) {
+                Toast.makeText(this, "pcoins cannot be used with combo offers", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
             if (finalTotal < 100) {
                 Toast.makeText(this, "pcoins or reward points used only on order 100 or above", Toast.LENGTH_SHORT).show();

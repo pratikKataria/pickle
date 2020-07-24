@@ -95,6 +95,7 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:text="@{PriceFormatUtils.getStringFormattedPrice(orderDetails.itemBasePrice)}"
+                        android:visibility="@{orderDetails.itemBasePrice>0?View.VISIBLE : View.GONE}"
                         app:layout_constraintStart_toStartOf="@+id/card_view_tv_name"
                         app:layout_constraintTop_toBottomOf="@+id/card_view_tv_name"
                         app:strikeThrough="@{orderDetails.itemSellPrice > 0}"

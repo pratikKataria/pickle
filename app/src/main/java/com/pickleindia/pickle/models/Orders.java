@@ -18,10 +18,13 @@ public class Orders implements Visitable {
     private String address;
     private int shipping;
 
+    private String comboId;
+    private int comboPrice;
+
     public boolean isPastOrder;
     public int totalProduct;
 
-    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pcoinsSpent, String userId, int subTotal, String paymentMethod, String deliveryTime, String address, int shipping) {
+    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pcoinsSpent, String userId, int subTotal, String paymentMethod, String deliveryTime, String address, int shipping, String comboId, int comboPrice) {
         this.date = date;
         this.orderDetailsIds = orderDetailsIds;
         this.orderId = orderId;
@@ -33,6 +36,8 @@ public class Orders implements Visitable {
         this.deliveryTime = deliveryTime;
         this.address = address;
         this.shipping = shipping;
+        this.comboId = comboId;
+        this.comboPrice = comboPrice;
     }
 
     public Orders() {}
@@ -137,5 +142,21 @@ public class Orders implements Visitable {
             return orders.getOrderId().equals(orderId);
         }
         return false;
+    }
+
+    public String getComboId() {
+        return comboId;
+    }
+
+    public void setComboId(String comboId) {
+        this.comboId = comboId;
+    }
+
+    public int getComboPrice() {
+        return comboPrice;
+    }
+
+    public void setComboPrice(int comboPrice) {
+        this.comboPrice = comboPrice;
     }
 }

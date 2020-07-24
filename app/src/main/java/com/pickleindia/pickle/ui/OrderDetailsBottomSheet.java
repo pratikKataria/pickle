@@ -76,7 +76,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         orderBinding.setVisitor(new VisitorForList());
         orderBinding.setOrders(orders);
 
-        int calcFinalTotal = (orders.getSubTotal() + orders.getShipping()) - orders.getPcoinsSpent();
+        int calcFinalTotal = (orders.getSubTotal() + orders.getShipping() + orders.getComboPrice()) - orders.getPcoinsSpent();
 
         if (calcFinalTotal > 0) {
             orderBinding.finalTotalAmount.setText(String.valueOf(calcFinalTotal));
@@ -92,7 +92,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     OrdersDetails ordersDetails = dataSnapshot.getValue(OrdersDetails.class);
                     orderedProductList.add(ordersDetails);
-                    NotifyRecyclerItems.notifyItemInsertedAt(orderBinding.recyclerView, orderedProductList.indexOf(ordersDetails));
+                    NotifyRecyclerItems.notifyDataSetChanged(orderBinding.recyclerView);
                 }
                 orderBinding.ordersLoadingProgressBar.setVisibility(View.GONE);
             }

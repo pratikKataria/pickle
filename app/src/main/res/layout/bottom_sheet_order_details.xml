@@ -9,6 +9,7 @@
         <import type="android.view.View"/>
         <import type="com.pickleindia.pickle.utils.OrderStatus"/>
         <import type="com.pickleindia.pickle.utils.Constant"/>
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
 
         <variable
             name="orders"
@@ -352,15 +353,33 @@
                             app:layout_constraintTop_toBottomOf="@+id/textView38" />
 
                         <TextView
+                            android:id="@+id/textView53"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:text="Combo Price"
+                            android:visibility="@{orders.comboPrice>0 ? View.VISIBLE:View.GONE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{`` + orders.comboPrice}"
+                            android:layout_margin="4dp"
+                            android:visibility="@{orders.comboPrice>0 ? View.VISIBLE:View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView53"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textView53" />
+
+                        <TextView
                             android:id="@+id/textView51"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="44dp"
                             android:text="PCoins Spent: "
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView50" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
                         <TextView
                             android:layout_width="wrap_content"
