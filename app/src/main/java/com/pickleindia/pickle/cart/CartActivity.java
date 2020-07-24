@@ -655,7 +655,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             if (getComboPrice() > 0) {
                 atomicOperation.put("Orders/" + key +"/comboPrice", getComboPrice());
                 OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
-                atomicOperation.put("Orders/"+ key +"/comboId", offerCombo.getComboId());
+                atomicOperation.put("Orders/"+ key +"/comboId", offerCombo.getOfferId());
             }
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);

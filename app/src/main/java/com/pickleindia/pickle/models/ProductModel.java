@@ -25,6 +25,7 @@ public class ProductModel implements Parcelable {
     private int itemUnits;
     private long date;
     private boolean itemAvailability;
+    private boolean hasSale;
 
     private String itemThumbImage;
     private String itemName_itemId;
@@ -32,6 +33,7 @@ public class ProductModel implements Parcelable {
     private int quantityCounter;
 
     public boolean isCombo;
+    private int percentage;
 
     public ProductModel() {
     }
@@ -41,7 +43,7 @@ public class ProductModel implements Parcelable {
         this.itemBasePrice = itemBasePrice;
     }
 
-    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId) {
+    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId, boolean hasSale) {
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.itemBasePrice = itemBasePrice;
@@ -55,6 +57,7 @@ public class ProductModel implements Parcelable {
         this.itemUnits = itemUnits;
         this.date = date;
         this.itemAvailability = itemAvailability;
+        this.hasSale = hasSale;
         this.itemThumbImage = itemThumbImage;
         this.itemName_itemId = itemName_itemId;
     }
@@ -290,5 +293,21 @@ public class ProductModel implements Parcelable {
         dest.writeString(itemName_itemId);
         dest.writeInt(quantityCounter);
         dest.writeByte((byte) (isCombo ? 1 : 0));
+    }
+
+    public boolean isHasSale() {
+        return hasSale;
+    }
+
+    public void setHasSale(boolean hasSale) {
+        this.hasSale = hasSale;
+    }
+
+    public int getPercentage() {
+        if (hasSale && itemBasePrice > 0) {
+            float floatPercentage = (itemBasePrice - itemSellPrice) / (float)itemBasePrice;
+            return percentage = (int) (floatPercentage*100);
+        }
+        return 0;
     }
 }

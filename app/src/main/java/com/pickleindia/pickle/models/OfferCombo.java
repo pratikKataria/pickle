@@ -5,30 +5,32 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-import java.io.Serializable;
+import com.google.firebase.database.PropertyName;
 
 public class OfferCombo implements Parcelable {
-    private String comboId;
-    private String comboThumb;
+    private String offerId;
+    private String offerThumb;
     private String productIds_cat;
     private int totalPrice;
     private int maxQty;
 
     public int qtyCounter;
+    private boolean isCombo;
 
     public OfferCombo() {}
 
-    public OfferCombo(String comboId, String comboThumb, String productIds_cat, int totalPrice, int maxQty) {
-        this.comboId = comboId;
-        this.comboThumb = comboThumb;
+    public OfferCombo(String offerId, String offerThumb, String productIds_cat, int totalPrice, int maxQty, boolean isCombo) {
+        this.offerId = offerId;
+        this.offerThumb = offerThumb;
         this.productIds_cat = productIds_cat;
         this.totalPrice = totalPrice;
         this.maxQty = maxQty;
+        this.isCombo = isCombo;
     }
 
     protected OfferCombo(Parcel in) {
-        comboId = in.readString();
-        comboThumb = in.readString();
+        offerId = in.readString();
+        offerThumb = in.readString();
         productIds_cat = in.readString();
         totalPrice = in.readInt();
         maxQty = in.readInt();
@@ -37,8 +39,8 @@ public class OfferCombo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(comboId);
-        dest.writeString(comboThumb);
+        dest.writeString(offerId);
+        dest.writeString(offerThumb);
         dest.writeString(productIds_cat);
         dest.writeInt(totalPrice);
         dest.writeInt(maxQty);
@@ -62,20 +64,20 @@ public class OfferCombo implements Parcelable {
         }
     };
 
-    public String getComboId() {
-        return comboId;
+    public String getOfferId() {
+        return offerId;
     }
 
-    public void setComboId(String comboId) {
-        this.comboId = comboId;
+    public void setOfferId(String offerId) {
+        this.offerId = offerId;
     }
 
-    public String getComboThumb() {
-        return comboThumb;
+    public String getOfferThumb() {
+        return offerThumb;
     }
 
-    public void setComboThumb(String comboThumb) {
-        this.comboThumb = comboThumb;
+    public void setOfferThumb(String offerThumb) {
+        this.offerThumb = offerThumb;
     }
 
     public String getProductIds_cat() {
@@ -107,9 +109,31 @@ public class OfferCombo implements Parcelable {
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof OfferCombo) {
             OfferCombo offerCombo = (OfferCombo) obj;
-            return offerCombo.getComboId().matches(comboId);
+            return offerCombo.getOfferId().matches(offerId);
         }
 
         return false;
+    }
+
+    @PropertyName("isCombo")
+    public boolean isCombo() {
+        return isCombo;
+    }
+
+    public void setIsCombo(boolean isCombo) {
+        this.isCombo = isCombo;
+    }
+
+    @Override
+    public String toString() {
+        return "OfferCombo{" +
+                "offerId='" + offerId + '\'' +
+                ", offerThumb='" + offerThumb + '\'' +
+                ", productIds_cat='" + productIds_cat + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", maxQty=" + maxQty +
+                ", qtyCounter=" + qtyCounter +
+                ", isCombo=" + isCombo +
+                '}';
     }
 }

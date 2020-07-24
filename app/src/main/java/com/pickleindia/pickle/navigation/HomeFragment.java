@@ -26,9 +26,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,7 +80,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private final ObservableBoolean isLoading = new ObservableBoolean(false);
     private boolean isScrolling;
 
-    private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("ComboOffer");
+    private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("Offers");
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
 
     private static int itemCount;
@@ -214,18 +212,21 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
                 OfferCombo offerCombo = dataSnapshot.getValue(OfferCombo.class);
                 Log.e("HomeFragment", offerCombo.toString());
-                if (!carouselImage.contains(offerCombo) && offerCombo.getComboThumb() != null) {
+                if (!carouselImage.contains(offerCombo) && offerCombo.getOfferThumb() != null) {
                     carouselImage.add(offerCombo);
-                    updateImage(offerCombo.getComboThumb());
+                    updateImage(offerCombo.getOfferThumb());
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 OfferCombo offerCombo = dataSnapshot.getValue(OfferCombo.class);
-                if (!carouselImage.contains(offerCombo) && offerCombo.getComboThumb() != null) {
+                if (offerCombo.getOfferThumb() != null) {
+                    carouselImage.remove(offerCombo);
                     carouselImage.add(offerCombo);
-                    updateImage(offerCombo.getComboThumb());
+                    int indexOf = carouselImage.indexOf(offerCombo);
+                    binding.carouselView.removeSliderAt(indexOf);
+                    updateImage(offerCombo.getOfferThumb());
                 }
             }
 
@@ -435,7 +436,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         }
 
         for (OfferCombo offerCombo : carouselImage)
-            updateImage(offerCombo.getComboThumb());
+            updateImage(offerCombo.getOfferThumb());
 
         for (ProductModel productModel : refreshList) {
             int indexOf = productModelArrayList.indexOf(productModel);
@@ -520,11 +521,15 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
         if (index != -1) {
             OfferCombo offerCombo = carouselImage.get(index);
             if (offerCombo != null) {
-                NavController navController = NavHostFragment.findNavController(this);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("offer_combo", offerCombo);
-                navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
-                productModelArrayList.clear();
+                if (offerCombo.isCombo()) {
+                    NavController navController = NavHostFragment.findNavController(this);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("offer_combo", offerCombo);
+                    navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
+                    productModelArrayList.clear();
+                } else {
+                    navigateToProductFragment(offerCombo.getProductIds_cat());
+                }
             }
         }
     }

@@ -39,16 +39,16 @@ public class AddNewItemActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView _itemImageView;
 
-   private EditText _itemName;
-   private EditText _itemDesc;
-   private EditText _itemBasePrice;
-   private EditText _itemSellPrice;
-   private EditText _itemMaxQtyPerUser;
-   private EditText _itemOffers;
-   private EditText _itemQty;
-   private EditText _itemUnits;
+    private EditText _itemName;
+    private EditText _itemDesc;
+    private EditText _itemBasePrice;
+    private EditText _itemSellPrice;
+    private EditText _itemMaxQtyPerUser;
+    private EditText _itemOffers;
+    private EditText _itemQty;
+    private EditText _itemUnits;
 
-   private ProgressBar _progressBar;
+    private ProgressBar _progressBar;
 
     private final String[] defType = new String[1];
     private final String[] defQtyType = new String[1];
@@ -297,7 +297,7 @@ public class AddNewItemActivity extends AppCompatActivity {
                         System.currentTimeMillis(),
                         true,
                         thumbImageUri,
-                        _itemName.getText().toString()+"_"+pushKey)
+                        _itemName.getText().toString() + "_" + pushKey, false)
         ).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(AddNewItemActivity.this, "upload successful", Toast.LENGTH_SHORT).show();
