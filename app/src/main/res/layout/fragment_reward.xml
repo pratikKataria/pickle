@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:layout_gravity="center"
-                android:text="Invite earn\n Share this"/>
+                android:text="Share, Invite \n&amp; Earn "/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/invite_material_button"
@@ -124,6 +124,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Invite"/>
+
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"
+            android:text="You will get 10 Rupees per Refferal"/>
     </LinearLayout>
 </layout>
