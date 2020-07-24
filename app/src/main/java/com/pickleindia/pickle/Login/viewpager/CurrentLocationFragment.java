@@ -135,7 +135,7 @@ public class CurrentLocationFragment extends Fragment {
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
 
-        update.put("Addresses/" + uid + "/slot1", currentAddress);
+        update.put("Addresses/" + uid + "/slot2", currentAddress);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
             currentLocationBinding.progressBar.setVisibility(View.GONE);
@@ -154,7 +154,7 @@ public class CurrentLocationFragment extends Fragment {
         String uid = FirebaseAuth.getInstance().getUid();
 
         update.put("Customers/" + uid +"/personalInformation/username", customerName);
-        update.put("Addresses/" + uid + "/slot1", currentAddress);
+        update.put("Addresses/" + uid + "/slot2", currentAddress);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
@@ -162,7 +162,6 @@ public class CurrentLocationFragment extends Fragment {
             currentLocationBinding.progressBar.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "location updated", Toast.LENGTH_SHORT).show();
             getActivity().finish();
-
         }).addOnFailureListener(e -> {
             Toast.makeText(getActivity(), "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             currentLocationBinding.progressBar.setVisibility(View.GONE);
