@@ -84,11 +84,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                if (!observableAddress.get().isEmpty()) {
+                    binding.includeLayout.progressCircular.setVisibility(View.GONE);
+                }
+
                 if (binding != null && binding.includeLayout.chipDeliveryTime3.isChecked()) {
                     setDeliveryChargeAlert();
-                    if (!observableAddress.get().isEmpty()) {
-                        binding.includeLayout.progressCircular.setVisibility(View.GONE);
-                    }
                 }
             }
         }
@@ -582,7 +583,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private int getComboPrice() {
         OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
         if (offerCombo != null) {
-           return offerCombo.getTotalPrice();
+           return offerCombo.getTotalPrice()*offerCombo.qtyCounter;
         }
         return  0;
     }

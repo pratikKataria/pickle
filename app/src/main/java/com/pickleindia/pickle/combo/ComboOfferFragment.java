@@ -1,7 +1,11 @@
 
 package com.pickleindia.pickle.combo;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 
 import com.google.android.material.transition.MaterialContainerTransform;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -38,6 +43,8 @@ public class ComboOfferFragment extends Fragment {
     private OfferCombo offerCombo;
     private ArrayList<ProductModel> comboProductsList = new ArrayList<>();
     private GetDataCallBack getDataCallBack;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,11 +78,25 @@ public class ComboOfferFragment extends Fragment {
             Log.e("prduct mOdel ", id[i] + " " + cat[i] + " split " + ids_cat[i].split("_"));
         }
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setTitle("Fetching Offers");
+        progressDialog.setMessage("Please wait while loading your offer combo ...");
+        progressDialog.setCancelable(false);
+        ProgressBar progressBar = new ProgressBar(getActivity());
+        Drawable drawable = progressBar.getIndeterminateDrawable().mutate();
+        drawable.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+        progressDialog.setIndeterminateDrawable(drawable);
+        progressDialog.show();
+
         getDataCallBack = new GetDataCallBack() {
             @Override
             public void received(int index, ProductModel offerProduct) {
                 comboProductsList.add(offerProduct);
                 NotifyRecyclerItems.notifyItemChangedAt(binding.comboOfferRecyclerView, index);
+
+                if (index == ids_cat.length){
+                    progressDialog.cancel();
+                }
 
                 if (index < ids_cat.length)
                     next(index);
@@ -87,7 +108,6 @@ public class ComboOfferFragment extends Fragment {
             }
         };
         getDataCallBack.next(0);
-
 
         Integer[] counter = new Integer[offerCombo.getMaxQty()];
         for (int maxQtyPerUser = 0; maxQtyPerUser < offerCombo.getMaxQty(); maxQtyPerUser++ ){
