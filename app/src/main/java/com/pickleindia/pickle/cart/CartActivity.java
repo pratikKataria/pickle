@@ -1,6 +1,7 @@
 package com.pickleindia.pickle.cart;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -50,6 +51,7 @@ import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.Address;
+import com.pickleindia.pickle.models.OfferCombo;
 import com.pickleindia.pickle.models.OrdersDetails;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.DateUtils;
@@ -68,6 +70,7 @@ import java.util.Map;
 import mumayank.com.airlocationlibrary.AirLocation;
 
 import static com.pickleindia.pickle.utils.Constant.GPS_CORD_RE;
+import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
@@ -103,7 +106,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_cart_view);
         getShoppingCart();
-
         binding.setActivity(this);
         binding.setObservableAddress(displayAddress);
 
@@ -176,6 +178,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         CartViewModel cartViewModel = new CartViewModel();
         cartViewModel.setCartProducts(cartList);
         binding.setCartViewModel(cartViewModel);
+
+        cartViewModel.setComboValue(getComboPrice());
+        ArrayList<ProductModel> offerComboList = getIntent().getParcelableArrayListExtra(OFFER_COMBO);
+        if (offerComboList != null)
+            cartList.addAll(offerComboList);
+
         binding.executePendingBindings();
     }
 
@@ -298,7 +306,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     getShoppingCart();
 
                     if (!finalIsPriceSame) {
-                        showPriceChangeDialog();
+                        showAlertDialog("Price Change Alert",
+                                "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
+                                (dialog, which) -> checkDeliveryTimeAndAddress(), "next", "back");
                     } else {
                         checkDeliveryTimeAndAddress();
                     }
@@ -308,7 +318,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 if (!isOutOfStock) {
                     outOfStockAlert.show();
                 } else if (!isPriceSame) {
-                    showPriceChangeDialog();
+                    showAlertDialog("Price Change Alert",
+                            "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
+                            ((dialog, which) -> checkDeliveryTimeAndAddress()), "next", "back");
                 } else {
                     checkDeliveryTimeAndAddress();
                 }
@@ -339,15 +351,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         });
     }
 
-    private void showPriceChangeDialog() {
+    private void showAlertDialog(String title, String message, DialogInterface.OnClickListener dialogInterface, String positiveText, String negativeText) {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(CartActivity.this);
-        materialAlertDialogBuilder.setTitle("Product Price Alert");
+        materialAlertDialogBuilder.setTitle(title);
         materialAlertDialogBuilder.setCancelable(false);
-        materialAlertDialogBuilder.setMessage("Its look like that prices of products in your cart has been update, Please recheck the price before proceeding");
-        materialAlertDialogBuilder.setPositiveButton("Next", (dialog, which) -> {
-            checkDeliveryTimeAndAddress();
-        });
-        materialAlertDialogBuilder.setNegativeButton("back", (dialog, which) -> {
+        materialAlertDialogBuilder.setMessage(message);
+        materialAlertDialogBuilder.setPositiveButton(positiveText, dialogInterface);
+        materialAlertDialogBuilder.setNegativeButton(negativeText, (dialog, which) -> {
 
         });
         materialAlertDialogBuilder.show();
@@ -403,12 +413,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         int total = getTotalCost();
 
+        int comboValue = getComboPrice();
         int deliveryCharge = getDeliveryCharge();
         if (deliveryCharge > 0 && total < 500) {
-            total += deliveryCharge;
-            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal %s + %s (delivery charge) = %s", binding.amountToBePaid.getText().toString(), deliveryCharge+"", total));
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", total+"", comboValue+"" , deliveryCharge+"", (total + comboValue + deliveryCharge)));
         }else {
-            confirmOrderBinding.totalPriceTextView.setText(String.format("Total price %s", binding.amountToBePaid.getText().toString()));
+            confirmOrderBinding.totalPriceTextView.setText("Total price" + (total + comboValue));
         }
 
         confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
@@ -556,6 +566,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         return total;
     }
 
+    private int getComboPrice() {
+        OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
+        if (offerCombo != null) {
+           return offerCombo.getTotalPrice();
+        }
+        return  0;
+    }
+
     private void sendOrdersToDatabase(UploadResult result) {
         Map<String, Object> atomicOperation = buildOrders();
         DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -620,6 +638,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/shipping", shipping);
             atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
 
+            if (getComboPrice() > 0) {
+                atomicOperation.put("Orders/" + key +"/comboPrice", getComboPrice());
+                OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
+                atomicOperation.put("Orders/"+ key +"/comboId", offerCombo.getComboId());
+            }
+
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
 
@@ -666,8 +690,17 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        if (binding != null && binding.getCartViewModel().getComboValue() > 0) {
+            showAlertDialog("Combo Package Alert",
+                    "Their is a combo package present in your cart. If try to move back before checking out you will lose your combo",
+                    ((dialog, which) -> {
+                            finish();
+                    }),
+                    "leave",
+                    "back");
+        } else {
+            finish();
+        }
     }
 
     @Override

@@ -85,4 +85,6 @@ public abstract class Constant {
     public static final String PERMISSION_PREFS_KEY = "permissions";
 
     public static String GPS_CORD_RE = "-?[1-9][0-9]*(\\.[0-9]+)?,\\s*-?[1-9][0-9]*(\\.[0-9]+)?";
+
+    public static String OFFER_COMBO = "offer_combo";
 }

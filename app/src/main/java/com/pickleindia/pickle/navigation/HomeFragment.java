@@ -26,7 +26,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +54,7 @@ import com.pickleindia.pickle.interfaces.ImageUrlListener;
 import com.pickleindia.pickle.interfaces.ReferralBottomSheetListener;
 import com.pickleindia.pickle.main.FirebaseSearchActivity;
 import com.pickleindia.pickle.main.MainActivity;
+import com.pickleindia.pickle.models.OfferCombo;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.ui.CarouselSliderView;
 import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
@@ -73,13 +76,13 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListener, BaseSliderView.OnSliderClickListener, ReferralBottomSheetListener {
 
     private FragmentHomeBinding binding;
-    private ArrayList<String> carouselImage;
+    private ArrayList<OfferCombo> carouselImage;
     private ArrayList<ProductModel> productModelArrayList;
     private HashMap<String, String> paginationProductKeyMap;
     private final ObservableBoolean isLoading = new ObservableBoolean(false);
     private boolean isScrolling;
 
-    private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("CarouselImages");
+    private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("ComboOffer");
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
 
     private static int itemCount;
@@ -102,20 +105,20 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
 
-            setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
-            setUpToolbar();
+        setExitTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, false));
+        setUpToolbar();
 
-            binding.setProductList(productModelArrayList);
-            binding.setHomeFragment(HomeFragment.this);
-            binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
-            itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
-            getActivity().invalidateOptionsMenu();
-            initCarouselView();
+        binding.setProductList(productModelArrayList);
+        binding.setHomeFragment(HomeFragment.this);
+        binding.setTypeface(ResourcesCompat.getFont(getActivity(), R.font.pacifico_regular));
+        itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
+        getActivity().invalidateOptionsMenu();
+        initCarouselView();
 
-            binding.setIsLoading(isLoading);
-            initRecyclerView();
+        binding.setIsLoading(isLoading);
+        initRecyclerView();
         return binding.getRoot();
     }
 
@@ -123,6 +126,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     int visibleItemCount;
     int totalItemCount;
     int pastVisibleItems;
+
     private void initRecyclerView() {
         RecyclerView recyclerView = binding.suggestionRecyclerView;
         recyclerView.setItemViewCacheSize(20);
@@ -145,7 +149,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                 LinearLayoutManager layoutManager = (LinearLayoutManager) binding.suggestionRecyclerView.getLayoutManager();
 
                 visibleItemCount = layoutManager.getChildCount();
-                totalItemCount   = layoutManager.getItemCount();
+                totalItemCount = layoutManager.getItemCount();
                 pastVisibleItems = layoutManager.findFirstCompletelyVisibleItemPosition();
                 if (isScrolling && !isLoading.get() && ((visibleItemCount + pastVisibleItems) == totalItemCount)) {
                     isScrolling = false;
@@ -197,28 +201,31 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
 
     private ChildEventListener carouselImageChildEventListener;
+
     private ChildEventListener getImageList() {
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                //when previous is loaded first time remove default layout
+                //when carousel has empty layouts then remove them - this happens only on the first load
                 if (carouselImage.isEmpty()) {
                     binding.carouselView.removeAllSliders();
                 }
 
-                String url = dataSnapshot.getValue(String.class);
-                if (!carouselImage.contains(url)) {
-                    carouselImage.add(url);
-                    updateImage(url);
+
+                OfferCombo offerCombo = dataSnapshot.getValue(OfferCombo.class);
+                Log.e("HomeFragment", offerCombo.toString());
+                if (!carouselImage.contains(offerCombo) && offerCombo.getComboThumb() != null) {
+                    carouselImage.add(offerCombo);
+                    updateImage(offerCombo.getComboThumb());
                 }
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                String url = dataSnapshot.getValue(String.class);
-                if (!carouselImage.contains(url)) {
-                    carouselImage.add(url);
-                    updateImage(url);
+                OfferCombo offerCombo = dataSnapshot.getValue(OfferCombo.class);
+                if (!carouselImage.contains(offerCombo) && offerCombo.getComboThumb() != null) {
+                    carouselImage.add(offerCombo);
+                    updateImage(offerCombo.getComboThumb());
                 }
             }
 
@@ -412,6 +419,12 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        carouselImage.clear();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 //        update cart icon on resume
@@ -421,8 +434,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             getActivity().invalidateOptionsMenu();
         }
 
-        for (String url : carouselImage)
-            updateImage(url);
+        for (OfferCombo offerCombo : carouselImage)
+            updateImage(offerCombo.getComboThumb());
 
         for (ProductModel productModel : refreshList) {
             int indexOf = productModelArrayList.indexOf(productModel);
@@ -439,7 +452,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void onStart() {
         super.onStart();
-        if (productModelArrayList.size() <= LIMIT+1) {
+        if (productModelArrayList.size() <= LIMIT + 1) {
             addProduct();
         }
 
@@ -465,7 +478,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
 
     @Override
-    public void play() { }
+    public void play() {
+    }
 
     @Override
     public void updateIconItems() {
@@ -502,7 +516,17 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(getActivity(), "Offers will be shown", Toast.LENGTH_SHORT).show();
+        int index = binding.carouselView.getCurrentPosition();
+        if (index != -1) {
+            OfferCombo offerCombo = carouselImage.get(index);
+            if (offerCombo != null) {
+                NavController navController = NavHostFragment.findNavController(this);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("offer_combo", offerCombo);
+                navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
+                productModelArrayList.clear();
+            }
+        }
     }
 
     @Override

@@ -66,7 +66,7 @@
                         android:scaleY=".85"
                         android:singleLine="true"
                         android:tag="0"
-                        android:text="Appartment or Society"
+                        android:text="Apartment or Society"
                         android:textSize="12dp" />
 
                     <com.pickleindia.pickle.ui.MyRadioButton

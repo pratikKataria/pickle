@@ -24,6 +24,7 @@ import java.util.List;
 public class CartViewModel extends BaseObservable {
     private List<ProductModel> cartProducts = new ArrayList<>();
     private boolean isCartVisible;
+    private int comboPriceAddon;
 
     @Bindable
     public List<ProductModel> getCartProducts() {
@@ -73,30 +74,34 @@ public class CartViewModel extends BaseObservable {
         else
             setCartVisible(false);
 
-        return ("(" + String.valueOf(totalItems) + " " + s + ")");
-
+        return ("(" + totalItems + " " + s + ")");
     }
 
     public String getTotalCostString() {
         int totalCost = 0;
 
-        for(ProductModel product : cartProducts) {
+        for (ProductModel product : cartProducts) {
             int productQuantity = product.getQuantityCounter();
             int cost;
             if (product.getItemSellPrice() > 0) {
-               cost = productQuantity * product.getItemSellPrice();
+                cost = productQuantity * product.getItemSellPrice();
             } else {
                 cost = productQuantity * product.getItemBasePrice();
             }
             totalCost += cost;
         }
+
+        if (comboPriceAddon > 0) {
+            return PriceFormatUtils.getStringFormattedPrice(totalCost) + " + " + PriceFormatUtils.getStringFormattedPrice(comboPriceAddon) + " = \u20b9" + (totalCost + comboPriceAddon);
+        }
+
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
 
     public int getTotalCostInt() {
         int totalCost = 0;
 
-        for(ProductModel product : cartProducts) {
+        for (ProductModel product : cartProducts) {
             int productQuantity = product.getQuantityCounter();
             int cost;
             if (product.getItemSellPrice() > 0) {
@@ -107,5 +112,13 @@ public class CartViewModel extends BaseObservable {
             totalCost += cost;
         }
         return totalCost;
+    }
+
+    public int getComboValue() {
+        return comboPriceAddon;
+    }
+
+    public void setComboValue(int comboPriceAddon) {
+        this.comboPriceAddon = comboPriceAddon;
     }
 }

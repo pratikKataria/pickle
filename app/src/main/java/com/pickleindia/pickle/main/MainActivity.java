@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity implements
         snackBarLayout = findViewById(R.id.coordinatorLayout);
         bottomNavigationView.setItemIconTintList(null);
 
-        findViewById(R.id.activity_main_fab_add_item).setOnClickListener(n -> {
-            startActivity(new Intent(this, AddNewItemActivity.class));
-        });
+//        findViewById(R.id.activity_main_fab_add_item).setOnClickListener(n -> {
+//            startActivity(new Intent(this, AddNewItemActivity.class));
+//        });
 
         smoothActionBarDrawerToggle = new SmoothActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(smoothActionBarDrawerToggle);

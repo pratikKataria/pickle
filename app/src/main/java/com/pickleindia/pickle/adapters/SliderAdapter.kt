@@ -33,9 +33,9 @@ class SliderAdapter : PagerAdapter {
     )
 
     private val description = arrayOf(
-        "Fresh Vegetables, fruits and Beverages available at your Door with quality products",
-        "Delivery with fine and exact location all over indore",
-        "No need to pay before, Pay When you get it, COD available at indore",
+        "Fresh Vegetables, Fruits, Grocery, Households, Personal Care and many more available at your door",
+        "Delivery with fine and exact location all over Indore",
+        "No need to pay before, Pay When you get it, COD available in Indore",
         "Fast delivery, with no extra cost "
     )
 

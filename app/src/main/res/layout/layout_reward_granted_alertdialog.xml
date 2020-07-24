@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text="you have got 20 pcoins you can spent while checkout" />
+                android:text="you have got 10 pcoins you can spent while checkout" />
 
             <TextView
                 android:layout_width="wrap_content"

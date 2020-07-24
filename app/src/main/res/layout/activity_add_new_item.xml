@@ -158,7 +158,10 @@
             android:id="@+id/add_new_item_image"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            android:src="@drawable/bg_image_upload_file"/>
+           android:scaleY=".5"
+            android:scaleX=".5"
+            android:background="@drawable/ic_add_black_24dp"
+            android:backgroundTint="@color/black"/>
 
         <ProgressBar
             android:id="@+id/add_new_item_progress_bar"

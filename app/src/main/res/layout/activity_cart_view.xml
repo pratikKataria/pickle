@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="@{cartViewModel.cartVisible ? View.GONE : View.VISIBLE}"
-            tools:visibility="visible">
+            tools:visibility="gone">
 
             <ImageView
                 android:id="@+id/imageView12"
@@ -214,7 +214,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
@@ -263,8 +263,8 @@
                         layout="@layout/layout_cart_notice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginStart="@dimen/cart_margin_start"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="@dimen/cart_margin_end" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -318,18 +318,31 @@
                                 android:id="@+id/cartAmountTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{cartViewModel.totalCostString}" />
+                                android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.totalCostInt)}" />
                         </LinearLayout>
+
+
+                        <TextView
+                            android:layout_width="210dp"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery fee is charged only for delivery within 1 : 30 hr slot" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}">
 
                             <TextView
-                                android:layout_width="210dp"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Delivery fee is charged only for delivery within 1 : 30 hr slot" />
+                                android:layout_weight="1"
+                                android:text="Combo Price: " />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.comboValue)}" />
                         </LinearLayout>
 
                         <View
@@ -362,10 +375,11 @@
                             android:layout_height="1dp"
                             android:background="@color/grey" />
 
-                        <include layout="@layout/layout_order_delivery_summery"
-                            android:layout_marginTop="24dp"
+                        <include
+                            layout="@layout/layout_order_delivery_summery"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_width="match_parent" />
+                            android:layout_marginTop="24dp" />
                     </LinearLayout>
                 </LinearLayout>
 

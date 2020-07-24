@@ -85,7 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sometime reward may take 24 hours to update"
+            android:text="Sometime reward may take 24 hours to update"
             android:textColor="@color/grey"
             android:layout_gravity="center"/>
 
@@ -100,7 +100,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 PCoins = 1 Rupees"
+                android:text="1 PCoin = 1 Rupee"
                 android:textColor="@android:color/black"/>
         </LinearLayout>
 

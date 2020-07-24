@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_orderOnPhone"
             app:destination="@id/orderOnPhone" />
+        <action
+            android:id="@+id/action_homeFragment_to_comboOfferFragment"
+            app:destination="@id/comboOfferFragment" />
     </fragment>
 
     <fragment
@@ -57,4 +60,8 @@
         android:id="@+id/orderOnPhone"
         android:name="com.pickleindia.pickle.orderonphone.OrderOnPhone"
         android:label="OrderOnPhone" />
+    <fragment
+        android:id="@+id/comboOfferFragment"
+        android:name="com.pickleindia.pickle.combo.ComboOfferFragment"
+        android:label="ComboOfferFragment" />
 </navigation>

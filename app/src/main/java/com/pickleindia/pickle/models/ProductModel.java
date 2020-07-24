@@ -1,5 +1,7 @@
 package com.pickleindia.pickle.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -7,7 +9,7 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
-public class ProductModel {
+public class ProductModel implements Parcelable {
     private String itemName;
     private String itemDesc;
     private int itemBasePrice;
@@ -28,6 +30,8 @@ public class ProductModel {
     private String itemName_itemId;
 
     private int quantityCounter;
+
+    public boolean isCombo;
 
     public ProductModel() {
     }
@@ -54,6 +58,38 @@ public class ProductModel {
         this.itemThumbImage = itemThumbImage;
         this.itemName_itemId = itemName_itemId;
     }
+
+    protected ProductModel(Parcel in) {
+        itemName = in.readString();
+        itemDesc = in.readString();
+        itemBasePrice = in.readInt();
+        itemSellPrice = in.readInt();
+        itemMaxQtyPerUser = in.readInt();
+        itemQty = in.readInt();
+        qtyType = in.readString();
+        itemType = in.readString();
+        itemCategory = in.readString();
+        itemId = in.readString();
+        itemUnits = in.readInt();
+        date = in.readLong();
+        itemAvailability = in.readByte() != 0;
+        itemThumbImage = in.readString();
+        itemName_itemId = in.readString();
+        quantityCounter = in.readInt();
+        isCombo = in.readByte() != 0;
+    }
+
+    public static final Creator<ProductModel> CREATOR = new Creator<ProductModel>() {
+        @Override
+        public ProductModel createFromParcel(Parcel in) {
+            return new ProductModel(in);
+        }
+
+        @Override
+        public ProductModel[] newArray(int size) {
+            return new ProductModel[size];
+        }
+    };
 
     public boolean showAddButton() {
         return quantityCounter > 0;
@@ -228,5 +264,31 @@ public class ProductModel {
         }
 
         return same;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(itemName);
+        dest.writeString(itemDesc);
+        dest.writeInt(itemBasePrice);
+        dest.writeInt(itemSellPrice);
+        dest.writeInt(itemMaxQtyPerUser);
+        dest.writeInt(itemQty);
+        dest.writeString(qtyType);
+        dest.writeString(itemType);
+        dest.writeString(itemCategory);
+        dest.writeString(itemId);
+        dest.writeInt(itemUnits);
+        dest.writeLong(date);
+        dest.writeByte((byte) (itemAvailability ? 1 : 0));
+        dest.writeString(itemThumbImage);
+        dest.writeString(itemName_itemId);
+        dest.writeInt(quantityCounter);
+        dest.writeByte((byte) (isCombo ? 1 : 0));
     }
 }

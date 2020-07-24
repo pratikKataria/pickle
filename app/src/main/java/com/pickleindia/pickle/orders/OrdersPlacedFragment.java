@@ -192,7 +192,7 @@ public class OrdersPlacedFragment extends Fragment {
 
     private void updateHeaderView() {
         if (ordersList.size() == 0) {
-            ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like that no ongoing orders"));
+            ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like their is no ongoing orders"));
             NotifyRecyclerItems.notifyDataSetChanged(binding.recyclerView);
         } else if (ordersList.size() == 2) {
             ordersList.remove(0);
