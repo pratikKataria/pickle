@@ -68,17 +68,13 @@
                     android:layout_gravity="center|start"
                     android:layout_marginStart="16dp"
                     android:background="@color/transparent"
-                    android:completionThreshold="1"
                     android:cursorVisible="true"
                     android:focusable="true"
                     android:focusedByDefault="true"
                     android:hint="Search here"
-                    android:inputType="textAutoComplete|textAutoCorrect"
-                    android:popupBackground="@drawable/ic_round_rect_white"
                     android:scrollIndicators="none"
                     android:textCursorDrawable="@null"
                     android:textSize="14sp"
-                    app:autoCompleteList="@{autoCompleteList}"
                     tools:layout_editor_absoluteX="65dp"
                     tools:layout_editor_absoluteY="32dp" />
 
