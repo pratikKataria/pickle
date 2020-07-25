@@ -86,7 +86,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="7:00 AM ~ 9:00AM"
-                        android:textColor="@color/chip_text_color_state"
+                        android:textAppearance="@style/chipText"
+                        app:checkedIconTint="@color/black"
+                        android:textColor="@color/black"
                         app:checkedIcon="@drawable/ic_clock"
                         app:checkedIconEnabled="true"
                         app:chipBackgroundColor="@color/bg_chip_state" />
@@ -96,9 +98,11 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/black"
                         android:text="4:00 PM ~ 6:00PM"
-                        android:textColor="@color/chip_text_color_state"
+                        android:textAppearance="@style/chipText"
                         app:checkedIcon="@drawable/ic_clock"
+                        app:checkedIconTint="@color/black"
                         app:checkedIconEnabled="true"
                         app:chipBackgroundColor="@color/bg_chip_state"
                         app:iconStartPadding="8dp" />
@@ -110,10 +114,11 @@
                         android:layout_height="wrap_content"
                         android:text="@string/delivery_slot_three"
                         android:tag="current"
-                        android:textColor="@color/chip_text_color_state"
+                        android:textAppearance="@style/chipText"
+                        android:textColor="@color/chip_text_color_state_deliver_with_one_hr"
                         app:checkedIcon="@drawable/ic_clock"
                         app:checkedIconEnabled="true"
-                        app:chipBackgroundColor="@color/bg_chip_state"
+                        app:chipBackgroundColor="@color/bg_chip_state_delivery_one_hr"
                         app:iconStartPadding="8dp" />
                 </com.google.android.material.chip.ChipGroup>
 

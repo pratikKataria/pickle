@@ -130,8 +130,12 @@
         <item name="android:textColor">@color/grey</item>
     </style>
 
-
     <style name="Widget.MyApp.TextView.Subtitle" parent="@android:style/Widget.Material.TextView">
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    </style>
+
+    <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/avenir_next_medium</item>
     </style>
 </resources>
