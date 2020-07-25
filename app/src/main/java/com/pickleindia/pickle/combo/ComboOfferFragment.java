@@ -157,6 +157,7 @@ public class ComboOfferFragment extends Fragment {
                     productModel.setItemId(productModel.getItemId() + "_" + "C");
                     productModel.setItemBasePrice(0);
                     productModel.setItemSellPrice(0);
+                    productModel.setQuantityCounter(1);
                     productModel.setItemAvailability(true);
                     getDataCallBack.received(currIndex+1, productModel);
                 }

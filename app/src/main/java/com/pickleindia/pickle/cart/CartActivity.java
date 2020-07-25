@@ -429,7 +429,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         if (deliveryCharge > 0 && total < 500) {
             confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", total+"", comboValue+"" , deliveryCharge+"", (total + comboValue + deliveryCharge)));
         }else {
-            confirmOrderBinding.totalPriceTextView.setText("Total price" + (total + comboValue));
+            confirmOrderBinding.totalPriceTextView.setText("Total price " + (total + comboValue));
         }
 
         confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
