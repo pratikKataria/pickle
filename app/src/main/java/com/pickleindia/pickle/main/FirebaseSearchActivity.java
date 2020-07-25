@@ -37,6 +37,7 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
     private ActivityFirebaseSearchBinding binding;
     private final ObservableBoolean isFound = new ObservableBoolean(true);
     private boolean isRunning;
+    private Timeout timeout;
 
 
     @Override
@@ -55,15 +56,6 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
         binding.setActivity(this);
         binding.editQuery.requestFocus();
         binding.setIsFound(isFound);
-
-        Timeout timeout = new Timeout(3000) {
-            @Override
-            public void run() {
-                if (searchList.isEmpty()) {
-                    isFound.set(false);
-                }
-            }
-        };
 
         binding.editQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -148,10 +140,30 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
     }
 
     @Override
+    protected void onStart() {
+        if (timeout == null) {
+            timeout = new Timeout(3000) {
+                @Override
+                public void run() {
+                    if (searchList.isEmpty()) {
+                        isFound.set(false);
+                        Log.e("Firebase search ", "running");
+                    }
+                }
+            };
+        }
+        super.onStart();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (keysRef != null && valueEventListener != null) {
             keysRef.removeEventListener(valueEventListener);
+        }
+
+        if (timeout != null) {
+            timeout.cancel();
         }
     }
 
