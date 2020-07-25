@@ -22,12 +22,14 @@ import android.widget.ProgressBar;
 
 import com.google.android.material.transition.MaterialContainerTransform;
 import com.google.android.material.transition.MaterialSharedAxis;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pickleindia.pickle.DataBinderMapperImpl;
+import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.databinding.FragmentComboOfferBinding;
@@ -130,10 +132,14 @@ public class ComboOfferFragment extends Fragment {
         });
 
         binding.addToCart.setOnClickListener(n -> {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("combo_def", offerCombo);
-            bundle.putParcelableArrayList(OFFER_COMBO, comboProductsList);
-            startActivity(new Intent(getActivity(), CartActivity.class).putExtras(bundle));
+            if (FirebaseAuth.getInstance().getUid() != null) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("combo_def", offerCombo);
+                bundle.putParcelableArrayList(OFFER_COMBO, comboProductsList);
+                startActivity(new Intent(getActivity(), CartActivity.class).putExtras(bundle));
+            } else {
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
         });
 
         return binding.getRoot();

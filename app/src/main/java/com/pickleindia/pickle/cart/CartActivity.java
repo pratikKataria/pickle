@@ -164,7 +164,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             binding.includeLayout.deliveryChargeAlert.setTextColor(getResources().getColor(R.color.chartIdealBar));
         } else {
             binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "39", " below ", "500"));
-            binding.includeLayout.deliveryChargeAlert.setTextColor(Color.RED);
+            binding.includeLayout.deliveryChargeAlert.setTextColor(getResources().getColor(R.color.jungleGreen));
         }
         binding.includeLayout.deliveryChargeAlert.setVisibility(View.VISIBLE);
     }
@@ -440,7 +440,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         final int finalTotal = total;
         confirmOrderBinding.applyPcoins.setOnClickListener(v -> {
 
-            if (getComboPrice() <= 0) {
+            if (getComboPrice() > 0) {
                 Toast.makeText(this, "pcoins cannot be used with combo offers", Toast.LENGTH_SHORT).show();
                 return;
             }

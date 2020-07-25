@@ -166,8 +166,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                app:carProductList="@{comboProducts}"
                 android:overScrollMode="never"
+                android:layout_marginBottom="?attr/actionBarSize"
+                app:carProductList="@{comboProducts}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView54"
                 tools:layout_editor_absoluteX="0dp" />
 
