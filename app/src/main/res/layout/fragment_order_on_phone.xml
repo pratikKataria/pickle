@@ -85,7 +85,7 @@
                     android:layout_marginTop="8dp"
                     android:autoLink="phone"
                     android:linksClickable="true"
-                    android:text="+91 9669668379"
+                    android:text="@string/orderOnCall"
                     app:layout_constraintEnd_toEndOf="@+id/textView44"
                     app:layout_constraintHorizontal_bias="0.315"
                     app:layout_constraintStart_toStartOf="@+id/textView44"

@@ -151,11 +151,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:text="Go to Cart"
+                android:text="Go to cart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icCart"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/orderOnPhone"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:stateListAnimator="@animator/card_animator"
+                app:cardCornerRadius="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView26"
+                app:layout_constraintEnd_toEndOf="@+id/textViewasdf"
+                app:layout_constraintStart_toStartOf="@+id/textViewasdf"
+                app:layout_constraintTop_toTopOf="@+id/icCart">
+
+               <TextView
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:autoLink="phone"
+                   android:text="@string/orderOnCall"
+                   android:textSize="0sp"/>
+
+               <ImageView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_margin="16dp"
+                   android:background="@drawable/ic_phone_call" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewasdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Order on call"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textView26"
+                app:layout_constraintTop_toBottomOf="@+id/orderOnPhone" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/icCart"
