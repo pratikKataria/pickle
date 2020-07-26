@@ -8,13 +8,25 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="aboutFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="385" />
+                            <option name="y" value="-414" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="addressBookFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="510" />
-                            <option name="y" value="-37" />
+                            <option name="x" value="726" />
+                            <option name="y" value="-69" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -25,8 +37,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="298" />
-                            <option name="y" value="-302" />
+                            <option name="x" value="716" />
+                            <option name="y" value="-389" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -43,6 +55,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_homeFragment_to_aboutFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_homeFragment_to_addressBookFragment">
                               <value>
                                 <LayoutPositions />

@@ -2,6 +2,7 @@ package com.pickleindia.pickle.main;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.DatabaseUtils;
@@ -195,6 +196,11 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_menu_follow_us:
                 showFollowusDialog();
                 break;
+            case R.id.nav_menu_sub_about:
+                checkAuthAndNavigate(R.id.action_homeFragment_to_aboutFragment);
+                break;
+            case R.id.nav_menu_sub_tutorial:
+                break;
             case R.id.nav_menu_sub_order_on_phone:
             case R.id.nav_menu_sub_help:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
@@ -204,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     private void showFollowusDialog() {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
