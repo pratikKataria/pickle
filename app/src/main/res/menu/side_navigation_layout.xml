@@ -49,16 +49,33 @@
         android:menuCategory="alternative">
 
         <item
-            android:id="@+id/navigation_menu_about"
-            android:title="About"/>
-
-        <item
             android:id="@+id/nav_menu_sub_help"
             android:title="Help"/>
-
 
         <item
             android:id="@+id/navigation_menu_logout"
             android:title="Logout" />
     </group>
+
+    <item
+        android:id="@+id/navigation_menu_extra"
+        android:title="Extras">
+        <menu>
+            <item
+                android:id="@+id/nav_menu_sub_about"
+                android:title="About"/>
+
+            <item
+                android:id="@+id/nav_menu_sub_t_and_c"
+                android:title="Terms and Condition"/>
+
+            <item
+                android:id="@+id/nav_menu_sub_tutorial"
+                android:title="Tutorial"/>
+
+            <item android:id="@+id/nav_menu_follow_us"
+                android:title="Follow us"/>
+
+        </menu>
+    </item>
 </menu>

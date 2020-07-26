@@ -35,8 +35,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ff0012" />
-                            <entry key="outputName" value="ic_not_found" />
-                            <entry key="sourceFile" value="G:\Android projects\pickel\assets\ic_not_found.svg" />
+                            <entry key="outputName" value="ic_facebook" />
+                            <entry key="sourceFile" value="G:\Android projects\pickel\assets\ic_facebook.svg" />
                           </map>
                         </option>
                       </PersistentState>

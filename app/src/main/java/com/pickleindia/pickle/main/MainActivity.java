@@ -1,8 +1,12 @@
 package com.pickleindia.pickle.main;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.DatabaseUtils;
 import android.graphics.Color;
+import android.net.InetAddresses;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
@@ -25,6 +30,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +43,7 @@ import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.cart.CartActivity;
+import com.pickleindia.pickle.databinding.LayoutFollowUsAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.ProductModel;
@@ -184,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements
                 });
                 drawerLayout.closeDrawers();
                 break;
+            case R.id.nav_menu_follow_us:
+                showFollowusDialog();
+                break;
             case R.id.nav_menu_sub_order_on_phone:
             case R.id.nav_menu_sub_help:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
@@ -192,6 +203,66 @@ public class MainActivity extends AppCompatActivity implements
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showFollowusDialog() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        LayoutFollowUsAlertDialogBinding layoutFollowUsAlertDialogBinding = DataBindingUtil.inflate(
+                getLayoutInflater(),
+                R.layout.layout_follow_us_alert_dialog,
+                null,
+                false
+        );
+        layoutFollowUsAlertDialogBinding.setActivity(this);
+        layoutFollowUsAlertDialogBinding.facebookButton.setOnClickListener(n-> openFacebookIntent());
+        layoutFollowUsAlertDialogBinding.instaButton.setOnClickListener(n -> openInstagramIntent());
+        layoutFollowUsAlertDialogBinding.twitterButton.setOnClickListener(n -> openTwitterIntent());
+        materialAlertDialogBuilder.setView(layoutFollowUsAlertDialogBinding.getRoot());
+        materialAlertDialogBuilder.show();
+    }
+
+    private void openFacebookIntent() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        try {
+            int versionCode = this.getPackageManager().getPackageInfo("com.facebook.katana", 0).versionCode;
+            String uri = "";
+            if (versionCode >= 3002850) {
+                uri = "fb://facewebmodal/f?href=" + "https://www.facebook.com/pickleindia.mart/";
+            } else {
+                uri = "fb://page/" + "pickleindia.mart";
+            }
+            intent.setData(Uri.parse(uri));
+            startActivity(intent);
+
+        } catch (PackageManager.NameNotFoundException | ActivityNotFoundException e ) {
+            intent.setData(Uri.parse("https://www.facebook.com/pickleindia.mart/"));
+            startActivity(intent);
+        }
+    }
+
+    public void openInstagramIntent() {
+        Uri uri = Uri.parse("https://www.instagram.com/pickleindia.mart/?igshid=gy5umm9paa8t");
+        try {
+            Intent intagram = new Intent(Intent.ACTION_VIEW);
+            intagram.setData(uri);
+            intagram.setPackage("com.instagram.android");
+            startActivity(intagram);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW).setData(uri));
+        }
+    }
+
+    private void openTwitterIntent() {
+        Uri uri = Uri.parse("https://twitter.com/pickle_india?s=09");
+
+        try {
+            Intent twitter = new Intent(Intent.ACTION_VIEW);
+            twitter.setData(uri);
+            twitter.setPackage("com.twitter.android");
+            startActivity(twitter);
+        }catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW).setData(uri));
+        }
     }
 
     private void checkAuthAndNavigate(int id) {

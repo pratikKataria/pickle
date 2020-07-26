@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:text="@{percentage+`% OFF`}"
         android:textAllCaps="true"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:background="#006EFF"
+        android:background="@color/colorAccent"
         android:translationZ="8dp" />
 </layout>
 
