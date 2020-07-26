@@ -37,19 +37,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="32dp"
                     android:text="About us and Privacy Policy"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@android:color/white" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
                     android:gravity="center"
                     android:layout_marginTop="8dp"
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="bottom|center"
                     android:layout_marginBottom="?attr/actionBarSize"
                     android:text="https://www.pickleinda.com/about.html"
                     android:textColorLink="@color/black" />

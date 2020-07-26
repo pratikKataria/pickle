@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void showTutorialAlertDialog() {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        materialAlertDialogBuilder.setTitle("Tutorials");
+        materialAlertDialogBuilder.setTitle("Tutorial");
         materialAlertDialogBuilder.setMessage("Would you like to open Youtube? To watch the tutorials on how to use the app");
         materialAlertDialogBuilder.setPositiveButton("Open", (dialog, which)  -> {
             Intent youtube = new Intent(Intent.ACTION_VIEW);
