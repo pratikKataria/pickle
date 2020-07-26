@@ -79,11 +79,10 @@
                 android:textAllCaps="false"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="32dp"
-                android:textColor="@color/secondaryColorDark"
-                app:strokeColor="@color/secondaryColorLight"
-                app:rippleColor="@color/secondaryColorLight"
+                android:textColor="@color/black"
+                app:strokeColor="@color/colorAccent"
+                app:rippleColor="@color/colorAccent"
                 app:icon="@drawable/ic_cart"
-                app:iconTint="@color/secondaryColorDark"
                 android:layout_gravity="center"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 

@@ -1,5 +1,6 @@
 package com.pickleindia.pickle.about;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -13,6 +14,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.android.gms.oss.licenses.OssLicensesActivity;
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.FragmentAboutBinding;
 
@@ -38,6 +41,11 @@ public class AboutFragment extends Fragment {
 
         WebView webView = binding.webView;
         webView.loadUrl("https://www.pickleinda.com/about.html");
+
+        binding.license.setOnClickListener(n -> {
+            startActivity(new Intent(getActivity(), OssLicensesMenuActivity.class));
+        });
+
         return binding.getRoot();
     }
 

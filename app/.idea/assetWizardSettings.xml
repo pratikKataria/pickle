@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/notifications_active/baseline_notifications_active_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/android-studio%20beta%204.2/plugins/android/lib/android.jar!/images/material/icons/materialicons/widgets/baseline_widgets_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,9 +33,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="color" value="ff0012" />
-                            <entry key="outputName" value="ic_facebook" />
+                            <entry key="outputName" value="ic_baseline_widgets_24" />
                             <entry key="sourceFile" value="G:\Android projects\pickel\assets\ic_facebook.svg" />
                           </map>
                         </option>
