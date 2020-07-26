@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements
                 checkAuthAndNavigate(R.id.action_homeFragment_to_aboutFragment);
                 break;
             case R.id.nav_menu_sub_tutorial:
+                showTutorialAlertDialog();
                 break;
             case R.id.nav_menu_sub_order_on_phone:
             case R.id.nav_menu_sub_help:
@@ -211,6 +212,18 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    private void showTutorialAlertDialog() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        materialAlertDialogBuilder.setTitle("Tutorials");
+        materialAlertDialogBuilder.setMessage("Would you like to open Youtube? To watch the tutorials on how to use the app");
+        materialAlertDialogBuilder.setPositiveButton("Open", (dialog, which)  -> {
+            Intent youtube = new Intent(Intent.ACTION_VIEW);
+            youtube.setData(Uri.parse("https://www.youtube.com/channel/UCggJVmXwRCRnGJ3nsn8Vtog"));
+            youtube.setPackage("com.google.android.youtube");
+            startActivity(youtube);
+        }).setNegativeButton("back", ((dialog, which) -> {}));
+        materialAlertDialogBuilder.show();
+    }
 
     private void showFollowusDialog() {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
