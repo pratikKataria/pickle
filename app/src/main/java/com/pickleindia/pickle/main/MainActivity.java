@@ -164,7 +164,10 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
-                showLogoutDialog();
+                if (FirebaseAuth.getInstance().getUid() == null)
+                    Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
+                else
+                    showLogoutDialog();
                 break;
             case R.id.nav_menu_sub_orders:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
@@ -219,21 +222,23 @@ public class MainActivity extends AppCompatActivity implements
             SharedPrefsUtils.clearCart(this);
             updateIconItems();
             startActivity(new Intent(this, LoginActivity.class));
-        })).setNegativeButton("No", ((dialog, which) ->  {
+        })).setNegativeButton("No", ((dialog, which) -> {
 
         }));
+        materialAlertDialogBuilder.show();
     }
 
     private void showTutorialAlertDialog() {
         MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
         materialAlertDialogBuilder.setTitle("Tutorial");
         materialAlertDialogBuilder.setMessage("Would you like to open Youtube? To watch the tutorials on how to use the app");
-        materialAlertDialogBuilder.setPositiveButton("Open", (dialog, which)  -> {
+        materialAlertDialogBuilder.setPositiveButton("Open", (dialog, which) -> {
             Intent youtube = new Intent(Intent.ACTION_VIEW);
             youtube.setData(Uri.parse("https://www.youtube.com/channel/UCggJVmXwRCRnGJ3nsn8Vtog"));
             youtube.setPackage("com.google.android.youtube");
             startActivity(youtube);
-        }).setNegativeButton("back", ((dialog, which) -> {}));
+        }).setNegativeButton("back", ((dialog, which) -> {
+        }));
         materialAlertDialogBuilder.show();
     }
 
@@ -246,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements
                 false
         );
         layoutFollowUsAlertDialogBinding.setActivity(this);
-        layoutFollowUsAlertDialogBinding.facebookButton.setOnClickListener(n-> openFacebookIntent());
+        layoutFollowUsAlertDialogBinding.facebookButton.setOnClickListener(n -> openFacebookIntent());
         layoutFollowUsAlertDialogBinding.instaButton.setOnClickListener(n -> openInstagramIntent());
         layoutFollowUsAlertDialogBinding.twitterButton.setOnClickListener(n -> openTwitterIntent());
         materialAlertDialogBuilder.setView(layoutFollowUsAlertDialogBinding.getRoot());
@@ -266,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements
             intent.setData(Uri.parse(uri));
             startActivity(intent);
 
-        } catch (PackageManager.NameNotFoundException | ActivityNotFoundException e ) {
+        } catch (PackageManager.NameNotFoundException | ActivityNotFoundException e) {
             intent.setData(Uri.parse("https://www.facebook.com/pickleindia.mart/"));
             startActivity(intent);
         }
@@ -292,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements
             twitter.setData(uri);
             twitter.setPackage("com.twitter.android");
             startActivity(twitter);
-        }catch (ActivityNotFoundException e) {
+        } catch (ActivityNotFoundException e) {
             startActivity(new Intent(Intent.ACTION_VIEW).setData(uri));
         }
     }
