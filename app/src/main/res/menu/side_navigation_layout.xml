@@ -63,7 +63,7 @@
         <menu>
             <item
                 android:id="@+id/nav_menu_sub_about"
-                android:title="About us and Polices"/>
+                android:title="About us and Policies"/>
 
             <item
                 android:id="@+id/nav_menu_sub_tutorial"

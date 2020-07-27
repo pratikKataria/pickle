@@ -164,10 +164,7 @@ public class MainActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
-                FirebaseAuth.getInstance().signOut();
-                SharedPrefsUtils.clearCart(this);
-                updateIconItems();
-                startActivity(new Intent(this, LoginActivity.class));
+                showLogoutDialog();
                 break;
             case R.id.nav_menu_sub_orders:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
@@ -211,6 +208,20 @@ public class MainActivity extends AppCompatActivity implements
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showLogoutDialog() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        materialAlertDialogBuilder.setTitle("Logout");
+        materialAlertDialogBuilder.setMessage("Would you like to logout?");
+        materialAlertDialogBuilder.setPositiveButton("Yes", ((dialog, which) -> {
+            FirebaseAuth.getInstance().signOut();
+            SharedPrefsUtils.clearCart(this);
+            updateIconItems();
+            startActivity(new Intent(this, LoginActivity.class));
+        })).setNegativeButton("No", ((dialog, which) ->  {
+
+        }));
     }
 
     private void showTutorialAlertDialog() {
