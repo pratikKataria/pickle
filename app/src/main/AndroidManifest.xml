@@ -26,8 +26,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.pickleindia.pickle.Login.LoginActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleInstance" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.pickleindia.pickle.Login.OtpActivity"
             android:screenOrientation="portrait" >

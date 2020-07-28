@@ -265,7 +265,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
 
-                        DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
+                        DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.child("baseCategory").getValue(String.class));
                         Query query = productDatabaseReference.limitToFirst(LIMIT);
 
                         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -313,8 +313,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             public void onDataChange(@NonNull DataSnapshot productCategorySnapshot) {
                 for (DataSnapshot dataSnapshotChild : productCategorySnapshot.getChildren()) {
 
-                    DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
-                    String productCategory = dataSnapshotChild.getValue(String.class);
+                    String productCategory = dataSnapshotChild.child("baseCategory").getValue(String.class);
+                    DatabaseReference productDatabaseReference = FirebaseDatabase.getInstance().getReference("Products/" + productCategory);
                     String productStartKey = paginationProductKeyMap.containsKey(productCategory) ? paginationProductKeyMap.get(productCategory) : " ";
                     Query query = productDatabaseReference.orderByKey().startAt(productStartKey).limitToFirst(3);
 

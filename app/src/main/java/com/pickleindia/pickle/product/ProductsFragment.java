@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,10 +20,12 @@ import androidx.databinding.ObservableBoolean;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.chip.Chip;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.cart.CartViewModel;
 import com.pickleindia.pickle.databinding.FragmentProductsBinding;
+import com.pickleindia.pickle.databinding.LayoutProductCategoryChipBinding;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.main.FirebaseSearchActivity;
 import com.pickleindia.pickle.models.ProductModel;
@@ -54,6 +57,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
     private FragmentProductsBinding productBinding;
     private ArrayList<ProductModel> productsArrayList;
+    private ArrayList<String> subCategory = new ArrayList<>();
 
     private int LIMIT = 10;
     private ObservableBoolean isLoading = new ObservableBoolean(false);
@@ -79,24 +83,61 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
-        Bundle bundle = getArguments();
-        String childReference = bundle != null && bundle.containsKey(PRODUCT_TYPE) ? bundle.getString(PRODUCT_TYPE) : " ";
-        productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(childReference != null ? childReference : " ");
+        String cat = getCategory();
+        productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(cat);
 
         productsArrayList = new ArrayList<>();
         new Handler().postDelayed(this::populateList, 400);
 
         productBinding.setProductList(productsArrayList);
         productBinding.setActivity(getActivity());
-        productBinding.setType(childReference);
+        productBinding.setType(cat);
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.icCart.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.recyclerView.addOnScrollListener(new RecyclerScrollListener(this));
         productBinding.setIsLoading(isLoading);
 
         changeStatusBarColor();
+        getSublist(cat);
 
         return productBinding.getRoot();
+    }
+
+    private String getCategory() {
+        String cat = "";
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.containsKey(PRODUCT_TYPE)) {
+            cat = bundle.getString(PRODUCT_TYPE, "");
+        }
+        return cat;
+    }
+
+    private void getSublist(String cat) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ProductCategories").child(cat).child("subCategory");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String categories = snapshot.getValue(String.class);
+                if (categories == null) return;
+
+                for (String category : categories.split(" ")) {
+                    LayoutProductCategoryChipBinding bind = DataBindingUtil.inflate(
+                            getLayoutInflater(),
+                            R.layout.layout_product_category_chip,
+                            null,
+                            false
+                    );
+                    bind.setName(category);
+                    productBinding.chipGroup.addView(bind.getRoot());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void populateList() {
@@ -212,6 +253,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
         //if already loading
         if (!isLoading.get()) {
             isLoading.set(true);
+            //we use itemName_itemId in order to load the product in ascending order and uniquely
             productDatabaseReference.orderByChild("itemName_itemId")
                     .startAt(productsArrayList.get(Math.max(productsArrayList.size() - 1, 0)).getItemName_itemId())
                     .limitToFirst(LIMIT)
