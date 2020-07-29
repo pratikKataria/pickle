@@ -132,23 +132,18 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.e("products ", snapshot + "");
-
                         if (snapshot == null) return;
 
-                        productsArrayList.clear();
                         CategoryRecyclerViewAdapter categoryRecyclerViewAdapter = (CategoryRecyclerViewAdapter) productBinding.recyclerView.getAdapter();
-                        if (categoryRecyclerViewAdapter != null) {
-                            categoryRecyclerViewAdapter.notifyDataSetChanged();
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                ProductModel productModel = dataSnapshot.getValue(ProductModel.class);
-                                productsArrayList.add(productModel);
-                            }
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                productsArrayList.sort((o1, o2) -> o1.getItemName().compareTo(o2.getItemName()));
-                            }
-                            categoryRecyclerViewAdapter.notifyDataSetChanged();
-                        }
+                        if (categoryRecyclerViewAdapter == null) return;
+                        productsArrayList.clear();
+                        categoryRecyclerViewAdapter.notifyDataSetChanged();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                            addProduct(dataSnapshot.getValue(ProductModel.class));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                            productsArrayList.sort((o1, o2) -> o1.getItemName().compareTo(o2.getItemName()));
+
+                        categoryRecyclerViewAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -215,13 +210,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
                 ProductModel product = dataSnapshot.getValue(ProductModel.class);
                 if (product != null) {
-                    String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
-                    ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
-
-                    if (product.equals(cartProduct))
-                        product.setQuantityCounter(cartProduct.getQuantityCounter());
-
-                    productsArrayList.add(product);
+                    addProduct(product);
                     NotifyRecyclerItems.notifyItemInsertedAt(productBinding.recyclerView, productsArrayList.size());
 
                     countItems += 1;
@@ -262,6 +251,17 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
         });
     }
 
+    public void addProduct(ProductModel product) {
+        if (product == null) return;
+
+        String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
+        ProductModel cartProduct = new Gson().fromJson(cartProductJson, ProductModel.class);
+
+        if (product.equals(cartProduct))
+            product.setQuantityCounter(cartProduct.getQuantityCounter());
+
+        productsArrayList.add(product);
+    }
 
     @Override
     public void onResume() {
