@@ -297,7 +297,7 @@ public class AddNewItemActivity extends AppCompatActivity {
                         System.currentTimeMillis(),
                         true,
                         thumbImageUri,
-                        _itemName.getText().toString() + "_" + pushKey, false)
+                        _itemName.getText().toString() + "_" + pushKey, false, "itemSubCategory")
         ).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Toast.makeText(AddNewItemActivity.this, "upload successful", Toast.LENGTH_SHORT).show();

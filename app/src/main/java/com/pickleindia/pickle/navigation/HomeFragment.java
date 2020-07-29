@@ -68,6 +68,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import static com.pickleindia.pickle.utils.Constant.CAT_SIX;
 import static com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 

@@ -2,7 +2,6 @@ package com.pickleindia.pickle.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -34,6 +33,7 @@ public class ProductModel implements Parcelable {
 
     public boolean isCombo;
     private int percentage;
+    private String itemSubCategory;
 
     public ProductModel() {
     }
@@ -43,7 +43,7 @@ public class ProductModel implements Parcelable {
         this.itemBasePrice = itemBasePrice;
     }
 
-    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId, boolean hasSale) {
+    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId, boolean hasSale, String itemSubCategory) {
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.itemBasePrice = itemBasePrice;
@@ -60,6 +60,7 @@ public class ProductModel implements Parcelable {
         this.hasSale = hasSale;
         this.itemThumbImage = itemThumbImage;
         this.itemName_itemId = itemName_itemId;
+        this.itemSubCategory = itemSubCategory;
     }
 
     protected ProductModel(Parcel in) {
@@ -309,5 +310,13 @@ public class ProductModel implements Parcelable {
             return percentage = (int) (floatPercentage*100);
         }
         return 0;
+    }
+
+    public String getItemSubCategory() {
+        return itemSubCategory;
+    }
+
+    public void setItemSubCategory(String itemSubCategory) {
+        this.itemSubCategory = itemSubCategory;
     }
 }

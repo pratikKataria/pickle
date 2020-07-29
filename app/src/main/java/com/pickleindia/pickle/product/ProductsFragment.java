@@ -21,7 +21,9 @@ import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.adapters.CategoryRecyclerViewAdapter;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.cart.CartViewModel;
 import com.pickleindia.pickle.databinding.FragmentProductsBinding;
@@ -30,6 +32,7 @@ import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.main.FirebaseSearchActivity;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
+import com.pickleindia.pickle.utils.PriceFormatUtils;
 import com.pickleindia.pickle.utils.RecyclerScrollListener;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -45,6 +48,7 @@ import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static com.pickleindia.pickle.utils.Constant.PRODUCT;
@@ -57,15 +61,16 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
     private FragmentProductsBinding productBinding;
     private ArrayList<ProductModel> productsArrayList;
-    private ArrayList<String> subCategory = new ArrayList<>();
 
     private int LIMIT = 10;
-    private ObservableBoolean isLoading = new ObservableBoolean(false);
+    private final ObservableBoolean isLoading = new ObservableBoolean(false);
 
     private DatabaseReference productDatabaseReference;
     private ChildEventListener productChildEventListener;
 
     private int countItems;
+
+    private final RecyclerScrollListener recyclerScrollListener = new RecyclerScrollListener(this);
 
     public ProductsFragment() {
         // Required empty public constructor
@@ -83,7 +88,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.X, true));
 
-        String cat = getCategory();
+        final String cat = getCategory();
         productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT).child(cat);
 
         productsArrayList = new ArrayList<>();
@@ -94,11 +99,63 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
         productBinding.setType(cat);
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
         productBinding.icCart.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
-        productBinding.recyclerView.addOnScrollListener(new RecyclerScrollListener(this));
+        productBinding.recyclerView.addOnScrollListener(recyclerScrollListener);
         productBinding.setIsLoading(isLoading);
 
         changeStatusBarColor();
         getSublist(cat);
+
+        productBinding.chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            //if some widget is unchecked it return -1 as id
+            if (checkedId != -1) {
+
+                Chip chip = getActivity().findViewById(group.getCheckedChipId());
+                if (chip == null) return;
+
+                if (checkedId == 1) {
+                    productsArrayList.clear();
+                    productBinding.recyclerView.getAdapter().notifyDataSetChanged();
+
+                    if (productDatabaseReference != null && productChildEventListener != null)
+                        productDatabaseReference.removeEventListener(productChildEventListener);
+
+                    populateList();
+                    return;
+                }
+
+                productBinding.recyclerView.removeOnScrollListener(recyclerScrollListener);
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products").child(cat);
+                Query query = reference.orderByChild("itemSubCategory").equalTo(chip.getText().toString());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.e("products ", snapshot + "");
+
+                        if (snapshot == null) return;
+
+                        productsArrayList.clear();
+                        CategoryRecyclerViewAdapter categoryRecyclerViewAdapter = (CategoryRecyclerViewAdapter) productBinding.recyclerView.getAdapter();
+                        if (categoryRecyclerViewAdapter != null) {
+                            categoryRecyclerViewAdapter.notifyDataSetChanged();
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                ProductModel productModel = dataSnapshot.getValue(ProductModel.class);
+                                productsArrayList.add(productModel);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                productsArrayList.sort((o1, o2) -> o1.getItemName().compareTo(o2.getItemName()));
+                            }
+                            categoryRecyclerViewAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
 
         return productBinding.getRoot();
     }
@@ -141,13 +198,17 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
     }
 
     private void populateList() {
-        if (productDatabaseReference == null)
-            productDatabaseReference = FirebaseDatabase.getInstance().getReference(PRODUCT);
+
+        productBinding.recyclerView.clearOnScrollListeners();
+        productBinding.recyclerView.addOnScrollListener(recyclerScrollListener);
 
         Query query = productDatabaseReference.orderByChild("itemName_itemId").limitToFirst(LIMIT);
         productChildEventListener = query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+                Log.e("ProductsFragment", "String key " + s);
+
                 ProductModel product = dataSnapshot.getValue(ProductModel.class);
                 if (product != null) {
                     String cartProductJson = SharedPrefsUtils.getStringPreference(getContext(), product.getItemId(), 0);
@@ -196,6 +257,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
             }
         });
     }
+
 
     @Override
     public void onResume() {
