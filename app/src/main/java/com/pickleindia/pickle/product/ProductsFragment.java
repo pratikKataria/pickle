@@ -112,12 +112,15 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
                 Chip chip = getActivity().findViewById(group.getCheckedChipId());
                 if (chip == null) return;
 
-                if (checkedId == 1) {
+                if (chip.getText().toString().equals("All")) {
+                    Log.e("ProductFragment ", checkedId + " checked id " + chip.getText().toString());
                     productsArrayList.clear();
                     productBinding.recyclerView.getAdapter().notifyDataSetChanged();
 
-                    if (productDatabaseReference != null && productChildEventListener != null)
+                    if (productDatabaseReference != null && productChildEventListener != null) {
                         productDatabaseReference.removeEventListener(productChildEventListener);
+                        productChildEventListener = null;
+                    }
 
                     populateList();
                     return;
@@ -201,6 +204,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
         productBinding.recyclerView.clearOnScrollListeners();
         productBinding.recyclerView.addOnScrollListener(recyclerScrollListener);
+        Log.e("ProductsFragment", "populate List called");
 
         Query query = productDatabaseReference.orderByChild("itemName_itemId").limitToFirst(LIMIT);
         productChildEventListener = query.addChildEventListener(new ChildEventListener() {
