@@ -75,6 +75,8 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
 
+    //todo check for the product new category changes
+
     private ActivityCartViewBinding binding;
     private AlertDialog alertDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");

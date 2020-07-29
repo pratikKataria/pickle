@@ -97,7 +97,7 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot dataSnapshotChild : dataSnapshot.getChildren()) {
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.getValue(String.class));
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products/" + dataSnapshotChild.child("baseCategory").getValue(String.class));
                     Query query = reference.orderByChild("itemName").startAt(search).endAt(search + "\uf8ff").limitToFirst(50);
                     query.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
