@@ -253,7 +253,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         Log.e("CartActivity ", "isAllProductsValid();");
         final List<ProductModel> cartProductList = SharedPrefsUtils.getAllProducts(this);
         List<ProductModel> newProductsList = new ArrayList<>();
-        if (newProductsList.isEmpty()) {
+        if (cartProductList.isEmpty()) {
             checkDeliveryTimeAndAddress();
             return;
         }
