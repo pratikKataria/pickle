@@ -49,6 +49,7 @@ import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
+import com.pickleindia.pickle.databinding.LayoutSpeedDelevieryAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OfferCombo;
@@ -509,6 +510,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         alertDialog.setCancelable(false);
 
                         Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show();
+
+                        if (binding.includeLayout.chipGroup2.getCheckedChipId() == binding.includeLayout.chipDeliveryTime3.getId()) {
+                            Toast.makeText(this, "Your order will be delivered within 90 min", Toast.LENGTH_SHORT).show();
+                        }
+
                     }, 1200);
                 } else {
                     Log.e(CartActivity.class.getName(), "uploading........ else ");
@@ -728,6 +734,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             alertDialog.dismiss();
             alertDialog = null;
         }
+
+
     }
 
     public void setTransparentStatusBar() {
