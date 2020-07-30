@@ -60,7 +60,7 @@
             android:layout_marginBottom="20dp"
             android:scaleType="fitXY"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_insta"
+            android:src="@drawable/ic_instagram"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/twitter_button"
             app:layout_constraintStart_toEndOf="@+id/facebook_button"
