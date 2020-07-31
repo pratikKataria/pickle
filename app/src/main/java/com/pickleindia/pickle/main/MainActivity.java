@@ -397,14 +397,16 @@ public class MainActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        NavHostFragment navHostFragment =  (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
-        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
 
-        if (fragment instanceof ProductsFragment) {
-            Bundle bundle = new Bundle();
-            bundle.putString(PRODUCT_TYPE, data.getExtras().getString(PRODUCT_TYPE));
-            navController.popBackStack();
-            navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+        if (data != null && data.getExtras() != null) {
+            NavHostFragment navHostFragment = (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+            Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+            if (fragment instanceof ProductsFragment) {
+                Bundle bundle = new Bundle();
+                bundle.putString(PRODUCT_TYPE, data.getExtras().getString(PRODUCT_TYPE));
+                navController.popBackStack();
+                navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+            }
         }
     }
 }

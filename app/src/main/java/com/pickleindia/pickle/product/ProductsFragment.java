@@ -176,14 +176,16 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
                 if (categories == null) return;
 
                 for (String category : categories.split(" ")) {
-                    LayoutProductCategoryChipBinding bind = DataBindingUtil.inflate(
-                            getLayoutInflater(),
-                            R.layout.layout_product_category_chip,
-                            null,
-                            false
-                    );
-                    bind.setName(category);
-                    productBinding.chipGroup.addView(bind.getRoot());
+                    if (this != null && getLayoutInflater() != null ) {
+                        LayoutProductCategoryChipBinding bind = DataBindingUtil.inflate(
+                                getLayoutInflater(),
+                                R.layout.layout_product_category_chip,
+                                null,
+                                false
+                        );
+                        bind.setName(category);
+                        productBinding.chipGroup.addView(bind.getRoot());
+                    }
                 }
 
             }
