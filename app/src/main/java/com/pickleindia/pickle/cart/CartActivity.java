@@ -49,7 +49,6 @@ import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
-import com.pickleindia.pickle.databinding.LayoutSpeedDelevieryAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OfferCombo;

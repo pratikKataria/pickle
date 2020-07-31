@@ -51,10 +51,13 @@ import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.navigation.HomeFragment;
 import com.pickleindia.pickle.network.NetworkConnectionStateMonitor;
+import com.pickleindia.pickle.product.ProductsFragment;
 import com.pickleindia.pickle.ui.ExitAppBottomSheetDialog;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
+
+import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -393,6 +396,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.e("MainActivity ", requestCode + " " + requestCode);
+
+        NavHostFragment navHostFragment =  (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+        Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
+
+        if (fragment instanceof ProductsFragment) {
+            Bundle bundle = new Bundle();
+            bundle.putString(PRODUCT_TYPE, data.getExtras().getString(PRODUCT_TYPE));
+            navController.popBackStack();
+            navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+        }
     }
 }

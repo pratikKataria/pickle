@@ -98,7 +98,7 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
         productBinding.setActivity(getActivity());
         productBinding.setType(cat);
         productBinding.searchCardview.setOnClickListener(n -> startActivity(new Intent(getActivity(), FirebaseSearchActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
-        productBinding.icCart.setOnClickListener(n -> startActivity(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)));
+        productBinding.icCart.setOnClickListener(n -> startActivityForResult(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY),1));
         productBinding.recyclerView.addOnScrollListener(recyclerScrollListener);
         productBinding.setIsLoading(isLoading);
 
@@ -377,11 +377,5 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
     @Override
     public void stopLoading() {
         isLoading.set(false);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.e("Product Fragment", "ON Destroy View");
     }
 }
