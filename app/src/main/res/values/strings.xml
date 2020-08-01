@@ -52,6 +52,8 @@
     <string name="CAT_FOUR">Grocery</string>
     <string name="CAT_FIVE">Household</string>
     <string name="CAT_SIX">Personal Care</string>
+    <string name="delivery_slot_one">7:00 AM ~ 9:00AM</string>
+    <string name="delivery_slot_two">4:00 PM ~ 6:00PM</string>
     <string name="delivery_slot_three">Delivery within 90 min</string>
     <string name="delivery_charge_alert">₹%s delivery will be charged since your order is %s ₹%s</string>
     <string name="orderOnCall">+91 9669668379</string>

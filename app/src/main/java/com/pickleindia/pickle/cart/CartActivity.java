@@ -78,7 +78,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     //todo check for the product new category changes
 
     private ActivityCartViewBinding binding;
-    private AlertDialog alertDialog;
+    private AlertDialog confirmOrderDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
     private final ObservableField<String> displayAddress = new ObservableField<>("");
     private final ObservableField<String> databaseCacheAddress = new ObservableField<>("");
@@ -422,20 +422,20 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
         alertDialogBuilder.setCancelable(false);
-        alertDialog = alertDialogBuilder.create();
+        confirmOrderDialog = alertDialogBuilder.create();
 
         int total = getTotalCost();
 
         int comboValue = getComboPrice();
         int deliveryCharge = getDeliveryCharge();
         if (deliveryCharge > 0 && total < 500) {
-            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", total+"", comboValue+"" , deliveryCharge+"", (total + comboValue + deliveryCharge)));
-        }else {
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", total + "", comboValue + "", deliveryCharge + "", (total + comboValue + deliveryCharge)));
+        } else {
             confirmOrderBinding.totalPriceTextView.setText("Total price " + (total + comboValue));
         }
 
         confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
-        alertDialog.show();
+        confirmOrderDialog.show();
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
 
@@ -501,12 +501,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         confirmOrderBinding.thankText.animate().alpha(1).setDuration(500).start();
                         confirmOrderBinding.homeBtn.setVisibility(View.VISIBLE);
                         confirmOrderBinding.homeBtn.setOnClickListener(v -> {
-                            alertDialog.dismiss();
+                            confirmOrderDialog.dismiss();
                             finish();
                         });
                         confirmOrderBinding.backBtn.setVisibility(View.GONE);
                         confirmOrderBinding.confirmBtn.setVisibility(View.GONE);
-                        alertDialog.setCancelable(false);
+                        confirmOrderDialog.setCancelable(false);
 
                         Toast.makeText(this, "Thanks For Shopping", Toast.LENGTH_LONG).show();
 
@@ -523,7 +523,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         });
 
         confirmOrderBinding.backBtn.setOnClickListener(n -> {
-            alertDialog.dismiss();
+            confirmOrderDialog.dismiss();
             binding.includeLayout.chipGroup2.clearCheck();
             pcoinsUsed.set(0);
         });
@@ -592,9 +592,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private int getComboPrice() {
         OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
         if (offerCombo != null) {
-           return offerCombo.getTotalPrice()*offerCombo.qtyCounter;
+            return offerCombo.getTotalPrice() * offerCombo.qtyCounter;
         }
-        return  0;
+        return 0;
     }
 
     private void sendOrdersToDatabase(UploadResult result) {
@@ -647,24 +647,20 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/address", observableAddress.get());
 
             int shipping = 0;
-            Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
-            if (chip != null) {
-                atomicOperation.put("Orders/" + key + "/deliveryTime", chip.getText().toString());
+            String deliveryTime = getDeliveryTime();
+            if (deliveryTime.equals(getString(R.string.delivery_slot_three)))
+                if (calcTotal < 500)
+                    shipping += 39;
 
-                if (chip.getId() == binding.includeLayout.chipDeliveryTime3.getId()) {
-                    if (calcTotal < 500) {
-                        shipping += 39;
-                    }
-                }
-            }
+            atomicOperation.put("Orders/" + key + "/deliveryTime", deliveryTime);
 
             atomicOperation.put("Orders/" + key + "/shipping", shipping);
             atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
 
             if (getComboPrice() > 0) {
-                atomicOperation.put("Orders/" + key +"/comboPrice", getComboPrice());
+                atomicOperation.put("Orders/" + key + "/comboPrice", getComboPrice());
                 OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
-                atomicOperation.put("Orders/"+ key +"/comboId", offerCombo.getOfferId());
+                atomicOperation.put("Orders/" + key + "/comboId", offerCombo.getOfferId());
             }
 
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date", ServerValue.TIMESTAMP);
@@ -678,6 +674,22 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         }
 
         return atomicOperation;
+    }
+
+    private String getDeliveryTime() {
+        String deliveryTime = "";
+        Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
+        if (chip != null) {
+            deliveryTime = chip.getText().toString();
+        }
+
+        if (deliveryTime.isEmpty()) {
+            Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
+            if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
+                confirmOrderDialog.dismiss();
+            }
+        }
+        return deliveryTime;
     }
 
     interface UploadResult {
@@ -717,7 +729,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             showAlertDialog("Combo Package Alert",
                     "Their is a combo package present in your cart. If try to move back before checking out you will lose your combo",
                     ((dialog, which) -> {
-                            finish();
+                        finish();
                     }),
                     "leave",
                     "back");
@@ -729,9 +741,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (alertDialog != null) {
-            alertDialog.dismiss();
-            alertDialog = null;
+        if (confirmOrderDialog != null) {
+            confirmOrderDialog.dismiss();
+            confirmOrderDialog = null;
         }
 
 
