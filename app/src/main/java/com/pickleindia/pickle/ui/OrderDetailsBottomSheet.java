@@ -32,6 +32,7 @@ import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ import static com.pickleindia.pickle.utils.Constant.ORDERS_CANCELLED;
 import static com.pickleindia.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.pickleindia.pickle.utils.OrderStatus.CANCEL;
 import static com.pickleindia.pickle.utils.OrderStatus.DELIVERED;
+import static com.pickleindia.pickle.utils.OrderStatus.ORDERED;
 
 public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
 
@@ -75,6 +77,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         orderBinding.setOrdersList(orderedProductList);
         orderBinding.setVisitor(new VisitorForList());
         orderBinding.setOrders(orders);
+        orderBinding.setOrderCancellationNote("");
 
         int calcFinalTotal = (orders.getSubTotal() + orders.getShipping() + orders.getComboPrice()) - orders.getPcoinsSpent();
 
@@ -108,11 +111,9 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
             getDialog().dismiss();
         });
 
-        if (orders != null && (orders.getOrderStatus() != CANCEL || orders.getOrderStatus() != DELIVERED)) {
+        if (orders != null && orders.getOrderStatus() == ORDERED) {
             if (orders.getDeliveryTime().equals(getString(R.string.morningDeliveryTime))) {
-                if (DateUtils.orderDateIsBeforeCancelDate(orders.getDate(), 1, 0, 0, 0)) {
-                    Log.d("OrderDetails", "order Date is before");
-                } else {
+                if (DateUtils.orderTimeIsAfter(orders.getDate(), "12:00 AM") && !DateUtils.orderTimeIsAfter(orders.getDate(), "7:00 AM")) {
                     orderBinding.setOrderCancellationNote("morning order cannot be canceled after 12 AM");
                 }
             } else if (orders.getDeliveryTime().equals(getString(R.string.eveningDeliveryTime))) {
@@ -122,6 +123,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
                 } else if (DateUtils.orderTimeIsAfter(orders.getDate(), "4:00 PM") && DateUtils.orderDateIsBeforeCancelDate(orders.getDate(), 1, hour, minute, second)) {
                     Log.d("OrderDetails", "order Date is before");
                 } else {
+                    Log.d("OrderDetails", "order Date is after evening delivery timer");
                     orderBinding.setOrderCancellationNote("evening order cannot be canceled after " + Math.abs(hour - 12) + ":" + minute + " PM");
                 }
             }

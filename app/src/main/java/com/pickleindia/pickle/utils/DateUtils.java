@@ -3,6 +3,8 @@ package com.pickleindia.pickle.utils;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.google.gson.internal.$Gson$Preconditions;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,7 +16,7 @@ public class DateUtils {
     public static String getServerDate(long timestamp) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM hh:mm a");
-            return  sdf.format(new Date((long)timestamp));
+            return sdf.format(new Date((long) timestamp));
         } catch (Exception xe) {
             return "date";
         }
@@ -110,5 +112,14 @@ public class DateUtils {
             e.printStackTrace();
         }
         return isValid;
+    }
+
+    public static boolean orderDateIsToday(long orderDate) {
+        boolean isToday = false;
+
+        Date date = new Date(orderDate);
+        Date currDate = new Date();
+
+        return date.getDate() == currDate.getDate();
     }
 }
