@@ -491,6 +491,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         confirmOrderBinding.confirmBtn.setOnClickListener(n -> {
             confirmOrderBinding.lottieAnimationView2.playAnimation();
             confirmOrderBinding.lottieAnimationView2.loop(true);
+
+            if (getDeliveryTime().isEmpty()) {
+                return;
+            }
             sendOrdersToDatabase(isUploaded -> {
                 if (isUploaded) {
                     // do animation stuff here
@@ -687,6 +691,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
                 confirmOrderDialog.dismiss();
+                confirmOrderDialog = null;
             }
         }
         return deliveryTime;
