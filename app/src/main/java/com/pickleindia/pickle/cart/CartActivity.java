@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,6 +62,7 @@ import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
 import org.jetbrains.annotations.NotNull;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,12 +154,30 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         });
 
         binding.includeLayout.chipGroup2.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId == binding.includeLayout.chipDeliveryTime3.getId()) {
-                setDeliveryChargeAlert();
-            } else {
-                binding.includeLayout.deliveryChargeAlert.setVisibility(View.GONE);
+            switch (checkedId) {
+                case R.id.chipDeliveryTime1:
+                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "3:30 PM"), R.color.black);
+                    break;
+                case R.id.chipDeliveryTime2:
+                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "12:00 AM"), R.color.black);
+                    break;
+                case R.id.chipDeliveryTime3:
+                    if (binding.getCartViewModel().getTotalCostInt() >= 500)
+                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "0", "above", "500"), R.color.chartIdealBar);
+                    else
+                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", "500"), R.color.jungleGreen);
+                    break;
             }
         });
+    }
+
+    private void onDeliveryChipSelectedAlert(String message, int color) {
+        TextView text = binding.includeLayout.deliveryChargeAlert;
+        text.setText(message);
+        text.setTextColor(getResources().getColor(color));
+        if (text.getVisibility() == View.GONE)
+            text.setVisibility(View.VISIBLE);
+        binding.executePendingBindings();
     }
 
     private void setDeliveryChargeAlert() {

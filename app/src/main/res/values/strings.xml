@@ -60,4 +60,6 @@
     <string name="delivery_charge_alert">₹%s delivery will be charged since your order is %s ₹%s</string>
     <string name="orderOnCall">+91 9669668379</string>
 
+    <string name="delivery_cancel_msg">Delivery cannot be canceled after %s</string>
+
 </resources>
