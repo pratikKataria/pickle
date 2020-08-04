@@ -2,12 +2,9 @@ package com.pickleindia.pickle.main;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.DatabaseUtils;
 import android.graphics.Color;
-import android.net.InetAddresses;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,10 +28,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +40,6 @@ import com.google.gson.Gson;
 import com.pickleindia.pickle.DeveloperProfile;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.databinding.LayoutFollowUsAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
@@ -102,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements
 
         LinearLayout companyInfo = findViewById(R.id.linearLayout_comp_info);
         companyInfo.setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, DeveloperProfile.class));
         });
     }
 
