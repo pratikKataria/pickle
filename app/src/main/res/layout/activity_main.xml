@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="10dp"
                 android:layout_marginStart="22dp"
-                android:text="Developed by ByteMint"/>
+                android:text="Developed by ByteMint.io"/>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
