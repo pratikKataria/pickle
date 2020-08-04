@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
+import com.pickleindia.pickle.DeveloperProfile;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
@@ -97,6 +99,10 @@ public class MainActivity extends AppCompatActivity implements
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
+
+        LinearLayout companyInfo = findViewById(R.id.linearLayout_comp_info);
+        companyInfo.setOnClickListener(v -> {
+        });
     }
 
     private void checkForDynamicLink() {

@@ -43,4 +43,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
 
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_developer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

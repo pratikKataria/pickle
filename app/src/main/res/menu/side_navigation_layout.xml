@@ -6,12 +6,11 @@
         android:id="@+id/group_1"
         android:checkableBehavior="none">
 
-        <item
-            android:title="Welcome to Pickle"/>
+        <item android:title="Welcome to Pickle" />
 
         <item
             android:id="@+id/navigation_menu_login"
-            android:title="Login"/>
+            android:title="Login" />
     </group>
 
     <item
@@ -20,42 +19,49 @@
         <menu>
             <item
                 android:id="@+id/nav_menu_sub_orders"
-                android:title="Your Orders"/>
+                android:title="Your Orders" />
 
             <item
                 android:id="@+id/nav_menu_sub_address_book"
-                android:title="Address Manager"/>
+                android:title="Address Manager" />
 
             <item
                 android:id="@+id/nav_menu_sub_refer_link"
-                android:title="Refer"/>
+                android:title="Refer" />
 
-            <item android:id="@+id/nav_menu_sub_reward"
-                android:title="Reward"/>
+            <item
+                android:id="@+id/nav_menu_sub_reward"
+                android:title="Reward" />
 
             <item
                 android:id="@+id/nav_menu_sub_order_on_phone"
-                android:title="Order on call"/>
+                android:title="Order on call" />
         </menu>
     </item>
 
     <item
         android:id="@+id/navigation_menu_rate_us"
-        android:title="Rate us on Play Store"/>
+        android:title="Rate us on Play Store" />
 
-    <group
-        android:id="@+id/group_2"
-        android:checkableBehavior="none"
-        android:menuCategory="alternative">
+    <item
+        android:id="@+id/navigation_axd"
+        android:title=" ">
+        <group
+            android:id="@+id/group_2"
+            android:checkableBehavior="none"
+            android:menuCategory="alternative">
+            <item
+                android:id="@+id/navigation_menu_logout"
+                android:title="Logout" />
+            <item
+                android:id="@+id/nav_menu_sub_help"
+                android:title="Help" />
+            <item
+                android:id="@+id/navigation_menu_blank1"
+                android:title=" " />
+        </group>
+    </item>
 
-        <item
-            android:id="@+id/nav_menu_sub_help"
-            android:title="Help"/>
-
-        <item
-            android:id="@+id/navigation_menu_logout"
-            android:title="Logout" />
-    </group>
 
     <item
         android:id="@+id/navigation_menu_extra"
@@ -63,14 +69,15 @@
         <menu>
             <item
                 android:id="@+id/nav_menu_sub_about"
-                android:title="About us and Policies"/>
+                android:title="About us and Policies" />
 
             <item
                 android:id="@+id/nav_menu_sub_tutorial"
-                android:title="Tutorial"/>
+                android:title="Tutorial" />
 
-            <item android:id="@+id/nav_menu_follow_us"
-                android:title="Follow us"/>
+            <item
+                android:id="@+id/nav_menu_follow_us"
+                android:title="Follow us" />
 
         </menu>
     </item>

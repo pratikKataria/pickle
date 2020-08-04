@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.MainActivity"
+    tools:openDrawer="start"
     android:id="@+id/activity_main_drawer_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,6 +72,51 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fadeScrollbars="false"
         app:itemTextAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        app:menu="@menu/side_navigation_layout" />
+        app:menu="@menu/side_navigation_layout">
+
+        <LinearLayout
+            android:id="@+id/linearLayout_comp_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:src="@drawable/dash_hrztl_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp">
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="22dp"
+                    android:scaleType="fitStart"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_developer"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="4dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_arrow_right_black"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:layout_marginStart="22dp"
+                android:text="Developed by ByteMint"/>
+        </LinearLayout>
+    </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>
