@@ -325,7 +325,7 @@
                         <TextView
                             android:layout_width="210dp"
                             android:layout_height="wrap_content"
-                            android:text="Free delivery only available on morning (7AM ~ 9AM) and evening (4PM ~ 6AM) slot" />
+                            android:text="Free delivery only available on morning (7 AM ~ 9 AM) and evening (4 PM ~ 6 PM) slot" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

@@ -20,7 +20,6 @@ import com.pickleindia.pickle.databinding.FragmentOrdersBinding;
 import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.main.FirebaseSearchActivity;
 import com.pickleindia.pickle.models.EmptyState;
-import com.pickleindia.pickle.models.LoadingModel;
 import com.pickleindia.pickle.models.Operation;
 import com.pickleindia.pickle.models.Orders;
 import com.pickleindia.pickle.models.OrdersDetails;
@@ -194,7 +193,7 @@ public class OrdersPlacedFragment extends Fragment {
         if (ordersList.size() == 0) {
             ordersList.add(new EmptyState(R.drawable.crd_empty_order_bg, R.drawable.empty_cart_img, "Whoops", "its look like their is no ongoing orders"));
             NotifyRecyclerItems.notifyDataSetChanged(binding.recyclerView);
-        } else if (ordersList.size() == 2) {
+        } else if (ordersList.size() == 1) {
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
             NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);
