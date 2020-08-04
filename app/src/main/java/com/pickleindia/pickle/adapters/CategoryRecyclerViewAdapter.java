@@ -4,15 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.pickleindia.pickle.databinding.LayoutEmptyBinding;
-import com.pickleindia.pickle.product.ProductViewModel;
-import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.databinding.CardViewCategoryProductBinding;
-import com.pickleindia.pickle.ui.ProductDetailsBottomSheetDialog;
+import com.pickleindia.pickle.databinding.LayoutEmptyBinding;
+import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.product.ProductViewModel;
+
 import java.util.ArrayList;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -107,8 +107,8 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         private void showDialog(ProductModel product) {
-            ProductDetailsBottomSheetDialog productDetailsBottomSheetDialog = new ProductDetailsBottomSheetDialog(product);
-            productDetailsBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
+//            ProductDetailsBottomSheetDialog productDetailsBottomSheetDialog = new ProductDetailsBottomSheetDialog(product);
+//            productDetailsBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
      }
 
