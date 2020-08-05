@@ -62,7 +62,6 @@ import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -468,7 +467,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             }
 
             if (finalTotal < 100) {
-                Toast.makeText(this, "pcoins or reward points used only on order 100 or above", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "pcoins or reward points only used on order 100 or above", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -480,7 +479,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         int pcoins = snapshot.getValue(Long.class).intValue();
                         if (pcoins > 0) {
                             totalPcoins.set(pcoins);
-                            int priceToBeCutOff = (finalTotal / 10);
+                            int priceToBeCutOff = (finalTotal / 100)*5;
 
                             confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
 
@@ -760,6 +759,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     "back");
         } else {
             finish();
+        }
+
+        if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
+            confirmOrderDialog.dismiss();
         }
     }
 
