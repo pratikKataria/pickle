@@ -14,7 +14,10 @@ import com.pickleindia.pickle.BR;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.interfaces.IMainActivity;
+import com.pickleindia.pickle.main.MainActivity;
 import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.navigation.HomeFragment;
+import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 public class ProductViewModel extends BaseObservable {
     private ProductModel product;
@@ -101,6 +104,22 @@ public class ProductViewModel extends BaseObservable {
         newProduct.setQuantityCounter(0);
         setProduct(newProduct);
         iMainActivity.removeProduct(newProduct);
+    }
+
+    public void updateIcon(Context context) {
+        if (context == null) return;
+
+        Log.e("ProductViewModel ", "count " + SharedPrefsUtils.getAllProducts(context).size() + "");
+
+        if (context instanceof MainActivity) {
+            NavHostFragment fragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);
+            if (fragment != null) {
+                Fragment fragment1 = fragment.getChildFragmentManager().getFragments().get(0);
+                if (fragment1 instanceof HomeFragment) {
+                    ((HomeFragment) fragment1).updateIconItems();
+                }
+            }
+        }
     }
 
 }

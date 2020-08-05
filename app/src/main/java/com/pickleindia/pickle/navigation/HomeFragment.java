@@ -68,7 +68,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static com.pickleindia.pickle.utils.Constant.CAT_SIX;
 import static com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
@@ -84,7 +83,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     private final DatabaseReference carouselImagesDatabaseReference = FirebaseDatabase.getInstance().getReference("Offers");
     private final DatabaseReference productCategoriesDatabaseReference = FirebaseDatabase.getInstance().getReference("ProductCategories");
 
-    private static int itemCount;
+    public int itemCount;
     private static final int LIMIT = 2;
     private ReferralRewardBottomSheet referralRewardBottomSheet;
 
@@ -200,7 +199,6 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
 
     private ChildEventListener carouselImageChildEventListener;
-
     private ChildEventListener getImageList() {
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -486,11 +484,19 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     @Override
     public void updateIconItems() {
         if (getActivity() != null) {
-            itemCount = SharedPrefsUtils.getAllProducts(getActivity()).size();
-            getActivity().invalidateOptionsMenu();
+            ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+                itemCount = refreshList.size();
+                getActivity().invalidateOptionsMenu();
         }
     }
 
+//    public void updateIconItems(int itemCount) {
+//        if (getActivity() != null) {
+//            ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
+//            itemCount = refreshList.size();
+//            getActivity().invalidateOptionsMenu();
+//        }
+//    }
 
     @Override
     public void onAttach(@NonNull Context context) {

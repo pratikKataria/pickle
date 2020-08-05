@@ -9,8 +9,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.pickleindia.pickle.models.ProductModel;
 import com.google.gson.Gson;
+import com.pickleindia.pickle.models.ProductModel;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -240,8 +240,8 @@ final public class SharedPrefsUtils {
         try {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             Map<String, ?> prefEntry = preferences.getAll();
-//            Log.e(SharedPrefsUtils.class.getName(), "" + prefEntry);
             for (String key : prefEntry.keySet()) {
+//                Log.e(SharedPrefsUtils.class.getName(), "" + key);
                 String productGson = (String) prefEntry.get(key);
                 ProductModel productModel = new Gson().fromJson(productGson, ProductModel.class);
                 productModels.add(productModel);

@@ -6,12 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pickleindia.pickle.databinding.CardViewCategoryProductBinding;
 import com.pickleindia.pickle.databinding.LayoutEmptyBinding;
+import com.pickleindia.pickle.interfaces.ProductDetailsBottomSheetDialogListener;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.product.ProductViewModel;
+import com.pickleindia.pickle.ui.ProductDetailsBottomSheetDialog;
 
 import java.util.ArrayList;
 
@@ -86,13 +89,13 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
-    static class EmptyView extends  RecyclerView.ViewHolder {
+    static class EmptyView extends RecyclerView.ViewHolder {
         public EmptyView(@NonNull View itemView) {
             super(itemView);
         }
     }
 
-     class ProductCardViewHolder extends RecyclerView.ViewHolder{
+    class ProductCardViewHolder extends RecyclerView.ViewHolder implements ProductDetailsBottomSheetDialogListener {
 
         CardViewCategoryProductBinding binding;
 
@@ -107,9 +110,20 @@ public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         }
 
         private void showDialog(ProductModel product) {
-//            ProductDetailsBottomSheetDialog productDetailsBottomSheetDialog = new ProductDetailsBottomSheetDialog(product);
-//            productDetailsBottomSheetDialog.show(((AppCompatActivity)context).getSupportFragmentManager(), "searchViewBottomSheet");
+            ProductDetailsBottomSheetDialog productDetailsBottomSheetDialog = new ProductDetailsBottomSheetDialog(product, this);
+            productDetailsBottomSheetDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "searchViewBottomSheet");
         }
-     }
+
+        @Override
+        public void update(ProductModel productModel) {
+            int indexOf = productModelsList.indexOf(productModel);
+            if (indexOf != -1) {
+                productModelsList.remove(indexOf);
+                productModelsList.add(indexOf, productModel);
+                notifyItemChanged(indexOf);
+            }
+        }
+
+    }
 
 }

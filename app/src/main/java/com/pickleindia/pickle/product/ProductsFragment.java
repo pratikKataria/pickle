@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,15 @@ import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.transition.MaterialSharedAxis;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CategoryRecyclerViewAdapter;
 import com.pickleindia.pickle.cart.CartActivity;
@@ -32,23 +39,12 @@ import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.main.FirebaseSearchActivity;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
-import com.pickleindia.pickle.utils.PriceFormatUtils;
 import com.pickleindia.pickle.utils.RecyclerScrollListener;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
-import com.google.android.material.transition.MaterialSharedAxis;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 
 import static com.pickleindia.pickle.utils.Constant.PRODUCT;
@@ -380,4 +376,5 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
     public void stopLoading() {
         isLoading.set(false);
     }
+
 }

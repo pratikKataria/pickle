@@ -43,13 +43,13 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.75" />
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_developer"
+        android:layout_height="wrap_content"
+        android:text="Developed by ByteMint.io"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintStart_toStartOf="@+id/guideline7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
