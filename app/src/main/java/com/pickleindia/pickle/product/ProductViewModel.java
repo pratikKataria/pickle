@@ -17,7 +17,6 @@ import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.main.MainActivity;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.navigation.HomeFragment;
-import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 public class ProductViewModel extends BaseObservable {
     private ProductModel product;
@@ -108,8 +107,6 @@ public class ProductViewModel extends BaseObservable {
 
     public void updateIcon(Context context) {
         if (context == null) return;
-
-        Log.e("ProductViewModel ", "count " + SharedPrefsUtils.getAllProducts(context).size() + "");
 
         if (context instanceof MainActivity) {
             NavHostFragment fragment = (NavHostFragment) ((AppCompatActivity) context).getSupportFragmentManager().findFragmentById(R.id.activity_main_nav_host);

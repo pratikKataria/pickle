@@ -99,15 +99,13 @@ public class ProductDetailsBottomSheetDialog extends BottomSheetDialogFragment {
             int temp = currentQuantity.get()-1;
             currentQuantity.set(temp);
             productModel.setQuantityCounter(currentQuantity.get());
-            productDetailsBottomSheetDialogListener.update(productModel);
 
             if (currentQuantity.get() == 0) {
-                Log.e("ProductDetails ", "decrease  Qty  removed");
                 SharedPrefsUtils.removeValuePreference(getActivity(), productModel.getItemId());
             } else {
-                Log.e("ProductDetails ", "decrease  Qty");
                 SharedPrefsUtils.setStringPreference(getActivity(), productModel.getItemId(), new Gson().toJson(productModel));
             }
+            productDetailsBottomSheetDialogListener.update(productModel);
         }
     }
 
