@@ -196,7 +196,7 @@ public class OrdersPlacedFragment extends Fragment {
         } else if (ordersList.size() == 1) {
             ordersList.remove(0);
             ordersList.add(0, new EmptyState(R.drawable.crd_order_bg, R.drawable.pablo_delivery_transparent, "Today's Orders", "your orders will be delivered as soon as possible"));
-            NotifyRecyclerItems.notifyItemInsertedAt(binding.recyclerView, 0);
+            NotifyRecyclerItems.notifyDataSetChanged(binding.recyclerView);
         }
     }
 }

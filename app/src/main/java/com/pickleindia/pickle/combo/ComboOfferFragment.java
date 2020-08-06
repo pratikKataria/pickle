@@ -3,16 +3,11 @@ package com.pickleindia.pickle.combo;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 
-import com.google.android.material.transition.MaterialContainerTransform;
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
 import com.google.android.material.transition.MaterialSharedAxis;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +28,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pickleindia.pickle.DataBinderMapperImpl;
 import com.pickleindia.pickle.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartActivity;
@@ -37,7 +36,6 @@ import com.pickleindia.pickle.models.OfferCombo;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 
 public class ComboOfferFragment extends Fragment {
@@ -90,6 +88,15 @@ public class ComboOfferFragment extends Fragment {
         progressDialog.setIndeterminateDrawable(drawable);
         progressDialog.show();
 
+        progressDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                 progressDialog.cancel();
+                 NavController navController = NavHostFragment.findNavController(ComboOfferFragment.this);
+                 navController.popBackStack();
+            }
+            return false;
+        });
+
         getDataCallBack = new GetDataCallBack() {
             @Override
             public void received(int index, ProductModel offerProduct) {
@@ -141,7 +148,6 @@ public class ComboOfferFragment extends Fragment {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
-
         return binding.getRoot();
     }
 

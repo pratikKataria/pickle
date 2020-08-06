@@ -11,8 +11,8 @@ android {
         applicationId "com.pickleindia.pickle"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 1
-        versionName "1.0.11"
+        versionCode 4
+        versionName "1.0.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
