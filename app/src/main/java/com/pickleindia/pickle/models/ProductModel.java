@@ -11,8 +11,8 @@ import com.google.firebase.database.annotations.NotNull;
 public class ProductModel implements Parcelable {
     private String itemName;
     private String itemDesc;
-    private int itemBasePrice;
-    private int itemSellPrice;
+    private double itemBasePrice;
+    private double itemSellPrice;
     private int itemMaxQtyPerUser;
     private int itemQty;
 
@@ -43,7 +43,7 @@ public class ProductModel implements Parcelable {
         this.itemBasePrice = itemBasePrice;
     }
 
-    public ProductModel(String itemName, String itemDesc, int itemBasePrice, int itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId, boolean hasSale, String itemSubCategory) {
+    public ProductModel(String itemName, String itemDesc, double itemBasePrice, double itemSellPrice, int itemMaxQtyPerUser, int itemQty, String qtyType, String itemType, String itemCategory, String itemId, int itemUnits, long date, boolean itemAvailability, String itemThumbImage, String itemName_itemId, boolean hasSale, String itemSubCategory) {
         this.itemName = itemName;
         this.itemDesc = itemDesc;
         this.itemBasePrice = itemBasePrice;
@@ -66,8 +66,8 @@ public class ProductModel implements Parcelable {
     protected ProductModel(Parcel in) {
         itemName = in.readString();
         itemDesc = in.readString();
-        itemBasePrice = in.readInt();
-        itemSellPrice = in.readInt();
+        itemBasePrice = in.readDouble();
+        itemSellPrice = in.readDouble();
         itemMaxQtyPerUser = in.readInt();
         itemQty = in.readInt();
         qtyType = in.readString();
@@ -115,19 +115,19 @@ public class ProductModel implements Parcelable {
         this.itemDesc = itemDesc;
     }
 
-    public int getItemBasePrice() {
+    public double getItemBasePrice() {
         return itemBasePrice;
     }
 
-    public void setItemBasePrice(int itemBasePrice) {
+    public void setItemBasePrice(double itemBasePrice) {
         this.itemBasePrice = itemBasePrice;
     }
 
-    public int getItemSellPrice() {
+    public double getItemSellPrice() {
         return itemSellPrice;
     }
 
-    public void setItemSellPrice(int itemSellPrice) {
+    public void setItemSellPrice(double itemSellPrice) {
         this.itemSellPrice = itemSellPrice;
     }
 
@@ -279,8 +279,8 @@ public class ProductModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(itemName);
         dest.writeString(itemDesc);
-        dest.writeInt(itemBasePrice);
-        dest.writeInt(itemSellPrice);
+        dest.writeDouble(itemBasePrice);
+        dest.writeDouble(itemSellPrice);
         dest.writeInt(itemMaxQtyPerUser);
         dest.writeInt(itemQty);
         dest.writeString(qtyType);
@@ -306,7 +306,7 @@ public class ProductModel implements Parcelable {
 
     public int getPercentage() {
         if (hasSale && itemBasePrice > 0) {
-            float floatPercentage = (itemBasePrice - itemSellPrice) / (float)itemBasePrice;
+            double floatPercentage = (itemBasePrice - itemSellPrice) / (float)itemBasePrice;
             return percentage = (int) (floatPercentage*100);
         }
         return 0;

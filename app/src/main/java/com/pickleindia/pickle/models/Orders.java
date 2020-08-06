@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.pickleindia.pickle.interfaces.Visitable;
 import com.pickleindia.pickle.interfaces.Visitor;
+import com.pickleindia.pickle.utils.PriceFormatUtils;
 
 public class Orders implements Visitable {
     private long date;
@@ -11,8 +12,8 @@ public class Orders implements Visitable {
     private String orderId;
     private int orderStatus;
     private String userId;
-    private int subTotal;
-    private int pcoinsSpent;
+    private double subTotal;
+    private double pcoinsSpent;
     private String paymentMethod;
     private String deliveryTime;
     private String address;
@@ -24,7 +25,7 @@ public class Orders implements Visitable {
     public boolean isPastOrder;
     public int totalProduct;
 
-    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, int pcoinsSpent, String userId, int subTotal, String paymentMethod, String deliveryTime, String address, int shipping, String comboId, int comboPrice) {
+    public Orders(long date, String orderDetailsIds, String orderId, int orderStatus, double pcoinsSpent, String userId, double subTotal, String paymentMethod, String deliveryTime, String address, int shipping, String comboId, int comboPrice) {
         this.date = date;
         this.orderDetailsIds = orderDetailsIds;
         this.orderId = orderId;
@@ -74,11 +75,11 @@ public class Orders implements Visitable {
         this.orderStatus = orderStatus;
     }
 
-    public int getPcoinsSpent() {
+    public double getPcoinsSpent() {
         return pcoinsSpent;
     }
 
-    public void setPcoinsSpent(int pcoinsSpent) {
+    public void setPcoinsSpent(double pcoinsSpent) {
         this.pcoinsSpent = pcoinsSpent;
     }
 
@@ -95,11 +96,11 @@ public class Orders implements Visitable {
         return visitor.type(this);
     }
 
-    public int getSubTotal() {
-        return subTotal;
+    public double getSubTotal() {
+        return PriceFormatUtils.getDoubleFormat(subTotal);
     }
 
-    public void setSubTotal(int subTotal) {
+    public void setSubTotal(double subTotal) {
         this.subTotal = subTotal;
     }
 

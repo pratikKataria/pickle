@@ -29,8 +29,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.Observable;
+import androidx.databinding.ObservableDouble;
 import androidx.databinding.ObservableField;
-import androidx.databinding.ObservableInt;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
@@ -58,6 +58,7 @@ import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
 import com.pickleindia.pickle.utils.OrderStatus;
+import com.pickleindia.pickle.utils.PriceFormatUtils;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
@@ -429,8 +430,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         showOrderConfirmationDialog();
     }
 
-    final ObservableInt pcoinsUsed = new ObservableInt(0);
-    final ObservableInt totalPcoins = new ObservableInt(0);
+    final ObservableDouble pcoinsUsed = new ObservableDouble(0);
+    final ObservableDouble totalPcoins = new ObservableDouble(0);
 
     private void showOrderConfirmationDialog() {
         LayoutConfirmOrderBinding confirmOrderBinding = DataBindingUtil.inflate(
@@ -443,14 +444,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         alertDialogBuilder.setCancelable(false);
         confirmOrderDialog = alertDialogBuilder.create();
 
-        int total = getTotalCost();
+        double total = getTotalCost();
 
-        int comboValue = getComboPrice();
+        double comboValue = getComboPrice();
         int deliveryCharge = getDeliveryCharge();
         if (deliveryCharge > 0 && total < 500) {
-            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", total + "", comboValue + "", deliveryCharge + "", (total + comboValue + deliveryCharge)));
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", PriceFormatUtils.getDoubleFormat(total) + "",PriceFormatUtils.getDoubleFormat(comboValue)  + "", PriceFormatUtils.getDoubleFormat(deliveryCharge) + "", PriceFormatUtils.getDoubleFormat(total + comboValue + deliveryCharge)));
         } else {
-            confirmOrderBinding.totalPriceTextView.setText("Total price " + (total + comboValue));
+            confirmOrderBinding.totalPriceTextView.setText("Total price " + PriceFormatUtils.getStringFormattedPrice(total + comboValue));
         }
 
         confirmOrderBinding.quantityTextView.setText(String.format("Total quantity %s", binding.getCartViewModel().getProductQuantitiesString()));
@@ -458,7 +459,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         confirmOrderBinding.successAnimation.setVisibility(View.GONE);
 
-        final int finalTotal = total;
+        final double finalTotal = total;
         confirmOrderBinding.applyPcoins.setOnClickListener(v -> {
 
             if (getComboPrice() > 0) {
@@ -476,21 +477,21 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists() && snapshot.getValue() != null) {
-                        int pcoins = snapshot.getValue(Long.class).intValue();
+                        double pcoins = snapshot.getValue(Double.class).intValue();
                         if (pcoins > 0) {
                             totalPcoins.set(pcoins);
-                            int priceToBeCutOff = (finalTotal / 100)*5;
+                            double pcoinsUsed = (finalTotal / 100)*5;
 
                             confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
 
                             if (finalTotal > 100) {
-                                if (pcoins < priceToBeCutOff) {
-                                    pcoinsUsed.set(pcoins);
-                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + pcoins + " = " + (finalTotal - pcoins));
+                                if (pcoins < pcoinsUsed) {
+                                    CartActivity.this.pcoinsUsed.set(pcoins);
+                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + PriceFormatUtils.getStringFormattedPrice(finalTotal) + " - " + PriceFormatUtils.getStringFormattedPrice(pcoins) + " = " + PriceFormatUtils.getStringFormattedPrice(finalTotal - pcoins));
                                     confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
-                                } else if (pcoins > priceToBeCutOff) {
-                                    pcoinsUsed.set(priceToBeCutOff);
-                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + finalTotal + " - " + priceToBeCutOff + " = " + (finalTotal - priceToBeCutOff));
+                                } else if (pcoins > pcoinsUsed) {
+                                    CartActivity.this.pcoinsUsed.set(pcoinsUsed);
+                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + PriceFormatUtils.getStringFormattedPrice(finalTotal) + " - " +  PriceFormatUtils.getStringFormattedPrice(pcoinsUsed) + " = " + PriceFormatUtils.getStringFormattedPrice(finalTotal - pcoinsUsed));
                                     confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -600,8 +601,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         return deliveryCharge;
     }
 
-    private int getTotalCost() {
-        int total = 0;
+    private double getTotalCost() {
+        double total = 0;
         for (ProductModel productModel : binding.getCartList()) {
             if (productModel.getItemSellPrice() > 0) {
                 total += productModel.getItemSellPrice() * productModel.getQuantityCounter();
@@ -638,7 +639,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         HashMap<String, Object> atomicOperation = new HashMap<>();
         try {
             List<ProductModel> productCartList = binding.getCartList();
-            int calcTotal = 0;
+            double calcTotal = 0;
             String key = FirebaseDatabase.getInstance().getReference("Orders").push().getKey();
             StringBuilder orderDetailsIds = new StringBuilder();
             for (ProductModel product : productCartList) {
@@ -666,7 +667,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.ORDERED);
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
-            atomicOperation.put("Orders/" + key + "/pcoinsSpent", pcoinsUsed.get());
+            atomicOperation.put("Orders/" + key + "/pcoinsSpent", PriceFormatUtils.getDoubleFormat(pcoinsUsed.get()));
             atomicOperation.put("Orders/" + key + "/address", observableAddress.get());
 
             int shipping = 0;
@@ -678,7 +679,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("Orders/" + key + "/deliveryTime", deliveryTime);
 
             atomicOperation.put("Orders/" + key + "/shipping", shipping);
-            atomicOperation.put("Orders/" + key + "/subTotal", calcTotal);
+            atomicOperation.put("Orders/" + key + "/subTotal", PriceFormatUtils.getDoubleFormat(calcTotal));
 
             if (getComboPrice() > 0) {
                 atomicOperation.put("Orders/" + key + "/comboPrice", getComboPrice());
@@ -690,7 +691,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             atomicOperation.put("UserOrders/" + FirebaseAuth.getInstance().getUid() + "/" + key + "/date_orderId", localTimestamp + "_" + key);
 
             if (pcoinsUsed.get() > 0)
-                atomicOperation.put("Customers/" + FirebaseAuth.getInstance().getUid() + "/" + "referralReward" + "/" + "pcoins", totalPcoins.get() - pcoinsUsed.get());
+                atomicOperation.put("Customers/" + FirebaseAuth.getInstance().getUid() + "/" + "referralReward" + "/" + "pcoins", PriceFormatUtils.getDoubleFormat(totalPcoins.get() - pcoinsUsed.get()));
         } catch (Exception xe) {
             Toast.makeText(this, "unable to process request: contact administrator ", Toast.LENGTH_SHORT).show();
             Log.e(CartActivity.class.getName(), xe.getMessage() + "");

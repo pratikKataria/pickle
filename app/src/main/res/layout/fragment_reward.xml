@@ -6,7 +6,7 @@
     <data>
         <variable
             name="rewardEarned"
-            type="androidx.databinding.ObservableInt" />
+            type="androidx.databinding.ObservableDouble" />
     </data>
 
     <LinearLayout

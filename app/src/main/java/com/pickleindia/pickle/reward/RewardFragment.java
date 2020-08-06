@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ObservableInt;
+import androidx.databinding.ObservableDouble;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -38,7 +38,7 @@ public class RewardFragment extends Fragment {
         );
         setEnterTransition(MaterialSharedAxis.create(MaterialSharedAxis.Z, true));
 
-        final ObservableInt rewardPriceObserver = new ObservableInt(0);
+        final ObservableDouble rewardPriceObserver = new ObservableDouble(0);
 
         fragmentRewardBinding.setRewardEarned(rewardPriceObserver);
 
@@ -60,8 +60,7 @@ public class RewardFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Log.d(RewardFragment.class.getName(), snapshot+"");
-                    int rewardPrice = snapshot.getValue(Integer.class);
+                    Double rewardPrice = snapshot.getValue(Double.class);
                     rewardPriceObserver.set(rewardPrice);
                     fragmentRewardBinding.executePendingBindings();
                 } else {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -24,14 +23,14 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="165dp"
+        android:layout_width="190dp"
         android:layout_height="306dp"
         android:layout_margin="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_margin="8dp"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             android:minHeight="289dp">
 
             <FrameLayout
@@ -149,9 +148,25 @@
                 android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemSellPrice)}"
                 android:visibility="@{productViewModel.product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@+id/card_view_iv_base_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
                 app:layout_constraintTop_toTopOf="@+id/card_view_iv_base_price" />
 
+            <TextView
+                android:id="@+id/card_view_iv_base_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:padding="4dp"
+                android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
+                app:layout_constraintEnd_toStartOf="@+id/card_view_iv_sell_price"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_product_image"
+                app:strikeThrough="@{productViewModel.product.itemSellPrice>0}" />
 
             <TextView
                 android:id="@+id/card_view_iv_quantity"
@@ -168,24 +183,13 @@
                 android:layout_toEndOf="@+id/card_view_iv_product_image"
                 android:ellipsize="end"
                 android:maxLength="48"
-                android:textSize="16sp"
                 android:maxLines="2"
                 android:text="@{StringUtils.toTitleCase(productViewModel.product.itemName)}"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
                 app:layout_constraintStart_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity" />
 
-            <TextView
-                android:id="@+id/card_view_iv_base_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:padding="4dp"
-                android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
-                app:layout_constraintStart_toStartOf="@+id/card_view_iv_product_image"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_product_image"
-                app:strikeThrough="@{productViewModel.product.itemSellPrice>0}" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -1,21 +1,11 @@
 package com.pickleindia.pickle.cart;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.pickleindia.pickle.BR;
-import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.PriceFormatUtils;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +14,7 @@ import java.util.List;
 public class CartViewModel extends BaseObservable {
     private List<ProductModel> cartProducts = new ArrayList<>();
     private boolean isCartVisible;
-    private int comboPriceAddon;
+    private double comboPriceAddon;
 
     @Bindable
     public List<ProductModel> getCartProducts() {
@@ -78,11 +68,11 @@ public class CartViewModel extends BaseObservable {
     }
 
     public String getTotalCostString() {
-        int totalCost = 0;
+        double totalCost = 0;
 
         for (ProductModel product : cartProducts) {
             int productQuantity = product.getQuantityCounter();
-            int cost;
+            double cost;
             if (product.getItemSellPrice() > 0) {
                 cost = productQuantity * product.getItemSellPrice();
             } else {
@@ -98,12 +88,12 @@ public class CartViewModel extends BaseObservable {
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
     }
 
-    public int getTotalCostInt() {
-        int totalCost = 0;
+    public double getTotalCostInt() {
+        double totalCost = 0;
 
         for (ProductModel product : cartProducts) {
             int productQuantity = product.getQuantityCounter();
-            int cost;
+            double cost;
             if (product.getItemSellPrice() > 0) {
                 cost = productQuantity * product.getItemSellPrice();
             } else {
@@ -114,11 +104,11 @@ public class CartViewModel extends BaseObservable {
         return totalCost;
     }
 
-    public int getComboValue() {
+    public double getComboValue() {
         return comboPriceAddon;
     }
 
-    public void setComboValue(int comboPriceAddon) {
+    public void setComboValue(double comboPriceAddon) {
         this.comboPriceAddon = comboPriceAddon;
     }
 }

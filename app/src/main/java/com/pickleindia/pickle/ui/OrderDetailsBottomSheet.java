@@ -30,9 +30,9 @@ import com.pickleindia.pickle.models.Orders;
 import com.pickleindia.pickle.models.OrdersDetails;
 import com.pickleindia.pickle.utils.DateUtils;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
+import com.pickleindia.pickle.utils.PriceFormatUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +40,6 @@ import static com.pickleindia.pickle.utils.Constant.ORDERS;
 import static com.pickleindia.pickle.utils.Constant.ORDERS_CANCELLED;
 import static com.pickleindia.pickle.utils.Constant.ORDERS_DETAILS;
 import static com.pickleindia.pickle.utils.OrderStatus.CANCEL;
-import static com.pickleindia.pickle.utils.OrderStatus.DELIVERED;
 import static com.pickleindia.pickle.utils.OrderStatus.ORDERED;
 
 public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
@@ -79,7 +78,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         orderBinding.setOrders(orders);
         orderBinding.setOrderCancellationNote("");
 
-        int calcFinalTotal = (orders.getSubTotal() + orders.getShipping() + orders.getComboPrice()) - orders.getPcoinsSpent();
+        double calcFinalTotal = PriceFormatUtils.getDoubleFormat((orders.getSubTotal() + orders.getShipping() + orders.getComboPrice()) - orders.getPcoinsSpent());
 
         if (calcFinalTotal > 0) {
             orderBinding.finalTotalAmount.setText(String.valueOf(calcFinalTotal));
