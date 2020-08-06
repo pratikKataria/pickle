@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
@@ -119,7 +118,7 @@
                 app:imageResourceAdapter="@{productViewModel.product.itemThumbImage}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/card_view_tv_name"
@@ -144,48 +143,58 @@
 
 
             <TextView
-                android:id="@+id/card_view_iv_sell_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:padding="4dp"
-                android:text="@{productViewModel.product.itemSellPrice > 0 ? PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemSellPrice) : `NaN`}"
-                android:visibility="@{productViewModel.product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="@+id/card_view_iv_base_price"
-                app:layout_constraintStart_toEndOf="@+id/card_view_iv_base_price"
-                app:layout_constraintTop_toTopOf="@+id/card_view_iv_base_price"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
                 android:id="@+id/card_view_iv_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="@{productViewModel.product.itemQty + ` ` + productViewModel.product.qtyType}"
-                app:layout_constraintStart_toStartOf="@+id/card_view_iv_base_price"
+                app:layout_constraintStart_toStartOf="@+id/card_view_tv_desc"
                 app:layout_constraintTop_toBottomOf="@+id/card_view_tv_desc" />
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                app:constraint_referenced_ids="card_view_iv_base_price, card_view_iv_sell_price"
+                app:flow_horizontalAlign="start"
+                app:flow_horizontalBias="0"
+                app:flow_horizontalGap="4dp"
+                app:flow_horizontalStyle="packed"
+                app:flow_verticalAlign="top"
+                app:flow_wrapMode="chain"
+                app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
+                app:layout_constraintStart_toStartOf="@+id/card_view_tv_desc"
+                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity" />
 
             <TextView
                 android:id="@+id/card_view_iv_base_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="4dp"
-                android:visibility="@{productViewModel.product.isCombo? View.INVISIBLE:View.VISIBLE}"
                 android:text="@{PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemBasePrice)}"
-                app:layout_constraintStart_toStartOf="@+id/card_view_tv_desc"
-                app:layout_constraintTop_toBottomOf="@+id/card_view_iv_quantity"
+                android:visibility="@{productViewModel.product.isCombo? View.INVISIBLE:View.VISIBLE}"
                 app:strikeThrough="@{productViewModel.product.itemSellPrice > 0}" />
+
+            <TextView
+                android:id="@+id/card_view_iv_sell_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@{productViewModel.product.itemSellPrice > 0 ? PriceFormatUtils.getStringFormattedPrice(productViewModel.product.itemSellPrice) : `NaN`}"
+                android:visibility="@{productViewModel.product.itemSellPrice > 0 ? View.VISIBLE : View.GONE}"/>
 
             <ImageButton
                 android:id="@+id/imageButtonDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="18dp"
-                android:onClick="@{() -> productViewModel.deleteFromCart(context)}"
-                android:visibility="@{productViewModel.product.isCombo? View.GONE:View.VISIBLE}"
                 android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{() -> productViewModel.deleteFromCart(context)}"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_delete_black_24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:visibility="@{productViewModel.product.isCombo? View.GONE:View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="@+id/card_view_tv_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/card_view_tv_name" />
