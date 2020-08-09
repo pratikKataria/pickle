@@ -614,9 +614,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     }
 
     private int getComboPrice() {
-        OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
-        if (offerCombo != null) {
-            return offerCombo.getTotalPrice() * offerCombo.qtyCounter;
+        try {
+            OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
+            if (offerCombo != null) {
+                return offerCombo.getTotalPrice() * offerCombo.qtyCounter;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return 0;
     }

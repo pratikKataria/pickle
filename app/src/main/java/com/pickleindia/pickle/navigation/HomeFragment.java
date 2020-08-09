@@ -524,20 +524,25 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        int index = binding.carouselView.getCurrentPosition();
-        if (index != -1) {
-            OfferCombo offerCombo = carouselImage.get(index);
-            if (offerCombo != null) {
-                if (offerCombo.isCombo()) {
-                    NavController navController = NavHostFragment.findNavController(this);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("offer_combo", offerCombo);
-                    navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
-                    productModelArrayList.clear();
-                } else {
-                    navigateToProductFragment(offerCombo.getProductIds_cat());
+        try {
+            int index = binding.carouselView.getCurrentPosition();
+            if (index != -1) {
+                OfferCombo offerCombo = carouselImage.get(index);
+                if (offerCombo != null) {
+                    if (offerCombo.isCombo()) {
+                        NavController navController = NavHostFragment.findNavController(this);
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("offer_combo", offerCombo);
+                        navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
+                        productModelArrayList.clear();
+                    } else {
+                        navigateToProductFragment(offerCombo.getProductIds_cat());
+                    }
                 }
             }
+        } catch (Exception e) {
+            Log.e("HomeFragment", "index of bound" + e.toString());
+            e.printStackTrace();
         }
     }
 

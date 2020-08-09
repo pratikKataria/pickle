@@ -11,12 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ObservableBoolean;
 
-import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.interfaces.IMainActivity;
-import com.pickleindia.pickle.interfaces.Timeout;
-import com.pickleindia.pickle.models.ProductModel;
-import com.pickleindia.pickle.databinding.ActivityFirebaseSearchBinding;
-import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +18,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.databinding.ActivityFirebaseSearchBinding;
+import com.pickleindia.pickle.interfaces.IMainActivity;
+import com.pickleindia.pickle.interfaces.Timeout;
+import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class FirebaseSearchActivity extends AppCompatActivity implements IMainActivity {
 
@@ -48,11 +47,9 @@ public class FirebaseSearchActivity extends AppCompatActivity implements IMainAc
                 R.layout.activity_firebase_search
         );
 
-        ArrayList<String> searchSuggestionList = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.vegetables)));
         searchList = new ArrayList<>();
 
         binding.setProductModelList(searchList);
-        binding.setAutoCompleteList(searchSuggestionList);
         binding.setActivity(this);
         binding.editQuery.requestFocus();
         binding.setIsFound(isFound);
