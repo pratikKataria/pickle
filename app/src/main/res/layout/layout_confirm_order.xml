@@ -101,7 +101,7 @@
             android:id="@+id/pcoins_alert_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="you can only avail upto 10% on order 100 or above"
+            android:text="@string/pcoins_percent_cut_dialog"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -156,10 +156,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         binding.includeLayout.chipGroup2.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.chipDeliveryTime1:
-                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "3:30 PM"), R.color.black);
+                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "12:00 AM"), R.color.black);
                     break;
                 case R.id.chipDeliveryTime2:
-                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "12:00 AM"), R.color.black);
+                    onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "3:30 PM"), R.color.black);
                     break;
                 case R.id.chipDeliveryTime3:
                     if (binding.getCartViewModel().getTotalCostInt() >= 500)
