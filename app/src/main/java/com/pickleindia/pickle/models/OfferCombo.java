@@ -11,7 +11,7 @@ public class OfferCombo implements Parcelable {
     private String offerId;
     private String offerThumb;
     private String productIds_cat;
-    private int totalPrice;
+    private double totalPrice;
     private int maxQty;
 
     public int qtyCounter;
@@ -19,7 +19,7 @@ public class OfferCombo implements Parcelable {
 
     public OfferCombo() {}
 
-    public OfferCombo(String offerId, String offerThumb, String productIds_cat, int totalPrice, int maxQty, boolean isCombo) {
+    public OfferCombo(String offerId, String offerThumb, String productIds_cat, double totalPrice, int maxQty, boolean isCombo) {
         this.offerId = offerId;
         this.offerThumb = offerThumb;
         this.productIds_cat = productIds_cat;
@@ -32,7 +32,7 @@ public class OfferCombo implements Parcelable {
         offerId = in.readString();
         offerThumb = in.readString();
         productIds_cat = in.readString();
-        totalPrice = in.readInt();
+        totalPrice = in.readDouble();
         maxQty = in.readInt();
         qtyCounter = in.readInt();
     }
@@ -42,7 +42,7 @@ public class OfferCombo implements Parcelable {
         dest.writeString(offerId);
         dest.writeString(offerThumb);
         dest.writeString(productIds_cat);
-        dest.writeInt(totalPrice);
+        dest.writeDouble(totalPrice);
         dest.writeInt(maxQty);
         dest.writeInt(qtyCounter);
     }
@@ -88,11 +88,11 @@ public class OfferCombo implements Parcelable {
         this.productIds_cat = productIds_cat;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
 

@@ -16,6 +16,10 @@ public class PriceFormatUtils {
         return new DecimalFormat("\u20b9#,##0.00").format(price);
     }
 
+    public static String getStringDoublePrice(double price) {
+        return new DecimalFormat("#,##0.00").format(price);
+    }
+
     public static int getIntFormattedPrice(String price) {
         Log.e("PriceFormatUtils" , price.substring(0) + " " + price.substring(1));
         try {

@@ -81,7 +81,7 @@ public class OrderDetailsBottomSheet extends BottomSheetDialogFragment {
         double calcFinalTotal = PriceFormatUtils.getDoubleFormat((orders.getSubTotal() + orders.getShipping() + orders.getComboPrice()) - orders.getPcoinsSpent());
 
         if (calcFinalTotal > 0) {
-            orderBinding.finalTotalAmount.setText(String.valueOf(calcFinalTotal));
+            orderBinding.finalTotalAmount.setText(PriceFormatUtils.getStringFormattedPrice(calcFinalTotal));
         } else {
             orderBinding.finalTotalAmount.setText("invalid");
         }
