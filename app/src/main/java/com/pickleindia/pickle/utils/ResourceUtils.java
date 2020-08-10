@@ -15,7 +15,7 @@ public class ResourceUtils {
         backgroundColors.put(Constant.CAT_FOUR, R.color.icVegetableBg);
         backgroundColors.put(Constant.CAT_TWO, R.color.icVegetableBg);
         backgroundColors.put(Constant.CAT_THREE, R.color.icDairyBg);
-        backgroundColors.put(Constant.CAT_ONE, R.color.icFruitBg);
+        backgroundColors.put(Constant.CAT_ONE, R.color.icDairyBg);
         backgroundColors.put(Constant.CAT_FIVE, R.color.icHouseholdBg);
         backgroundColors.put(Constant.CAT_SIX, R.color.icDairyBg);
 

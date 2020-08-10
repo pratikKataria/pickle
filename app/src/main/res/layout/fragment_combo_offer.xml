@@ -33,7 +33,10 @@
                 android:id="@+id/constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorGrey50">
+                android:background="@color/colorGrey50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <androidx.cardview.widget.CardView
@@ -52,16 +55,16 @@
                         android:id="@+id/imageButton3"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
-                        android:onClick="@{()->activity.onBackPressed()}"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()->activity.onBackPressed()}"
                         android:src="@drawable/ic_arrow_left" />
                 </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Combo Offers"
                     android:gravity="center"
+                    android:text="Combo Offers"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +131,7 @@
                 android:id="@+id/textView54"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="select quantity"
+                android:text="Select quantity"
                 app:layout_constraintEnd_toEndOf="@+id/cardView4"
                 app:layout_constraintStart_toStartOf="@+id/cardView4"
                 app:layout_constraintTop_toBottomOf="@+id/cardView4" />

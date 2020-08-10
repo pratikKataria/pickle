@@ -60,6 +60,8 @@
                 <ImageView
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
+                    android:scaleY="1.2"
+                    android:scaleX="1.2"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
                     android:src="@drawable/bg_toolbar_image" />
@@ -206,7 +208,7 @@
                         android:layout_width="@dimen/card_view_category_width"
                         android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
-                        android:backgroundTint="@color/icVegetableBg"
+                        android:backgroundTint="@color/icDairyBg"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_FOUR)}"
@@ -217,6 +219,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_margin="6dp"
+                            android:scaleX="1.1"
+                            android:scaleY="1.2"
                             android:src="@drawable/ic_grocery" />
                     </androidx.cardview.widget.CardView>
 
