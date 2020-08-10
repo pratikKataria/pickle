@@ -86,15 +86,15 @@
         <item name="strokeColor">@color/white</item>
     </style>
 
-    <style name="Widget.Cart.Add.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <style name="Widget.Cart.Add.Button" parent="AddButton">
         <item name="iconSize">16dp</item>
         <item name="iconGravity">end</item>
         <item name="cornerRadius">4dp</item>
         <item name="icon">@drawable/ic_add_black_24dp</item>
         <item name="rippleColor">@color/white</item>
-        <item name="backgroundTint">@color/secondaryColorLight</item>
-        <item name="iconTint">@color/secondaryColorDark</item>
-        <item name="strokeColor">@color/secondaryColorLight</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="iconTint">@color/white</item>
+        <item name="strokeColor">@color/white</item>
     </style>
 
     <style name="AlertDialogTheme">
@@ -138,4 +138,32 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/avenir_next_medium</item>
     </style>
+
+
+    <style name="AddButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="icon">@drawable/ic_add_black_24dp</item>
+        <item name="rippleColor">@color/white</item>
+        <item name="strokeColor">@color/white</item>
+    </style>
+
+    <style name="IncButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="icon">@drawable/ic_add_black_24dp</item>
+        <item name="strokeColor">@color/white</item>
+    </style>
+
+    <style name="DecButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="iconTint">@color/black</item>
+        <item name="backgroundTint">@color/chipColorSearchFilterUnselected</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="icon">@drawable/ic_remove</item>
+        <item name="rippleColor">@color/white</item>
+        <item name="strokeColor">@color/white</item>
+    </style>
+
 </resources>

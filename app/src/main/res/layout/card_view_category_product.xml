@@ -125,12 +125,12 @@
                         style="@style/Widget.Cart.IncDec.Button"
                         android:layout_width="@dimen/mtrl_btn_inc_width"
                         android:layout_height="@dimen/mtrl_btn_height"
-                        android:backgroundTint="@color/secondaryColorLight"
+                        android:backgroundTint="@color/chipColorSearchFilterUnselected"
                         android:onClick="@{() -> productViewModel.decreaseQuantity(context)}"
                         android:paddingStart="@dimen/mtrl_btn_inc_padding"
                         app:cornerRadius="4dp"
                         app:icon="@drawable/ic_remove"
-                        app:iconTint="@color/secondaryColorDark" />
+                        app:iconTint="@color/black" />
 
                     <TextView
                         android:id="@+id/qtyCounter"
@@ -146,7 +146,7 @@
                         style="@style/Widget.Cart.IncDec.Button"
                         android:layout_width="@dimen/mtrl_btn_inc_width"
                         android:layout_height="@dimen/mtrl_btn_height"
-                        android:backgroundTint="@color/secondaryColorDark"
+                        android:backgroundTint="@color/colorAccent"
                         android:onClick="@{() -> productViewModel.increaseQuantity(context)}"
                         android:paddingStart="@dimen/mtrl_btn_inc_padding"
                         app:icon="@drawable/ic_add_black_24dp" />
@@ -161,7 +161,7 @@
                     android:onClick="@{() -> productViewModel.addToCart(context)}"
                     android:paddingStart="6dp"
                     android:text="Add"
-                    android:textColor="@color/secondaryColorDark"
+                    android:textColor="@color/white"
                     android:textSize="10sp"
                     android:visibility="@{productViewModel.product.showAddButton() ? View.GONE : View.VISIBLE}"
                     tools:visibility="visible" />
