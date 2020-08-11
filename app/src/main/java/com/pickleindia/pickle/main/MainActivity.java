@@ -53,6 +53,8 @@ import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
+import java.util.concurrent.ExecutionException;
+
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class MainActivity extends AppCompatActivity implements
@@ -207,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_menu_sub_tutorial:
                 showTutorialAlertDialog();
                 break;
+            case R.id.navigation_menu_rate_us:
+                showPlaystoreRateUs();
+                break;
             case R.id.nav_menu_sub_order_on_phone:
             case R.id.nav_menu_sub_help:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
@@ -215,6 +220,23 @@ public class MainActivity extends AppCompatActivity implements
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showPlaystoreRateUs() {
+        Uri uri = Uri.parse("market://details?id=com.pickleindia.pickle");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        try {
+            startActivity(intent);
+        }catch (Exception xe) {
+            startActivity(new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(
+                            "http://play.google.com/store/apps/details?id=$com.pickleindia.pickle"
+                    )
+            ));
+        }
+
     }
 
     private void showLogoutDialog() {

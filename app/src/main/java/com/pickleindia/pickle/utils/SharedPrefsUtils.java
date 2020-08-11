@@ -50,14 +50,13 @@ final public class SharedPrefsUtils {
      * @param value
      * @return true if the new value was successfully written to persistent storage.
      */
-    public static boolean setStringPreference(Context context, String key, String value) {
+    public static void setStringPreference(Context context, String key, String value) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (preferences != null && !TextUtils.isEmpty(key)) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(key, value);
-            return editor.commit();
+            editor.apply();
         }
-        return false;
     }
 
     /**

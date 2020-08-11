@@ -16,6 +16,7 @@ import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -124,6 +125,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
             if (!checkFirebaseAuth())
                 return;
+
+
+            if(behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
 
             //check if user address is present
             checkAddress();
@@ -277,6 +283,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             checkDeliveryTimeAndAddress();
             return;
         }
+
         check(new ProductCheckListener() {
             @Override
             public void onReceived(int index, ProductModel productModel) {
@@ -427,6 +434,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             return;
         }
 
+        if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
+            return;
+        }
+
         showOrderConfirmationDialog();
     }
 
@@ -443,6 +454,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).setView(confirmOrderBinding.getRoot());
         alertDialogBuilder.setCancelable(false);
         confirmOrderDialog = alertDialogBuilder.create();
+        alertDialogBuilder.setOnKeyListener((dialogInterface, i, keyEvent) -> {
+            if (i == KeyEvent.KEYCODE_BACK) {
+                if (confirmOrderDialog != null) {
+                    confirmOrderDialog.dismiss();
+                }
+            }
+            return true;
+        });
 
         double total = getTotalCost();
 
