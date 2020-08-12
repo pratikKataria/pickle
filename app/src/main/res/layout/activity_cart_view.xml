@@ -40,6 +40,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/emptyCart"
             android:layout_width="match_parent"
@@ -208,8 +209,8 @@
             android:id="@+id/cartView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:visibility="visible"
-            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
+            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
@@ -284,6 +285,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="18dp"
                             android:text="Cart amount: "
+                            style="@style/cartHeaderText"
                             app:layout_constraintStart_toEndOf="@+id/imageView12"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -292,6 +294,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
+                            style="@style/cartHeaderText"
                             android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.totalCostInt)}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView6"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -303,9 +306,8 @@
                             android:id="@+id/textView58"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_weight="1"
                             android:text="Combo Price: "
+                            style="@style/cartHeaderText"
                             android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
                             app:layout_constraintStart_toStartOf="@+id/textView6"
                             app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -315,6 +317,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
+                            style="@style/cartHeaderText"
                             android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.comboValue)}"
                             android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView58"
@@ -324,24 +327,13 @@
 
                         <TextView
                             android:id="@+id/textView581"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_weight="1"
-                            android:text="Shipping: "
-                            app:layout_constraintStart_toStartOf="@+id/textView58"
-                            app:layout_constraintTop_toBottomOf="@+id/textView58" />
-
-                        <TextView
-                            android:id="@+id/textViewShipping"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="end"
-                            android:text="@{`\u20b90.00`}"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView581"
+                            style="@style/cartHeaderText"
+                            android:text="Free delivery only available on morning (7 AM ~ 9 AM) and evening (4 PM ~ 6 PM) slot"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/textView581"
-                            app:layout_constraintTop_toTopOf="@+id/textView581" />
+                            app:layout_constraintStart_toStartOf="@+id/textView58"
+                            app:layout_constraintTop_toBottomOf="@+id/textView58" />
 
                         <View
                             android:id="@+id/view2"
@@ -354,25 +346,31 @@
                             app:layout_constraintStart_toEndOf="@+id/textView581"
                             app:layout_constraintTop_toBottomOf="@+id/textView581" />
 
+                        <View
+                            android:id="@+id/viewLine"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:background="@drawable/dash_hrztl_line"
+                            app:layout_constraintEnd_toEndOf="@+id/view2"
+                            app:layout_constraintStart_toEndOf="@+id/textView25"
+                            app:layout_constraintTop_toBottomOf="@+id/textView581" />
+
                         <TextView
                             android:id="@+id/textView25"
+                            style="@style/cartHeaderText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="8dp"
-                            android:layout_weight="2"
                             android:text="Sub total: "
-                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/textView58"
-                            app:layout_constraintTop_toBottomOf="@+id/view2" />
+                            app:layout_constraintTop_toBottomOf="@+id/viewLine" />
 
                         <TextView
                             android:id="@+id/amountToBePaid"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
+                            style="@style/cartHeaderText"
                             android:text="@{cartViewModel.totalCostString}"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView25"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView25"
                             app:layout_constraintTop_toTopOf="@+id/textView25" />

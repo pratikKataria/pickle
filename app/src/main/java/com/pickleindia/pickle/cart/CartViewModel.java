@@ -82,7 +82,7 @@ public class CartViewModel extends BaseObservable {
         }
 
         if (comboPriceAddon > 0) {
-            return PriceFormatUtils.getStringFormattedPrice(totalCost) + " + " + PriceFormatUtils.getStringFormattedPrice(comboPriceAddon) + " = \u20b9" + (totalCost + comboPriceAddon);
+            return PriceFormatUtils.getStringFormattedPrice(totalCost) + " + " + PriceFormatUtils.getStringFormattedPrice(comboPriceAddon) + " = " + PriceFormatUtils.getStringFormattedPrice(totalCost + comboPriceAddon);
         }
 
         return PriceFormatUtils.getStringFormattedPrice(totalCost);
