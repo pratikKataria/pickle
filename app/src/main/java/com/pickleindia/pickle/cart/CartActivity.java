@@ -78,8 +78,6 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
 
-    //todo check for the product new category changes
-
     private ActivityCartViewBinding binding;
     private AlertDialog confirmOrderDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
@@ -103,10 +101,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
             if (slideOffset < 0.75) {
-                binding.nestedScrollView.setAlpha(Math.abs(1 - slideOffset));
-                binding.nestedScrollView.setBackgroundColor(Color.WHITE);
+                binding.appBarLayout2.setAlpha(Math.abs(1 - slideOffset));
+                binding.cartRecyclerView.setAlpha(Math.abs(1 - slideOffset));
             } else if (slideOffset > 0.90) {
-                binding.nestedScrollView.setBackgroundColor(0xFFececec);
+                binding.appBarLayout2.setAlpha(0.3F);
+                binding.cartRecyclerView.setAlpha(0.3F);
             }
         }
     };
@@ -162,16 +161,22 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         binding.includeLayout.chipGroup2.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.chipDeliveryTime1:
+                    binding.textViewShipping.setText(PriceFormatUtils.getStringFormattedPrice(0.00));
                     onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "12:00 AM"), R.color.black);
                     break;
                 case R.id.chipDeliveryTime2:
+                    binding.textViewShipping.setText(PriceFormatUtils.getStringFormattedPrice(0.00));
                     onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "3:30 PM"), R.color.black);
                     break;
                 case R.id.chipDeliveryTime3:
-                    if (binding.getCartViewModel().getTotalCostInt() >= 500)
+                    if (binding.getCartViewModel().getTotalCostInt() >= 500) {
+                        binding.textViewShipping.setText(PriceFormatUtils.getStringFormattedPrice(0.00));
                         onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "0", "above", "500"), R.color.chartIdealBar);
-                    else
+                    }
+                    else {
+                        binding.textViewShipping.setText(PriceFormatUtils.getStringFormattedPrice(39.00));
                         onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", "500"), R.color.jungleGreen);
+                    }
                     break;
             }
         });
@@ -773,7 +778,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
     @Override
     public void onBackPressed() {
-        if (binding != null && binding.getCartViewModel().getComboValue() > 0) {
+        if (binding != null && binding.getCartViewModel() != null && binding.getCartViewModel().getComboValue() > 0) {
             showAlertDialog("Combo Package Alert",
                     "Their is a combo package present in your cart. If try to move back before checking out you will lose your combo",
                     ((dialog, which) -> {
@@ -781,12 +786,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     }),
                     "leave",
                     "back");
+        } else if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
+            confirmOrderDialog.dismiss();
         } else {
             finish();
-        }
-
-        if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
-            confirmOrderDialog.dismiss();
         }
     }
 

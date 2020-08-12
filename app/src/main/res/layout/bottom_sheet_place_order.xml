@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -153,7 +152,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="53dp"
                     android:layout_marginTop="8dp"
-                    android:onClick="@{() -> activity.getCurrentLocation()}"
                     android:text="CURRENT ADDRESS"
                     android:textColor="@color/secondaryColorDark"
                     app:chipBackgroundColor="@color/white"
@@ -286,7 +284,6 @@
                     android:layout_marginTop="4dp"
                     android:drawableEnd="@drawable/ic__refresh"
                     android:drawablePadding="8dp"
-                    android:onClick="@{() -> activity.refreshAddress()}"
                     android:src="@drawable/ic_sync_black_24dp"
                     android:text="Refresh Address"
                     android:textColor="@color/secondaryColorDark"

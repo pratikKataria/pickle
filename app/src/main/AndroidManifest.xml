@@ -46,11 +46,20 @@
             android:name=".main.MainActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
+
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
 
                 <data
                     android:host="pickleindiaofficial.com"
@@ -70,7 +79,13 @@
             android:windowSoftInputMode="adjustNothing|stateAlwaysVisible" />
         <activity
             android:name=".cart.CartActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".main.AddNewItemActivity"
             android:screenOrientation="portrait" />

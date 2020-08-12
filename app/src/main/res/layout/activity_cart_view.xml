@@ -37,12 +37,9 @@
             type="androidx.databinding.ObservableField&lt;String>" />
     </data>
 
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/emptyCart"
             android:layout_width="match_parent"
@@ -51,7 +48,7 @@
             tools:visibility="gone">
 
             <ImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/imageView121"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/empty_cart_bg_image_height"
                 android:scaleType="fitXY"
@@ -68,12 +65,12 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:onClick="@{() -> activity.finish()}"
                 android:src="@drawable/empty_cart_btn"
-                app:layout_constraintEnd_toEndOf="@+id/textView6"
-                app:layout_constraintStart_toStartOf="@+id/textView6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintEnd_toEndOf="@+id/textView61"
+                app:layout_constraintStart_toStartOf="@+id/textView61"
+                app:layout_constraintTop_toBottomOf="@+id/textView61" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/textView61"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Looks like you haven't made your choice yet"
@@ -93,7 +90,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView12" />
+                app:layout_constraintTop_toBottomOf="@+id/imageView121" />
 
             <TextView
                 android:layout_width="0dp"
@@ -207,184 +204,193 @@
             </com.google.android.material.chip.ChipGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--        second layout-->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/cartView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}"
-            tools:visibility="visible">
+            tools:visibility="visible"
+            android:visibility="@{cartViewModel.cartVisible ? View.VISIBLE : View.GONE}">
 
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nestedScrollView"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:overScrollMode="never"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                tools:context=".activity.main.CartActivity">
+                android:layout_height="?attr/actionBarSize"
+                android:backgroundTint="@color/white">
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        android:backgroundTint="@color/white">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center|start"
-                                android:layout_marginStart="8dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:onClick="@{() -> activity.onBackPressed()}"
-                                android:src="@drawable/ic_arrow_left" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center|start"
-                                android:layout_marginStart="8dp"
-                                android:layout_weight="2"
-                                android:text="@{`Total `+ cartViewModel.productQuantitiesString}" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <include
-                        layout="@layout/layout_cart_notice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/cart_margin_start"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="@dimen/cart_margin_end" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/cart_margin_start">
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="8dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{() -> activity.onBackPressed()}"
+                        android:src="@drawable/ic_arrow_left" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|start"
+                        android:layout_marginStart="8dp"
+                        android:layout_weight="2"
+                        android:text="@{`Total `+ cartViewModel.productQuantitiesString}" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="22dp"
+                android:background="@drawable/selected_bg_text_item"
+                android:backgroundTint="@color/colorAccent">
+
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="4dp"
+                        app:layout_collapseMode="parallax"
+                        app:layout_collapseParallaxMultiplier="0.8">
+
+
+                        <ImageView
+                            android:id="@+id/imageView12"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            android:layout_margin="@dimen/cart_margin_start"
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_cart_total_amount"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.6" />
+
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="18dp"
+                            android:text="Cart amount: "
+                            app:layout_constraintStart_toEndOf="@+id/imageView12"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/cartAmountTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.totalCostInt)}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView6"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView6"
+                            app:layout_constraintTop_toTopOf="@+id/textView6" />
+
+
+                        <TextView
+                            android:id="@+id/textView58"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_weight="1"
+                            android:text="Combo Price: "
+                            android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
+                            app:layout_constraintStart_toStartOf="@+id/textView6"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                        <TextView
+                            android:id="@+id/textView57"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.comboValue)}"
+                            android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView58"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView58"
+                            app:layout_constraintTop_toTopOf="@+id/textView58" />
+
+                        <TextView
+                            android:id="@+id/textView581"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:layout_weight="1"
+                            android:text="Shipping: "
+                            app:layout_constraintStart_toStartOf="@+id/textView58"
+                            app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+                        <TextView
+                            android:id="@+id/textViewShipping"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="@{`\u20b90.00`}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView581"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView581"
+                            app:layout_constraintTop_toTopOf="@+id/textView581" />
+
+                        <View
+                            android:id="@+id/view2"
+                            android:layout_width="0dp"
+                            android:layout_height="5dp"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/dash_hrztl_line"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/textView581"
+                            app:layout_constraintTop_toBottomOf="@+id/textView581" />
 
                         <TextView
                             android:id="@+id/textView25"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenir_next_medium"
-                            android:text="Your orders"
-                            android:textColor="@color/black"
-                            android:textSize="18sp" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/cartRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/cart_margin_start"
-                        android:layout_marginEnd="@dimen/cart_margin_end"
-                        android:overScrollMode="never"
-                        app:carProductList="@{cartList}"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/cart_margin_start"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginEnd="@dimen/cart_margin_end"
-                        android:layout_marginBottom="94dp"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="Cart amount" />
-
-                            <TextView
-                                android:id="@+id/cartAmountTextView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.totalCostInt)}" />
-                        </LinearLayout>
-
+                            android:layout_marginTop="4dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="2"
+                            android:text="Sub total: "
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/textView58"
+                            app:layout_constraintTop_toBottomOf="@+id/view2" />
 
                         <TextView
-                            android:layout_width="210dp"
+                            android:id="@+id/amountToBePaid"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Free delivery only available on morning (7 AM ~ 9 AM) and evening (4 PM ~ 6 PM) slot" />
+                            android:gravity="end"
+                            android:text="@{cartViewModel.totalCostString}"
+                            app:layout_constraintBottom_toBottomOf="@+id/textView25"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/textView25"
+                            app:layout_constraintTop_toTopOf="@+id/textView25" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}">
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Combo Price: " />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.comboValue)}" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="16dp"
-                            android:background="@color/grey" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:layout_marginBottom="8dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:text="Sub total: " />
-
-                            <TextView
-                                android:id="@+id/amountToBePaid"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{cartViewModel.totalCostString}" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/grey" />
-
-                        <include
-                            layout="@layout/layout_order_delivery_summery"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="24dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-
-            </androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cartRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cart_margin_start"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="@dimen/cart_margin_end"
+                android:overScrollMode="never"
+                app:carProductList="@{cartList}"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <include
                 android:id="@+id/includeLayout"
@@ -392,11 +398,6 @@
                 bind:activity="@{activity}"
                 bind:cartView="@{cartViewModel}"
                 bind:observableAddress="@{observableAddress}" />
-
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </LinearLayout>
 </layout>
