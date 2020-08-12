@@ -189,12 +189,17 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
     public void navigateToProductFragment(@Nullable String type) {
         if (type == null) return;
-        NavController navController = NavHostFragment.findNavController(this);
-        Bundle bundle = new Bundle();
-        bundle.putString(PRODUCT_TYPE, type);
-        navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
-        productModelArrayList.clear();
-        NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
+        try {
+            NavController navController = NavHostFragment.findNavController(this);
+            Bundle bundle = new Bundle();
+            bundle.putString(PRODUCT_TYPE, type);
+            navController.navigate(R.id.action_homeFragment_to_productsFragment, bundle);
+            productModelArrayList.clear();
+            NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
+        } catch (Exception xe) {
+            Log.e("HomeFragment", "no path defined");
+        }
+
     }
 
 
