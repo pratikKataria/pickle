@@ -733,7 +733,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             binding.getCartList().clear();
             NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
             binding.getCartViewModel().setCartVisible(false);
-//            SharedPrefsUtils.clearCart(this);
+            SharedPrefsUtils.clearCart(this);
             result.uploaded(true);
         }).addOnFailureListener(e -> result.uploaded(false));
     }
