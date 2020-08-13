@@ -204,7 +204,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 cartViewModel.getCartProducts().clear();
                 cartViewModel.setCartVisible(false);
                 NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
-//                SharedPrefsUtils.clearCart(CartActivity.this);
+                SharedPrefsUtils.clearCart(CartActivity.this);
             }
         }).setNegativeButton("No", (dialog, which) -> {
 
