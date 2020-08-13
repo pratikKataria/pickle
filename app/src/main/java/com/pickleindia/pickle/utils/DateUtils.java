@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
@@ -124,6 +125,8 @@ public class DateUtils {
     public static boolean isCartProductIsValid(long cartAddedDate) {
         Date addedDate = new Date(cartAddedDate);
         Date currDate = new Date();
-        return currDate.getDate() - addedDate.getDate() >= 2;
+        long differenceInMillis = currDate.getTime() - addedDate.getTime();
+
+        return TimeUnit.MILLISECONDS.toMinutes(differenceInMillis)/60 >= 36;
     }
 }

@@ -185,7 +185,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         });
 
         for (ProductModel product : binding.getCartList()) {
-            if (!oldCartProductsKey.contains(product)) {
+            if (DateUtils.isCartProductIsValid(product.cartAddedDate) && !oldCartProductsKey.contains(product)) {
                 oldCartProductsKey.add(product);
             }
         }
