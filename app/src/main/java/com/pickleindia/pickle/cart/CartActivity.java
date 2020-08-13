@@ -80,6 +80,8 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity {
 
+    // TODO: 13-08-2020 remove product listener when back button pressed
+
     private ActivityCartViewBinding binding;
     private AlertDialog confirmOrderDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
@@ -189,6 +191,25 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 oldCartProductsKey.add(product);
             }
         }
+
+    }
+
+    public void clearCart() {
+        MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        materialAlertDialogBuilder.setTitle("Clear Cart");
+        materialAlertDialogBuilder.setMessage("Would you like clear cart?");
+        materialAlertDialogBuilder.setPositiveButton("clear", (dialog, which) -> {
+            CartViewModel cartViewModel = binding.getCartViewModel();
+            if (cartViewModel != null) {
+                cartViewModel.getCartProducts().clear();
+                cartViewModel.setCartVisible(false);
+                NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
+//                SharedPrefsUtils.clearCart(CartActivity.this);
+            }
+        }).setNegativeButton("No", (dialog, which) -> {
+
+        });
+        materialAlertDialogBuilder.show();
     }
 
     private void onDeliveryChipSelectedAlert(String message, int color) {

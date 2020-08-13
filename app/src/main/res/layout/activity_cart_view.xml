@@ -236,8 +236,23 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|start"
                         android:layout_marginStart="8dp"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:text="@{`Total `+ cartViewModel.productQuantitiesString}" />
+
+                    <TextView
+                        android:id="@+id/clearCartBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> activity.clearCart()}"
+                        android:layout_marginEnd="22dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:drawableTint="@color/black"
+                        android:background="@drawable/selected_bg_text_item"
+                        android:padding="2dp"
+                        android:text=" Clear cart "
+                        android:textColor="@color/secondaryColorLight"/>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -247,22 +262,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="22dp"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="65dp"
                 android:layout_marginEnd="22dp"
                 android:background="@drawable/selected_bg_text_item"
                 android:backgroundTint="@color/colorAccent">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                    android:layout_height="match_parent">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="4dp"
-                        app:layout_collapseMode="parallax"
-                        app:layout_collapseParallaxMultiplier="0.8">
+                        app:layout_collapseMode="pin">
 
 
                         <ImageView
