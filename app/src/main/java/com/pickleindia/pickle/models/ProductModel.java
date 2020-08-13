@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.annotations.NotNull;
 
+import java.util.Date;
+
 public class ProductModel implements Parcelable {
     private String itemName;
     private String itemDesc;
@@ -34,6 +36,8 @@ public class ProductModel implements Parcelable {
     public boolean isCombo;
     private int percentage;
     private String itemSubCategory;
+    
+    public long cartAddedDate = new Date().getTime();
 
     public ProductModel() {
     }

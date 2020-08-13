@@ -3,8 +3,6 @@ package com.pickleindia.pickle.utils;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
-import com.google.gson.internal.$Gson$Preconditions;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -121,5 +119,11 @@ public class DateUtils {
         Date currDate = new Date();
 
         return date.getDate() == currDate.getDate();
+    }
+
+    public static boolean isCartProductIsValid(long cartAddedDate) {
+        Date addedDate = new Date(cartAddedDate);
+        Date currDate = new Date();
+        return currDate.getDate() - addedDate.getDate() >= 2;
     }
 }

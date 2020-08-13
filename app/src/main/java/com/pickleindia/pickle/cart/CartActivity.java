@@ -1,6 +1,7 @@
 package com.pickleindia.pickle.cart;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -84,6 +85,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private final ObservableField<String> displayAddress = new ObservableField<>("");
     private final ObservableField<String> databaseCacheAddress = new ObservableField<>("");
 
+    private final ArrayList<ProductModel> oldCartProductsKey = new ArrayList<>();
+
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -109,6 +112,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             }
         }
     };
+    private ProgressDialog productCheckingDialog;
+    private BottomSheetBehavior<View> behavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +123,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         binding.setActivity(this);
         binding.setObservableAddress(displayAddress);
 
-        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+        behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         behavior.addBottomSheetCallback(bottomSheetCallback);
 
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
@@ -126,7 +131,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 return;
 
 
-            if(behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
 
@@ -169,8 +174,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 case R.id.chipDeliveryTime3:
                     if (binding.getCartViewModel().getTotalCostInt() >= 500) {
                         onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "0", "above", "500"), R.color.chartIdealBar);
-                    }
-                    else {
+                    } else {
                         onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", "500"), R.color.jungleGreen);
                     }
                     break;
@@ -218,6 +222,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         if (offerComboList != null)
             cartList.addAll(offerComboList);
 
+        for (ProductModel product : cartList) {
+            if (!oldCartProductsKey.contains(product)) {
+                oldCartProductsKey.add(product);
+            }
+        }
+
         binding.executePendingBindings();
     }
 
@@ -259,7 +269,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                         displayAddress.set(address.toString());
                                     }
                                     databaseCacheAddress.set(address.toString());
-                                    isAllProductsValid();
+                                    checkDeliveryTimeAndAddress();
                                 }
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
@@ -272,15 +282,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         }
                     });
         } else {
-            isAllProductsValid();
+            checkDeliveryTimeAndAddress();
         }
     }
 
     private void isAllProductsValid() {
         Log.e("CartActivity ", "isAllProductsValid();");
-        final List<ProductModel> cartProductList = SharedPrefsUtils.getAllProducts(this);
         List<ProductModel> newProductsList = new ArrayList<>();
-        if (cartProductList.isEmpty()) {
+        if (oldCartProductsKey.isEmpty()) {
             checkDeliveryTimeAndAddress();
             return;
         }
@@ -292,21 +301,27 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 if (productModel != null)
                     newProductsList.add(productModel);
 
-                if (index < cartProductList.size()) {
-                    ProductModel product = cartProductList.get(index);
-                    getNext(product.getItemCategory(), product.getItemId(), index);
+                if (index < oldCartProductsKey.size()) {
+                    ProductModel productModel1 = oldCartProductsKey.get(index);
+                    getNext(productModel1.getItemCategory(), productModel1.getItemId(), index);
                 }
             }
 
             @Override
             public void onCompleted() {
-                binding.includeLayout.progressCircular.setVisibility(View.GONE);
+
+                if (productCheckingDialog != null) productCheckingDialog.dismiss();
+
                 boolean isOutOfStock = true;
                 boolean isPriceSame = true;
                 for (ProductModel newProduct : newProductsList) {
-                    int cartItemIndex = cartProductList.indexOf(newProduct);
+                    int cartItemIndex = oldCartProductsKey.indexOf(newProduct);
                     if (cartItemIndex != -1) {
-                        newProduct.setQuantityCounter(cartProductList.get(cartItemIndex).getQuantityCounter());
+                        ProductModel oldProduct = oldCartProductsKey.get(cartItemIndex);
+                        newProduct.setQuantityCounter(oldProduct.getQuantityCounter());
+                        // TODO: 13-08-2020  remove below code after testing
+                        newProduct.cartAddedDate = oldProduct.cartAddedDate;
+                        //
                         String newProductModel = new Gson().toJson(newProduct);
                         SharedPrefsUtils.setStringPreference(CartActivity.this, newProduct.getItemId(), newProductModel);
 
@@ -319,11 +334,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                             isOutOfStock = false;
                         }
 
-                        Log.e("Cartactivity ", cartProductList.get(cartItemIndex).getItemBasePrice() + " ");
-                        if (!newProduct.isPriceSame(cartProductList.get(cartItemIndex))) {
+                        Log.e("Cartactivity ", oldCartProductsKey.get(cartItemIndex).getItemBasePrice() + " ");
+                        if (!newProduct.isPriceSame(oldCartProductsKey.get(cartItemIndex))) {
                             isPriceSame = false;
                         }
-
                     }//if new index
                 } //for loop
                 getShoppingCart();
@@ -333,39 +347,44 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 outOfStockAlert.setBehavior(new SnackbarNoSwipeBehavior());
                 outOfStockAlert.setActionTextColor(getResources().getColor(R.color.chartIdealBar));
                 outOfStockAlert.setAction("remove", n -> {
-                    Snackbar removeMessage = Snackbar.make(binding.cartView, "removing products", Snackbar.LENGTH_SHORT);
-                    removeMessage.show();
 
-                    for (ProductModel productModel : cartProductList) {
+                    for (ProductModel productModel : newProductsList) {
                         CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
                         if (cartRecyclerViewAdapter != null && !productModel.isItemAvailability()) {
                             cartRecyclerViewAdapter.deleteItemFromCart(productModel);
                             SharedPrefsUtils.removeValuePreference(CartActivity.this, productModel.getItemId());
+                            oldCartProductsKey.remove(productModel);
                         }
                     }
-
                     getShoppingCart();
 
                     if (!finalIsPriceSame) {
                         showAlertDialog("Price Change Alert",
                                 "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
-                                (dialog, which) -> checkDeliveryTimeAndAddress(), "next", "back");
+                                (dialog, which) -> {
+                                    oldCartProductsKey.clear();
+                                    showOrderConfirmationDialog();
+                                }, "next", "back");
                     } else {
-                        checkDeliveryTimeAndAddress();
+                        showOrderConfirmationDialog();
                     }
-
                 });
 
                 if (!isOutOfStock) {
+                    if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
                     outOfStockAlert.show();
                 } else if (!isPriceSame) {
                     showAlertDialog("Price Change Alert",
                             "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
-                            ((dialog, which) -> checkDeliveryTimeAndAddress()), "next", "back");
+                            ((dialog, which) -> {
+                                oldCartProductsKey.clear();
+                                showOrderConfirmationDialog();
+                            }), "next", "back");
                 } else {
-                    checkDeliveryTimeAndAddress();
+                    showOrderConfirmationDialog();
                 }
-
                 getShoppingCart();
             }
 
@@ -374,10 +393,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                 reference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.e("CartActivity", " Product Recieved " + snapshot);
                         if (snapshot.exists() && snapshot.getValue() != null) {
                             ProductModel productModel = snapshot.getValue(ProductModel.class);
                             onReceived(index + 1, productModel);
-                            if (index + 1 == cartProductList.size()) {
+                            if (index + 1 == oldCartProductsKey.size()) {
                                 onCompleted();
                             }
                         }
@@ -399,7 +419,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         materialAlertDialogBuilder.setMessage(message);
         materialAlertDialogBuilder.setPositiveButton(positiveText, dialogInterface);
         materialAlertDialogBuilder.setNegativeButton(negativeText, (dialog, which) -> {
-
+            oldCartProductsKey.clear();
+            if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
         });
         materialAlertDialogBuilder.show();
     }
@@ -425,13 +448,20 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
 
         if (deliveryTime == null || deliveryTime.isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            binding.includeLayout.progressCircular.setVisibility(View.GONE);
             Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             return;
         }
         if (databaseCacheAddress.get().isEmpty()) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            binding.includeLayout.progressCircular.setVisibility(View.GONE);
             Toast.makeText(this, "Refresh delivery address", Toast.LENGTH_SHORT).show();
             checkAddress();
+            return;
+        }
+
+        if (oldCartProductsKey.size() > 0) {
+            showProductsCheckingDialog();
             return;
         }
 
@@ -440,6 +470,23 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         }
 
         showOrderConfirmationDialog();
+    }
+
+    private void showProductsCheckingDialog() {
+        productCheckingDialog = new ProgressDialog(this);
+        productCheckingDialog.setMessage("Some of the products in your cart are outdated, it will take some time to verify the validity of the products");
+        productCheckingDialog.setCancelable(false);
+        productCheckingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog.dismiss();
+                }
+                return true;
+            }
+        });
+        productCheckingDialog.show();
+        isAllProductsValid();
     }
 
     final ObservableDouble pcoinsUsed = new ObservableDouble(0);
@@ -469,7 +516,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         double comboValue = getComboPrice();
         int deliveryCharge = getDeliveryCharge();
         if (deliveryCharge > 0 && total < 500) {
-            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", PriceFormatUtils.getDoubleFormat(total) + "",PriceFormatUtils.getDoubleFormat(comboValue)  + "", PriceFormatUtils.getDoubleFormat(deliveryCharge) + "", PriceFormatUtils.getDoubleFormat(total + comboValue + deliveryCharge)));
+            confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", PriceFormatUtils.getDoubleFormat(total) + "", PriceFormatUtils.getDoubleFormat(comboValue) + "", PriceFormatUtils.getDoubleFormat(deliveryCharge) + "", PriceFormatUtils.getDoubleFormat(total + comboValue + deliveryCharge)));
         } else {
             confirmOrderBinding.totalPriceTextView.setText("Total price " + PriceFormatUtils.getStringFormattedPrice(total + comboValue));
         }
@@ -500,7 +547,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                         double pcoins = snapshot.getValue(Double.class).intValue();
                         if (pcoins > 0) {
                             totalPcoins.set(pcoins);
-                            double pcoinsUsed = (finalTotal / 100)*5;
+                            double pcoinsUsed = (finalTotal / 100) * 5;
 
                             confirmOrderBinding.pcoinsAlertText.setVisibility(View.VISIBLE);
 
@@ -511,7 +558,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                     confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
                                 } else if (pcoins > pcoinsUsed) {
                                     CartActivity.this.pcoinsUsed.set(pcoinsUsed);
-                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + PriceFormatUtils.getStringFormattedPrice(finalTotal) + " - " +  PriceFormatUtils.getStringFormattedPrice(pcoinsUsed) + " = " + PriceFormatUtils.getStringFormattedPrice(finalTotal - pcoinsUsed));
+                                    confirmOrderBinding.priceAfterPcoin.setText("final price: " + PriceFormatUtils.getStringFormattedPrice(finalTotal) + " - " + PriceFormatUtils.getStringFormattedPrice(pcoinsUsed) + " = " + PriceFormatUtils.getStringFormattedPrice(finalTotal - pcoinsUsed));
                                     confirmOrderBinding.priceAfterPcoin.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -569,6 +616,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         confirmOrderBinding.backBtn.setOnClickListener(n -> {
             confirmOrderDialog.dismiss();
             binding.includeLayout.chipGroup2.clearCheck();
+            binding.includeLayout.progressCircular.setVisibility(View.GONE);
             pcoinsUsed.set(0);
         });
 
@@ -654,7 +702,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             binding.getCartList().clear();
             NotifyRecyclerItems.notifyDataSetChanged(binding.cartRecyclerView);
             binding.getCartViewModel().setCartVisible(false);
-            SharedPrefsUtils.clearCart(this);
+//            SharedPrefsUtils.clearCart(this);
             result.uploaded(true);
         }).addOnFailureListener(e -> result.uploaded(false));
     }
