@@ -1,7 +1,6 @@
 package com.pickleindia.pickle.cart;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +32,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.Observable;
 import androidx.databinding.ObservableDouble;
 import androidx.databinding.ObservableField;
+import androidx.databinding.ObservableInt;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.chip.Chip;
@@ -52,6 +52,7 @@ import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
+import com.pickleindia.pickle.databinding.LayoutVerifingProductAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OfferCombo;
@@ -85,6 +86,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private final ObservableField<String> displayAddress = new ObservableField<>("");
     private final ObservableField<String> databaseCacheAddress = new ObservableField<>("");
 
+    private final ObservableInt productVerifiedCounter = new ObservableInt(0);
+
     private final ArrayList<ProductModel> oldCartProductsKey = new ArrayList<>();
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
@@ -112,7 +115,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             }
         }
     };
-    private ProgressDialog productCheckingDialog;
+    private AlertDialog productCheckingDialog;
     private BottomSheetBehavior<View> behavior;
 
     @Override
@@ -180,6 +183,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     break;
             }
         });
+
+        for (ProductModel product : binding.getCartList()) {
+            if (!oldCartProductsKey.contains(product)) {
+                oldCartProductsKey.add(product);
+            }
+        }
     }
 
     private void onDeliveryChipSelectedAlert(String message, int color) {
@@ -221,12 +230,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         ArrayList<ProductModel> offerComboList = getIntent().getParcelableArrayListExtra(OFFER_COMBO);
         if (offerComboList != null)
             cartList.addAll(offerComboList);
-
-        for (ProductModel product : cartList) {
-            if (!oldCartProductsKey.contains(product)) {
-                oldCartProductsKey.add(product);
-            }
-        }
 
         binding.executePendingBindings();
     }
@@ -290,7 +293,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         Log.e("CartActivity ", "isAllProductsValid();");
         List<ProductModel> newProductsList = new ArrayList<>();
         if (oldCartProductsKey.isEmpty()) {
-            checkDeliveryTimeAndAddress();
+            showOrderConfirmationDialog();
             return;
         }
 
@@ -305,12 +308,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     ProductModel productModel1 = oldCartProductsKey.get(index);
                     getNext(productModel1.getItemCategory(), productModel1.getItemId(), index);
                 }
+
+                productVerifiedCounter.set(index+1);
             }
 
             @Override
             public void onCompleted() {
-
                 if (productCheckingDialog != null) productCheckingDialog.dismiss();
+                productVerifiedCounter.set(0);
 
                 boolean isOutOfStock = true;
                 boolean isPriceSame = true;
@@ -319,9 +324,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                     if (cartItemIndex != -1) {
                         ProductModel oldProduct = oldCartProductsKey.get(cartItemIndex);
                         newProduct.setQuantityCounter(oldProduct.getQuantityCounter());
-                        // TODO: 13-08-2020  remove below code after testing
-                        newProduct.cartAddedDate = oldProduct.cartAddedDate;
-                        //
+
                         String newProductModel = new Gson().toJson(newProduct);
                         SharedPrefsUtils.setStringPreference(CartActivity.this, newProduct.getItemId(), newProductModel);
 
@@ -366,6 +369,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                     showOrderConfirmationDialog();
                                 }, "next", "back");
                     } else {
+                        oldCartProductsKey.clear();
                         showOrderConfirmationDialog();
                     }
                 });
@@ -383,6 +387,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
                                 showOrderConfirmationDialog();
                             }), "next", "back");
                 } else {
+                    Log.e("CartActivity", "everything is running fine");
+                    oldCartProductsKey.clear();
                     showOrderConfirmationDialog();
                 }
                 getShoppingCart();
@@ -460,7 +466,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
             return;
         }
 
-        if (oldCartProductsKey.size() > 0) {
+        if (!oldCartProductsKey.isEmpty()) {
             showProductsCheckingDialog();
             return;
         }
@@ -473,9 +479,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     }
 
     private void showProductsCheckingDialog() {
-        productCheckingDialog = new ProgressDialog(this);
-        productCheckingDialog.setMessage("Some of the products in your cart are outdated, it will take some time to verify the validity of the products");
-        productCheckingDialog.setCancelable(false);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutVerifingProductAlertDialogBinding productBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_verifing_product_alert_dialog, null,false);
+        productBinding.totalProducts.setText("/"+oldCartProductsKey.size());
+        productBinding.setCounter(productVerifiedCounter);
+        builder.setView(productBinding.getRoot());
+        builder.setCancelable(false);
+        productCheckingDialog = builder.create();
         productCheckingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {

@@ -319,8 +319,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_cart_total_amount" />
-                            <entry key="sourceFile" value="G:\Android projects\pickel\ic_cart_total_amount.svg" />
+                            <entry key="outputName" value="ic_factory" />
+                            <entry key="sourceFile" value="C:\Users\Comet\Downloads\factory.svg" />
                           </map>
                         </option>
                       </PersistentState>
