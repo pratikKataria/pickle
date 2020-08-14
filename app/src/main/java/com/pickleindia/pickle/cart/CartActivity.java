@@ -81,8 +81,6 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity, ProductCheckListener {
 
-    // TODO: 13-08-2020 remove product listener when back button pressed
-
     private ActivityCartViewBinding binding;
     private AlertDialog confirmOrderDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
