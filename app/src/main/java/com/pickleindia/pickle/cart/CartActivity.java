@@ -54,6 +54,7 @@ import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
 import com.pickleindia.pickle.databinding.LayoutVerifingProductAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IMainActivity;
+import com.pickleindia.pickle.interfaces.ProductCheckListener;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.OfferCombo;
 import com.pickleindia.pickle.models.OrdersDetails;
@@ -78,7 +79,7 @@ import static com.pickleindia.pickle.utils.Constant.GPS_CORD_RE;
 import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
-public class CartActivity extends AppCompatActivity implements IMainActivity {
+public class CartActivity extends AppCompatActivity implements IMainActivity, ProductCheckListener {
 
     // TODO: 13-08-2020 remove product listener when back button pressed
 
@@ -91,6 +92,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     private final ObservableInt productVerifiedCounter = new ObservableInt(0);
 
     private final ArrayList<ProductModel> oldCartProductsKey = new ArrayList<>();
+    private List<ProductModel> newProductsList = new ArrayList<>();
+    private boolean isActive = true;
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -311,132 +314,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
     }
 
     private void isAllProductsValid() {
-        Log.e("CartActivity ", "isAllProductsValid();");
-        List<ProductModel> newProductsList = new ArrayList<>();
+        isActive = true;
+
         if (oldCartProductsKey.isEmpty()) {
             showOrderConfirmationDialog();
             return;
         }
 
-        check(new ProductCheckListener() {
-            @Override
-            public void onReceived(int index, ProductModel productModel) {
-
-                if (productModel != null)
-                    newProductsList.add(productModel);
-
-                if (index < oldCartProductsKey.size()) {
-                    ProductModel productModel1 = oldCartProductsKey.get(index);
-                    getNext(productModel1.getItemCategory(), productModel1.getItemId(), index);
-                }
-
-                productVerifiedCounter.set(index+1);
-            }
-
-            @Override
-            public void onCompleted() {
-                if (productCheckingDialog != null) productCheckingDialog.dismiss();
-                productVerifiedCounter.set(0);
-
-                boolean isOutOfStock = true;
-                boolean isPriceSame = true;
-                for (ProductModel newProduct : newProductsList) {
-                    int cartItemIndex = oldCartProductsKey.indexOf(newProduct);
-                    if (cartItemIndex != -1) {
-                        ProductModel oldProduct = oldCartProductsKey.get(cartItemIndex);
-                        newProduct.setQuantityCounter(oldProduct.getQuantityCounter());
-
-                        String newProductModel = new Gson().toJson(newProduct);
-                        SharedPrefsUtils.setStringPreference(CartActivity.this, newProduct.getItemId(), newProductModel);
-
-                        if (binding.cartRecyclerView.getAdapter() != null) {
-                            CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
-                            cartRecyclerViewAdapter.updateItemInCart(newProduct);
-                        }
-
-                        if (!newProduct.isItemAvailability()) {
-                            isOutOfStock = false;
-                        }
-
-                        Log.e("Cartactivity ", oldCartProductsKey.get(cartItemIndex).getItemBasePrice() + " ");
-                        if (!newProduct.isPriceSame(oldCartProductsKey.get(cartItemIndex))) {
-                            isPriceSame = false;
-                        }
-                    }//if new index
-                } //for loop
-                getShoppingCart();
-
-                final boolean finalIsPriceSame = isPriceSame;
-                Snackbar outOfStockAlert = Snackbar.make(binding.cartView, "Some products are out of stock, remove to proceed", Snackbar.LENGTH_INDEFINITE);
-                outOfStockAlert.setBehavior(new SnackbarNoSwipeBehavior());
-                outOfStockAlert.setActionTextColor(getResources().getColor(R.color.chartIdealBar));
-                outOfStockAlert.setAction("remove", n -> {
-
-                    for (ProductModel productModel : newProductsList) {
-                        CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
-                        if (cartRecyclerViewAdapter != null && !productModel.isItemAvailability()) {
-                            cartRecyclerViewAdapter.deleteItemFromCart(productModel);
-                            SharedPrefsUtils.removeValuePreference(CartActivity.this, productModel.getItemId());
-                            oldCartProductsKey.remove(productModel);
-                        }
-                    }
-                    getShoppingCart();
-
-                    if (!finalIsPriceSame) {
-                        showAlertDialog("Price Change Alert",
-                                "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
-                                (dialog, which) -> {
-                                    oldCartProductsKey.clear();
-                                    showOrderConfirmationDialog();
-                                }, "next", "back");
-                    } else {
-                        oldCartProductsKey.clear();
-                        showOrderConfirmationDialog();
-                    }
-                });
-
-                if (!isOutOfStock) {
-                    if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }
-                    outOfStockAlert.show();
-                } else if (!isPriceSame) {
-                    showAlertDialog("Price Change Alert",
-                            "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
-                            ((dialog, which) -> {
-                                oldCartProductsKey.clear();
-                                showOrderConfirmationDialog();
-                            }), "next", "back");
-                } else {
-                    Log.e("CartActivity", "everything is running fine");
-                    oldCartProductsKey.clear();
-                    showOrderConfirmationDialog();
-                }
-                getShoppingCart();
-            }
-
-            private void getNext(String cat, String itemId, int index) {
-                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products").child(cat).child(itemId);
-                reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.e("CartActivity", " Product Recieved " + snapshot);
-                        if (snapshot.exists() && snapshot.getValue() != null) {
-                            ProductModel productModel = snapshot.getValue(ProductModel.class);
-                            onReceived(index + 1, productModel);
-                            if (index + 1 == oldCartProductsKey.size()) {
-                                onCompleted();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-        });
+        onReceived(0, null);
     }
 
     private void showAlertDialog(String title, String message, DialogInterface.OnClickListener dialogInterface, String positiveText, String negativeText) {
@@ -454,14 +339,135 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         materialAlertDialogBuilder.show();
     }
 
-    private void check(ProductCheckListener productCheckListener) {
-        productCheckListener.onReceived(0, null);
+    @Override
+    public void onReceived(int index, ProductModel productModel) {
+        if (productModel != null)
+            newProductsList.add(productModel);
+
+        if (index < oldCartProductsKey.size()) {
+            ProductModel productModel1 = oldCartProductsKey.get(index);
+            getNextProduct(productModel1.getItemCategory(), productModel1.getItemId(), index);
+        }
+
+        productVerifiedCounter.set(index+1);
     }
 
-    private interface ProductCheckListener {
-        void onReceived(int index, ProductModel productModel);
+    @Override
+    public void onCompleted() {
+        if (productCheckingDialog != null) productCheckingDialog.dismiss();
+        productVerifiedCounter.set(0);
 
-        void onCompleted();
+        boolean isOutOfStock = true;
+        boolean isPriceSame = true;
+        for (ProductModel newProduct : newProductsList) {
+            int cartItemIndex = oldCartProductsKey.indexOf(newProduct);
+            if (cartItemIndex != -1) {
+                ProductModel oldProduct = oldCartProductsKey.get(cartItemIndex);
+                newProduct.setQuantityCounter(oldProduct.getQuantityCounter());
+
+                String newProductModel = new Gson().toJson(newProduct);
+                SharedPrefsUtils.setStringPreference(CartActivity.this, newProduct.getItemId(), newProductModel);
+
+                if (binding.cartRecyclerView.getAdapter() != null) {
+                    CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
+                    cartRecyclerViewAdapter.updateItemInCart(newProduct);
+                }
+
+                if (!newProduct.isItemAvailability()) {
+                    isOutOfStock = false;
+                }
+
+                Log.e("Cartactivity ", oldCartProductsKey.get(cartItemIndex).getItemBasePrice() + " ");
+                if (!newProduct.isPriceSame(oldCartProductsKey.get(cartItemIndex))) {
+                    isPriceSame = false;
+                }
+            }//if new index
+        } //for loop
+        getShoppingCart();
+
+        final boolean finalIsPriceSame = isPriceSame;
+        Snackbar outOfStockAlert = Snackbar.make(binding.cartView, "Some products are out of stock, remove to proceed", Snackbar.LENGTH_INDEFINITE);
+        outOfStockAlert.setBehavior(new SnackbarNoSwipeBehavior());
+        outOfStockAlert.setActionTextColor(getResources().getColor(R.color.chartIdealBar));
+        outOfStockAlert.setAction("remove", n -> {
+
+            for (ProductModel productModel : newProductsList) {
+                CartRecyclerViewAdapter cartRecyclerViewAdapter = (CartRecyclerViewAdapter) binding.cartRecyclerView.getAdapter();
+                if (cartRecyclerViewAdapter != null && !productModel.isItemAvailability()) {
+                    cartRecyclerViewAdapter.deleteItemFromCart(productModel);
+                    SharedPrefsUtils.removeValuePreference(CartActivity.this, productModel.getItemId());
+                    oldCartProductsKey.remove(productModel);
+                }
+            }
+            getShoppingCart();
+
+            if (!finalIsPriceSame) {
+                showAlertDialog("Price Change Alert",
+                        "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
+                        (dialog, which) -> {
+                            oldCartProductsKey.clear();
+                            showOrderConfirmationDialog();
+                        }, "next", "back");
+            } else {
+                oldCartProductsKey.clear();
+                showOrderConfirmationDialog();
+            }
+        });
+
+        if (!isOutOfStock) {
+            if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+            outOfStockAlert.show();
+        } else if (!isPriceSame) {
+            showAlertDialog("Price Change Alert",
+                    "Its look like that prices of products in your cart has been update, Please recheck the price before proceeding",
+                    ((dialog, which) -> {
+                        oldCartProductsKey.clear();
+                        showOrderConfirmationDialog();
+                    }), "next", "back");
+        } else {
+            Log.e("CartActivity", "everything is running fine");
+            oldCartProductsKey.clear();
+            showOrderConfirmationDialog();
+        }
+        getShoppingCart();
+
+        newProductsList.clear();
+    }
+
+    @Override
+    public void removeListener() {
+        Log.e("CartActivity", "removing listener");
+        if (binding != null) binding.includeLayout.progressCircular.setVisibility(View.GONE);
+        isActive = false;
+    }
+
+    private void getNextProduct(String cat, String itemId, int index) {
+        //break operation
+        if (!isActive) {
+            return;
+        }
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Products").child(cat).child(itemId);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.e("CartActivity", " Product Recieved " + snapshot);
+                if (snapshot.exists() && snapshot.getValue() != null) {
+                    ProductModel productModel = snapshot.getValue(ProductModel.class);
+                    onReceived(index + 1, productModel);
+                    if (index + 1 == oldCartProductsKey.size()) {
+                        onCompleted();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkDeliveryTimeAndAddress() {
@@ -507,14 +513,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity {
         builder.setView(productBinding.getRoot());
         builder.setCancelable(false);
         productCheckingDialog = builder.create();
-        productCheckingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                }
-                return true;
+        productCheckingDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                newProductsList.clear();
+                removeListener();
+                dialog.dismiss();
             }
+            return true;
         });
         productCheckingDialog.show();
         isAllProductsValid();
