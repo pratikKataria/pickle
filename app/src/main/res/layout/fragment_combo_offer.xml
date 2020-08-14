@@ -78,10 +78,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
-                app:cardCornerRadius="4dp"
+                android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/secondaryColorDark"
+                app:cardCornerRadius="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
@@ -90,8 +90,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:textColor="@color/white"
-                    android:text="Note*:  If you want to add other products with combo offers. Add them to the cart before adding combo to cart."/>
+                    android:text="Note*:  If you want to add other products with combo offers. Add them to the cart before adding combo to cart."
+                    android:textColor="@color/white" />
 
             </androidx.cardview.widget.CardView>
 
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{`Combo price: \u20b9`+offerCombo.totalPrice}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                app:layout_constraintBottom_toTopOf="@+id/totalPriceCounter"
+                app:layout_constraintBottom_toTopOf="@+id/flowLayout"
                 app:layout_constraintStart_toStartOf="@+id/cardView5"
                 tools:text="total p" />
 
@@ -119,13 +119,27 @@
                     android:id="@+id/qty_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:dropDownWidth="65dp"
                     android:layout_gravity="end|center"
                     android:backgroundTint="@color/black"
+                    android:dropDownWidth="65dp"
                     android:hapticFeedbackEnabled="true"
                     app:layout_constraintStart_toEndOf="@+id/textView52"
                     app:layout_constraintTop_toTopOf="@+id/addToCart" />
             </androidx.cardview.widget.CardView>
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flowLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="sample, totalPriceCounter"
+                app:flow_horizontalBias="0"
+                app:flow_horizontalStyle="packed"
+                app:flow_wrapMode="chain"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView4"
+                app:layout_constraintEnd_toStartOf="@+id/cardView4"
+                app:layout_constraintStart_toStartOf="@+id/textView52">
+
+            </androidx.constraintlayout.helper.widget.Flow>
 
             <TextView
                 android:id="@+id/textView54"
@@ -137,17 +151,22 @@
                 app:layout_constraintTop_toBottomOf="@+id/cardView4" />
 
             <TextView
-                android:id="@+id/totalPriceCounter"
-                android:layout_width="0dp"
+                android:id="@+id/sample"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="22sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeTextType="uniform"
-                android:singleLine="true"
+                android:text="Your combo price: "
                 app:layout_constraintBottom_toBottomOf="@+id/cardView4"
-                app:layout_constraintEnd_toStartOf="@+id/textView54"
-                app:layout_constraintStart_toStartOf="@+id/textView52"
-                tools:text="total price c" />
+                app:layout_constraintEnd_toStartOf="@+id/totalPriceCounter"
+                app:layout_constraintStart_toStartOf="@+id/flowLayout" />
+
+            <TextView
+                android:id="@+id/totalPriceCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="ewrewr"
+                app:layout_constraintStart_toEndOf="@+id/sample"
+                tools:layout_editor_absoluteY="202dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/addToCart"
@@ -169,8 +188,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:overScrollMode="never"
                 android:layout_marginBottom="?attr/actionBarSize"
+                android:overScrollMode="never"
                 app:carProductList="@{comboProducts}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView54"

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,6 @@ public class ComboOfferFragment extends Fragment {
         if (getArguments() != null) {
             offerCombo = (OfferCombo) getArguments().get(OFFER_COMBO);
         }
-        Log.e(OFFER_COMBO, offerCombo.toString());
     }
 
     @Override
@@ -75,7 +73,6 @@ public class ComboOfferFragment extends Fragment {
         for (int i = 0; i < ids_cat.length; i++) {
             id[i] = ids_cat[i].split("_")[0];
             cat[i] = ids_cat[i].split("_")[1];
-            Log.e("prduct mOdel ", id[i] + " " + cat[i] + " split " + ids_cat[i].split("_"));
         }
 
         progressDialog = new ProgressDialog(getActivity());
@@ -131,7 +128,7 @@ public class ComboOfferFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 counter[0] = 1;
                 offerCombo.qtyCounter = counter[position];
-                binding.totalPriceCounter.setText("Your combo price: \u20b9"+ offerCombo.getTotalPrice() + "x" + offerCombo.qtyCounter + " = \u20b9"+ (offerCombo.qtyCounter*offerCombo.getTotalPrice()));
+                binding.totalPriceCounter.setText("\u20b9"+ offerCombo.getTotalPrice() + "x" + offerCombo.qtyCounter + " = \u20b9"+ (offerCombo.qtyCounter*offerCombo.getTotalPrice()));
             }
 
             @Override
