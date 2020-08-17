@@ -3,6 +3,7 @@ package com.pickleindia.pickle.main;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
@@ -32,6 +33,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -53,8 +60,6 @@ import com.pickleindia.pickle.utils.SharedPrefsUtils;
 import com.pickleindia.pickle.utils.SmoothActionBarDrawerToggle;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
-import java.util.concurrent.ExecutionException;
-
 import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class MainActivity extends AppCompatActivity implements
@@ -68,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
     private SmoothActionBarDrawerToggle smoothActionBarDrawerToggle;
     private CoordinatorLayout snackBarLayout;
 
+    public static final int UPDATE_STATUS_CODE = 432;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +105,24 @@ public class MainActivity extends AppCompatActivity implements
         LinearLayout companyInfo = findViewById(R.id.linearLayout_comp_info);
         companyInfo.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, DeveloperProfile.class));
+        });
+
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
+        Task<AppUpdateInfo> appUpdateManagerTask = appUpdateManager.getAppUpdateInfo();
+        appUpdateManagerTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.IMMEDIATE,
+                            this,
+                            UPDATE_STATUS_CODE
+                    );
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 
@@ -432,4 +456,6 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+
 }

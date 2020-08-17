@@ -34,6 +34,7 @@ import com.pickleindia.pickle.databinding.FragmentComboOfferBinding;
 import com.pickleindia.pickle.models.OfferCombo;
 import com.pickleindia.pickle.models.ProductModel;
 import com.pickleindia.pickle.utils.NotifyRecyclerItems;
+import com.pickleindia.pickle.utils.PriceFormatUtils;
 
 import java.util.ArrayList;
 
@@ -128,7 +129,7 @@ public class ComboOfferFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 counter[0] = 1;
                 offerCombo.qtyCounter = counter[position];
-                binding.totalPriceCounter.setText("\u20b9"+ offerCombo.getTotalPrice() + "x" + offerCombo.qtyCounter + " = \u20b9"+ (offerCombo.qtyCounter*offerCombo.getTotalPrice()));
+                binding.totalPriceCounter.setText("\u20b9"+ offerCombo.getTotalPrice() + "x" + offerCombo.qtyCounter + " = \u20b9"+ PriceFormatUtils.getDoubleFormat(offerCombo.qtyCounter*offerCombo.getTotalPrice()));
             }
 
             @Override
@@ -157,7 +158,7 @@ public class ComboOfferFragment extends Fragment {
 
                 if (productModel != null) {
                     productModel.isCombo = true;
-                    productModel.setItemId(productModel.getItemId() + "_" + "C");
+                    productModel.setItemId(productModel.getItemId() + "_" + cat);
                     productModel.setItemBasePrice(0);
                     productModel.setItemSellPrice(0);
                     productModel.setQuantityCounter(1);

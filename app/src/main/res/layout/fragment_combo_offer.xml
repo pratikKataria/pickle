@@ -6,6 +6,7 @@
     <data>
 
         <import type="com.pickleindia.pickle.models.ProductModel" />
+        <import type="com.pickleindia.pickle.utils.PriceFormatUtils"/>
 
         <variable
             name="offerCombo"

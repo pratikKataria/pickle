@@ -727,6 +727,18 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
         return 0;
     }
 
+    private double getComboQuantity() {
+        try {
+            OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
+            if (offerCombo != null) {
+                return offerCombo.qtyCounter;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     private void sendOrdersToDatabase(UploadResult result) {
         Map<String, Object> atomicOperation = buildOrders();
         DatabaseReference ordersDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -771,6 +783,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
             atomicOperation.put("Orders/" + key + "/orderId", key);
             atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.ORDERED);
+            atomicOperation.put("Orders/"+ key + "/comboQuantity", getComboQuantity());
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
             atomicOperation.put("Orders/" + key + "/pcoinsSpent", PriceFormatUtils.getDoubleFormat(pcoinsUsed.get()));
@@ -788,7 +801,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             atomicOperation.put("Orders/" + key + "/subTotal", PriceFormatUtils.getDoubleFormat(calcTotal));
 
             if (getComboPrice() > 0) {
-                atomicOperation.put("Orders/" + key + "/comboPrice", getComboPrice());
+                atomicOperation.put("Orders/" + key + "/comboPrice", PriceFormatUtils.getDoubleFormat(getComboPrice()));
                 OfferCombo offerCombo = getIntent().getParcelableExtra("combo_def");
                 atomicOperation.put("Orders/" + key + "/comboId", offerCombo.getOfferId());
             }

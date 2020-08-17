@@ -64,7 +64,7 @@
                     android:scaleX="1.2"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/bg_toolbar_image" />
+                    android:src="@drawable/ic_title_logo" />
 
             </androidx.appcompat.widget.Toolbar>
 

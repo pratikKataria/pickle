@@ -115,7 +115,9 @@
                     android:id="@+id/total_products"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp" />
+                    android:layout_margin="2dp"
+                    android:visibility="@{orderDetails.comboQuantity > 0? View.VISIBLE : View.GONE}"
+                    android:text="@{`Combo qunatity: ` + orderDetails.comboQuantity}"/>
             </LinearLayout>
         </LinearLayout>
 

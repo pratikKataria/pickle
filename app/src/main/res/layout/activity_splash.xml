@@ -23,7 +23,7 @@
         android:id="@+id/imageView7"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:src="@drawable/title_logo"
+        android:src="@drawable/ic_title_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintStart_toStartOf="@+id/guideline7"

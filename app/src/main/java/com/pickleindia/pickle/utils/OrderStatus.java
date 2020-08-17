@@ -15,8 +15,7 @@ public abstract class OrderStatus {
             CANCEL
     })
 
-    public @interface IOrderStatus {
-    }
+    public @interface IOrderStatus { }
 
     public static final int PROCESSING = 243;
     public static final int ORDERED = 347;

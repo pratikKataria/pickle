@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
 import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
+
 import com.bumptech.glide.GenericTransitionOptions;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -93,6 +95,8 @@ public class GlideImageBindingAdapter {
     public static void setImage(ImageView _imageView, String imageUrl) {
 
         Context context = _imageView.getContext();
+
+        Log.e("GlideBinding", imageUrl);
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.img_loading)
