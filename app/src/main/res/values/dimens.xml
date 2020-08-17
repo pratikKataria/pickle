@@ -31,5 +31,7 @@
     <dimen name="fragment_top_header_height">250dp</dimen>
 
     <dimen name="follow_us_icon_size">38dp</dimen>
+    <dimen name="addressBottomSheetHeight">110dp</dimen>
+    <dimen name="addressBottomSheetWidth">175dp</dimen>
 
 </resources>

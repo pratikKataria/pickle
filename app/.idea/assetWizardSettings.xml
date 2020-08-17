@@ -319,8 +319,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_factory" />
-                            <entry key="sourceFile" value="C:\Users\Comet\Downloads\factory.svg" />
+                            <entry key="outputName" value="ic_wallet" />
+                            <entry key="sourceFile" value="C:\Users\Comet\Downloads\wallet.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -1,10 +1,13 @@
 package com.pickleindia.pickle.cart;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +102,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
         @Override
         public void onStateChanged(@NonNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                binding.includeLayout.constraintLayout.animate().alpha(0).setDuration(300).setInterpolator(new LinearInterpolator()).start();
+
                 if (!observableAddress.get().isEmpty()) {
                     binding.includeLayout.progressCircular.setVisibility(View.GONE);
                 }
@@ -104,6 +111,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                 if (binding != null && binding.includeLayout.chipDeliveryTime3.isChecked()) {
                     setDeliveryChargeAlert();
                 }
+            } else if (newState == BottomSheetBehavior.STATE_DRAGGING) {
+                binding.includeLayout.constraintLayout.animate().alpha(1).setDuration(300).setInterpolator(new LinearInterpolator()).start();
             }
         }
 
@@ -136,13 +145,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             if (!checkFirebaseAuth())
                 return;
 
-
             if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             }
-
-            //check if user address is present
-            checkAddress();
         });
 
         binding.includeLayout.radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -192,6 +198,14 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                 oldCartProductsKey.add(product);
             }
         }
+
+      binding.includeLayout.addressSlot1.setOnClickListener(n -> {
+          checkAddress();
+      });
+
+        binding.includeLayout.checkoutButton.setOnClickListener(n -> {
+            checkDeliveryTimeAndAddress();
+        });
 
     }
 
@@ -270,12 +284,33 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
     //check address in database and place order
     private void checkAddress() {
 
-        if (FirebaseAuth.getInstance().getUid() == null)
+        if (FirebaseAuth.getInstance().getUid() == null) {
+            startActivity(new Intent(this, LoginActivity.class).putExtra(CartActivity.class.getName(), "cart"));
+            Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
             return;
+        }
 
-        binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
         if (databaseCacheAddress.get().isEmpty()) {
+            binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
             Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
+
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            ProgressBar progressBar = new ProgressBar(this);
+            Drawable drawable = progressBar.getIndeterminateDrawable().mutate();
+            drawable.setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+            progressDialog.setIndeterminateDrawable(drawable);
+
+            progressDialog.setMessage("Checking Address");
+            progressDialog.setCancelable(false);
+            progressDialog.setOnKeyListener((dialog, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    progressDialog.dismiss();
+                }
+                return true;
+            });
+
+            progressDialog.show();
+
             DatabaseReference userAddressDatabaseReference = FirebaseDatabase.getInstance().getReference("Addresses");
             userAddressDatabaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("slot1")
@@ -286,6 +321,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                                 Address address = dataSnapshot.getValue(Address.class);
                                 binding.includeLayout.progressCircular.setVisibility(View.GONE);
                                 if (address != null) {
+                                    progressDialog.dismiss();
                                     if (address.getGpsLocation() != null) {
                                         observableAddress.set(address.getGpsLocation());
                                         displayAddress.set(address.getGpsLocation());
@@ -306,8 +342,6 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
-        } else {
-            checkDeliveryTimeAndAddress();
         }
     }
 
@@ -347,7 +381,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             getNextProduct(productModel1.getItemCategory(), productModel1.getItemId(), index);
         }
 
-        productVerifiedCounter.set(index+1);
+        productVerifiedCounter.set(index + 1);
     }
 
     @Override
@@ -505,8 +539,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
     private void showProductsCheckingDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutVerifingProductAlertDialogBinding productBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_verifing_product_alert_dialog, null,false);
-        productBinding.totalProducts.setText("/"+oldCartProductsKey.size());
+        LayoutVerifingProductAlertDialogBinding productBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_verifing_product_alert_dialog, null, false);
+        productBinding.totalProducts.setText("/" + oldCartProductsKey.size());
         productBinding.setCounter(productVerifiedCounter);
         builder.setView(productBinding.getRoot());
         builder.setCancelable(false);
@@ -651,6 +685,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             confirmOrderDialog.dismiss();
             binding.includeLayout.chipGroup2.clearCheck();
             binding.includeLayout.progressCircular.setVisibility(View.GONE);
+            binding.includeLayout.deliveryChargeAlert.setVisibility(View.GONE);
             pcoinsUsed.set(0);
         });
 
@@ -783,7 +818,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             atomicOperation.put("Orders/" + key + "/userId", FirebaseAuth.getInstance().getUid());
             atomicOperation.put("Orders/" + key + "/orderId", key);
             atomicOperation.put("Orders/" + key + "/orderStatus", OrderStatus.ORDERED);
-            atomicOperation.put("Orders/"+ key + "/comboQuantity", getComboQuantity());
+            atomicOperation.put("Orders/" + key + "/comboQuantity", getComboQuantity());
             atomicOperation.put("Orders/" + key + "/date", localTimestamp);
             atomicOperation.put("Orders/" + key + "/orderDetailsIds", orderDetailsIds.toString());
             atomicOperation.put("Orders/" + key + "/pcoinsSpent", PriceFormatUtils.getDoubleFormat(pcoinsUsed.get()));

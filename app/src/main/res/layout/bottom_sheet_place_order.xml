@@ -38,10 +38,12 @@
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="25dp"
                 android:background="@drawable/ic_round_rect"
+                android:backgroundTint="#FEFFF6"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -50,8 +52,8 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="24dp"
-                    android:visibility="gone"
                     android:indeterminateTint="@color/black"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +66,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="24dp"
                     android:text="Select Delivery Time"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/progress_circular" />
@@ -86,10 +89,10 @@
                         android:layout_height="wrap_content"
                         android:text="7:00 AM ~ 9:00AM"
                         android:textAppearance="@style/chipText"
-                        app:checkedIconTint="@color/black"
                         android:textColor="@color/black"
                         app:checkedIcon="@drawable/ic_clock"
                         app:checkedIconEnabled="true"
+                        app:checkedIconTint="@color/black"
                         app:chipBackgroundColor="@color/bg_chip_state" />
 
                     <com.google.android.material.chip.Chip
@@ -97,12 +100,12 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
                         android:text="4:00 PM ~ 6:00PM"
                         android:textAppearance="@style/chipText"
+                        android:textColor="@color/black"
                         app:checkedIcon="@drawable/ic_clock"
-                        app:checkedIconTint="@color/black"
                         app:checkedIconEnabled="true"
+                        app:checkedIconTint="@color/black"
                         app:chipBackgroundColor="@color/bg_chip_state"
                         app:iconStartPadding="8dp" />
 
@@ -111,8 +114,8 @@
                         style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/delivery_slot_three"
                         android:tag="current"
+                        android:text="@string/delivery_slot_three"
                         android:textAppearance="@style/chipText"
                         android:textColor="@color/chip_text_color_state_deliver_with_one_hr"
                         app:checkedIcon="@drawable/ic_clock"
@@ -125,9 +128,9 @@
                     android:id="@+id/deliveryChargeAlert"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:drawableTop="@drawable/ic_notification"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:drawableTop="@drawable/ic_notification"
                     android:gravity="center"
                     android:text="dddddddddddddddddddddddddddddddddddddddddddddddddddd"
                     android:textColor="#FF0012"
@@ -142,8 +145,11 @@
                     android:layout_height="22dp"
                     android:layout_gravity="center"
                     android:layout_margin="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="Select Delivery Address"
+                    android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/deliveryChargeAlert" />
 
@@ -195,38 +201,39 @@
                     android:id="@+id/horizontalScrollView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
                     android:scrollbarSize="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/syncAddress">
+                    app:layout_constraintTop_toBottomOf="@+id/textView14">
 
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:padding="12dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="8dp">
 
                         <!-- Our custom radios here. One for male one for female -->
 
                         <com.pickleindia.pickle.ui.MyRadioButton
                             android:id="@+id/address_slot_1"
                             style="@style/MyCustomRadioButton"
-                            android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_width="@dimen/addressBottomSheetWidth"
+                            android:layout_height="@dimen/addressBottomSheetHeight"
                             android:layout_marginEnd="12dp"
-                            android:layout_marginBottom="32dp"
+                            android:layout_marginBottom="12dp"
                             android:checked="true"
-                            android:text="@{observableAddress.empty ? `try to Refresh Address` : observableAddress.matches(Constant.GPS_CORD_RE) ? @string/gpsText : observableAddress}"
+                            android:text="@{observableAddress.empty ? `tap to Refresh Address` : observableAddress.matches(Constant.GPS_CORD_RE) ? @string/gpsText : observableAddress}"
                             android:textAllCaps="@{observableAddress.empty}"
                             android:textColor="@color/radio_text_color_state" />
 
                         <com.pickleindia.pickle.ui.MyRadioButton
                             android:id="@+id/address_slot_2"
                             style="@style/MyCustomRadioButtonAddNew"
-                            android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_width="@dimen/addressBottomSheetWidth"
+                            android:layout_height="@dimen/addressBottomSheetHeight"
                             android:layout_marginEnd="12dp"
                             android:padding="16dp"
                             android:paddingStart="16dp"
@@ -238,8 +245,8 @@
                         <com.pickleindia.pickle.ui.MyRadioButton
                             android:id="@+id/address_slot_3"
                             style="@style/MyCustomRadioButtonAddNew"
-                            android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_width="@dimen/addressBottomSheetWidth"
+                            android:layout_height="@dimen/addressBottomSheetHeight"
                             android:layout_marginEnd="12dp"
                             android:padding="16dp"
                             android:paddingStart="16dp"
@@ -251,8 +258,8 @@
                         <com.pickleindia.pickle.ui.MyRadioButton
                             android:id="@+id/address_slot_4"
                             style="@style/MyCustomRadioButtonAddNew"
-                            android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_width="@dimen/addressBottomSheetWidth"
+                            android:layout_height="@dimen/addressBottomSheetHeight"
                             android:layout_marginEnd="12dp"
                             android:padding="16dp"
                             android:paddingStart="16dp"
@@ -264,8 +271,8 @@
                         <com.pickleindia.pickle.ui.MyRadioButton
                             android:id="@+id/address_slot_5"
                             style="@style/MyCustomRadioButtonAddNew"
-                            android:layout_width="175dp"
-                            android:layout_height="175dp"
+                            android:layout_width="@dimen/addressBottomSheetWidth"
+                            android:layout_height="@dimen/addressBottomSheetHeight"
                             android:layout_marginEnd="12dp"
                             android:padding="16dp"
                             android:paddingStart="16dp"
@@ -276,24 +283,30 @@
                     </RadioGroup>
                 </HorizontalScrollView>
 
+
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/syncAddress"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:id="@+id/checkoutButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:drawableEnd="@drawable/ic__refresh"
-                    android:drawablePadding="8dp"
-                    android:src="@drawable/ic_sync_black_24dp"
-                    android:text="Refresh Address"
-                    android:textColor="@color/secondaryColorDark"
-                    app:icon="@drawable/ic__refresh"
-                    app:iconTint="@color/secondaryColorDark"
-                    app:layout_constraintEnd_toEndOf="@+id/btm_sheet_cip_current_location"
-                    app:layout_constraintStart_toStartOf="@+id/btm_sheet_cip_current_location"
-                    app:layout_constraintTop_toBottomOf="@+id/textView14"
-                    app:rippleColor="@color/secondaryColorLight"
-                    app:strokeColor="@color/secondaryColorLight" />
+                    android:layout_marginTop="20dp"
+                    android:gravity="bottom"
+                    android:paddingBottom="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="Checkout"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/black"
+                    app:cornerRadius="16dp"
+                    app:icon="@drawable/ic_wallet"
+                    app:iconGravity="end"
+                    app:iconTint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+                    app:rippleColor="@color/colorAccent"
+                    app:strokeColor="@color/colorAccent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
