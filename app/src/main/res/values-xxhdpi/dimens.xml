@@ -4,4 +4,5 @@
     <dimen name="crd_view_empty_orders_height">150dp</dimen>
     <dimen name="empty_cart_bg_image_height">350dp</dimen>
 
+    <dimen name="peekHeight">55dp</dimen>
 </resources>

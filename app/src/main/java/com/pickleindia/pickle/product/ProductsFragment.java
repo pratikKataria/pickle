@@ -170,18 +170,19 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String categories = snapshot.getValue(String.class);
                 if (categories == null) return;
-
-                for (String category : categories.split(" ")) {
-                    if (this != null && getLayoutInflater() != null ) {
-                        LayoutProductCategoryChipBinding bind = DataBindingUtil.inflate(
-                                getLayoutInflater(),
-                                R.layout.layout_product_category_chip,
-                                null,
-                                false
-                        );
-                        bind.setName(category);
-                        productBinding.chipGroup.addView(bind.getRoot());
+                try {
+                    for (String category : categories.split(" ")) {
+                            LayoutProductCategoryChipBinding bind = DataBindingUtil.inflate(
+                                    getLayoutInflater(),
+                                    R.layout.layout_product_category_chip,
+                                    null,
+                                    false
+                            );
+                            bind.setName(category);
+                            productBinding.chipGroup.addView(bind.getRoot());
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -358,7 +359,9 @@ public class ProductsFragment extends Fragment implements IFragmentCb, RecyclerS
 
                                         if (dataSnapshot.getChildrenCount() == 1) {
                                             isLoading.set(false);
-                                            Toast.makeText(getActivity(), "you have reached to last", Toast.LENGTH_SHORT).show();
+                                            if (getActivity() != null) {
+                                                Toast.makeText(getActivity(), "you have reached to last", Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     }
                                 }

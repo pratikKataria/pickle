@@ -386,7 +386,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
     @Override
     public void onCompleted() {
-        if (productCheckingDialog != null) productCheckingDialog.dismiss();
+        try {
+            if (productCheckingDialog != null) productCheckingDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         productVerifiedCounter.set(0);
 
         boolean isOutOfStock = true;
@@ -538,23 +542,27 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
     }
 
     private void showProductsCheckingDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutVerifingProductAlertDialogBinding productBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_verifing_product_alert_dialog, null, false);
-        productBinding.totalProducts.setText("/" + oldCartProductsKey.size());
-        productBinding.setCounter(productVerifiedCounter);
-        builder.setView(productBinding.getRoot());
-        builder.setCancelable(false);
-        productCheckingDialog = builder.create();
-        productCheckingDialog.setOnKeyListener((dialog, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                newProductsList.clear();
-                removeListener();
-                dialog.dismiss();
-            }
-            return true;
-        });
-        productCheckingDialog.show();
-        isAllProductsValid();
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutVerifingProductAlertDialogBinding productBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.layout_verifing_product_alert_dialog, null, false);
+            productBinding.totalProducts.setText("/" + oldCartProductsKey.size());
+            productBinding.setCounter(productVerifiedCounter);
+            builder.setView(productBinding.getRoot());
+            builder.setCancelable(false);
+            productCheckingDialog = builder.create();
+            productCheckingDialog.setOnKeyListener((dialog, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    newProductsList.clear();
+                    removeListener();
+                    dialog.dismiss();
+                }
+                return true;
+            });
+            productCheckingDialog.show();
+            isAllProductsValid();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     final ObservableDouble pcoinsUsed = new ObservableDouble(0);

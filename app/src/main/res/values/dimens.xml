@@ -34,4 +34,5 @@
     <dimen name="addressBottomSheetHeight">110dp</dimen>
     <dimen name="addressBottomSheetWidth">175dp</dimen>
 
+    <dimen name="peekHeight">62dp</dimen>
 </resources>
