@@ -324,20 +324,27 @@
 
                 <ImageButton
                     android:id="@+id/placeOrder"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:clickable="false"
-                    android:src="@drawable/empty_cart_btn" />
+                    android:src="@drawable/empty_cart_btn"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/placeOrderTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="@font/avenir_next_bold"
-                    android:text="Place Order"
+
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:fontFamily="@font/avenir_next_medium"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:text="Select Delivery Hour"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
