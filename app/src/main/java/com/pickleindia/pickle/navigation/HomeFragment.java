@@ -204,6 +204,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
 
 
     private ChildEventListener carouselImageChildEventListener;
+
     private ChildEventListener getImageList() {
         carouselImageChildEventListener = carouselImagesDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -490,8 +491,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
     public void updateIconItems() {
         if (getActivity() != null) {
             ArrayList<ProductModel> refreshList = SharedPrefsUtils.getAllProducts(getActivity());
-                itemCount = refreshList.size();
-                getActivity().invalidateOptionsMenu();
+            itemCount = refreshList.size();
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -541,7 +542,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                         navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
                         productModelArrayList.clear();
                     } else {
-                        navigateToProductFragment(offerCombo.getProductIds_cat());
+                        if (!offerCombo.getProductIds_cat().isEmpty())
+                            navigateToProductFragment(offerCombo.getProductIds_cat());
                     }
                 }
             }

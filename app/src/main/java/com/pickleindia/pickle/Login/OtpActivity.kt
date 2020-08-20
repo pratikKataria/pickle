@@ -76,6 +76,7 @@ class OtpActivity : AppCompatActivity() {
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        Log.d("otp", "signInWithCredential $credential")
         mAuth.signInWithCredential(credential)
                 .addOnSuccessListener {
                     val isNew = it.additionalUserInfo?.isNewUser
