@@ -36,8 +36,7 @@ public class GlideImageBindingAdapter {
     @BindingAdapter("customImageBackgroundS")
     public static void productFragmentCustomImageBackground(ImageView imageview, String type) {
 
-        Log.e(
-                "Glide Image Binding Adapter",
+        Log.e("GlideBindingAdapter",
                 type
         );
 
@@ -94,9 +93,9 @@ public class GlideImageBindingAdapter {
     @BindingAdapter("imageResourceAdapter")
     public static void setImage(ImageView _imageView, String imageUrl) {
 
-        Context context = _imageView.getContext();
+        if (imageUrl == null) return;
 
-        Log.e("GlideBinding", imageUrl);
+        Context context = _imageView.getContext();
 
         RequestOptions requestOptions = new RequestOptions()
                 .placeholder(R.drawable.img_loading)

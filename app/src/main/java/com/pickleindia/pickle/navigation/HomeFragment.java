@@ -542,7 +542,8 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
                         navController.navigate(R.id.action_homeFragment_to_comboOfferFragment, bundle);
                         productModelArrayList.clear();
                     } else {
-                        if (!offerCombo.getProductIds_cat().isEmpty())
+                        Log.e("HomeFragment", " not a combo ");
+                        if (!offerCombo.getProductIds_cat().trim().isEmpty())
                             navigateToProductFragment(offerCombo.getProductIds_cat());
                     }
                 }
