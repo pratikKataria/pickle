@@ -62,7 +62,6 @@ public class FirebaseSearchRecyclerAdapter extends RecyclerView.Adapter<Recycler
             }
         } else {
             EmptyView emptyView = (EmptyView) holder;
-
         }
 
     }
