@@ -9,20 +9,15 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.FragmentApartmentBinding;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.ApartmentDataModel;
-import com.pickleindia.pickle.models.Customer;
 import com.pickleindia.pickle.models.IndividualHouseDataModel;
-import com.pickleindia.pickle.models.PersonalInformation;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import static com.pickleindia.pickle.utils.Constant.APARTMENT;
@@ -75,6 +70,12 @@ public class ApartmentFragment extends Fragment {
 
             if (binding.cdEtAddress.getText().toString().trim().isEmpty()) {
                 binding.cdEtAddress.setError("should not be empty");
+                binding.cdEtAddress.requestFocus();
+                return;
+            }
+
+            if (binding.cdEtInstruction.getText().toString().trim().isEmpty()) {
+                binding.cdEtInstruction.setError("should not be empty");
                 binding.cdEtAddress.requestFocus();
                 return;
             }

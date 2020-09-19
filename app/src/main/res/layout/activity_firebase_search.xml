@@ -10,7 +10,6 @@
         <import type="java.util.List" />
 
         <import type="android.app.Activity" />
-
         <import type="com.pickleindia.pickle.adapters.AutoCompleteAdapter" />
 
         <import type="android.view.View"/>

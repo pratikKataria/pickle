@@ -143,9 +143,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/act_customer_detail_tv"
-            android:text="Landmark / Instruction" />
+            android:textColor="@android:color/holo_red_light"
+            android:text="Landmark / Instruction*" />
 
         <EditText
             android:id="@+id/cd_et_instruction"
