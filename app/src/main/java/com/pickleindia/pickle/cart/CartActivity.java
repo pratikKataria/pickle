@@ -130,6 +130,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
     private AlertDialog productCheckingDialog;
     private BottomSheetBehavior<View> behavior;
 
+    private boolean isFreeDeliverySlot = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,9 +181,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             switch (checkedId) {
                 case R.id.chipDeliveryTime1:
                     onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "12:00 AM"), R.color.black);
+                    isFreeDeliverySlot = true;
                     break;
                 case R.id.chipDeliveryTime2:
                     onDeliveryChipSelectedAlert(getString(R.string.delivery_cancel_msg, "3:30 PM"), R.color.black);
+                    isFreeDeliverySlot = true;
                     break;
                 case R.id.chipDeliveryTime3:
                     if (binding.getCartViewModel().getTotalCostInt() >= 500) {
@@ -189,6 +193,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                     } else {
                         onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", "500"), R.color.jungleGreen);
                     }
+
+                    isFreeDeliverySlot = false;
                     break;
             }
         });
@@ -199,9 +205,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             }
         }
 
-      binding.includeLayout.addressSlot1.setOnClickListener(n -> {
-          checkAddress();
-      });
+        binding.includeLayout.addressSlot1.setOnClickListener(n -> {
+            checkAddress();
+        });
 
         binding.includeLayout.checkoutButton.setOnClickListener(n -> {
             checkDeliveryTimeAndAddress();
@@ -536,6 +542,15 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
         if (confirmOrderDialog != null && confirmOrderDialog.isShowing()) {
             return;
+        }
+
+        if (isFreeDeliverySlot) {
+            double totalCost = binding.getCartViewModel().getTotalCostInt();
+            if (totalCost < 99) {
+                Toast toast = Toast.makeText(this, "Order below \u20b999 cannot be accepted", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
         }
 
         showOrderConfirmationDialog();
