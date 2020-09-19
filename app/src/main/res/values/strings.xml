@@ -63,5 +63,6 @@
     <string name="comp_desc">ByteMint is a professional software services provider that specializes in delivering fully managed solutions based on Microsoft .NET, Java, Ruby on Rails, Angular, React, JavaScript, Android, iOS, Hadoop, and NoSQL. ByteMint also helps companies to build a sustainable competitive advantage on top of Cloud Foundry, blockchain, and artificial intelligence technologies</string>
     <string name="comp_mission">Our mission is to transform the ideas and needs of our customers into business value by developing stable and innovative solutions with high-level expertise and competitive spirit.</string>
     <string name="pcoins_percent_cut_dialog">you can only avail upto 5% on order 100 or above</string>
+    <string name="order_detail">We currently accepting orders only in <font color='#ffff4444'>Indore*</font> </string>
 
 </resources>

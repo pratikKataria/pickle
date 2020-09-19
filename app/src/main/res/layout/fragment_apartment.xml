@@ -23,11 +23,19 @@
         tools:context=".Login.viewpager.ApartmentFragment">
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/order_detail"
+            android:textAlignment="center"
+            android:textSize="@dimen/act_customer_detail_tv" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Name*"
             android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
             android:textSize="@dimen/act_customer_detail_tv"
+            android:layout_marginTop="12dp"
             android:textColor="@android:color/holo_red_light" />
 
         <EditText
