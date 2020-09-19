@@ -95,6 +95,7 @@
                         android:background="@color/white"
                         android:backgroundTint="@color/icFruitBg"
                         android:clickable="true"
+                        android:layout_gravity="center"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_ONE)}"
                         app:cardCornerRadius="8dp"

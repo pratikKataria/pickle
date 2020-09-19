@@ -43,8 +43,8 @@
     <!--    CAT_TWO = "Vegetables";-->
     <!--    CAT_THREE = "Dairy";-->
     <!--    CAT_FOUR = "Grocery";-->
-    <string name="CAT_ONE">Fruits</string>
-    <string name="CAT_TWO">Vegetables</string>
+    <string name="CAT_ONE">Fruits &amp; Vegetables</string>
+    <string name="CAT_TWO">Branded Food</string>
     <string name="CAT_THREE">Dairy</string>
     <string name="CAT_FOUR">Grocery</string>
     <string name="CAT_FIVE">Household</string>

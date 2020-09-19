@@ -31,8 +31,8 @@ public abstract class Constant {
 
     public static final String ROOT = "pickle-8bac6";
     public static final String PRODUCT = "Products";
-    public static final String CAT_ONE = "Fruits";
-    public static final String CAT_TWO = "Vegetables";
+    public static final String CAT_ONE = "Fruits & Vegetables";
+    public static final String CAT_TWO = "Branded Food";
     public static final String CAT_THREE = "Dairy";
     public static final String CAT_FOUR = "Grocery";
     public static final String CAT_FIVE = "Households";

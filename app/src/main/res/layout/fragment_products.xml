@@ -119,7 +119,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-                    app:layout_constraintVertical_bias="0.416">
+                    app:layout_constraintVertical_bias="0.07999998">
 
                     <ImageView
                         android:id="@+id/grid_view_iv_image"
@@ -130,13 +130,14 @@
 
                 <TextView
                     android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="@{type}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@color/black"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline11"
                     app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
                     app:layout_constraintTop_toTopOf="@+id/cardViewFruits"
                     tools:text="Fruits" />
