@@ -86,6 +86,7 @@ import static com.pickleindia.pickle.utils.Constant.PRODUCT_TYPE;
 
 public class CartActivity extends AppCompatActivity implements IMainActivity, ProductCheckListener {
 
+    private final int minOrderValueForDeliveryWithinOneHour = 999;
     private ActivityCartViewBinding binding;
     private AlertDialog confirmOrderDialog;
     private final ObservableField<String> observableAddress = new ObservableField<>("");
@@ -188,10 +189,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                     isFreeDeliverySlot = true;
                     break;
                 case R.id.chipDeliveryTime3:
-                    if (binding.getCartViewModel().getTotalCostInt() >= 500) {
-                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "0", "above", "500"), R.color.chartIdealBar);
+                    if (binding.getCartViewModel().getTotalCostInt() >= minOrderValueForDeliveryWithinOneHour) {
+                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "0", "above", ""+minOrderValueForDeliveryWithinOneHour), R.color.chartIdealBar);
                     } else {
-                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", "500"), R.color.jungleGreen);
+                        onDeliveryChipSelectedAlert(getString(R.string.delivery_charge_alert, "39", " below ", ""+minOrderValueForDeliveryWithinOneHour), R.color.jungleGreen);
                     }
 
                     isFreeDeliverySlot = false;
@@ -243,11 +244,11 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
     }
 
     private void setDeliveryChargeAlert() {
-        if (binding.getCartViewModel().getTotalCostInt() >= 500) {
-            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "0", "above", "500"));
+        if (binding.getCartViewModel().getTotalCostInt() >= minOrderValueForDeliveryWithinOneHour) {
+            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "0", "above", "" + minOrderValueForDeliveryWithinOneHour));
             binding.includeLayout.deliveryChargeAlert.setTextColor(getResources().getColor(R.color.chartIdealBar));
         } else {
-            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "39", " below ", "500"));
+            binding.includeLayout.deliveryChargeAlert.setText(getString(R.string.delivery_charge_alert, "39", " below ", ""+minOrderValueForDeliveryWithinOneHour));
             binding.includeLayout.deliveryChargeAlert.setTextColor(getResources().getColor(R.color.jungleGreen));
         }
         binding.includeLayout.deliveryChargeAlert.setVisibility(View.VISIBLE);
@@ -606,7 +607,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
         double comboValue = getComboPrice();
         int deliveryCharge = getDeliveryCharge();
-        if (deliveryCharge > 0 && total < 500) {
+        if (deliveryCharge > 0 && total < minOrderValueForDeliveryWithinOneHour) {
             confirmOrderBinding.totalPriceTextView.setText(String.format("Subtotal \u20b9%s + combo \u20b9%s + \u20b9%s (delivery charge) = \u20b9%s", PriceFormatUtils.getDoubleFormat(total) + "", PriceFormatUtils.getDoubleFormat(comboValue) + "", PriceFormatUtils.getDoubleFormat(deliveryCharge) + "", PriceFormatUtils.getDoubleFormat(total + comboValue + deliveryCharge)));
         } else {
             confirmOrderBinding.totalPriceTextView.setText("Total price " + PriceFormatUtils.getStringFormattedPrice(total + comboValue));
@@ -850,7 +851,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             int shipping = 0;
             String deliveryTime = getDeliveryTime();
             if (deliveryTime.equals(getString(R.string.delivery_slot_three)))
-                if (calcTotal < 500)
+                if (calcTotal < minOrderValueForDeliveryWithinOneHour)
                     shipping += 39;
 
             atomicOperation.put("Orders/" + key + "/deliveryTime", deliveryTime);

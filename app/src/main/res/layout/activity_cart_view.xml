@@ -244,15 +244,15 @@
                         android:id="@+id/clearCartBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="@{() -> activity.clearCart()}"
-                        android:layout_marginEnd="22dp"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:drawableTint="@color/black"
+                        android:layout_marginEnd="22dp"
                         android:background="@drawable/selected_bg_text_item"
+                        android:drawableTint="@color/black"
+                        android:gravity="center"
+                        android:onClick="@{() -> activity.clearCart()}"
                         android:padding="2dp"
                         android:text=" Clear cart "
-                        android:textColor="@color/secondaryColorLight"/>
+                        android:textColor="@color/secondaryColorLight" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -263,11 +263,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/cart_margin_start"
-                android:layout_marginEnd="@dimen/cart_margin_end"
                 android:layout_marginTop="65dp"
-                app:elevation="0dp"
+                android:layout_marginEnd="@dimen/cart_margin_end"
                 android:background="@drawable/selected_bg_text_item"
-                android:backgroundTint="@color/colorAccent">
+                android:backgroundTint="@color/colorAccent"
+                app:elevation="0dp">
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
@@ -277,6 +277,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="4dp"
+                        android:visibility="@{cartViewModel.totalCostInt > 99?View.VISIBLE: View.GONE }"
                         app:layout_collapseMode="pin">
 
 
@@ -295,21 +296,21 @@
 
                         <TextView
                             android:id="@+id/textView6"
+                            style="@style/cartHeaderText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="18dp"
                             android:text="Cart amount: "
-                            style="@style/cartHeaderText"
                             app:layout_constraintStart_toEndOf="@+id/imageView12"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/cartAmountTextView"
+                            style="@style/cartHeaderText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            style="@style/cartHeaderText"
                             android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.totalCostInt)}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView6"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -319,20 +320,20 @@
 
                         <TextView
                             android:id="@+id/textView58"
+                            style="@style/cartHeaderText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Combo Price: "
-                            style="@style/cartHeaderText"
                             android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
                             app:layout_constraintStart_toStartOf="@+id/textView6"
                             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
                         <TextView
                             android:id="@+id/textView57"
+                            style="@style/cartHeaderText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            style="@style/cartHeaderText"
                             android:text="@{PriceFormatUtils.getStringFormattedPrice(cartViewModel.comboValue)}"
                             android:visibility="@{cartViewModel.comboValue > 0? View.VISIBLE : View.GONE}"
                             app:layout_constraintBottom_toBottomOf="@+id/textView58"
@@ -342,9 +343,9 @@
 
                         <TextView
                             android:id="@+id/textView581"
+                            style="@style/cartHeaderText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            style="@style/cartHeaderText"
                             android:text="Free delivery only available on morning (7 AM ~ 9 AM) and evening (4 PM ~ 6 PM) slot"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/textView58"
@@ -381,15 +382,40 @@
 
                         <TextView
                             android:id="@+id/amountToBePaid"
+                            style="@style/cartHeaderText"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            style="@style/cartHeaderText"
                             android:text="@{cartViewModel.totalCostString}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/textView25"
                             app:layout_constraintTop_toTopOf="@+id/textView25" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="65dp"
+                        app:cardCornerRadius="8dp"
+                        android:elevation="12dp"
+                        android:visibility="@{cartViewModel.totalCostInt > 99?View.GONE: View.VISIBLE }"
+                        android:backgroundTint="@color/secondaryColorDark">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top|center"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="@{`Your current cart total amount is ` + cartViewModel.totalCostString}"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:layout_marginTop="14dp"
+                            android:text="Your cart total amount is less then \u20b9 99 please \n make sure that your cart will have total over \u20b9 99"/>
+                    </androidx.cardview.widget.CardView>
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -404,11 +430,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your Orders"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/avenir_next_demi_bold"
-                    android:textSize="16sp"/>
+                    android:text="Your Orders"
+                    android:textSize="16sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cartRecyclerView"
@@ -420,7 +446,6 @@
                     app:carProductList="@{cartList}"
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
-
 
 
             <include

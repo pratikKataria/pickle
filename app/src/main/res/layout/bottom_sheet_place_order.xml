@@ -5,7 +5,8 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="com.pickleindia.pickle.utils.Constant"/>
+
+        <import type="com.pickleindia.pickle.utils.Constant" />
 
         <variable
             name="cartView"
@@ -13,7 +14,7 @@
 
         <variable
             name="activity"
-            type="com.pickleindia.pickle.cart.CartActivity"/>
+            type="com.pickleindia.pickle.cart.CartActivity" />
 
         <variable
             name="observableAddress"
@@ -26,10 +27,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:orientation="vertical"
+        android:visibility="@{cartView.totalCostInt > 99?View.VISIBLE: View.GONE }"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/peekHeight"
-        android:orientation="vertical"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -289,9 +292,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="12dp"
                     android:gravity="bottom"
                     android:paddingBottom="8dp"
-                    android:layout_marginBottom="12dp"
                     android:text="Checkout"
                     android:textAllCaps="false"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -342,16 +345,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:scaleX="0.7"
-                    android:scaleY="0.7"
-                    android:includeFontPadding="false"
-                    android:paddingStart="12dp"
                     android:drawableEnd="@drawable/ic_up"
                     android:drawableTint="@color/black"
                     android:fontFamily="@font/avenir_next_medium"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:paddingStart="12dp"
+                    android:scaleX="0.7"
+                    android:scaleY="0.7"
                     android:text="Swipe to select delivery time"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
