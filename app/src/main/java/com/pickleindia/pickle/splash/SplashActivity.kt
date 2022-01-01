@@ -59,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         if (hasPermissions(this, requiredPermission)) {
-            startActivityMain(false)
+//            startActivityMain(false)
         } else {
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         }
