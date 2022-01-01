@@ -35,13 +35,17 @@
             android:name=".splash.OnBoardingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Login.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:name="com.pickleindia.pickle.auth.Login.LoginActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
-            android:name=".Login.OtpActivity"
-            android:screenOrientation="portrait"/>
+            android:name="com.pickleindia.pickle.auth.Login.OtpActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
-            android:name=".Login.CustomerDetailActivity"
+            android:name="com.pickleindia.pickle.auth.Login.CustomerDetailActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".main.MainActivity"

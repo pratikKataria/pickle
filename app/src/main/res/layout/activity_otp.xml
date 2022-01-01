@@ -4,60 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login.OtpActivity">
+    android:background="@drawable/ic_app_background_i"
+    tools:context=".auth.Login.OtpActivity">
+
 
     <ImageView
         android:id="@+id/activity_otp_image"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/onBoardingImageDimen"
-        android:src="@drawable/ic_get_otp_screen"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        android:layout_height="200dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="48dp"
+        android:src="@drawable/img_otp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/three_item_layout_item_name3"
+    <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/avenir_next_demi_bold"
-        android:text="Enter OTP"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline10" />
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="@+id/activity_otp_image"
+        app:layout_constraintTop_toTopOf="@+id/guideline10">
 
-    <TextView
-        android:id="@+id/activity_login_textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:text="We have sent you an OTP for
-phone number verification"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/three_item_layout_item_name3" />
+        <TextView
+            android:id="@+id/three_item_layout_item_name3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/avenir_next_demi_bold"
+            android:text="Enter OTP"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline10" />
+
+        <TextView
+            android:id="@+id/activity_login_textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:text="We have sent you an OTP for\nphone number verification"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/three_item_layout_item_name3" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/activity_otp_et_enter_otp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp" 
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_border"
+        android:textColor="@color/white"
         android:hint="_\t\t\t_\t\t\t_\t\t\t_\t\t\t_\t\t\t_"
-        android:textAlignment="center"
         android:maxLength="6"
-        style="@style/loginEditTextStyle"
+        android:textAlignment="center"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout6" />
 
     <ProgressBar
         android:id="@+id/activity_otp_progress"
@@ -65,23 +78,24 @@ phone number verification"
         android:layout_height="32dp"
         android:layout_marginEnd="8dp"
         android:visibility="gone"
-        android:indeterminateTint="@color/darkBlue"
+        android:indeterminateTint="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/activity_otp_et_enter_otp"
         app:layout_constraintEnd_toEndOf="@+id/activity_otp_et_enter_otp"
         app:layout_constraintTop_toTopOf="@+id/activity_otp_et_enter_otp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_otp_mb_submit_otp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Verify"
+        android:backgroundTint="@color/buttonColor"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:textAllCaps="false"
         android:textColor="@color/darkBlue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/activity_otp_et_enter_otp"
+        app:layout_constraintStart_toStartOf="@+id/activity_otp_et_enter_otp"
         app:layout_constraintTop_toBottomOf="@+id/activity_otp_et_enter_otp" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -89,6 +103,15 @@ phone number verification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.37" />
+
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:src="@drawable/ic_bottom_ribbion"
+        android:translationY="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

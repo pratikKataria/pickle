@@ -1,4 +1,4 @@
-package com.pickleindia.pickle.Login;
+package com.pickleindia.pickle.auth.Login;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.pickleindia.pickle.Login.viewpager.ViewPagerAdapter;
+import com.pickleindia.pickle.auth.Login.viewpager.ViewPagerAdapter;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.ui.ZoomOutPageTransformer;
 

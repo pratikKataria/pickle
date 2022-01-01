@@ -1,143 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/ic_app_background_i"
-        tools:context=".Login.LoginActivity">
+    tools:context=".Login.LoginActivity">
+
 
     <ImageView
-        android:id="@+id/activity_otp_image"
-        android:layout_width="153dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_login_ii"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@drawable/img_login_name"
+        android:paddingHorizontal="24dp"
+       android:translationY="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
 
     <ImageView
         android:id="@+id/imageView20"
-        android:layout_width="246dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_login_i"
-        android:translationY="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:src="@drawable/img_login"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintEnd_toEndOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_textView1">
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:src="@drawable/ic_bottom_ribbion"
+        android:translationY="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-            <EditText
-                android:id="@+id/activity_login_et_country_code"
-                style="@style/loginEditTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/textBoxBackground"
-                android:enabled="false"
-                android:inputType="number"
-                android:text="+91" />
-
-            <EditText
-                android:id="@+id/activity_login_et_phone_number"
-                style="@style/loginEditTextStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="Your Phone Number"
-                android:inputType="number"
-                android:maxLength="10" />
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/activity_login_pb_counter"
-            android:layout_width="32dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="24dp"
-            android:indeterminateTint="@color/darkBlue"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="0.272" />
-
-    <TextView
-        android:id="@+id/three_item_layout_item_name3"
+    <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:fontFamily="@font/avenir_next_demi_bold"
-        android:text="Verify your \nphone number"
-        android:textColor="@color/white"
+        android:gravity="start"
+        android:orientation="vertical"
         android:translationY="-30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView20" />
+        app:layout_constraintTop_toTopOf="@+id/guideline10">
+
+        <TextView
+            android:id="@+id/three_item_layout_item_name3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_next_demi_bold"
+            android:text="Verify your \nphone number"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView20" />
+
+        <TextView
+            android:id="@+id/activity_login_textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Please enter your phone number \nfor authetication"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/three_item_layout_item_name3"
+            app:layout_constraintTop_toBottomOf="@+id/three_item_layout_item_name3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll">
+
+        <EditText
+            android:id="@+id/activity_login_et_country_code"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/bg_border"
+            android:enabled="false"
+            android:gravity="center"
+            android:inputType="number"
+            android:text="+91"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/activity_login_et_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_border"
+            android:hint="Your Phone Number"
+            android:inputType="number"
+            android:maxLength="10"
+            android:textColor="@color/white"
+            android:paddingStart="20dp"
+            android:textColorHint="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/activity_login_pb_counter"
+        android:layout_width="32dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        android:indeterminateTint="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.272" />
 
     <TextView
-        android:id="@+id/activity_login_textView1"
+        android:id="@+id/activity_login_tv_error"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
+        android:text=""
+        android:textColor="@color/CeriseRed"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/activity_login_tv_count_down_time"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="60"
+        android:visibility="invisible"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_login_pb_counter"
+        app:layout_constraintEnd_toEndOf="@+id/activity_login_pb_counter"
+        app:layout_constraintStart_toStartOf="@+id/activity_login_pb_counter"
+        app:layout_constraintTop_toTopOf="@+id/activity_login_pb_counter"
+        app:layout_constraintVertical_bias="0.39" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please enter your phone number \nfor authetication"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="@+id/three_item_layout_item_name3"
-        tools:layout_editor_absoluteY="386dp" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.48" />
 
-        <TextView
-            android:id="@+id/activity_login_tv_count_down_time"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:text="60"
-            android:gravity="center"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_login_pb_counter"
-            app:layout_constraintEnd_toEndOf="@+id/activity_login_pb_counter"
-            app:layout_constraintStart_toStartOf="@+id/activity_login_pb_counter"
-            app:layout_constraintTop_toTopOf="@+id/activity_login_pb_counter"
-            app:layout_constraintVertical_bias="0.39" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
 
-        <TextView
-            android:id="@+id/activity_login_tv_error"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:text=""
-            android:textColor="@color/CeriseRed"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4"  />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/activity_login_mb_send_otp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/primary_btn_bg"
-            android:text="Generate OTP"
-            android:textAllCaps="false"
-            android:singleLine="true"
-            android:textColor="@color/darkBlue"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_tv_error" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/activity_login_mb_send_otp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Generate OTP"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/buttonColor"
+        android:textColor="@color/darkBlue"
+        app:cornerRadius="4dp"
+        app:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/activity_login_tv_error" />
+</androidx.constraintlayout.widget.ConstraintLayout>

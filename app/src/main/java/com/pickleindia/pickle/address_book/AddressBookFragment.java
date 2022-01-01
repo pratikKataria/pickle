@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.pickleindia.pickle.Login.CustomerDetailActivity;
+import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.FragmentAddressBookBinding;
 

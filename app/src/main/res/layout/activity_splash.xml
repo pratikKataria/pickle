@@ -22,14 +22,6 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:id="@+id/imageView19"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:translationY="8dp"
-        android:src="@drawable/ic_bottom_ribbion"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <TextView
         android:id="@+id/imageView10"
         android:layout_width="wrap_content"
@@ -37,13 +29,14 @@
         android:text="Developed &amp; Design By Pratik kataria"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:translationY="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView19"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
     <ImageView
+        android:id="@+id/imageView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="40dp"
@@ -52,6 +45,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView18" />
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="110dp"
+        android:layout_height="20dp"
+        android:indeterminate="true"
+        android:translationY="-50dp"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView21" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"

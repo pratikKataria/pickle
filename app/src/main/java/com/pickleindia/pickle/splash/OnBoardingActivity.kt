@@ -9,15 +9,13 @@ import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.pickleindia.pickle.utils.HorizontalFlipTransformation
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.adapters.SliderAdapter
-import com.pickleindia.pickle.Login.LoginActivity
+import com.pickleindia.pickle.auth.Login.LoginActivity
 import com.google.android.material.button.MaterialButton
-import com.google.firebase.auth.FirebaseAuth
 
 
 class OnBoardingActivity : AppCompatActivity() {

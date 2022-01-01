@@ -1,4 +1,4 @@
-package com.pickleindia.pickle.Login.viewpager;
+package com.pickleindia.pickle.auth.Login.viewpager;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,16 +13,11 @@ import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.FragmentApartmentBinding;
 import com.pickleindia.pickle.models.Address;
 import com.pickleindia.pickle.models.ApartmentDataModel;
-import com.pickleindia.pickle.models.Customer;
 import com.pickleindia.pickle.models.IndividualHouseDataModel;
-import com.pickleindia.pickle.models.PersonalInformation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import static com.pickleindia.pickle.utils.Constant.APARTMENT;

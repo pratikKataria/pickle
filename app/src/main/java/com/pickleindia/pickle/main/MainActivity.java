@@ -45,7 +45,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
 import com.pickleindia.pickle.DeveloperProfile;
-import com.pickleindia.pickle.Login.LoginActivity;
+import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartActivity;
 import com.pickleindia.pickle.databinding.LayoutFollowUsAlertDialogBinding;

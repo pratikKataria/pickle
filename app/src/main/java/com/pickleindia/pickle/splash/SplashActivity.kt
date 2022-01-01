@@ -10,16 +10,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.transition.ChangeBounds
-import android.transition.TransitionManager
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.OvershootInterpolator
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.app.ActivityCompat
-import com.google.firebase.auth.FirebaseAuth
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.main.MainActivity
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -50,7 +45,10 @@ class SplashActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("permissions", 0)
         if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
             startActivity(
-                Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                Intent(
+                    this@SplashActivity,
+                    OnBoardingActivity::class.java
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply()
             finish()
@@ -101,7 +99,11 @@ class SplashActivity : AppCompatActivity() {
 
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         //permission_granted = 0 // permission_denied = -1
         if (PERMISSION_ALL == requestCode) {
 
@@ -145,13 +147,18 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun hasPermissions(context: Context, permissions: Array<String>):
-            Boolean = permissions.all { ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
+            Boolean = permissions.all {
+        ActivityCompat.checkSelfPermission(
+            context,
+            it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
     private fun startActivityMain(instantStart: Boolean) {
         val delay = if (instantStart) {
             1000L
         } else {
-            1500L
+            2000L
         }
 
         Handler().postDelayed({

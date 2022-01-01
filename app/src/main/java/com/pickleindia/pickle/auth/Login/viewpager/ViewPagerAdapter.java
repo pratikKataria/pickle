@@ -1,4 +1,4 @@
-package com.pickleindia.pickle.Login.viewpager;
+package com.pickleindia.pickle.auth.Login.viewpager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

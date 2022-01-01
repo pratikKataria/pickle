@@ -1,7 +1,6 @@
-package com.pickleindia.pickle.Login.viewpager;
+package com.pickleindia.pickle.auth.Login.viewpager;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -22,24 +21,19 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.pickleindia.pickle.Login.CustomerDetailActivity;
+import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.R;
  import com.pickleindia.pickle.databinding.FragmentCurrentLocationBinding;
 import com.pickleindia.pickle.models.CurrentAddress;
-import com.pickleindia.pickle.models.Customer;
-import com.pickleindia.pickle.models.PersonalInformation;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.pickleindia.pickle.utils.SnackbarNoSwipeBehavior;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import mumayank.com.airlocationlibrary.AirLocation;

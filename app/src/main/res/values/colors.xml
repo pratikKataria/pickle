@@ -84,4 +84,9 @@
     <color name="jungleGreen">#29AB87</color>
     <color name="seaGreen">#2E8B57</color>
 
+
+    <!--New resources-->
+    <color name="buttonColor">#FFDDC5</color>
+
+
 </resources>
