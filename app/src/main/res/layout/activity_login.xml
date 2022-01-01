@@ -5,18 +5,25 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+    android:background="@drawable/ic_app_background_i"
         tools:context=".Login.LoginActivity">
 
-        <ImageView
-            android:id="@+id/activity_otp_image"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="@dimen/onBoardingImageDimen"
-            android:src="@drawable/ic_otp_screen"
-            app:layout_constraintBottom_toTopOf="@+id/guideline10"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageView
+        android:id="@+id/activity_otp_image"
+        android:layout_width="153dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_login_ii"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="246dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_login_i"
+        android:translationY="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -62,30 +69,26 @@
             app:layout_constraintTop_toTopOf="@+id/linearLayout"
             app:layout_constraintVertical_bias="0.272" />
 
-        <TextView
-            android:id="@+id/three_item_layout_item_name3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/avenir_next_demi_bold"
-            android:text="Verify Your Number"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline10" />
+    <TextView
+        android:id="@+id/three_item_layout_item_name3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/avenir_next_demi_bold"
+        android:text="Verify your \nphone number"
+        android:textColor="@color/white"
+        android:translationY="-30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView20" />
 
-        <TextView
-            android:id="@+id/activity_login_textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Please enter your phone number for authetication"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/three_item_layout_item_name3" />
+    <TextView
+        android:id="@+id/activity_login_textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please enter your phone number \nfor authetication"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/three_item_layout_item_name3"
+        tools:layout_editor_absoluteY="386dp" />
 
         <TextView
             android:id="@+id/activity_login_tv_count_down_time"

@@ -30,15 +30,15 @@ class SplashActivity : AppCompatActivity() {
     private val PERMISSION_ALL = 110
 
     private val permission = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.READ_SMS,
-            Manifest.permission.INTERNET
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.SEND_SMS,
+        Manifest.permission.READ_SMS,
+        Manifest.permission.INTERNET
     )
 
     private val requiredPermission = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
 
@@ -50,7 +50,7 @@ class SplashActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("permissions", 0)
         if (sharedPreferences.getBoolean("FIRST_RUN", true)) {
             startActivity(
-                    Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                Intent(this@SplashActivity, OnBoardingActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             )
             sharedPreferences.edit().putBoolean("FIRST_RUN", false).apply()
             finish()
@@ -59,7 +59,7 @@ class SplashActivity : AppCompatActivity() {
 
 
         if (hasPermissions(this, requiredPermission)) {
-//            startActivityMain(false)
+            startActivityMain(false)
         } else {
             ActivityCompat.requestPermissions(this, permission, PERMISSION_ALL)
         }
@@ -72,7 +72,7 @@ class SplashActivity : AppCompatActivity() {
                 addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     decorView.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 } else {
                     decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 }
