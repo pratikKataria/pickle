@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/darkBlue</item>
-        <item name="android:fontFamily">@font/avenir_next_medium</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
         <item name="android:includeFontPadding">false</item>
 
         <item name="android:statusBarColor">@color/white</item>
@@ -136,7 +136,7 @@
 
     <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/avenir_next_medium</item>
+        <item name="android:fontFamily">@font/poppins_medium</item>
     </style>
 
 

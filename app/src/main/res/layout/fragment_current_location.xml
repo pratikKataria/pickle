@@ -34,7 +34,7 @@
             android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
             android:textSize="@dimen/act_customer_detail_et"
             android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:background="@drawable/bg_edit_text_dark" />
         
         <ProgressBar
             android:id="@+id/progressBar"

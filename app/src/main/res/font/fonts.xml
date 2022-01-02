@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font-family xmlns:android="http://schemas.android.com/apk/res/android">
     <font
-        android:font="@font/avenir_next_regular"
+        android:font="@font/poppins_regular"
         android:fontWeight="400"/>
     <font
-        android:font="@font/avenir_next_medium"
+        android:font="@font/poppins_medium"
         android:fontWeight="400" />
     <font
-        android:font="@font/avenir_next_demi_bold"
+        android:font="@font/poppins_semi_bold"
         android:fontWeight="400" />
     <font
-        android:font="@font/avenir_next_bold"
+        android:font="@font/poppins_bold"
         android:fontWeight="400" />
     <font
         android:font="@font/avenir_next_demi_bold_italic"

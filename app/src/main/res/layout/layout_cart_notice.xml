@@ -29,14 +29,14 @@
                 android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_next_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Earliest delivery date "
                 android:textColor="@color/secondaryColorDark" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_next_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="@{DateUtils.nextDate}"
                 android:textColor="@color/secondaryColorDark"
                 tools:text="Wed, 6 May." />

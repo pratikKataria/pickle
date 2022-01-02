@@ -2,15 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pickleindia.pickle">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
     <application
         android:name=".Pickle"
         android:hardwareAccelerated="true"
@@ -20,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeveloperProfile"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".testActivity">
+
+        </activity>
+        <activity
+            android:name=".DeveloperProfile"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".splash.SplashActivity"
             android:screenOrientation="portrait">
@@ -35,23 +30,18 @@
             android:name=".splash.OnBoardingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.pickleindia.pickle.auth.Login.LoginActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name="com.pickleindia.pickle.auth.Login.OtpActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
-            android:name="com.pickleindia.pickle.auth.Login.CustomerDetailActivity"
+            android:name=".auth.Login.LoginActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".auth.Login.OtpActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".auth.Login.CustomerDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".main.MainActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -76,8 +66,7 @@
             android:windowSoftInputMode="adjustNothing|stateAlwaysVisible" />
         <activity
             android:name=".cart.CartActivity"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".main.AddNewItemActivity"
             android:screenOrientation="portrait" />
@@ -85,5 +74,14 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

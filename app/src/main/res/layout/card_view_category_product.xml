@@ -157,7 +157,7 @@
                     style="@style/Widget.Cart.Add.Button"
                     android:layout_width="@dimen/mtrl_btn_width"
                     android:layout_height="@dimen/mtrl_btn_height"
-                    android:fontFamily="@font/avenir_next_medium"
+                    android:fontFamily="@font/poppins_medium"
                     android:onClick="@{() -> productViewModel.addToCart(context)}"
                     android:paddingStart="6dp"
                     android:text="Add"

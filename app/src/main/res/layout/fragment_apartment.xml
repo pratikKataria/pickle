@@ -39,7 +39,7 @@
             android:visibility="@{updateAddress? View.GONE: View.VISIBLE}"
             android:textSize="@dimen/act_customer_detail_et"
             android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:background="@drawable/bg_edit_text_dark" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +59,7 @@
             android:textSize="@dimen/act_customer_detail_et"
             android:hint="e.g. new apolo tower"
             android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:background="@drawable/bg_edit_text_dark" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,7 +90,7 @@
                     android:maxLength="6"
                     android:inputType="number"
                     android:singleLine="true"
-                    android:background="@drawable/bg_border" />
+                    android:background="@drawable/bg_edit_text_dark" />
             </LinearLayout>
 
 
@@ -116,7 +116,7 @@
                     android:textSize="@dimen/act_customer_detail_et"
                     android:hint="e.g. 204"
                     android:singleLine="true"
-                    android:background="@drawable/bg_border" />
+                    android:background="@drawable/bg_edit_text_dark" />
             </LinearLayout>
         </LinearLayout>
 
@@ -136,7 +136,7 @@
             android:padding="@dimen/act_customer_detail_padding"
             android:hint="e.g. Street, Area, Colony, Sector"
             android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:background="@drawable/bg_edit_text_dark" />
 
 
         <TextView
@@ -155,7 +155,7 @@
             android:textSize="@dimen/act_customer_detail_et"
             android:hint="e.g. near gardern, brown color door"
             android:singleLine="true"
-            android:background="@drawable/bg_border" />
+            android:background="@drawable/bg_edit_text_dark" />
 
         <ProgressBar
             android:id="@+id/progressBar"

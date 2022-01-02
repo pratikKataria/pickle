@@ -86,7 +86,7 @@
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_next_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:text="Your Cart is Empty"
                 android:textSize="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,7 +97,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenir_next_bold"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:onClick="@{() -> activity.finish()}"
                 android:text="GO HOME"
@@ -407,7 +407,7 @@
                     android:text="Your Orders"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
-                    android:fontFamily="@font/avenir_next_demi_bold"
+                    android:fontFamily="@font/poppins_semi_bold"
                     android:textSize="16sp"/>
 
                 <androidx.recyclerview.widget.RecyclerView

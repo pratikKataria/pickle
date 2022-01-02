@@ -39,7 +39,7 @@
         android:id="@+id/imageView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="40dp"
+        android:paddingHorizontal="48dp"
         android:src="@drawable/img_app_name_with_add"
         android:translationY="-50dp"
         app:layout_constraintEnd_toEndOf="parent"

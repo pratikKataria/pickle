@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -102,11 +103,11 @@ public class MainActivity extends AppCompatActivity implements
         navController = navHostFragment.getNavController();
         NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.getNavController());
 
-        LinearLayout companyInfo = findViewById(R.id.linearLayout_comp_info);
+     /*   ConstraintLayout companyInfo = findViewById(R.id.linearLayout_comp_info);
         companyInfo.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, DeveloperProfile.class));
         });
-
+*/
         AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(MainActivity.this);
         Task<AppUpdateInfo> appUpdateManagerTask = appUpdateManager.getAppUpdateInfo();
         appUpdateManagerTask.addOnSuccessListener(appUpdateInfo -> {
@@ -192,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
+      /*  switch (item.getItemId()) {
             case R.id.navigation_menu_logout:
                 if (FirebaseAuth.getInstance().getUid() == null)
                     Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
@@ -203,10 +204,10 @@ public class MainActivity extends AppCompatActivity implements
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
                 drawerLayout.closeDrawers();
                 break;
-            case R.id.nav_menu_sub_address_book:
+       *//*     case R.id.nav_menu_sub_address_book:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_addressBookFragment));
                 drawerLayout.closeDrawers();
-                break;
+                break;*//*
             case R.id.nav_menu_sub_refer_link:
                 createReferLink();
                 break;
@@ -214,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_rewardFragment));
                 drawerLayout.closeDrawers();
                 break;
-            case R.id.navigation_menu_login:
+          *//*  case R.id.navigation_menu_login:
                 smoothActionBarDrawerToggle.runWhenIdle(() -> {
                     if (FirebaseAuth.getInstance().getUid() == null) {
                         startActivity(new Intent(this, LoginActivity.class));
@@ -223,16 +224,16 @@ public class MainActivity extends AppCompatActivity implements
                     }
                 });
                 drawerLayout.closeDrawers();
-                break;
+                break;*//*
             case R.id.nav_menu_follow_us:
                 showFollowusDialog();
                 break;
             case R.id.nav_menu_sub_about:
                 checkAuthAndNavigate(R.id.action_homeFragment_to_aboutFragment);
                 break;
-            case R.id.nav_menu_sub_tutorial:
+            *//*case R.id.nav_menu_sub_tutorial:
                 showTutorialAlertDialog();
-                break;
+                break;*//*
             case R.id.navigation_menu_rate_us:
                 showPlaystoreRateUs();
                 break;
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements
                 smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
                 drawerLayout.closeDrawers();
                 break;
-        }
+        }*/
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

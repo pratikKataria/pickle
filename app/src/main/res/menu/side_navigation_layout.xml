@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
+ <!--   <group
         android:id="@+id/group_1"
         android:checkableBehavior="none">
 
@@ -10,8 +10,8 @@
             android:id="@+id/navigation_menu_login"
             android:title="Login" />
     </group>
-
-    <item
+-->
+ <!--   <item
         android:id="@+id/navigation_menu_feedback"
         android:title="Others">
         <menu>
@@ -19,9 +19,9 @@
                 android:id="@+id/nav_menu_sub_orders"
                 android:title="Your Orders" />
 
-            <item
+       &lt;!&ndash;     <item
                 android:id="@+id/nav_menu_sub_address_book"
-                android:title="Address Manager" />
+                android:title="Address Manager" />&ndash;&gt;
 
             <item
                 android:id="@+id/nav_menu_sub_refer_link"
@@ -62,14 +62,14 @@
 
     <item
         android:id="@+id/nav_menu_sub_about"
-        android:title="About us and Policies" />
+        android:title="About us and Policies" />-->
 
-    <item
+<!--    <item
         android:id="@+id/nav_menu_sub_tutorial"
-        android:title="Tutorial" />
+        android:title="Tutorial" />-->
 
-    <item
+<!--    <item
         android:id="@+id/nav_menu_follow_us"
-        android:title="Follow us" />
+        android:title="Follow us" />-->
 
 </menu>
