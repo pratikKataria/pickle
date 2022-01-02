@@ -36,264 +36,255 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".activity.main.ProductsFragment">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".activity.main.ProductsFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
-                android:background="@color/colorGrey50"
-                app:layout_collapseMode="parallax"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
+                android:layout_height="wrap_content">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@color/colorGrey50"
+                    app:layout_collapseMode="parallax"
+                    app:layout_scrollFlags="scroll|enterAlways|snap">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/searchCardview"
-                    android:layout_width="0dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="8dp"
-                    android:backgroundTint="@color/colorGrey100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageButton4"
-                    app:layout_constraintTop_toTopOf="@+id/imageButton4">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_search" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center"
-                        android:layout_marginStart="16dp"
-                        android:text="search here"
-                        android:textColor="@color/black" />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/imageButton4"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="16dp"
-                    android:backgroundTint="@color/colorGrey100"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageButton
-                        android:id="@+id/imageButton3"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:onClick="@{() -> activity.onBackPressed()}"
-                        android:src="@drawable/ic_arrow_left" />
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewFruits"
-                    android:layout_width="85dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="12dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    app:cardElevation="0dp"
-                    app:customBackgroundColor="@{type}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageButton4"
-                    app:layout_constraintVertical_bias="0.416">
-
-                    <ImageView
-                        android:id="@+id/grid_view_iv_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:customImageBackgroundS="@{type}" />
-                </androidx.cardview.widget.CardView>
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@{type}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="@color/black"
-                    app:layout_constraintStart_toEndOf="@+id/cardViewFruits"
-                    app:layout_constraintTop_toTopOf="@+id/cardViewFruits"
-                    tools:text="Fruits" />
-
-                <TextView
-                    android:id="@+id/countFruits"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="@+id/textView16"
-                    app:layout_constraintTop_toBottomOf="@+id/textView16"
-                    tools:text="24 items" />
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="@+id/searchCardview"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toStartOf="@+id/guideline11"
-                    app:layout_constraintTop_toBottomOf="@+id/searchCardview">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/orderOnPhone"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:clickable="true"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:stateListAnimator="@animator/card_animator"
-                        app:cardCornerRadius="12dp"
-                        app:layout_constraintBottom_toTopOf="@+id/textViewasdf"
-                        app:layout_constraintEnd_toEndOf="@+id/icCart"
-                        app:layout_constraintStart_toStartOf="@+id/icCart">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:autoLink="phone"
-                            android:text="@string/orderOnCall"
-                            android:textSize="0sp" />
+                        android:id="@+id/searchCardview"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="@color/colorGrey100"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/imageButton4"
+                        app:layout_constraintTop_toBottomOf="@+id/imageButton4">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:background="@drawable/ic_phone_call" />
-                    </androidx.cardview.widget.CardView>
+                            android:layout_gravity="end|center"
+                            android:layout_marginEnd="16dp"
+                            android:src="@drawable/ic_search" />
 
-                    <TextView
-                        android:id="@+id/textViewasdf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Order on call"
-                        app:layout_constraintEnd_toEndOf="@+id/orderOnPhone"
-                        app:layout_constraintStart_toStartOf="@+id/orderOnPhone" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/linearLayout5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-                    app:layout_constraintStart_toStartOf="@+id/linearLayout2"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/icCart"
-                        android:layout_width="55dp"
-                        android:layout_height="55dp"
-                        android:clickable="true"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                        android:stateListAnimator="@animator/card_animator"
-                        app:cardCornerRadius="12dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView26"
-                        app:layout_constraintStart_toStartOf="@+id/textView26"
-                        app:layout_constraintTop_toBottomOf="@+id/cardViewFruits">
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/cart_anim"
-                            android:layout_width="55dp"
-                            android:layout_height="55dp"
-                            android:scaleX="1.2"
-                            android:scaleY="1.2"
-                            app:lottie_fileName="cart_added_animation.json"
-                            app:lottie_speed="1.5" />
-                    </androidx.cardview.widget.CardView>
-
-                    <TextView
-                        android:id="@+id/textView26"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Go to cart" />
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="44dp"
-                    android:scrollbarSize="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent">
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:singleSelection="true">
-
-                        <com.google.android.material.chip.Chip
-                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="All"
-                            android:textAppearance="@style/chipText"
-                            android:textColor="@color/black"
-                            app:chipBackgroundColor="@color/bg_chip_state" />
+                            android:layout_gravity="start|center"
+                            android:layout_marginStart="16dp"
+                            android:text="search here"
+                            android:textColor="@color/black" />
 
-                    </com.google.android.material.chip.ChipGroup>
-                </HorizontalScrollView>
+                    </androidx.cardview.widget.CardView>
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline11"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/imageButton4"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_margin="12dp"
+                        android:backgroundTint="@color/colorGrey100"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageButton
+                            android:id="@+id/imageButton3"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:onClick="@{() -> activity.onBackPressed()}"
+                            android:src="@drawable/ic_arrow_left" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="54dp"
+                        android:layout_height="24dp"
+                        android:text="@{type}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:textColor="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageButton4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/imageButton4"
+                        tools:text="Fruits" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayout2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="30dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView16"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView16">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/orderOnPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:layout_marginRight="10dp"
+                            android:foreground="?attr/selectableItemBackgroundBorderless"
+                            android:stateListAnimator="@animator/card_animator"
+                            app:cardElevation="0dp"
+                            app:layout_constraintBottom_toTopOf="@+id/textViewasdf"
+                            app:layout_constraintEnd_toEndOf="@+id/icCart"
+                            app:layout_constraintStart_toStartOf="@+id/icCart">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:background="@drawable/ic_phone_call" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:autoLink="phone"
+                                android:text="@string/orderOnCall"
+                                android:textSize="0sp" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <TextView
+                            android:id="@+id/textViewasdf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Call &amp;\nOrder"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="@+id/orderOnPhone"
+                            app:layout_constraintStart_toStartOf="@+id/orderOnPhone" />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/countFruits"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="10sp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@+id/textView16"
+                        app:layout_constraintTop_toBottomOf="@+id/textView16"
+                        tools:text="24 items" />
+
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:scrollbarSize="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:singleSelection="true">
+
+                            <com.google.android.material.chip.Chip
+                                style="@style/Widget.MaterialComponents.Chip.Choice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="All"
+                                android:textAppearance="@style/chipText"
+                                android:textColor="@color/black"
+                                app:chipBackgroundColor="@color/bg_chip_state" />
+
+                        </com.google.android.material.chip.ChipGroup>
+                    </HorizontalScrollView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="?attr/actionBarSize"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                app:productList="@{productList}" />
+
+            <ProgressBar
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="?attr/actionBarSize"
+                android:visibility="@{isLoading? View.VISIBLE : View.INVISIBLE}"
+                app:layout_anchor="@id/recyclerView"
+                app:layout_anchorGravity="bottom|center" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="30dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/icCart"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:clickable="true"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:stateListAnimator="@animator/card_animator"
+                    app:cardCornerRadius="12dp"
+                    app:layout_constraintEnd_toEndOf="@+id/textView26"
+                    app:layout_constraintStart_toStartOf="@+id/textView26"
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewFruits">
+
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/cart_anim"
+                        android:layout_width="54dp"
+                        android:layout_height="55dp"
+                        android:scaleX="1.2"
+                        android:scaleY="1.2"
+                        app:lottie_fileName="cart_added_animation.json"
+                        app:lottie_speed="1.5" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/textView26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".7" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.AppBarLayout>
+                    android:text="Go to cart" />
+            </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:productList="@{productList}" />
 
-        <ProgressBar
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="?attr/actionBarSize"
-            android:visibility="@{isLoading? View.VISIBLE : View.INVISIBLE}"
-            app:layout_anchor="@id/recyclerView"
-            app:layout_anchorGravity="bottom|center" />
+        </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
 

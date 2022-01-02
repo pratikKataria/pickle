@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:text="@{name}"
         android:textAppearance="@style/chipText"
-        app:chipBackgroundColor="@color/bg_chip_state"
-        android:textColor="@color/black"
+        app:chipBackgroundColor="@color/buttonColorDark"
+        android:textColor="@color/white"
         style="@style/Widget.MaterialComponents.Chip.Choice">
 
     </com.google.android.material.chip.Chip>
