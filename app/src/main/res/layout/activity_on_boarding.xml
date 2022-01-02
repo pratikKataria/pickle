@@ -32,14 +32,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="64dp"
+        android:backgroundTint="@color/colorAccent"
         android:text="Get Started"
         android:textAllCaps="false"
+        android:textColor="@color/white"
         android:visibility="invisible"
-        android:textColor="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ob_activity_ll"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton

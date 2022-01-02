@@ -41,8 +41,8 @@ public class HorizontalFlipTransformation implements ViewPager.PageTransformer {
     @Override
     public void transformPage(View view, float position) {
 
-        TextView heading = view.findViewById(R.id.ob_activity_tv_heading);
-        TextView description = view.findViewById(R.id.ob_activity_tv_description);
+/*        TextView heading = view.findViewById(R.id.ob_activity_tv_heading);
+        TextView description = view.findViewById(R.id.ob_activity_tv_description);*/
         ImageView imageView = view.findViewById(R.id.ob_activity_iv_image);
 
         view.setTranslationX(-position * view.getWidth());

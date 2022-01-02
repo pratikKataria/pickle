@@ -28,7 +28,9 @@
         </activity>
         <activity
             android:name=".splash.OnBoardingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" >
+
+        </activity>
         <activity
             android:name=".auth.Login.LoginActivity"
             android:screenOrientation="portrait"/>

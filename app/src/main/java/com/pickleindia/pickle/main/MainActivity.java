@@ -13,14 +13,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
@@ -45,10 +43,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.gson.Gson;
-import com.pickleindia.pickle.DeveloperProfile;
-import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.R;
+import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.cart.CartActivity;
+import com.pickleindia.pickle.databinding.ActivityMainBinding;
 import com.pickleindia.pickle.databinding.LayoutFollowUsAlertDialogBinding;
 import com.pickleindia.pickle.interfaces.IFragmentCb;
 import com.pickleindia.pickle.interfaces.IMainActivity;
@@ -75,11 +73,14 @@ public class MainActivity extends AppCompatActivity implements
     private CoordinatorLayout snackBarLayout;
 
     public static final int UPDATE_STATUS_CODE = 432;
+    private ActivityMainBinding activityMainBinding;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
 
         drawerLayout = findViewById(R.id.activity_main_drawer_layout);
         navigationView = findViewById(R.id.activity_main_nv_side_navigation);
@@ -124,6 +125,46 @@ public class MainActivity extends AppCompatActivity implements
                     e.printStackTrace();
                 }
             }
+        });
+
+        setSideNavigationCalls();
+    }
+
+    private void setSideNavigationCalls() {
+
+        activityMainBinding.tvOrder.setOnClickListener(view -> {
+            smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_nav_menu_sub_orders));
+            drawerLayout.closeDrawers();
+        });
+
+        activityMainBinding.tvOrderOnCall.setOnClickListener(view -> {
+            smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
+            drawerLayout.closeDrawers();
+        });
+
+        activityMainBinding.tvRefer.setOnClickListener(view -> {
+            createReferLink();
+        });
+
+        activityMainBinding.tvReward.setOnClickListener(view -> {
+            smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_rewardFragment));
+            drawerLayout.closeDrawers();
+        });
+
+        activityMainBinding.tvRateUs.setOnClickListener(view -> {
+            showPlaystoreRateUs();
+        });
+
+        activityMainBinding.tvHelp.setOnClickListener(view -> {
+            smoothActionBarDrawerToggle.runWhenIdle(() -> checkAuthAndNavigate(R.id.action_homeFragment_to_orderOnPhone));
+            drawerLayout.closeDrawers();
+        });
+
+        activityMainBinding.tvLogout.setOnClickListener(view -> {
+            if (FirebaseAuth.getInstance().getUid() == null)
+                Toast.makeText(this, "login first", Toast.LENGTH_SHORT).show();
+            else
+                showLogoutDialog();
         });
     }
 
@@ -253,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements
 
         try {
             startActivity(intent);
-        }catch (Exception xe) {
+        } catch (Exception xe) {
             startActivity(new Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(

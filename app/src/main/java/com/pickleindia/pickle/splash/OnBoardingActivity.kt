@@ -78,7 +78,7 @@ class OnBoardingActivity : AppCompatActivity() {
                         getStartedBtn,
                         "translationY",
                         0F,
-                        -100F
+                        -90F
                     )
                     objectAnimator.duration = 1000
                     objectAnimator.start()

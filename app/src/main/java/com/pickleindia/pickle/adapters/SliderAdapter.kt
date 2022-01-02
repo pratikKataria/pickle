@@ -19,10 +19,10 @@ class SliderAdapter : PagerAdapter {
     }
 
     private val drawable = arrayOf(
-        R.drawable.ic_ob_screen_i,
-        R.drawable.ic_ob_screen_ii,
-        R.drawable.ic_ob_screen_iii,
-        R.drawable.ic_ob_screen_iv
+        R.drawable.onboarding_screen_one,
+        R.drawable.onboarding_screen_two,
+        R.drawable.onboarding_screen_three,
+        R.drawable.onboarding_screen_four
         )
 
     private val textHeading = arrayOf(
@@ -53,10 +53,10 @@ class SliderAdapter : PagerAdapter {
         val view : View = layoutInflater.inflate(R.layout.sliding_layout, container, false)
 
         view.ob_activity_iv_image.setImageDrawable(view.resources.getDrawable(drawable[position]))
-        view.ob_activity_tv_heading.text = textHeading[position]
+     /*   view.ob_activity_tv_heading.text = textHeading[position]
         view.ob_activity_tv_description.text = description[position]
 
-
+*/
 
         container.addView(view)
 
