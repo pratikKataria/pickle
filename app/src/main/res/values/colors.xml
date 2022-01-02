@@ -87,9 +87,9 @@
 
     <!--New resources-->
     <color name="buttonColorLight">#FFDDC5</color>
-    <color name="buttonColorLightV2">#FDDCC4</color>
     <color name="buttonColorDark">#D37530</color>
     <color name="backgroundColorLight">#FFEDE0</color>
+    <color name="backgroundColorLightV2">#FFF6F0</color>
     <color name="backgroundColorDark">#D37530</color>
 
     <color name="textColorH1">#272727</color>

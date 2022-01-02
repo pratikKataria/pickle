@@ -34,7 +34,7 @@
         android:id="@+id/fragment_home_coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/mainActColor"
+        android:background="@color/backgroundColorLightV2"
         android:orientation="vertical"
         tools:context=".navigation.HomeFragment">
 
@@ -48,7 +48,7 @@
                 collapseMode="pin"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
+                android:background="@color/backgroundColorLightV2"
                 android:elevation="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -58,13 +58,10 @@
                 app:titleMargin="18dp">
 
                 <ImageView
-                    android:layout_width="64dp"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
-                    android:scaleY="1.2"
-                    android:scaleX="1.2"
                     android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_logo" />
+                    android:src="@drawable/img_app_logo_dark" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -93,7 +90,7 @@
                         android:layout_width="@dimen/card_view_category_width"
                         android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
-                        android:backgroundTint="@color/icFruitBg"
+                        android:backgroundTint="@color/backgroundColorLight"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_ONE)}"
@@ -104,7 +101,8 @@
                             android:id="@+id/grid_view_iv_image"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:src="@drawable/ic_fruits" />
+                            android:layout_margin="4dp"
+                            android:src="@drawable/ic_sweet_cat" />
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -130,7 +128,7 @@
                         android:layout_width="@dimen/card_view_category_width"
                         android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
-                        android:backgroundTint="@color/icVegetableBg"
+                        android:backgroundTint="@color/backgroundColorLight"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_TWO)}"
@@ -144,7 +142,7 @@
                             android:scaleType="fitCenter"
                             android:scaleX="1.2"
                             android:scaleY="1.2"
-                            android:src="@drawable/ic_vegetable" />
+                            android:src="@drawable/ic_cookies" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -171,7 +169,7 @@
                         android:layout_width="@dimen/card_view_category_width"
                         android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
-                        android:backgroundTint="@color/icDairyBg"
+                        android:backgroundTint="@color/backgroundColorLight"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_THREE)}"
@@ -208,7 +206,7 @@
                         android:layout_width="@dimen/card_view_category_width"
                         android:layout_height="@dimen/card_view_category_height"
                         android:background="@color/white"
-                        android:backgroundTint="@color/icDairyBg"
+                        android:backgroundTint="@color/backgroundColorLight"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:onClick="@{() -> homeFragment.navigateToProductFragment(Constant.CAT_FOUR)}"
@@ -218,10 +216,9 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_margin="6dp"
-                            android:scaleX="1.1"
+                            android:scaleX="1.5"
                             android:scaleY="1.2"
-                            android:src="@drawable/ic_grocery" />
+                            android:src="@drawable/ic_beverages" />
                     </androidx.cardview.widget.CardView>
 
                     <TextView
@@ -233,7 +230,7 @@
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                 </LinearLayout>
 
-                <LinearLayout
+              <!--  <LinearLayout
                     android:id="@+id/ll5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -311,14 +308,14 @@
                         android:layout_marginTop="4dp"
                         android:text="@string/CAT_SIX"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-                </LinearLayout>
-
+                </LinearLayout>-->
+<!--,ll5,ll6-->
                 <androidx.constraintlayout.helper.widget.Flow
                     android:id="@+id/flow3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    app:constraint_referenced_ids="ll1,ll2,ll3,ll4,ll5,ll6"
+                    app:constraint_referenced_ids="ll1,ll2,ll3,ll4"
                     app:flow_horizontalGap="8dp"
                     app:flow_horizontalStyle="spread"
                     app:flow_verticalGap="16dp"
