@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Combo Pack"
-    android:textColor="@android:color/black"
+    android:textColor="@android:color/white"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
     android:background="@color/colorAccent"

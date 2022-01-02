@@ -125,12 +125,12 @@
                         style="@style/Widget.Cart.IncDec.Button"
                         android:layout_width="@dimen/mtrl_btn_inc_width"
                         android:layout_height="@dimen/mtrl_btn_height"
-                        android:backgroundTint="@color/chipColorSearchFilterUnselected"
+                        android:backgroundTint="@color/colorAccent"
                         android:onClick="@{() -> productViewModel.decreaseQuantity(context)}"
                         android:paddingStart="@dimen/mtrl_btn_inc_padding"
                         app:cornerRadius="4dp"
                         app:icon="@drawable/ic_remove"
-                        app:iconTint="@color/black" />
+                        app:iconTint="@color/white" />
 
                     <TextView
                         android:id="@+id/qtyCounter"

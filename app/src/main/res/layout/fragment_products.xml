@@ -50,12 +50,13 @@
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
+                android:background="@color/backgroundColorLightV2"
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:background="@color/colorGrey50"
+                    android:background="@color/backgroundColorLightV2"
                     app:layout_collapseMode="parallax"
                     app:layout_scrollFlags="scroll|enterAlways|snap">
 
@@ -205,8 +206,8 @@
                                 android:layout_height="wrap_content"
                                 android:text="All"
                                 android:textAppearance="@style/chipText"
-                                android:textColor="@color/black"
-                                app:chipBackgroundColor="@color/bg_chip_state" />
+                                android:textColor="@color/white"
+                                app:chipBackgroundColor="@color/buttonColorDark" />
 
                         </com.google.android.material.chip.ChipGroup>
                     </HorizontalScrollView>
@@ -220,7 +221,8 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="?attr/actionBarSize"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                app:productList="@{productList}" />
+                app:productList="@{productList}"
+                tools:listitem="@layout/card_view_category_product"/>
 
             <ProgressBar
                 android:layout_width="24dp"

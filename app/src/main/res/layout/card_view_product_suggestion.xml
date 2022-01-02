@@ -25,7 +25,10 @@
         android:id="@+id/cardView"
         android:layout_width="190dp"
         android:layout_height="306dp"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/backgroundColorLight"
+        app:cardElevation="0dp"
+        app:elevation="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
