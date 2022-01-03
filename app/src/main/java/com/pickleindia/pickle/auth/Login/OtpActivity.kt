@@ -1,4 +1,4 @@
-package com.pickleindia.pickle.auth.Login
+ package com.pickleindia.pickle.auth.Login
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -32,6 +32,7 @@ import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
 import com.pickleindia.pickle.main.MainActivity
+import com.pickleindia.pickle.testActivity
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 import java.util.*
@@ -216,7 +217,7 @@ class OtpActivity : AppCompatActivity() {
                 showRewardGivenDialog()
             } else {
                 setResult(1001)
-                startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
         }.addOnFailureListener {
@@ -247,10 +248,8 @@ class OtpActivity : AppCompatActivity() {
             val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
             sharedPreferences.edit().remove("referredBy").apply()
             setResult(1001)
-            startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+
             finish()
             if (alertDialog != null)
                 alertDialog!!.dismiss()
@@ -283,9 +282,8 @@ class OtpActivity : AppCompatActivity() {
                             sendUserToHome()
                         } else {
                             setResult(1001)
-                            startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                            startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+
                             finish()
                         }
                     }
