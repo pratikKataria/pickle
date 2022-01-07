@@ -1,4 +1,4 @@
- package com.pickleindia.pickle.auth.Login
+package com.pickleindia.pickle.auth.Login
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -32,7 +32,6 @@ import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
 import com.pickleindia.pickle.main.MainActivity
-import com.pickleindia.pickle.testActivity
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 import java.util.*
@@ -99,26 +98,26 @@ class OtpActivity : AppCompatActivity() {
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         Log.d("otp", "signInWithCredential $credential")
         mAuth.signInWithCredential(credential)
-                .addOnSuccessListener {
-                    val isNew = it.additionalUserInfo?.isNewUser
-                    if (isNew != null && isNew) {
-                        createUser()
-                    } else {
-                        // if user is old user and has stored referral then this code invoked
-                        val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
-                        val referredBy = sharedPreferences.getString("referredBy", "")
-                        if (referredBy!!.isNotEmpty()) {
-                            Toast.makeText(this@OtpActivity, "Referral only works for new user", Toast.LENGTH_LONG).show()
-                            sharedPreferences.edit().remove("referredBy").apply()
-                        }
-                        updateDeviceTokenForOldAccount()
+            .addOnSuccessListener {
+                val isNew = it.additionalUserInfo?.isNewUser
+                if (isNew != null && isNew) {
+                    createUser()
+                } else {
+                    // if user is old user and has stored referral then this code invoked
+                    val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
+                    val referredBy = sharedPreferences.getString("referredBy", "")
+                    if (referredBy!!.isNotEmpty()) {
+                        Toast.makeText(this@OtpActivity, "Referral only works for new user", Toast.LENGTH_LONG).show()
+                        sharedPreferences.edit().remove("referredBy").apply()
                     }
-                }.addOnFailureListener {
-                    if (it is FirebaseAuthInvalidCredentialsException)
-                        Toast.makeText(this@OtpActivity, "error wrong otp", Toast.LENGTH_LONG).show()
-                    Log.e(OtpActivity::class.java.name, it.message as String)
-                    activity_otp_progress.visibility = GONE
+                    updateDeviceTokenForOldAccount()
                 }
+            }.addOnFailureListener {
+                if (it is FirebaseAuthInvalidCredentialsException)
+                    Toast.makeText(this@OtpActivity, "error wrong otp", Toast.LENGTH_LONG).show()
+                Log.e(OtpActivity::class.java.name, it.message as String)
+                activity_otp_progress.visibility = GONE
+            }
     }
 
     private fun createUser() {
@@ -217,7 +216,7 @@ class OtpActivity : AppCompatActivity() {
                 showRewardGivenDialog()
             } else {
                 setResult(1001)
-                startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
         }.addOnFailureListener {
@@ -238,18 +237,20 @@ class OtpActivity : AppCompatActivity() {
         var alertDialog: AlertDialog? = null
         val alertDialogBuilder = MaterialAlertDialogBuilder(this)
         val binding: LayoutRewardGrantedAlertdialogBinding = DataBindingUtil.inflate(
-                layoutInflater,
-                R.layout.layout_reward_granted_alertdialog,
-                null,
-                false
+            layoutInflater,
+            R.layout.layout_reward_granted_alertdialog,
+            null,
+            false
         )
         alertDialogBuilder.setView(binding.root)
         binding.nextBtn.setOnClickListener {
             val sharedPreferences: SharedPreferences = getSharedPreferences(PERMISSION_PREFS_KEY, 0)
             sharedPreferences.edit().remove("referredBy").apply()
             setResult(1001)
-            startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-
+            startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()
             if (alertDialog != null)
                 alertDialog!!.dismiss()
@@ -262,9 +263,9 @@ class OtpActivity : AppCompatActivity() {
 
     private fun updateDeviceTokenForOldAccount() {
         val tokenDatabaseReference = FirebaseDatabase.getInstance().getReference("Customers")
-                .child(FirebaseAuth.getInstance().uid!!)
-                .child("personalInformation")
-                .child("deviceToken")
+            .child(FirebaseAuth.getInstance().uid!!)
+            .child("personalInformation")
+            .child("deviceToken")
 
         tokenDatabaseReference.setValue(FirebaseInstanceId.getInstance().token as String).addOnSuccessListener {
             checkAddress()
@@ -276,22 +277,23 @@ class OtpActivity : AppCompatActivity() {
     private fun checkAddress() {
         var databaseReference = FirebaseDatabase.getInstance().getReference("Addresses")
         databaseReference.child(FirebaseAuth.getInstance().uid!!).child("slot1")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            sendUserToHome()
-                        } else {
-                            setResult(1001)
-                            startActivity(Intent(this@OtpActivity, testActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-
-                            finish()
-                        }
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        sendUserToHome()
+                    } else {
+                        setResult(1001)
+                        startActivity(Intent(this@OtpActivity, CustomerDetailActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                        finish()
                     }
+                }
 
-                    override fun onCancelled(databaseError: DatabaseError) {
-                        Toast.makeText(this@OtpActivity, "error: " + databaseError.message, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Toast.makeText(this@OtpActivity, "error: " + databaseError.message, Toast.LENGTH_SHORT).show()
+                }
+            })
     }
 
 

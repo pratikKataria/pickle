@@ -1,7 +1,6 @@
 package com.pickleindia.pickle.auth.Login;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,13 +72,14 @@ public class CustomerDetailActivity extends AppCompatActivity {
         HashMap<String, Object> update = new HashMap<>();
         String uid = FirebaseAuth.getInstance().getUid();
 
-        update.put("Customers/" + uid +"/personalInformation/username", customerName);
+        update.put("Customers/" + uid + "/personalInformation/username", customerName);
         update.put("Addresses/" + uid + "/slot1", currentAddress);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {
 //            currentLocationBinding.progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Address Updated", Toast.LENGTH_SHORT).show();
+            finish();
 //            showSnackBar();
         }).addOnFailureListener(e -> {
             Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
