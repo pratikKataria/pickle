@@ -6,6 +6,6 @@ public class CurrentAddress extends Address {
      }
 
     public CurrentAddress(String gpsLocation) {
-        super(gpsLocation);
+        super(gpsLocation, gpsLocation);
     }
 }

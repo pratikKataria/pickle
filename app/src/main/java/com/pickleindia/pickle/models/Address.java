@@ -11,11 +11,12 @@ public class Address {
     private String floors;
 
     private String gpsLocation;
+    private String mobileNo;
 
     public Address() {}
 
     //generic
-    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark, String houseNoPlotno, String floors) {
+    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark, String houseNoPlotno, String floors, String mobileNo) {
         this.apartmentSociety = apartmentSociety;
         this.areaPin = areaPin;
         this.flatHouseNo = flatHouseNo;
@@ -23,34 +24,39 @@ public class Address {
         this.landmark = landmark;
         this.houseNoPlotno = houseNoPlotno;
         this.floors = floors;
+        this.mobileNo = mobileNo;
     }
 
     //Address apartment
-    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark) {
+    public Address(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark, String mobileNo) {
         this.apartmentSociety = apartmentSociety;
         this.areaPin = areaPin;
         this.flatHouseNo = flatHouseNo;
         this.address = address;
         this.landmark = landmark;
+        this.mobileNo = mobileNo;
     }
 
 
-    public Address(String areaPin, String address) {
+    public Address(String areaPin, String address, String mobileNo) {
         this.areaPin = areaPin;
         this.address = address;
+        this.mobileNo = mobileNo;
     }
 
     //Address individual
-    public Address(String areaPin, String address, String landmark, String floors) {
+    public Address(String areaPin, String address, String landmark, String floors, String mobileNo) {
         this.areaPin = areaPin;
         this.address = address;
         this.landmark = landmark;
         this.floors = floors;
+        this.mobileNo = mobileNo;
     }
 
     //address current;
-    public Address(String gpsLocation) {
+    public Address(String gpsLocation, String mobileNo) {
         this.gpsLocation = gpsLocation;
+        this.mobileNo = mobileNo;
     }
 
     public String getApartmentSociety() {
@@ -117,6 +123,13 @@ public class Address {
         this.gpsLocation = gpsLocation;
     }
 
+    public String getMobileNo() {
+        return mobileNo;
+    }
+
+    public void setMobileNo(String mobileNo) {
+        this.mobileNo = mobileNo;
+    }
 
     @Override
     public String toString() {

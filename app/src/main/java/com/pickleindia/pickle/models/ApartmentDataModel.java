@@ -9,12 +9,12 @@ public class ApartmentDataModel  extends  Address{
     }
 
     public ApartmentDataModel(String apartmentSociety, String areaPin, String flatHouseNo, String address, String landmark, String residentialType) {
-        super(apartmentSociety, areaPin, flatHouseNo, address, landmark);
+        super(apartmentSociety, areaPin, flatHouseNo, address, landmark, "");
         this.residentialType = residentialType;
     }
 
     public ApartmentDataModel(String areaPin, String address, String residentialType) {
-        super(areaPin, address);
+        super(areaPin, address, "");
         this.residentialType = residentialType;
     }
 

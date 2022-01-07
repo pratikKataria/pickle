@@ -1,84 +1,92 @@
 package com.pickleindia.pickle.auth.Login;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.WindowManager;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.databinding.DataBindingUtil;
 
-import com.pickleindia.pickle.auth.Login.viewpager.ViewPagerAdapter;
+import com.google.android.gms.common.util.Strings;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.ui.ZoomOutPageTransformer;
+import com.pickleindia.pickle.databinding.ActivityCustomerAddressBinding;
+import com.pickleindia.pickle.models.CurrentAddress;
+
+import java.util.HashMap;
 
 public class CustomerDetailActivity extends AppCompatActivity {
 
-    ViewPager2 viewPager;
 
-    private RadioGroup radioGroupApartment;
-    private RadioGroup _radioGroupInner;
-    private RadioButton apartment;
-    private RadioGroup.OnCheckedChangeListener checkedChangeListenerApartment;
-    private RadioGroup.OnCheckedChangeListener checkedChangeListener2;
+    private ActivityCustomerAddressBinding activityCustomerAddressBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_detail);
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-        viewPager = findViewById(R.id.viewPager2);
-        viewPager.setAdapter(createAdapter());
-        viewPager.setUserInputEnabled(false);
-        viewPager.setPageTransformer(new ZoomOutPageTransformer());
-
-        radioGroupApartment = findViewById(R.id.radioGroup_apartment);
-        _radioGroupInner = findViewById(R.id.radioGroup_inner);
-
-        apartment = findViewById(R.id.apartment);
-
-
-        checkedChangeListenerApartment = (group, checkedId) -> {
-            Log.e("Customer Details", " id" + (findViewById((group.getCheckedRadioButtonId()))).getTag().toString());
-            viewPager.setCurrentItem(Integer.parseInt(((findViewById((group.getCheckedRadioButtonId())))).getTag().toString()));
-            _radioGroupInner.setOnCheckedChangeListener(null);
-            _radioGroupInner.clearCheck();
-            _radioGroupInner.setOnCheckedChangeListener(checkedChangeListener2);
-        };
-
-        checkedChangeListener2 = (group, checkedId) -> {
-            Log.e("Customer Details @2 ", " id" + (findViewById((group.getCheckedRadioButtonId()))).getTag().toString());
-            viewPager.setCurrentItem(Integer.parseInt((findViewById((group.getCheckedRadioButtonId()))).getTag().toString()));
-            radioGroupApartment.setOnCheckedChangeListener(null);
-            radioGroupApartment.clearCheck();
-            radioGroupApartment.setOnCheckedChangeListener(checkedChangeListenerApartment);
-        };
-
-        radioGroupApartment.setOnCheckedChangeListener(checkedChangeListenerApartment);
-        _radioGroupInner.setOnCheckedChangeListener(checkedChangeListener2);
-
+        activityCustomerAddressBinding = DataBindingUtil.setContentView(this, R.layout.activity_customer_address);
+        init();
     }
 
-    private ViewPagerAdapter createAdapter() {
-        ViewPagerAdapter adapter;
-        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("UPDATE_ADDRESS", false)) {
-            adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle(), true);
-        } else {
-            adapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
-        }
-        return adapter;
+    void init() {
+        activityCustomerAddressBinding.cdSaveAddress.setOnClickListener(v -> {
+            String addressUserName = activityCustomerAddressBinding.cdEtUserName.getText().toString();
+            String addressUserMobileNumber = activityCustomerAddressBinding.cdEtMobile.getText().toString();
+            String addressCompleteAddress = activityCustomerAddressBinding.cdEtCompleteAddress.getText().toString();
+            String addressInstruction = activityCustomerAddressBinding.cdEtInstruction.getText().toString();
+
+            if (Strings.isEmptyOrWhitespace(addressUserName)) {
+                Toast.makeText(this, "Please enter username", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (Strings.isEmptyOrWhitespace(addressUserMobileNumber)) {
+                Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (addressUserMobileNumber.length() < 10) {
+                Toast.makeText(this, "Please enter correct mobile number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (Strings.isEmptyOrWhitespace(addressCompleteAddress)) {
+                Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+
+            CurrentAddress currentAddress = new CurrentAddress();
+            currentAddress.setAddress(addressCompleteAddress);
+            currentAddress.setLandmark(addressInstruction);
+            currentAddress.setAreaPin("451115");
+            currentAddress.setMobileNo(addressUserMobileNumber);
+
+            atomicUpdate(addressUserName, currentAddress);
+        });
     }
 
-    public void switchPage() {
-        viewPager.setCurrentItem(0);
-        _radioGroupInner.setOnCheckedChangeListener(null);
-        _radioGroupInner.clearCheck();
-        _radioGroupInner.setOnCheckedChangeListener(checkedChangeListener2);
-        apartment.setChecked(true);
+    private void atomicUpdate(String customerName, CurrentAddress currentAddress) {
+//        currentLocationBinding.progressBar.setVisibility(View.VISIBLE);
+
+        HashMap<String, Object> update = new HashMap<>();
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        update.put("Customers/" + uid +"/personalInformation/username", customerName);
+        update.put("Addresses/" + uid + "/slot1", currentAddress);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.updateChildren(update).addOnSuccessListener(task -> {
+//            currentLocationBinding.progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "location updated", Toast.LENGTH_SHORT).show();
+//            showSnackBar();
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+//            currentLocationBinding.progressBar.setVisibility(View.GONE);
+        });
     }
+
 
     @Override
     public void onBackPressed() {

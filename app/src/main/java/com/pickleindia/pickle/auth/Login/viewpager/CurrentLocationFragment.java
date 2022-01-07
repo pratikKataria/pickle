@@ -169,10 +169,10 @@ public class CurrentLocationFragment extends Fragment {
         snackbar.setBehavior(new SnackbarNoSwipeBehavior());
         snackbar.setText("Address details is mandatory with current location");
         snackbar.setAction("fill Address", v -> {
-            if (getActivity() instanceof CustomerDetailActivity) {
+           /* if (getActivity() instanceof CustomerDetailActivity) {
                 ((CustomerDetailActivity) getActivity()).switchPage();
                 snackbar.dismiss();
-            }
+            }*/
         });
         snackbar.show();
     }

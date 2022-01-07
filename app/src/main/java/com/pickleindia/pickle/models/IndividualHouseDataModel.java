@@ -9,12 +9,12 @@ public class IndividualHouseDataModel extends  Address{
     }
 
     public IndividualHouseDataModel(String areaPin, String address, String landmark, String floors, String residentialType) {
-        super(areaPin, address, landmark, floors);
+        super(areaPin, address, landmark, floors, "");
         this.residentialType =residentialType;
     }
 
     public IndividualHouseDataModel(String areaPin, String address, String residentialType) {
-        super(areaPin, address);
+        super(areaPin, address, "");
         this.residentialType = residentialType;
     }
 
