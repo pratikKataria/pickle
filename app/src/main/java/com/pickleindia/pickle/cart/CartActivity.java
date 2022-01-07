@@ -118,13 +118,13 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            if (slideOffset < 0.75) {
+            /*if (slideOffset < 0.75) {
                 binding.appBarLayout2.setAlpha(Math.abs(1 - slideOffset));
                 binding.cartRecyclerView.setAlpha(Math.abs(1 - slideOffset));
             } else if (slideOffset > 0.90) {
                 binding.appBarLayout2.setAlpha(0.3F);
                 binding.cartRecyclerView.setAlpha(0.3F);
-            }
+            }*/
         }
     };
     private AlertDialog productCheckingDialog;
@@ -138,9 +138,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
         binding.setActivity(this);
         binding.setObservableAddress(displayAddress);
 
-        behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+   /*     behavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         behavior.addBottomSheetCallback(bottomSheetCallback);
-
+*/
         binding.includeLayout.placeOrder.setOnClickListener(n -> {
             if (!checkFirebaseAuth())
                 return;
