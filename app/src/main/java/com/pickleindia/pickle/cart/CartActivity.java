@@ -51,10 +51,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
-import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
-import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
+import com.pickleindia.pickle.address_book.AddressBookFragment;
+import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
+import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;
 import com.pickleindia.pickle.databinding.LayoutVerifingProductAlertDialogBinding;
@@ -199,12 +200,17 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             }
         }
 
-      binding.includeLayout.addressSlot1.setOnClickListener(n -> {
-          checkAddress();
-      });
+        binding.includeLayout.addressSlot1.setOnClickListener(n -> {
+            checkAddress();
+        });
 
         binding.includeLayout.checkoutButton.setOnClickListener(n -> {
             checkDeliveryTimeAndAddress();
+        });
+
+        binding.tvProceed.setOnClickListener(v -> {
+            checkAddress();
+//            startActivity(new Intent(this, AddressBookFragment.class));
         });
 
     }
@@ -290,7 +296,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             return;
         }
 
-        if (databaseCacheAddress.get().isEmpty()) {
+//        if (databaseCacheAddress.get().isEmpty()) {
             binding.includeLayout.progressCircular.setVisibility(View.VISIBLE);
             Toast.makeText(this, "checking address", Toast.LENGTH_SHORT).show();
 
@@ -317,11 +323,12 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            progressDialog.dismiss();
+
                             if (dataSnapshot.exists()) {
                                 Address address = dataSnapshot.getValue(Address.class);
                                 binding.includeLayout.progressCircular.setVisibility(View.GONE);
                                 if (address != null) {
-                                    progressDialog.dismiss();
                                     if (address.getGpsLocation() != null) {
                                         observableAddress.set(address.getGpsLocation());
                                         displayAddress.set(address.getGpsLocation());
@@ -340,9 +347,10 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
+                            progressDialog.dismiss();
                         }
                     });
-        }
+//        }
     }
 
     private void isAllProductsValid() {

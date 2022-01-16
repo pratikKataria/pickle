@@ -28,15 +28,15 @@
         </activity>
         <activity
             android:name=".splash.OnBoardingActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".auth.Login.LoginActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".auth.Login.OtpActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".auth.Login.CustomerDetailActivity"
             android:screenOrientation="portrait" />
@@ -68,14 +68,22 @@
             android:windowSoftInputMode="adjustNothing|stateAlwaysVisible" />
         <activity
             android:name=".cart.CartActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".main.AddNewItemActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".address_book.AddressBookFragment"
+            android:screenOrientation="portrait">
+
+
+        </activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

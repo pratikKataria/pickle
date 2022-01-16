@@ -413,7 +413,7 @@ public class HomeFragment extends Fragment implements IFragmentCb, ImageUrlListe
             case R.id.menu_main_cart_btn:
                 productModelArrayList.clear();
                 NotifyRecyclerItems.notifyDataSetChanged(binding.suggestionRecyclerView);
-                startActivityForResult(new Intent(getActivity(), CartActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY), REQUEST_CODE);
+                startActivityForResult(new Intent(getActivity(), CartActivity.class), REQUEST_CODE);
                 break;
             case R.id.menu_main_search_btn:
                 productModelArrayList.clear();
