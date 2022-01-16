@@ -337,7 +337,8 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
                                         displayAddress.set(address.toString());
                                     }
                                     databaseCacheAddress.set(address.toString());
-                                    checkDeliveryTimeAndAddress();
+//                                    checkDeliveryTimeAndAddress();
+                                    startActivity(new Intent(CartActivity.this, AddressBookFragment.class).addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY));
                                 }
                             } else {
                                 Toast.makeText(CartActivity.this, "fill address details", Toast.LENGTH_SHORT).show();
@@ -515,7 +516,7 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
     }
 
     private void checkDeliveryTimeAndAddress() {
-        BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
+       /* BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(binding.includeLayout.getRoot());
         String deliveryTime = null;
         Chip chip = findViewById(binding.includeLayout.chipGroup2.getCheckedChipId());
 
@@ -528,9 +529,9 @@ public class CartActivity extends AppCompatActivity implements IMainActivity, Pr
             binding.includeLayout.progressCircular.setVisibility(View.GONE);
             Toast.makeText(this, "select delivery time", Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
         if (databaseCacheAddress.get().isEmpty()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             binding.includeLayout.progressCircular.setVisibility(View.GONE);
             Toast.makeText(this, "Refresh delivery address", Toast.LENGTH_SHORT).show();
             checkAddress();

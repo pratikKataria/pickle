@@ -67,11 +67,9 @@ public class AddressBookFragment extends AppCompatActivity {
 
     private void getShoppingCart() {
         List<ProductModel> cartList = SharedPrefsUtils.getAllProducts(this);
-//        fragmentAddressBookBinding.(cartList);
         CartViewModel cartViewModel = new CartViewModel();
         cartViewModel.setCartProducts(cartList);
         fragmentAddressBookBinding.setCartViewModel(cartViewModel);
-//        cartViewModel.setComboValue(getComboPrice());
         ArrayList<ProductModel> offerComboList = getIntent().getParcelableArrayListExtra(OFFER_COMBO);
         if (offerComboList != null)
             cartList.addAll(offerComboList);

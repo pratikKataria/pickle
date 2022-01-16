@@ -119,6 +119,7 @@
                         android:inputType="number"
                         android:textSize="@dimen/act_customer_detail_et"
                         android:singleLine="true"
+                        android:maxLines="10"
                         android:textColorHint="@color/textColorH3"
                         android:textColor="@color/textColorH3"
                         android:background="@drawable/bg_edit_text_light" />
