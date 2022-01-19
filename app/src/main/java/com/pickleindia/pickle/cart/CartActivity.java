@@ -54,7 +54,7 @@ import com.google.gson.Gson;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.adapters.CartRecyclerViewAdapter;
 import com.pickleindia.pickle.address_book.AddressBookFragment;
-import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
+import com.pickleindia.pickle.ui.addAddress.CustomerDetailActivity;
 import com.pickleindia.pickle.auth.Login.LoginActivity;
 import com.pickleindia.pickle.databinding.ActivityCartViewBinding;
 import com.pickleindia.pickle.databinding.LayoutConfirmOrderBinding;

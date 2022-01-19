@@ -21,7 +21,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.R;
  import com.pickleindia.pickle.databinding.FragmentCurrentLocationBinding;
 import com.pickleindia.pickle.models.CurrentAddress;

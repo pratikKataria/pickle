@@ -32,6 +32,7 @@ import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
 import com.pickleindia.pickle.main.MainActivity
+import com.pickleindia.pickle.ui.addAddress.CustomerDetailActivity
 import com.pickleindia.pickle.utils.Constant.PERMISSION_PREFS_KEY
 import kotlinx.android.synthetic.main.activity_otp.*
 import java.util.*

@@ -1,18 +1,16 @@
 package com.pickleindia.pickle.address_book;
 
-import android.content.Intent;
+import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
+
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.pickleindia.pickle.R;
-import com.pickleindia.pickle.auth.Login.CustomerDetailActivity;
 import com.pickleindia.pickle.cart.CartViewModel;
 import com.pickleindia.pickle.databinding.FragmentAddressBookBinding;
 import com.pickleindia.pickle.models.ProductModel;
@@ -20,8 +18,6 @@ import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
 
 
 public class AddressBookFragment extends AppCompatActivity {
@@ -48,11 +44,11 @@ public class AddressBookFragment extends AppCompatActivity {
 
 //        fragmentAddressBookBinding.includeSlot.cardView.setOnClickListener(n -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
 
-        fragmentAddressBookBinding.swipeToRefresh.setOnRefreshListener(() -> {
+       /* fragmentAddressBookBinding.swipeToRefresha.setOnRefreshListener(() -> {
             loadAddress();
             if (fragmentAddressBookBinding.swipeToRefreshText.getVisibility() == View.VISIBLE)
                 fragmentAddressBookBinding.swipeToRefreshText.setVisibility(View.GONE);
-        });
+        });*/
         getShoppingCart();
     }
 
@@ -61,7 +57,7 @@ public class AddressBookFragment extends AppCompatActivity {
         addressBookViewModel.getAddressFromFirebaseDatabase();
         addressBookViewModel.getUserAddressLiveData().observe(this, address -> {
             fragmentAddressBookBinding.setAddress(address.toString());
-            fragmentAddressBookBinding.swipeToRefresh.setRefreshing(false);
+//            fragmentAddressBookBinding.swipeToRefresh.setRefreshing(false);
         });
     }
 

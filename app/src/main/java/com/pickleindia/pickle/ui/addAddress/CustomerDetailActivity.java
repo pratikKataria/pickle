@@ -1,4 +1,4 @@
-package com.pickleindia.pickle.auth.Login;
+package com.pickleindia.pickle.ui.addAddress;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -10,6 +10,9 @@ import com.google.android.gms.common.util.Strings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pickleindia.firebase.FirebaseFields;
+import com.pickleindia.firebase.FirebasePaths;
+import com.pickleindia.firebase.crud.Create;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.databinding.ActivityCustomerAddressBinding;
 import com.pickleindia.pickle.models.CurrentAddress;
@@ -74,6 +77,8 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
         update.put("Customers/" + uid + "/personalInformation/username", customerName);
         update.put("Addresses/" + uid + "/slot1", currentAddress);
+
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.updateChildren(update).addOnSuccessListener(task -> {

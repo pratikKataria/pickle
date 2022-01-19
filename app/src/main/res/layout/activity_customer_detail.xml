@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="-25dp"
     android:orientation="vertical"
-    tools:context=".auth.Login.CustomerDetailActivity">
+    tools:context=".ui.addAddress.CustomerDetailActivity">
 
     <ImageView
         android:id="@+id/imageView"

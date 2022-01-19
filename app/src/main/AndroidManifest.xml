@@ -38,7 +38,7 @@
             android:name=".auth.Login.OtpActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".auth.Login.CustomerDetailActivity"
+            android:name=".ui.addAddress.CustomerDetailActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".main.MainActivity"
