@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.database.*
-import com.google.firebase.iid.FirebaseInstanceId
+//import com.google.firebase.iid.FirebaseInstanceId
 import com.pickleindia.pickle.R
 import com.pickleindia.pickle.cart.CartActivity
 import com.pickleindia.pickle.databinding.LayoutRewardGrantedAlertdialogBinding
@@ -162,7 +162,7 @@ class OtpActivity : AppCompatActivity() {
     private fun userPersonalInformation(): MutableMap<String, Any> {
         val updateData: MutableMap<String, Any> = mutableMapOf()
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/creationDate"] = ServerValue.TIMESTAMP
-        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/deviceToken"] = FirebaseInstanceId.getInstance().token as String
+        updateData["${FirebaseAuth.getInstance().uid}/personalInformation/deviceToken"] = /*FirebaseInstanceId.getInstance().token as String*/""
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/userId"] = FirebaseAuth.getInstance().uid as String
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/userPhoneNo"] = FirebaseAuth.getInstance().currentUser?.phoneNumber as String
         updateData["${FirebaseAuth.getInstance().uid}/personalInformation/username"] = " "
@@ -267,12 +267,12 @@ class OtpActivity : AppCompatActivity() {
             .child(FirebaseAuth.getInstance().uid!!)
             .child("personalInformation")
             .child("deviceToken")
+        checkAddress()
 
-        tokenDatabaseReference.setValue(FirebaseInstanceId.getInstance().token as String).addOnSuccessListener {
-            checkAddress()
+        /*tokenDatabaseReference.setValue(FirebaseInstanceId.getInstance().token as String).addOnSuccessListener {
         }.addOnFailureListener {
             Log.e("OtpActivity", it.message as String)
-        }
+        }*/
     }
 
     private fun checkAddress() {

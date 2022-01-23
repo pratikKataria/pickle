@@ -1,23 +1,31 @@
 package com.pickleindia.pickle.address_book;
 
-import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pickleindia.pickle.R;
 import com.pickleindia.pickle.cart.CartViewModel;
 import com.pickleindia.pickle.databinding.FragmentAddressBookBinding;
+import com.pickleindia.pickle.databinding.LayoutAddressTileBinding;
 import com.pickleindia.pickle.models.ProductModel;
+import com.pickleindia.pickle.ui.addAddress.CustomerDetailActivity;
+import com.pickleindia.pickle.ui.addAddress.model.AddAddressRequest;
 import com.pickleindia.pickle.utils.SharedPrefsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import static com.pickleindia.pickle.utils.Constant.OFFER_COMBO;
 
 
 public class AddressBookFragment extends AppCompatActivity {
@@ -40,23 +48,40 @@ public class AddressBookFragment extends AppCompatActivity {
         fragmentAddressBookBinding.setActivity(this);
 
         addressBookViewModel = new ViewModelProvider(this).get(AddressBookViewModel.class);
-        loadAddress();
-
 //        fragmentAddressBookBinding.includeSlot.cardView.setOnClickListener(n -> startActivity(new Intent(this, CustomerDetailActivity.class).putExtra("UPDATE_ADDRESS", true)));
 
-       /* fragmentAddressBookBinding.swipeToRefresha.setOnRefreshListener(() -> {
+        /* fragmentAddressBookBinding.swipeToRefresha.setOnRefreshListener(() -> {
             loadAddress();
             if (fragmentAddressBookBinding.swipeToRefreshText.getVisibility() == View.VISIBLE)
                 fragmentAddressBookBinding.swipeToRefreshText.setVisibility(View.GONE);
         });*/
+        fragmentAddressBookBinding.fabAddAddress.setOnClickListener(v -> {
+            startActivity(new Intent(this,
+                    CustomerDetailActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                    .putExtra("address", addressBookViewModel.getUserAddressLiveData().getValue()));
+        });
         getShoppingCart();
     }
 
 
     private void loadAddress() {
         addressBookViewModel.getAddressFromFirebaseDatabase();
+        Log.e(getClass().getName(), "loadAddress: " + FirebaseAuth.getInstance().getUid());
         addressBookViewModel.getUserAddressLiveData().observe(this, address -> {
+            Log.e(getClass().getName(), "loadAddress: " + address.getData());
             fragmentAddressBookBinding.setAddress(address.toString());
+            fragmentAddressBookBinding.addressRadioGroup.removeAllViews();
+            for (AddAddressRequest.Data data : address.getData()) {
+//                RadioButton button = new RadioButton(this);
+//                button.setId(new Random().nextInt(1000));
+//                button.setBackgroundResource(R.drawable.dashed_rectangle);
+//                button.setText(data.toString());
+                LayoutAddressTileBinding addressTileBinding = LayoutAddressTileBinding.inflate(this.getLayoutInflater(), fragmentAddressBookBinding.addressRadioGroup, false);
+                addressTileBinding.rb.setText(data.toString());
+                fragmentAddressBookBinding.addressRadioGroup.addView(addressTileBinding.getRoot());
+            }
+            fragmentAddressBookBinding.addressRadioGroup.invalidate();
 //            fragmentAddressBookBinding.swipeToRefresh.setRefreshing(false);
         });
     }

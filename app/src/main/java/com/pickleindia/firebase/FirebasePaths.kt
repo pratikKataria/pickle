@@ -1,21 +1,23 @@
 package com.pickleindia.firebase
 
 import com.google.firebase.auth.FirebaseAuth
-import com.pickleindia.firebase.crud.Create
-import com.pickleindia.firebase.crud.Delete
-import com.pickleindia.firebase.crud.Read
-import com.pickleindia.firebase.crud.Update
 
-interface FirebaseFields {
-    val uid get() = FirebaseAuth.getInstance().uid ?: ""
-    val address get() = "Addresses"
-    val customer get() = "Customers"
-    val personalInformation get() = "personalInformation"
-    val username get() = "username"
-    val addressJson get() = "addressJson"
+class FirebaseFields {
+    companion object {
+        val uid get() = FirebaseAuth.getInstance().uid ?: ""
+        const val address = "Addresses"
+        const val customer = "Customers"
+        const val personalInformation = "personalInformation"
+        const val username = "username"
+        const val addressJson = "addressJson"
+    }
 }
 
-class FirebasePaths : Create, Read, Delete, Update {
-
+class FirebasePaths {
+    companion object {
+        val ADD_ADDRESS = "${FirebaseFields.address}/${FirebaseFields.uid}/${FirebaseFields.addressJson}"
+        val GET_ADDRESS = "${FirebaseFields.address}/${FirebaseFields.uid}/${FirebaseFields.addressJson}"
+    }
 }
+
 
